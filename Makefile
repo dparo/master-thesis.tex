@@ -1,4 +1,4 @@
-.PHONY: all
+.PHONY: all release clean svg2pdf
 
 SVGS := $(wildcard Imgs/**/*.svg)
 PDFIMGS := $(patsubst %.svg, %.pdf, $(SVGS))
