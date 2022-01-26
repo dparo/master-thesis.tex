@@ -4,7 +4,7 @@ SVGS := $(wildcard Imgs/**/*.svg)
 PDFIMGS := $(patsubst %.svg, %.pdf, $(SVGS))
 
 BUILD_DIR:=./build
-LATEXMK_FLAGS=-pdf -file-line-error -halt-on-error -interaction=nonstopmode -auxdir=$(BUILD_DIR) -outdir=$(BUILD_DIR)
+LATEXMK_FLAGS=-silent -pdf -file-line-error -halt-on-error -interaction=batchmode -auxdir=$(BUILD_DIR) -outdir=$(BUILD_DIR)
 
 all: svg2pdf
 	mkdir -p build
