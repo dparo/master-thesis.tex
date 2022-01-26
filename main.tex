@@ -1,0 +1,36 @@
+% memoir is a documentclass based on book.
+% The memoir class incorporates the functions of a large number of commonly used packages
+% to provide a more consistent interface, and is designed to be easy to customize. 
+% So instead of loading a dozen possibly conflicting packages---geometry to change margins, 
+% and setspace to change line spacing, and titlesec to format
+% section headings, etc., etc.---you just specify memoir 
+% as your document class and use its settings
+\documentclass[a4paper,11pt]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\input{Config/packages.tex}
+\input{Config/custom_commands.tex}
+\input{Config/config.tex}
+
+\addbibresource{biblio.bib}
+
+
+\begin{document}
+\frontmatter % turns off chapter numbering and uses roman numerals for page numbers
+\input{preamble.tex}
+\pagebreak
+
+\begin{abstract}
+    \input{Content/abstract.tex}
+\end{abstract}
+
+\pagenumbering{arabic}
+\mainmatter
+\input{Content/main_content.tex}
+\pagebreak
+
+
+\backmatter
+\printbibliography
+\end{document}
