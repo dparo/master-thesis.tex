@@ -1,3 +1,4 @@
+.DEFAULT_GOAL := all
 .PHONY: all release clean svg2pdf
 
 SVGS := $(wildcard Imgs/**/*.svg)
