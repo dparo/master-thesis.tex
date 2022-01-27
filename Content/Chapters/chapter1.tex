@@ -41,11 +41,11 @@ The constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot i
 Constraints \eqref{eq:flow-conservation-constraint} imposes flow conservation constraints for each vertex.
 Notice that the flow entering each node can be equal to either $0$ or $1$ depending on the vertex is visited in the tour.
 The equation \eqref{eq:gsec-constraints} are the generalized subtour elimination constraints \textbf{(GSECs)} and must be present to guarantee that the solution does not contain spurious unconnected subtours.
-There is an exponential number of GSECs, as such, for performance reasons these constraints cannot be inserted statically in a MIP solver, and must instead be effuiently separated dynamically.
+There is an exponential number of GSECs, as such, for performance reasons these constraints cannot be inserted statically in a MIP solver, and must instead be efficiently separated dynamically.
 The equation \eqref{eq:resource-upper-bound-constraint} models the fact that a tour may visit any vertex as long as the total demand does surpass the vehicle capacity.
 Finally, the equations \eqref{eq:x-mip-var-bounds}, \eqref{eq:y-mip-var-bounds} specify the bounds and domain of the $x_{ij}$ and $y_{i}$ variables respectively.
 
-The IP model consists of ${N^2 + N} \over 2$ number of binary variables.
+The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
 If we ignore the GSECs and the binary variable bounds, the total number of constraints characterizing the model add up to $N + 2$.
 
 Note that the IP formulation allows for solutions visiting at least three vertices (the depot plus two customers).
@@ -55,12 +55,17 @@ In fact, given an optimal solution generated from the IP model, by using a brute
 If such feasible solutions exist, we update the incumbent.
 
 
-\section{Separation technique of cuts and valid inequalities}
+
+\section{Valid Inequalities}
+
+\section{Separation techniques}
 
 \subsection{GSEC separation}
 
 \subsection{GLM separation}
 
 \subsection{RCI separation}
+
+\section{Improving the formulation}
 
 \section{Warm start}
