@@ -1,4 +1,4 @@
-\chapter{IP mathematical formulation}
+\chapter{IP formulation}
 
 \cite{Jepsen2014} provided in their work a functional IP formulation for the CPTP.
 Most of the model in this section is derived from their work, and it is here summarized.
@@ -46,7 +46,7 @@ Finally, the equations \eqref{eq:x-mip-var-bounds}, \eqref{eq:y-mip-var-bounds} 
 The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
 If we ignore the GSECs and the binary variable bounds, the total number of constraints characterizing the model add up to $N + 2$.
 
-Note that the IP formulation only permits solutions visiting at least three vertices (the depot plus two customers).
+Note that the IP formulation only permits solutions visiting at least three vertices (the depot and two customers).
 We could allow for single customer solutions by relaxing the binary variable requirements and by modifying the IP model.
 Instead, it may be simpler to take a different approach and leave the IP model as is.
 By employing a bruteforce algorithm in $\Theta(N)$ time we can scan for improving single-customer solutions.
@@ -55,7 +55,7 @@ If any of such solutions exist, we update the incumbent.
 
 \subsection{GSECs inequalities}
 
-\mytodo{Add more details about the GSECs inequalities here.}
+\mytodo{Add more details about GSECs here.}
 
 
 It may be interesting to study the relationship between the number of variables participating in a GSEC as a function of the set size $|S|$.
@@ -74,7 +74,7 @@ which is maximized when $|S| = \frac{N}{2}$, thus leading to the following easy 
 Leading to the following result: a GSEC inequality may require up to $1 + \floor*{\frac{N^2}{4}}$ number of binary variables to be fully expressed.
 This trivial bound allows us to preallocate a fixed amount of memory beforehand, saving us copius memory allocation time that would otherwise be necessary at each GSEC separation routine call.
 
-\section{Additional Valid Inequalities for the CPTP}
+\section{Additional Valid Inequalities}
 
 In this section we present additional valid inequalities for the CPTP problem.
 These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can potentially speed up the resolution process.
