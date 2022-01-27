@@ -19,31 +19,40 @@ We assume that the distance function satisfies the triangle inequality:
 \end{equation}
 
 
-We define two sets of variables: $x_{ij}$, $y_{i} \in \lbrace 0, 1 \rbrace$, used to compose output solutions for the CPTP.
+We define two sets of binary variables: $x_{ij}$, $y_{i} \in \lbrace 0, 1 \rbrace$, used to compose output solutions for the CPTP.
 Together they model respectively an edge and a vertex as being part of the tour solution.
 
-Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we can finally express the CPTP problem as an integer programming formulation:
+Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we can finally express the CPTP problem as an integer programming formulation
 
 
 \begin{align}
-	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\substack{j \in V                                                                                \\ j \ge i + 1}} c_{ij} x_{ij} - \sum_{i \in V} p_i y_i\\
+	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\substack{j \in V                                                                                \\ j \ge i + 1}} c_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}\\
 	                         & y_0 = 1                                           & \label{eq:depot-part-of-tour-constraint}                             \\
 	                         & \sum_{\substack{j \in V                                                                                                  \\ j \ge i + 1}}       x_{ij}    = 2 \quad \forall i \in V         \label{eq:flow-conservation-constraint}\\
 	                         & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 y_{i}    & \quad \substack{\forall i \in S                                      \\ \forall S \subseteq V \setminus \{ 0 \},\ |S| \ge 2} \label{eq:gsec-constraints} \\
 	                         & \sum_{i \in V} d_i y_i   \le Q                    & \label{eq:resource-upper-bound-constraint}                           \\
 	                         & x_{ij}                   \in \lbrace 0, 1 \rbrace & \quad \forall (i, j) \in E               \label{eq:x-mip-var-bounds} \\
 	                         & y_{i}                    \in \lbrace 0, 1 \rbrace & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds} \\
-\end{align}
+\end{align}.
 
 
+The equation \eqref{eq:obj-function} denotes the objective function, and it represents the cost of traveling through the tour (positive contribution) and the total sum of the profits associated to visiting a subset of the vertices (negative contribution).
+The constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot is always visited.
+Constraints \eqref{eq:flow-conservation-constraint} imposes flow conservation constraints for each vertex.
+Notice that the flow entering each node can be equal to either $0$ or $1$ depending on the vertex is visited in the tour.
+The equation \eqref{eq:gsec-constraints} are the generalized subtour elimination constraints \textbf{(GSECs)} and must be present to guarantee that the solution does not contain spurious unconnected subtours.
+There is an exponential number of GSECs, as such, for performance reasons these constraints cannot be inserted statically in a MIP solver, and must instead be effuiently separated dynamically.
+The equation \eqref{eq:resource-upper-bound-constraint} models the fact that a tour may visit any vertex as long as the total demand does surpass the vehicle capacity.
+Finally, the equations \eqref{eq:x-mip-var-bounds}, \eqref{eq:y-mip-var-bounds} specify the bounds and domain of the $x_{ij}$ and $y_{i}$ variables respectively.
 
+The IP model consists of ${N^2 + N} \over 2$ number of binary variables.
+If we ignore the GSECs and the binary variable bounds, the total number of constraints characterizing the model add up to $N + 2$.
 
-
-\subsection{Valid inequalities}
-
-\subsubsection{GLM inequalities}
-
-\subsubsection{RCI inequalities}
+Note that the IP formulation allows for solutions visiting at least three vertices (the depot plus two customers).
+We could allow for single customer solutions by relaxing the binary variable requirements and by modifying slightly the IP model.
+Instead, it may be simpler to take a different approach without modifying the IP model.
+In fact, given an optimal solution generated from the IP model, by using a bruteforce algorithm in $\Theta(N)$ time scan for improving solutions visiting single customers.
+If such feasible solutions exist, we update the incumbent.
 
 
 \section{Separation technique of cuts and valid inequalities}
