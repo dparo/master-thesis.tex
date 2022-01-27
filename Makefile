@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-.PHONY: all release clean hard_clean watch spellcheck svg2pdf
+.PHONY: all release clean hard_clean watch spellcheck svg2pdf prebuild
 
 SVGS := $(shell find ./Imgs -type f -name '*.svg')
 SVGS_AS_PDFS := $(patsubst %.svg, %.out.pdf, $(SVGS))
@@ -24,7 +24,7 @@ $(BUILD_DIR):
 
 
 watch:
-	latexmk -pdf -pvc -view=pdf
+	latexmk -pdf -pvc -view=none
 
 svg2pdf: $(SVGS_AS_PDFS)
 
@@ -32,12 +32,14 @@ svg2pdf: $(SVGS_AS_PDFS)
 	inkscape --export-overwrite --export-type=pdf --export-filename=$@ $<
 
 
-spellcheck:
-	find ./ -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;
 
-$(BUILD_DIR)/main.pdf: $(BUILD_DIR) svg2pdf
+prebuild: $(BUILD_DIR) svg2pdf
+
+$(BUILD_DIR)/main.pdf: prebuild
 	latexmk -pdf
 
+spellcheck:
+	find ./ -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;
 
 $(BUILD_DIR)/Release.pdf: $(BUILD_DIR)/main.pdf
 	# Compress and Convert into PDF/A using ghostscript
