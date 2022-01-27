@@ -1,10 +1,15 @@
 \chapter{IP mathematical formulation}
 
+\cite{Jepsen2014} provided in their work a functional IP formulation for the CPTP.
+Most of the model in this section is derived from their work, and it is here summarized.
+
 Let $G = \left(V, E \right)$ denote a complete undirected graph, where $V = \lbrace 0, 1, \dots, N - 1 \rbrace$ denotes the set of nodes,
 $E = \lbrace  e = (i, j) \mid i,j \in V, j \ge i + 1 \rbrace$ the set of edges, and $N$ the number of nodes in the graph.
 The value $0 \in V$ is used to denote the depot node.
+Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S}$.
+More formally we can express $\delta(S)$ as $\delta(S) = \lbrace (i, j) \in E \mid i \in \lparen S \cap V \rparen, j \in \lparen \overline{S} \cap V \rparen \rbrace$.
 
-Let $p_{i} \in \R, p_{i} \ge 0$ denote the profit function, and $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent respectively the gain and required demand in visiting a vertex $i \in V$,
+Let $p_{i} \in \R, p_{i} \ge 0$ denote the profit function, and $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent respectively the gain and required demand in visiting a vertex $i \in V$.
 Note that without loss of generality we can allow for $p_{0} > 0$ and $d_{0} > 0$.
 Let $c_{ij} \in \R, c_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 We assume that the distance function satisfies the triangle inequality:
@@ -14,10 +19,10 @@ We assume that the distance function satisfies the triangle inequality:
 \end{equation}
 
 
+We define two sets of variables: $x_{ij}$, $y_{i} \in \lbrace 0, 1 \rbrace$, used to compose output solutions for the CPTP.
+Together they model respectively an edge and a vertex as being part of the tour solution.
 
-Declare the variables here.
-
-Given an upper bound $Q \in \R$ for the total resource consumption, we can finally express the CPTP problem as an integer programming formulation:
+Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we can finally express the CPTP problem as an integer programming formulation:
 
 
 \begin{align}
