@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-.PHONY: all release clean watch spellcheck svg2pdf
+.PHONY: all release clean hard_clean watch spellcheck svg2pdf
 
 SVGS := $(shell find ./Imgs -type f -name '*.svg')
 SVGS_AS_PDFS := $(patsubst %.svg, %.out.pdf, $(SVGS))
@@ -13,6 +13,8 @@ clean:
 	find ./Imgs -type f -name "*.out.pdf" -exec rm -rf {} \;
 	# Clean latexmk files
 	latexmk -c
+
+hard_clean: clean
 	# Remove build directory
 	rm -rf build
 

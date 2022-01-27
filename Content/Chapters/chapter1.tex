@@ -18,7 +18,6 @@ We assume that the distance function satisfies the triangle inequality:
 	c_{ij} \le c_{ih} + c_{hj}
 \end{equation}
 
-
 We define two sets of binary variables: $x_{ij}$, $y_{i} \in \lbrace 0, 1 \rbrace$, used to compose output solutions for the CPTP.
 Together they model respectively an edge and a vertex as being part of the tour solution.
 
@@ -32,9 +31,8 @@ Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we c
 	                         & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 y_{i}    & \quad \substack{\forall i \in S                                      \\ \forall S \subseteq V \setminus \{ 0 \},\ |S| \ge 2} \label{eq:gsec-constraints} \\
 	                         & \sum_{i \in V} d_i y_i   \le Q                    & \label{eq:resource-upper-bound-constraint}                           \\
 	                         & x_{ij}                   \in \lbrace 0, 1 \rbrace & \quad \forall (i, j) \in E               \label{eq:x-mip-var-bounds} \\
-	                         & y_{i}                    \in \lbrace 0, 1 \rbrace & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds} \\
-\end{align}.
-
+	                         & y_{i}                    \in \lbrace 0, 1 \rbrace & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
+\end{align}
 
 The equation \eqref{eq:obj-function} denotes the objective function, and it represents the cost of traveling through the tour (positive contribution) and the total sum of the profits associated to visiting a subset of the vertices (negative contribution).
 The constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot is always visited.
