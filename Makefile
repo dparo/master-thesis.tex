@@ -1,8 +1,8 @@
 .DEFAULT_GOAL := all
 .PHONY: all release clean svg2pdf
 
-SVGS := $(wildcard Imgs/**/*.svg)
-PDFIMGS := $(patsubst %.svg, %.pdf, $(SVGS))
+SVGS := $(shell find ./Imgs -type f -name '*.svg')
+SVGS_AS_PDFS := $(patsubst %.svg, %.pdf, $(SVGS))
 
 BUILD_DIR:=./build
 
@@ -16,10 +16,10 @@ clean:
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-svg2pdf: $(PDFIMGS)
+svg2pdf: $(SVGS_AS_PDFS)
 
 %.pdf: %.svg
-	inkscape --export-overwrite --export-type=pdf $@ -o $<
+	inkscape --export-overwrite --export-type=pdf --export-filename=$@ $<
 
 $(BUILD_DIR)/main.pdf: $(BUILD_DIR) svg2pdf
 	latexmk -pdf
