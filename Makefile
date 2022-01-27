@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-.PHONY: all release clean spellcheck svg2pdf
+.PHONY: all release clean watch spellcheck svg2pdf
 
 SVGS := $(shell find ./Imgs -type f -name '*.svg')
 SVGS_AS_PDFS := $(patsubst %.svg, %.out.pdf, $(SVGS))
@@ -20,6 +20,9 @@ clean:
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
+
+watch:
+	latexmk -pdf -pvc -view=pdf
 
 svg2pdf: $(SVGS_AS_PDFS)
 
