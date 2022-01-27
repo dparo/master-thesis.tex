@@ -34,7 +34,7 @@ Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we c
 	                         & y_{i}                    \in \lbrace 0, 1 \rbrace & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
 \end{align}
 
-The equation \eqref{eq:obj-function} denotes the objective function, and it represents the cost of traveling through the tour (positive contribution) and the total sum of the profits associated to visiting a subset of the vertices (negative contribution).
+The equation \eqref{eq:obj-function} denotes the objective function, and it is made of two terms: the cost of traveling through the tour (positive contribution) and the total sum of the profits associated to visiting a subset of the vertices (negative contribution).
 The constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot is always visited.
 Constraints \eqref{eq:flow-conservation-constraint} imposes flow conservation constraints for each vertex.
 Notice that the flow entering each node can be equal to either $0$ or $1$ depending on the vertex is visited in the tour.
@@ -46,15 +46,42 @@ Finally, the equations \eqref{eq:x-mip-var-bounds}, \eqref{eq:y-mip-var-bounds} 
 The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
 If we ignore the GSECs and the binary variable bounds, the total number of constraints characterizing the model add up to $N + 2$.
 
-Note that the IP formulation allows for solutions visiting at least three vertices (the depot plus two customers).
-We could allow for single customer solutions by relaxing the binary variable requirements and by modifying slightly the IP model.
-Instead, it may be simpler to take a different approach without modifying the IP model.
-In fact, given an optimal solution generated from the IP model, by using a bruteforce algorithm in $\Theta(N)$ time scan for improving solutions visiting single customers.
-If such feasible solutions exist, we update the incumbent.
+Note that the IP formulation only permits solutions visiting at least three vertices (the depot plus two customers).
+We could allow for single customer solutions by relaxing the binary variable requirements and by modifying the IP model.
+Instead, it may be simpler to take a different approach and leave the IP model as is.
+By employing a bruteforce algorithm in $\Theta(N)$ time we can scan for improving single-customer solutions.
+After the resolution of the IP model, we check for improving single-customer solutions over the solution returned from the IP model.
+If any of such solutions exist, we update the incumbent.
+
+\subsection{GSECs inequalities}
+
+\mytodo{Add more details about the GSECs inequalities here.}
 
 
+It may be interesting to study the relationship between the number of variables participating in a GSEC as a function of the set size $|S|$.
+To achieve this we can express the size of the edge crossing set $\delta(S)$ as
 
-\section{Valid Inequalities}
+\begin{equation}\label{eq:delta-s-set-size}
+	|\delta(S)| = N (N - |S|)
+\end{equation}
+
+which is maximized when $|S| = \frac{N}{2}$, thus leading to the following easy upper bound:
+
+\begin{equation}\label{eq:delta-s-set-size-ub}
+	|\delta(S)| \le \frac{N^2}{4}
+\end{equation}
+
+Leading to the following result: a GSEC inequality may require up to $1 + \floor*{\frac{N^2}{4}}$ number of binary variables to be fully expressed.
+This trivial bound allows us to preallocate a fixed amount of memory beforehand, saving us copius memory allocation time that would otherwise be necessary at each GSEC separation routine call.
+
+\section{Additional Valid Inequalities for the CPTP}
+
+In this section we present additional valid inequalities for the CPTP problem.
+These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can potentially speed up the resolution process.
+\cite{Jepsen2014} describe many more valid inequalities for the CPTP problem which are yet considered here.
+
+\subsection{GLM cuts}
+
 
 \section{Separation techniques}
 
