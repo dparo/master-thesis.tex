@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-.PHONY: all release clean svg2pdf
+.PHONY: all release clean spellcheck svg2pdf
 
 SVGS := $(shell find ./Imgs -type f -name '*.svg')
 SVGS_AS_PDFS := $(patsubst %.svg, %.out.pdf, $(SVGS))
@@ -7,7 +7,7 @@ SVGS_AS_PDFS := $(patsubst %.svg, %.out.pdf, $(SVGS))
 BUILD_DIR:=./build
 
 all: $(BUILD_DIR)/main.pdf
-release: $(BUILD_DIR)/Release.pdf
+release: spellcheck all $(BUILD_DIR)/Release.pdf
 clean:
 	# Clean generated pdfs
 	find ./Imgs -type f -name "*.out.pdf" -exec rm -rf {} \;
@@ -27,6 +27,8 @@ svg2pdf: $(SVGS_AS_PDFS)
 	inkscape --export-overwrite --export-type=pdf --export-filename=$@ $<
 
 
+spellcheck:
+	find ./ -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;
 
 $(BUILD_DIR)/main.pdf: $(BUILD_DIR) svg2pdf
 	latexmk -pdf
