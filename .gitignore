@@ -1,4 +1,5 @@
 /build/
+__latexindent_*.tex
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
