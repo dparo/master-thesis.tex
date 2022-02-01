@@ -6,6 +6,7 @@ Most of the model in this section is derived from their work, and it is here sum
 Let $G = \left(V, E \right)$ denote a complete undirected graph, where $V = \lbrace 0, 1, \dots, N - 1 \rbrace$ denotes the set of nodes,
 $E = \lbrace  e = (i, j) \mid i,j \in V, j \ge i + 1 \rbrace$ the set of edges, and $N$ the number of nodes in the graph.
 The value $0 \in V$ is used to denote the depot node.
+For convenience, we define $V_0 = V \setminus \{0\}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
 Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S}$.
 More formally we can express $\delta(S)$ as $\delta(S) = \lbrace (i, j) \in E \mid i \in \lparen S \cap V \rparen, j \in \lparen \overline{S} \cap V \rparen \rbrace$.
 
@@ -28,7 +29,7 @@ Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we c
 	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\substack{j \in V                                                                                \\ j \ge i + 1}} c_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}\\
 	                         & y_0 = 1                                           & \label{eq:depot-part-of-tour-constraint}                             \\
 	                         & \sum_{\substack{j \in V                                                                                                  \\ j \ge i + 1}}       x_{ij}    = 2 \quad \forall i \in V         \label{eq:flow-conservation-constraint}\\
-	                         & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 y_{i}    & \quad \substack{\forall i \in S                                      \\ \forall S \subseteq V \setminus \{ 0 \},\ |S| \ge 2} \label{eq:gsec-constraints} \\
+	                         & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 y_{i}    & \quad \substack{\forall i \in S                                      \\ \forall S \subseteq V_0,\ |S| \ge 2} \label{eq:gsec-constraints} \\
 	                         & \sum_{i \in V} d_i y_i   \le Q                    & \label{eq:resource-upper-bound-constraint}                           \\
 	                         & x_{ij}                   \in \lbrace 0, 1 \rbrace & \quad \forall (i, j) \in E               \label{eq:x-mip-var-bounds} \\
 	                         & y_{i}                    \in \lbrace 0, 1 \rbrace & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
@@ -79,8 +80,8 @@ This trivial bound allows us to preallocate a fixed amount of memory beforehand,
 \subsubsection{Demand lower bound}
 Altought non strictly-necessary, it is possible to improve the linear relaxation of the IP model by introducing a static constraint modeling the lower bound on the capacity:
 
-\begin{equation}
-	\sum_{i \in V} d_i y_i   \ge B                    \label{eq:resource-lower-bound-constraint}
+\begin{equation}\label{eq:resource-lower-bound-constraint}
+	\sum_{i \in V} d_i y_i   \ge B
 \end{equation}
 
 where $B \in \R, B \ge 0$ is a constant and represents the lower bound on the served demand.
@@ -96,11 +97,24 @@ A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algori
 \section{Additional Valid Inequalities}
 
 In this section we present additional valid inequalities for the CPTP problem.
-These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can potentially speed up the resolution process.
+These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can heavily speed up the resolution process.
 Most of these cuts follow the presentation proposed in \cite{Jepsen2014}.
 We will concentrate mostly on the most important cuts, additional cuts and information can be found in \cite{Jepsen2014}.
 
-\subsection{GLM cuts}
+\subsection{Generalized Large Multistart (GLM) inequalities}
+The Generalized Large Multistar inequalities, GLM for short, were first proposed in \cite{gouveia_result_1995}, and further discussed in \cite{letchford2006projection}.
+In the additional work of \cite{letchford_multistars_2002}, the GLM cuts are further generalized in the so-called Knapsack Large Multistar (KLM) inequalities.
+The GLM inequalities can be expressed as:
+
+\begin{equation}\label{eq:glm-inequality}
+	\begin{split}
+		\sum_{(i, j) \in \delta(S)} x_{ij} \ge \frac{2}{Q} \left(  \sum_{i \in S} d_i y_i + \sum_{i \in S} \sum_{j \in V_0 \setminus S} d_j  x_{ij}\right) \\ \quad \forall S \subseteq V_0,\ |S| \ge 2
+	\end{split}
+\end{equation}
+
+
+\subsection{Rounded Capacity Inequalities (RCI)}
+The Rounded Capacity Inequalities, RCI for short, were first presented in \cite{achuthan_capacitated_1998}.
 
 \section{Implementation}
 
