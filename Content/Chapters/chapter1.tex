@@ -74,27 +74,36 @@ which is maximized when $|S| = \frac{N}{2}$, thus leading to the following easy 
 Leading to the following result: a GSEC inequality may require up to $1 + \floor*{\frac{N^2}{4}}$ number of binary variables to be fully expressed.
 This trivial bound allows us to preallocate a fixed amount of memory beforehand, saving us copius memory allocation time that would otherwise be necessary at each GSEC separation routine call.
 
+\subsection{Additional bounds}
+
 \section{Additional Valid Inequalities}
 
 In this section we present additional valid inequalities for the CPTP problem.
 These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can potentially speed up the resolution process.
 \cite{Jepsen2014} describe many more valid inequalities for the CPTP problem which are yet considered here.
 
+
+\section{A simple dual formulation}
+
+A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algorithm} and it is here presented and re-adapted for the CPTP problem:
+
+\mytodo{Write about the method here}
+
+
 \subsection{GLM cuts}
 
+\section{Implementation}
 
-\section{Separation techniques}
+\subsection{Warm start}
 
-\subsection{GSEC separation}
+\subsection{Separation techniques}
 
-\subsubsection{Integral separation}
+\subsubsection{GSEC separation}
 
-\subsubsection{Fractional separation}
+\subsubsection{GSEC Integral separation}
 
-\subsection{GLM separation}
+\subsubsection{GSEC Fractional separation}
 
-\subsection{RCI separation}
+\subsubsection{GLM separation}
 
-\section{Improving the formulation}
-
-\section{Warm start}
+\subsubsection{RCI separation}
