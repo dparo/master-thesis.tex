@@ -122,7 +122,7 @@ Finally, equation \eqref{eq:glm-inequality-v1} can be rewritten more concisely a
 
 \begin{equation}\label{eq:glm-inequality}
 	\begin{split}
-		\sum_{(i, j) \in \delta(S)} x_{ij} \left( 1 - \frac{2}{Q} d_j \right)  -2 \sum_{i \in S} y_i \frac{d_i}{Q}  \ge  0   \quad \forall S \subseteq V_0,\ |S| \ge 2
+		\sum_{(i, j) \in \delta(S)} x_{ij} \left( 1 - 2 \frac{d_j}{Q} \right)  -2 \sum_{i \in S} y_i \frac{d_i}{Q}  \ge  0   \quad \forall S \subseteq V_0,\ |S| \ge 2
 	\end{split}
 \end{equation}
 
@@ -144,4 +144,4 @@ The RCI inequalities can then be expressed as:
 	\end{split}
 \end{equation}
 
-The number of non-zero binary variable in an RCI inequlity follows the same upper bound as the GLM cuts: $\floor*{\frac{\left( N + 1\right)^2}{4}}$.
+The number of non-zero binary variable in an RCI inequality follows the same upper bound as the GLM cuts: $\floor*{\frac{\left( N + 1\right)^2}{4}}$.
