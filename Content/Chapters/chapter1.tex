@@ -40,7 +40,7 @@ Constraints \eqref{eq:flow-conservation-constraint} imposes flow conservation co
 Notice that the flow entering each node can be equal to either $0$ or $1$ depending on the vertex is visited in the tour.
 The equation \eqref{eq:gsec-constraints} are the generalized subtour elimination constraints \textbf{(GSECs)} and must be present to guarantee that the solution does not contain spurious unconnected subtours.
 There is an exponential number of GSECs, as such, for performance reasons these constraints cannot be inserted statically in a MIP solver, and must instead be efficiently separated dynamically.
-The equation \eqref{eq:resource-upper-bound-constraint} models the fact that a tour may visit any vertex as long as the total demand does surpass the vehicle capacity.
+The equation \eqref{eq:resource-upper-bound-constraint} models the fact that a tour may visit any vertex as long as the total demand doesn't exceed the vehicle capacity.
 Finally, the equations \eqref{eq:x-mip-var-bounds}, \eqref{eq:y-mip-var-bounds} specify the bounds and domain of the $x_{ij}$ and $y_{i}$ variables respectively.
 
 The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
@@ -55,7 +55,7 @@ If any of such solutions exist, we update the incumbent.
 
 \subsection{GSECs inequalities}
 
-\mytodo{Add more details about GSECs here.}
+\mytodo{Add more details/history/literature about GSECs here.}
 
 
 It may be interesting to study the relationship between the number of variables participating in a GSEC as a function of the set size $|S|$.
@@ -72,16 +72,19 @@ which is maximized when $|S| = \frac{N}{2}$, thus leading to the following easy 
 \end{equation}
 
 Leading to the following result: a GSEC inequality may require up to $1 + \floor*{\frac{N^2}{4}}$ number of binary variables to be fully expressed.
-This trivial bound allows us to preallocate a fixed amount of memory beforehand, saving us copius memory allocation time that would otherwise be necessary at each GSEC separation routine call.
+This trivial bound allows us to preallocate a fixed amount of memory beforehand, saving us copious memory allocation time that would otherwise be necessary at each GSEC separation routine call.
 
 \subsection{Additional bounds}
 
-\section{Additional Valid Inequalities}
+\subsubsection{Demand lower bound}
+Altought non strictly-necessary, it is possible to improve the linear relaxation of the IP model by introducing a static constraint modeling the lower bound on the capacity:
 
-In this section we present additional valid inequalities for the CPTP problem.
-These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can potentially speed up the resolution process.
-\cite{Jepsen2014} describe many more valid inequalities for the CPTP problem which are yet considered here.
+\begin{equation}
+	\sum_{i \in V} d_i y_i   \ge B                    \label{eq:resource-lower-bound-constraint}
+\end{equation}
 
+where $B \in \R, B \ge 0$ is a constant and represents the lower bound on the served demand.
+The constant $B$ value can be computed as $B = d_u + d_v$, where $u, v \ge 1$ represent the least two demanding customers among all the customers.
 
 \section{A simple dual formulation}
 
@@ -89,6 +92,13 @@ A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algori
 
 \mytodo{Write about the method here}
 
+
+\section{Additional Valid Inequalities}
+
+In this section we present additional valid inequalities for the CPTP problem.
+These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can potentially speed up the resolution process.
+Most of these cuts follow the presentation proposed in \cite{Jepsen2014}.
+We will concentrate mostly on the most important cuts, additional cuts and information can be found in \cite{Jepsen2014}.
 
 \subsection{GLM cuts}
 
