@@ -7,11 +7,11 @@ Let $G = \left(V, E \right)$ denote a complete undirected graph, where $V = \lbr
 $E = \lbrace  e = (i, j) \mid i,j \in V, j \ge i + 1 \rbrace$ the set of edges, and $N$ the number of nodes in the graph.
 The value $0 \in V$ is used to denote the depot node.
 For convenience, we define $V_0 = V \setminus \{0\}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
-Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S}$.
+Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
 More formally we can express $\delta(S)$ as $\delta(S) = \lbrace (i, j) \in E \mid i \in \lparen S \cap V \rparen, j \in \lparen \overline{S} \cap V \rparen \rbrace$.
 
-Let $p_{i} \in \R, p_{i} \ge 0$ denote the profit function, and $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent respectively the gain and required demand in visiting a vertex $i \in V$.
-Note that without loss of generality we can allow for $p_{0} > 0$ and $d_{0} > 0$.
+Let $p_{i} \in \R, p_{i} \ge 0$ denote the profit function, and $d_{i} \in \R, d_{i} \ge 0$ denote the demand function, which represent respectively the gain and required demand in visiting a vertex $i \in V$
+By convetion, we define $p_0 = 0$ and $d_0 = 0$.
 Let $c_{ij} \in \R, c_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 We assume that the distance function satisfies the triangle inequality:
 
@@ -38,7 +38,6 @@ Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we c
 The equation \eqref{eq:obj-function} denotes the objective function, and it is made of two terms: the cost of traveling through the tour (positive contribution) and the total sum of the profits associated to visiting a subset of the vertices (negative contribution).
 The constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot is always visited.
 Constraints \eqref{eq:flow-conservation-constraint} imposes flow conservation constraints for each vertex.
-Notice that the flow entering each node can be equal to either $0$ or $1$ depending on the vertex is visited in the tour.
 The equation \eqref{eq:gsec-constraints} are the generalized subtour elimination constraints \textbf{(GSECs)} and must be present to guarantee that the solution does not contain spurious unconnected subtours.
 There is an exponential number of GSECs, as such, for performance reasons these constraints cannot be inserted statically in a MIP solver, and must instead be efficiently separated dynamically.
 The equation \eqref{eq:resource-upper-bound-constraint} models the fact that a tour may visit any vertex as long as the total demand doesn't exceed the vehicle capacity.
@@ -59,11 +58,11 @@ If any of such solutions exist, we update the incumbent.
 \mytodo{Add more details/history/literature about GSECs here.}
 
 
-It may be interesting to study the relationship between the number of variables participating in a GSEC as a function of the set size $|S|$.
+It may be interesting to study the relationship between the number of non-zero variables participating in a GSEC as a function of the set size $|S|$.
 To achieve this we can express the size of the edge crossing set $\delta(S)$ as
 
 \begin{equation}\label{eq:delta-s-set-size}
-	|\delta(S)| = N (N - |S|)
+	|\delta(S)| = |S| (N - |S|)
 \end{equation}
 
 which is maximized when $|S| = \frac{N}{2}$, thus leading to the following easy upper bound:
@@ -72,20 +71,20 @@ which is maximized when $|S| = \frac{N}{2}$, thus leading to the following easy 
 	|\delta(S)| \le \frac{N^2}{4}
 \end{equation}
 
-Leading to the following result: a GSEC inequality may require up to $1 + \floor*{\frac{N^2}{4}}$ number of binary variables to be fully expressed.
+Leading to the following result: a GSEC inequality may require up to $1 + \floor*{\frac{N^2}{4}}$ number of non-zero binary variables to be fully expressed.
 This trivial bound allows us to preallocate a fixed amount of memory beforehand, saving us copious memory allocation time that would otherwise be necessary at each GSEC separation routine call.
 
 \subsection{Additional bounds}
 
 \subsubsection{Demand lower bound}
-Altought non strictly-necessary, it is possible to improve the linear relaxation of the IP model by introducing a static constraint modeling the lower bound on the capacity:
+Although non strictly-necessary, it is possible to improve the linear relaxation of the IP model by introducing a static constraint modeling the lower bound on the capacity:
 
 \begin{equation}\label{eq:resource-lower-bound-constraint}
 	\sum_{i \in V} d_i y_i   \ge B
 \end{equation}
 
 where $B \in \R, B \ge 0$ is a constant and represents the lower bound on the served demand.
-The constant $B$ value can be computed as $B = d_u + d_v$, where $u, v \ge 1$ represent the least two demanding customers among all the customers.
+The constant $B$ value can be computed as $B = d_u + d_v$, where $u, v \in V_0$ represent the least two demanding customers among all the customers.
 
 \section{A simple dual formulation}
 
@@ -99,18 +98,38 @@ A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algori
 In this section we present additional valid inequalities for the CPTP problem.
 These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can heavily speed up the resolution process.
 Most of these cuts follow the presentation proposed in \cite{Jepsen2014}.
-We will concentrate mostly on the most important cuts, additional cuts and information can be found in \cite{Jepsen2014}.
+We will concentrate mostly on the most important cuts, additional cuts and information are treated in more detail in \cite{Jepsen2014}.
 
-\subsection{Generalized Large Multistart (GLM) inequalities}
+\subsection{Generalized Large Multistar (GLM) inequalities}
 The Generalized Large Multistar inequalities, GLM for short, were first proposed in \cite{gouveia_result_1995}, and further discussed in \cite{letchford2006projection}.
 In the additional work of \cite{letchford_multistars_2002}, the GLM cuts are further generalized in the so-called Knapsack Large Multistar (KLM) inequalities.
 The GLM inequalities can be expressed as:
 
-\begin{equation}\label{eq:glm-inequality}
+\begin{equation}\label{eq:glm-inequality-v1}
 	\begin{split}
 		\sum_{(i, j) \in \delta(S)} x_{ij} \ge \frac{2}{Q} \left(  \sum_{i \in S} d_i y_i + \sum_{i \in S} \sum_{j \in V_0 \setminus S} d_j  x_{ij}\right) \\ \quad \forall S \subseteq V_0,\ |S| \ge 2
 	\end{split}
 \end{equation}
+
+It is important to recall that we defined $d_0 = 0$.
+Therefore $\sum_{i \in S} \sum_{j \in V_0 \setminus S} d_j  x_{ij}$ becomes
+
+\begin{equation}
+	\sum_{i \in S} \sum_{j \in V_0 \setminus S} d_j  x_{ij} = \sum_{i \in S} \sum_{j \in V \setminus S} d_j  x_{ij} = \sum_{(i, j) \in \delta(S)} d_j x_{ij}
+\end{equation}
+
+Finally, equation \eqref{eq:glm-inequality-v1} can be rewritten more concisely as:
+
+\begin{equation}\label{eq:glm-inequality}
+	\begin{split}
+		\sum_{(i, j) \in \delta(S)} x_{ij} \left( 1 - \frac{2}{Q} d_j \right)    \ge \sum_{i \in S} \frac{2}{Q} d_i y_i  \\ \quad \forall S \subseteq V_0,\ |S| \ge 2
+	\end{split}
+\end{equation}
+
+
+We can express the relationship between the number of non-zero binary variables and the set size $|S|$.
+Trivially from the GLM equation in \eqref{eq:glm-inequality} and the result found in \eqref{eq:delta-s-set-size}, it follows that the number of non-zero binary variables is $-|S|^2 + (N + 1)|S|$, which is maximized when $|S| = \frac{N+1}{2}$.
+Thus the number of non-zero binary variables in every GSEC inequality is upper bounded by $\floor*{ \frac{\left( N + 1 \right)^2}{4}}$.
 
 
 \subsection{Rounded Capacity Inequalities (RCI)}
