@@ -61,22 +61,70 @@ Integral inequality separation is concerned in determining violated inequalities
 Integral inequalities separation is usually much easier to perform, and can be seen as a procedure to dynamically generate necessary constraints that would otherwise be impossible to insert statically in a MIP model.
 Fractional inequality separation, instead is usually harder to perform, and it is concerned in finding strong violated inequalities for fractional solution stemming out from a linear relaxation of a MIP formulation.
 
-In this thesis we are treating a CPTP problem, and more precisaly, we are concerned in separating the GSEC, GLM, RCI inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
+In this thesis we are treating a CPTP problem, and more precisely, we are concerned in separating the GSEC, GLM, RCI inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
 This is achieved by finding a set $S \subseteq V_0$, through the usage of appropriate algorithms, that violates any valid inequality.
 
+All the cuts that we implemented, are backed by the same shared separation procedure for both integral solutions and for fractional solutions.
+In the next two sections, we describe the common separation procedure used to find good $S \subseteq V_0$ sets.
+Then for each cut, we describe how $S$ is used for generating the inequality and when each cut is reported to the MIP solver and when it is instead ignored.
+
 \subsection{Integral separation}
+The integral separation procedure is the most important, as this procedure is necessary to generate GSEC cuts dynamically, and to avoid that the MIP solver produces solutions with spurious subtours.
+Assume that the MIP solver finds an optimal integer solution $x^* \in \{0, 1\}, y^* \in \{0, 1\}$ that violates a GSEC constraint.
+If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
+In order to detect unconnected subtours, we need first to determine the connected components induced from the $x^*$ solution.
+
+Let $C = \{0, \dots, n_c - 1\}$ be the connected components formed with $n_c = |C| \ge 1$.
+Let $cc(i) \in C$ be an array which for each vertex $i \in V$ it encodes to which connected component it belongs to.
+Let's fix $cc(0) = 0$ by definition.
+The connected components can be computed by a simple depth first search tracing algorithm, for which a pseudocode is provided in Algorithm \ref{src:cc-dfs}.
+\begin{algorithm}
+	\caption{An algorithm for computing the connected components through a DFS traversal}
+	\label{src:cc-dfs}
+	\KwData{$x* \in \{0, 1\}$: current optimal integer solution}
+	\KwResult{$n_c$: number of connected components}
+	\KwResult{$cc(i) \in C$: connected components array $\forall i \in V$}
+	$cc(i) \gets -1 \quad \forall i \in V$\;
+	$nc \gets 0$\;
+	\For{$i\gets0$ \KwTo $N$}{
+		\If{$cc(i) < 0$}{
+			\Comment{Found a non visited vertex}
+			$cc(i) \gets n_c$\;
+			$u \gets -1$\;
+			\Comment{Traverse the subtour}
+			\Do{$u \ge 0$}{
+				$v \gets -1$\;
+				\For{$j \in V \mid (u, j) \in E, cc(j) < 0, x^*_{uj} \ge 0.5$}{
+					\Comment{The body of this loop will execute only once}
+					$cc(j) = n_c$\;
+					$v \gets j$\;
+				}
+				$u \gets v$
+			}
+			$n_c \gets n_c + 1$\;
+		}
+	}
+	\Return{$n_c, cc$}
+\end{algorithm}
+Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
+
+\begin{equation}
+	S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k \ne 0
+\end{equation}
+
+which implies that any connected component that does not contain the depot node, can be used as a valid set $S \subseteq V_0$ for separating inequalities.
+If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution is valid, since no more violated GSECs exist.
+
+
+
 
 \subsection{Fractional separation}
-
-Running the gomory-hu tree at each fractional separation seem to be costly therefore we run the gomory hu tree
-separation only each 100 fractional separations.
 
 
 \subsection{GSEC separation}
 
-\subsubsection{GSEC Integral separation}
 
-\subsection{GSEC Fractional separation}
+
 
 \subsection{GLM separation}
 
