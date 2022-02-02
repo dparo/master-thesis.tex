@@ -50,7 +50,7 @@ By employing a bruteforce algorithm in $\Theta(N)$ time we can scan for improvin
 After the resolution of the IP model, we check for improving single-customer solutions over the solution returned from the IP model.
 If any of such solutions exist, we update the incumbent.
 
-\subsection{GSECs inequalities}
+\subsection{GSECs inequalities}\label{sec:gsec-inequality}
 
 \mytodo{Add more details/history/literature about GSECs here.}
 
@@ -77,7 +77,7 @@ This trivial bound allows us to preallocate a fixed amount of memory beforehand,
 
 \subsection{Additional bounds}
 
-\subsubsection{Demand lower bound}
+\subsubsection{Demand lower bound}\label{sec:demand-lower-bound}
 Although non strictly-necessary, it is possible to improve the linear relaxation of the IP model by introducing a static constraint modeling a lower bound on the minimum served demand:
 
 \begin{equation}\label{eq:resource-lower-bound-constraint}
@@ -85,7 +85,7 @@ Although non strictly-necessary, it is possible to improve the linear relaxation
 \end{equation}
 
 where $B \in \R, B \ge 0$ is a constant and represents the the required minimum served demand.
-The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0$ represent the least two demanding customers among all the customers.
+The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0$ represent the least two demanding customers among all the customers, i.e. $q_u \le q_v \le q_i \quad \forall i \in V_0,\ i \ne u, v$.
 
 \section{A simple dual formulation}
 
@@ -94,7 +94,7 @@ A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algori
 \mytodo{Write about the method here}
 
 
-\section{Additional Valid Inequalities}
+\section{Additional Valid Inequalities}\label{sec:additional-valid-inequalities}
 
 In this section we present additional valid inequalities for the CPTP problem.
 These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can heavily speed up the resolution process.

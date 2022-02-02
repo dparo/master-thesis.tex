@@ -6,22 +6,49 @@
 
 \mytodo{Explain what is CPLEX, academic license, url where it can be downloaded etc}
 
+
+\section{Full static model}
+
+\begin{align}
+	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\substack{j \in V                                                                                                   \\ j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}\\
+	                         & y_0 = 1                                           & \label{eq:full-static-model-depot-part-of-tour-constraint}                              \\
+	                         & \sum_{j \in \delta(i)}       x_{ij}    = 2        & \quad \forall i \in V         \label{eq:full-static-model-flow-conservation-constraint} \\
+	                         & B \le   \sum_{i \in V} q_i y_i   \le Q            & \label{eq:full-static-model-resource-upper-bound-constraint}                            \\
+	                         & x_{ij}                   \in \lbrace 0, 1 \rbrace & \quad \forall (i, j) \in E               \label{eq:full-static-model-x-mip-var-bounds}  \\
+	                         & y_{i}                    \in \lbrace 0, 1 \rbrace & \quad \forall i \in V,\ i \ge 1          \label{eq:full-static-model-y-mip-var-bounds}
+\end{align}
+
+which follows closely the full IP formulation presented of \eqref{eq:obj-function} without the GSECs, and we added an upper bound on the served demand following the details presented in Section \ref{sec:demand-lower-bound}.
+
+
 \section{Cutoff values}
 
 \section{Warm start}
 
 \section{Separation techniques}
 
+Inequality separation is a problem which consists in finding strong valid violated inequalities so that such inequalities can be embedded inside a Branch\&Cut framework.
+Integral inequality separation is concerned in determining violated inequalities for the original IP model.
+Integral inequalities separation is usually much easier to perform, and can be seen as a procedure to dynamically generate necessary constraints that would otherwise be impossible to insert statically in a MIP model.
+Fractional inequality separation, instead is usually harder to perform, and it is concerned in finding strong violated inequalities for fractional solution stemming out from a linear relaxation of a MIP formulation.
+
+In this thesis we are treating a CPTP problem, and more precisaly, we are concerned in separating the GSEC, GLM, RCI inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
+This is achieved by finding a set $S \subseteq V_0$, through the usage of appropriate algorithms, that violates any valid inequality.
+
+\subsection{Integral separation}
+
+\subsection{Fractional separation}
 
 Running the gomory-hu tree at each fractional separation seem to be costly therefore we run the gomory hu tree
 separation only each 100 fractional separations.
 
-\subsubsection{GSEC separation}
+
+\subsection{GSEC separation}
 
 \subsubsection{GSEC Integral separation}
 
-\subsubsection{GSEC Fractional separation}
+\subsection{GSEC Fractional separation}
 
-\subsubsection{GLM separation}
+\subsection{GLM separation}
 
-\subsubsection{RCI separation}
+\subsection{RCI separation}
