@@ -89,9 +89,19 @@ The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0$ 
 
 \section{A simple dual formulation}
 
-A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algorithm} and it is here presented and re-adapted for the CPTP problem:
+A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algorithm} and it is here presented and re-adapted for the CPTP problem.
 
-\mytodo{Write about the method here}
+We first need to re-formulate the CPTP as an ESPPRC.
+We define a new network formulation composed of $N + 1$ nodes, where the depot node is essentially splitted in two nodes: a source and a sink.
+Let $0$ denote the depot source version of the depot node, and $N$ its duplicate playing the role of the sink vertex.
+Since we are creating a new node, we are also duplicating some edges and we must pay attention that these edges bind to the same CPTP original formulation.
+We can bind the new edges to the original CPTP edges with the following constraint:
+
+\begin{equation}
+	x_{0i} + x_{iN} \le 1 \quad \forall i \in V_0
+\end{equation}
+
+\mytodo{Continue writing about the method here}
 
 
 \section{Additional Valid Inequalities}\label{sec:additional-valid-inequalities}
