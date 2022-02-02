@@ -18,10 +18,39 @@
 	                         & y_{i}                    \in \lbrace 0, 1 \rbrace & \quad \forall i \in V,\ i \ge 1          \label{eq:full-static-model-y-mip-var-bounds}
 \end{align}
 
-which follows closely the full IP formulation presented of \eqref{eq:obj-function} without the GSECs, and we added an upper bound on the served demand following the details presented in Section \ref{sec:demand-lower-bound}.
-
+which follows closely the full IP formulation presented in \eqref{eq:obj-function} without the GSECs.
+We also added a non strictly necessary upper bound on the served demand, which details were already discussed earlier in Section \ref{sec:demand-lower-bound}.
 
 \section{Cutoff values}
+
+
+\subsection{Upper cuttoff value}
+Since we're interested in solving the CPTP in the context of pricing for the CVRP, we're interested only in valid tours achieving a strictly negative objective value.
+Therefore we can specify an upper cutoff for objective function $z(x, y)$:
+
+\begin{equation}
+	z(x, y) \le 0 - \epsilon_{\mt{ct}}
+\end{equation}
+
+where $\epsilon_{\mt{ct}} \in \R$ is the upper cutoff tolerance, in our implementation we picked $\epsilon_{\mt{ct}} = 10^{-6}$, which is the default used in BapCod.
+
+The upper cutoff value can improve the linear relaxation and reduce the number of branch and bound nodes that need to be explored, especially when the MIP solver cannot infer any good starting primal solution.
+
+\subsection{Lower cutoff value}
+A good lower cutoff value on the objective function can improve the linear relaxation, and reduce the number of branch and bounds nodes that need to be explored.
+When combined with an upper cutoff value, and a good set of warm start solutions it can help to start the solution process with an already relatively closed gap.
+
+A lower cutoff value can be obtained by any feasible dual solution.
+For example we could use the method briefly described in Section \ref{sec:cptp-simple-dual-formulation} to obtain a good feasible dual solution.
+At the time of writing of this draft report (late Jan, firsts Feb 2022) the method described in Section \ref{sec:cptp-simple-dual-formulation} was not extensively explored.
+
+Instead we opted for a much simpler dual bound:
+
+\begin{equation}
+	z(x, y) \ge - \sum_{i \in V} p_i
+\end{equation}
+
+which is a trivial and weak bound, and in pretty much all cases, is easily beaten by a better alternative computed from the preprocessing stage of a standard MIP solver.
 
 \section{Warm start}
 

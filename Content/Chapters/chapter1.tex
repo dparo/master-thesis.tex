@@ -12,7 +12,7 @@ More formally we can express $\delta(S)$ as $\delta(S) = \lbrace (i, j) \in E \m
 For brevity, we also define $\delta(i) = \delta(\{i\})$ to denote the set of edges incident to node $i \in V$.
 
 Let $p_{i} \in \R, p_{i} \ge 0$ denote the profit function, and $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent respectively the profit gain and required demand in visiting a vertex $i \in V$.
-By convention we define $p_0 = 0$ and $q_0 = 0$.
+By convention $q_0 = 0$, but notice that the profit at the depot is allowed to be $p_0 \ge 0$.
 Let $d_{ij} \in \R, d_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 We assume that the distance function is symmetric $d_{ij} = d_{ji}$ and satisfies the triangle inequality $d_{ij} \le d_{ih} + d_{hj}$.
 
@@ -87,7 +87,7 @@ Although non strictly-necessary, it is possible to improve the linear relaxation
 where $B \in \R, B \ge 0$ is a constant and represents the the required minimum served demand.
 The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0$ represent the least two demanding customers among all the customers, i.e. $q_u \le q_v \le q_i \quad \forall i \in V_0,\ i \ne u, v$.
 
-\section{A simple dual formulation}
+\section{A simple dual formulation}\label{sec:cptp-simple-dual-formulation}
 
 A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algorithm} and it is here presented and re-adapted for the CPTP problem.
 
