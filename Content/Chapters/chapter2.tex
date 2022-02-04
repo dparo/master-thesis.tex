@@ -139,7 +139,7 @@ All the cuts that we implemented, are backed by the same shared separation proce
 In the next two sections, we describe the common separation procedure used to find good $S \subseteq V_0$ sets.
 Then for each cut, we describe how $S$ is used for generating the inequality and when each cut is reported to the MIP solver and when it is instead ignored.
 
-\subsection{Integral separation}
+\subsection{Integral separation}\label{sec:integral-sep}
 The integral separation procedure is the most important, as this procedure is necessary to generate GSEC cuts dynamically, and to avoid that the MIP solver produces solutions with spurious subtours.
 Assume that the MIP solver finds an optimal integer solution $x^* \in \{0, 1\}, y^* \in \{0, 1\}$ that violates a GSEC constraint.
 If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
@@ -151,11 +151,11 @@ We are only interested in modeling major connected components, i.e. containing a
 Thus, the $n_c$ represents the number of major connected components, i.e. the number of subtours formed in the current integral solution.
 Let $cc(i) \in C$ be an array which for each vertex $i \in V$ it encodes to which connected component it belongs to.
 Note that the depot node always belongs to a connected component, therefore by definition we fix $cc(0) = 0$, and $c(i) = -1  \quad \forall i \in V_0 \mid y_i = 0$.
-The connected components can be computed by a simple depth first search traversal, for which a pseudocode is provided in Algorithm \ref{src:cc-dfs}.
+The connected components can be computed by a simple depth first search traversal, for which a pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
 
 \begin{algorithm}
 	\caption{An algorithm for computing the connected components through a DFS traversal}
-	\label{src:cc-dfs}
+	\label{algo:cc-dfs}
 	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
@@ -191,7 +191,7 @@ The connected components can be computed by a simple depth first search traversa
 Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
 
 \begin{equation}
-	S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k \ge 0
+	S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0
 \end{equation}
 
 which implies that any major connected component that does not contain the depot node, can be used as a valid set $S \subseteq V_0$ for separating inequalities.
@@ -267,6 +267,28 @@ In the following sections we describe how we separate each inequality using the 
 
 \subsubsection{GSEC integral separation}
 This is the most important separation technique, since it is mandatory to solve the CPTP.
+
+By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-sep}, and in Algorithm \ref{algo:cc-dfs} we can pick:
+
+\begin{equation}
+	S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0
+\end{equation}
+
+and since we are dealing with integer CPTP solutions of the form $x^*_{ij},\ y^*_{i} \in \{0, 1\}$ it is easy to see that
+
+\begin{align}
+	\sum_{(i, j) \in \delta(S)} x^*_{ij} = 0 \\
+	y_i =  1 \quad \forall i \in S
+\end{align}
+
+which imply that the GSEC inequality $\sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 y_i$ cannot be satisfied by any $i \in S$.
+In a single integral separation iteration we can therefore separate:
+\begin{equation}
+	\sum^{n_c}_{k = 1} |\left\{ i \mid cc(i) = k \quad \forall i \in V \right\}|
+\end{equation}
+
+violated GSECs inequality, which can be promptly reported to the MIP solver to reject the candidate integral solution.
+
 
 
 \subsection{GLM separation}
