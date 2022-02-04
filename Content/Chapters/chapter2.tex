@@ -145,20 +145,24 @@ Assume that the MIP solver finds an optimal integer solution $x^* \in \{0, 1\}, 
 If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
 In order to detect unconnected subtours, we need first to determine the connected components induced from the $x^*$ solution.
 
-Let $C = \{0, \dots, n_c - 1\}$ be the connected components formed with $n_c = |C| \ge 1$.
+Let $C = \{-1, 0, \dots, n_c - 1\}$ be the connected components formed with $n_c \ge 1$.
+By definition, we use the sentinel value $-1$ to denote that a node $i$ does belong to a singleton connected component containing only $i$ itself.
+We are only interested in modeling major connected components, i.e. containing at least two vertices, thus we ignore singleton connected components.
+Thus, the $n_c$ represents the number of major connected components, i.e. the number of subtours formed in the current integral solution.
 Let $cc(i) \in C$ be an array which for each vertex $i \in V$ it encodes to which connected component it belongs to.
-Let's fix $cc(0) = 0$ by definition.
-The connected components can be computed by a simple depth first search tracing algorithm, for which a pseudocode is provided in Algorithm \ref{src:cc-dfs}.
+Note that the depot node always belongs to a connected component, therefore by definition we fix $cc(0) = 0$, and $c(i) = -1  \quad \forall i \in V_0 \mid y_i = 0$.
+The connected components can be computed by a simple depth first search traversal, for which a pseudocode is provided in Algorithm \ref{src:cc-dfs}.
+
 \begin{algorithm}
 	\caption{An algorithm for computing the connected components through a DFS traversal}
 	\label{src:cc-dfs}
-	\KwData{$x* \in \{0, 1\}$: current optimal integer solution}
-	\KwResult{$n_c$: number of connected components}
-	\KwResult{$cc[i] \in C$: connected component $\forall i \in V$}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
+	\KwResult{$n_c$: number of subtours formed}
+	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
 	$cc[i] \gets -1 \quad \forall i \in V$\;
 	$nc \gets 0$\;
 	\For{$i\gets0$ \KwTo $N$}{
-		\If{$cc[i] < 0$}{
+		\If{$cc[i] < 0, y_i \ge 0.5$}{
 			\Comment{Found a non visited vertex}
 			$cc[i] \gets n_c$\;
 			$u \gets -1$\;
@@ -180,11 +184,11 @@ The connected components can be computed by a simple depth first search tracing 
 Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
 
 \begin{equation}
-	S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k \ne 0
+	S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k \ge 0
 \end{equation}
 
-which implies that any connected component that does not contain the depot node, can be used as a valid set $S \subseteq V_0$ for separating inequalities.
-If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution is valid, since no more violated GSECs exist.
+which implies that any major connected component that does not contain the depot node, can be used as a valid set $S \subseteq V_0$ for separating inequalities.
+If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution contains a single subtour, and does not violate any GSECs.
 
 
 \subsection{Fractional separation}
