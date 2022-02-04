@@ -139,7 +139,7 @@ All the cuts that we implemented, are backed by the same shared separation proce
 In the next two sections, we describe the common separation procedure used to find good $S \subseteq V_0$ sets.
 Then for each cut, we describe how $S$ is used for generating the inequality and when each cut is reported to the MIP solver and when it is instead ignored.
 
-\subsection{Integral separation}\label{sec:integral-sep}
+\subsection{Integral separation}\label{sec:integral-separation}
 The integral separation procedure is the most important, as this procedure is necessary to generate GSEC cuts dynamically, and to avoid that the MIP solver produces solutions with spurious subtours.
 Assume that the MIP solver finds an optimal integer solution $x^* \in \{0, 1\}, y^* \in \{0, 1\}$ that violates a GSEC constraint.
 If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
@@ -198,7 +198,7 @@ which implies that any major connected component that does not contain the depot
 If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution contains a single subtour, and does not violate any GSECs.
 
 
-\subsection{Fractional separation}
+\subsection{Fractional separation}\label{sec:fractional-separation}
 Fractional separation is usually much harder and more computationally expensive to perform compared to integral separation.
 A valid set $S \subseteq V$ can be separated by solving a max-flow problem between two arbitrary source and sink vertices $s, t$ on a fully connected directed graph.
 Fractional separation is modeled through a directed symmetric flow network, where $x^*_{ij}$ constitutes the capacities of the flow network.
@@ -268,13 +268,9 @@ In the following sections we describe how we separate each inequality using the 
 \subsubsection{GSEC integral separation}
 This is the most important separation technique, since it is mandatory to solve the CPTP.
 
-By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-sep}, and in Algorithm \ref{algo:cc-dfs} we can pick:
-
-\begin{equation}
-	S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0
-\end{equation}
-
-and since we are dealing with integer CPTP solutions of the form $x^*_{ij},\ y^*_{i} \in \{0, 1\}$ it is easy to see that
+By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-separation}, and in Algorithm \ref{algo:cc-dfs} we can pick $S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0$.
+Note that using major connected components, i.e. subtours, the set $S$ always satisfies $|S| \ge 2$.
+Since we are dealing with integer CPTP solutions of the form $x^*_{ij},\ y^*_{i} \in \{0, 1\}$ it is easy to see that:
 
 \begin{align}
 	\sum_{(i, j) \in \delta(S)} x^*_{ij} = 0 \\
@@ -288,6 +284,30 @@ In a single integral separation iteration we can therefore separate:
 \end{equation}
 
 violated GSECs inequality, which can be promptly reported to the MIP solver to reject the candidate integral solution.
+
+
+\subsubsection{GSEC fractional separation}
+
+By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the discussion about separating fractional $S \subseteq V_0$ in Section \ref{sec:fractional-separation}, it is easy to see that given $0 \le x^*_{ij} \le 1,\ 0 \le y^*_{i} \le 1$ fractional solutions to the CPTP we have that:
+
+\begin{equation}
+	\sum_{(i, j) \in \delta(S)} x^*_{ij} = f_{\mt{max}}(s, t)
+\end{equation}
+
+where the $f_{\mt{max}}(s, t)$ denotes the maximum flow computed in the fractional separation of $S \subseteq V_0$.
+Therefore, if $|S| \ge 2$, any $i \in S$ that violates
+
+\begin{equation}
+	f_{\mt{max}}(s, t) \ge 2 y_i
+\end{equation}
+
+can be used to separate a violated GSEC inequality.
+Recall that the number of sets $S \subseteq V_0$ in a fractional iteration is in the order of $\Theta(N^2)$, it is possible to separate $O(N^3)$ GSECs in a fractional separation.
+We noticed that, generating and reporting all these GSECs inequalities at each fractional separation led to a slow down of the MIP solver, which was flooded with weak GSEC inequalities.
+
+Therefore, in our implementation we took a slightly different approach, by relaxing the conditions in which a GSEC inequality is reported to the MIP.
+It is important to note that relaxing the conditions in which a GSEC fractional inequalities are reported, may lead to situations in which certain indispensible inequalities fall through without ever being handled in the fractional separation.
+But this situation is of a little importance to us, the remaining GSEC constraints which are not caught in the fractional separation, will eventually be handled by the integral separation.
 
 
 
