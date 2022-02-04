@@ -207,10 +207,20 @@ One important notice is that writing good max-flow algorithms that operate direc
 And it is possible to get stuck in long loops discharging atomically small quantity of flows.
 
 
-A solution to the max-flow problem outputs a bipartition, also called "coloring", of the set $V$, namely two complementary sets $F_1(s, t), F_2(s, t)$ such that $F_1(s, t) \cup F_2(s, t) = V$ and $F_1 \cap F_2 = \emptyset$, and such that $s \in F_1(s, t), t \in F_2(s, t)$.
+A solution to the max-flow problem outputs a maxflow $f(s, t)$ and a bipartition, also called "coloring", of the set $V$, namely two complementary sets $F_1(s, t), F_2(s, t)$ such that $F_1(s, t) \cup F_2(s, t) = V$ and $F_1 \cap F_2 = \emptyset$, and such that $s \in F_1(s, t), t \in F_2(s, t)$.
 The $\delta(F_1(s, t))$ constitutes the min-cut induced from the solving the max-flow problem over $(s, t)$ source and sink vertices.
+It is known that solving a maxflow problem guarantees the following two properties
 
+\begin{enumerate}
+	\item Edges $\{ (i, j) \mid i \in F_1(s, t),\ j \in F_2(s, t) \}$ are saturated
+	\item Edges $\{ (j, i) \mid i \in F_1(s, t),\ j \in F_2(s, t) \}$ are drained.
+\end{enumerate}
 
+therefore the following result holds:
+\begin{align}
+	f(s, t) = \sum_{(i, j) \in \delta(F_1(s, t))} x_{ij} \\
+	\sum_{(i, j) \in \delta(F_2(s, t))} x_{ij} = 0
+\end{align}
 
 Assuming we have already computed $F_1, F2$, a valid $S \subseteq V_0$ can then be picked such that:
 \begin{equation}
