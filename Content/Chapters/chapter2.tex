@@ -238,10 +238,22 @@ Although, and this is the more important aspect, the induced bipartitions in the
 Namely, in the general case $F_1(s, t) \ne F_2(t, s)$ and $F_2(s, t) \ne F_1(t, s)$.
 To see this is the case, this simple flow network:
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=6cm]{Imgs/single-path-flow-network.pdf}
-\end{figure}
+\begin{center}
+	\begin{tikzpicture}[node distance={20mm}, main/.style = {draw, circle, fill=black!10!white}]
+		\centering
+
+		\node[main] (0) {$0$};
+		\node[main] (1) [right of = 0] {$1$};
+		\node[main] (2) [right of = 1] {$2$};
+		\node[main] (3) [right of = 2] {$3$};
+		\node[main] (4) [right of = 3] {$4$};
+
+		\draw (0) --  (1) node [midway, yshift=2mm] {$0$};
+		\draw (1) --  (2) node [midway, yshift=2mm] {$10$};
+		\draw (2) --  (3) node [midway, yshift=2mm] {$10$};
+		\draw (3) --  (4) node [midway, yshift=2mm] {$0$};
+	\end{tikzpicture}
+\end{center}
 
 produces the same max flow when solving for $(0, 4)$ and $(4, 0)$ pair respectively, and produces $F_1(0, 4) = \{ 0\},\ F_2(0, 4) = \{ 1, 2, 3, 4\}$, $F_1(4, 0) = \{ 4 \},\ F_2(4, 0) = \{ 0, 1, 2, 3\}$, which clearly represent a non symmetric coloring.
 This behaviour is a direct consequence that flow networks don't guarantee unique min-cuts.
