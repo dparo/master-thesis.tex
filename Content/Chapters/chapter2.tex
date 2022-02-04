@@ -29,10 +29,10 @@ Since we're interested in solving the CPTP in the context of pricing for the CVR
 Therefore we can specify an upper cutoff for objective function $z(x, y)$:
 
 \begin{equation}
-	z(x, y) \le 0 - \epsilon_{\mt{ct}}
+	z(x, y) \le 0 - \varepsilon_{\mt{ct}}
 \end{equation}
 
-where $\epsilon_{\mt{ct}} \in \R$ is the upper cutoff tolerance, in our implementation we picked $\epsilon_{\mt{ct}} = 10^{-6}$, which is the default used in BapCod.
+where $\varepsilon_{\mt{ct}} \in \R$ is the upper cutoff tolerance, in our implementation we picked $\epsilon_{\mt{ct}} = 10^{-6}$, which is the default used in BapCod.
 
 The upper cutoff value can improve the linear relaxation and reduce the number of branch and bound nodes that need to be explored, especially when the MIP solver cannot infer any good starting primal solution.
 
@@ -265,7 +265,7 @@ In the following sections we describe how we separate each inequality using the 
 
 \subsection{GSEC separation}
 
-\subsubsection{GSEC integral separation}
+\subsubsection{GSEC integral separation}\label{sec:gsec-integral-separation}
 This is the most important separation technique, since it is mandatory to solve the CPTP.
 
 By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-separation}, and in Algorithm \ref{algo:cc-dfs} we can pick $S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0$.
@@ -286,7 +286,7 @@ In a single integral separation iteration we can therefore separate:
 violated GSECs inequality, which can be promptly reported to the MIP solver to reject the candidate integral solution.
 
 
-\subsubsection{GSEC fractional separation}
+\subsubsection{GSEC fractional separation}\label{sec:gsec-fractional-separation}
 
 By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the discussion about separating fractional $S \subseteq V_0$ in Section \ref{sec:fractional-separation}, it is easy to see that given $0 \le x^*_{ij} \le 1,\ 0 \le y^*_{i} \le 1$ fractional solutions to the CPTP we have that:
 
@@ -305,12 +305,75 @@ can be used to separate a violated GSEC inequality.
 Recall that the number of sets $S \subseteq V_0$ in a fractional iteration is in the order of $\Theta(N^2)$, it is possible to separate $O(N^3)$ GSECs in a fractional separation.
 We noticed that, generating and reporting all these GSECs inequalities at each fractional separation led to a slow down of the MIP solver, which was flooded with weak GSEC inequalities.
 
-Therefore, in our implementation we took a slightly different approach, by relaxing the conditions in which a GSEC inequality is reported to the MIP.
-It is important to note that relaxing the conditions in which a GSEC fractional inequalities are reported, may lead to situations in which certain indispensible inequalities fall through without ever being handled in the fractional separation.
-But this situation is of a little importance to us, the remaining GSEC constraints which are not caught in the fractional separation, will eventually be handled by the integral separation.
+Therefore, in our implementation we took a slightly different approach, by relaxing the conditions in which GSEC inequalities are reported to the MIP.
+It is important to note that relaxing the conditions in which the GSEC fractional inequalities are reported, may lead to situations in which certain indispensible inequalities fall through without ever being handled in the fractional separation procedure.
+But this situation is of a little importance to us, the remaining GSEC constraints which are not caught in the fractional separation, will eventually be handled by the integral separation procedure.
+
+In our implementation a GSEC inequality is separated for $S \subseteq V_0,\ |S| \ge 2$ only if
+
+\begin{equation}
+	f_{\mt{max}}(s, t) \ge 2 y_i - \varepsilon_{\mt{GSEC}}
+\end{equation}
+
+is violated.
+The $\varepsilon_{\mt{GSEC}}$ is a constant which denotes the violation tolerance for the GSEC fractional separation.
+In our implementation we picked $\varepsilon_{\mt{GSEC}} = 0.5$.
+If the GSEC inequality violation does not surpass this tolerance, the GSEC inequality is not generated and reported to the MIP solver.
+On top of that, to further reduce the number of generated GSEC, we report only the single most violated GSEC per set $S \subseteq V_0$ by using the customer $i \in V_0$ that maximizes $f_{\mt{max}}(s, t) - 2 y_i$.
 
 
+\subsection{GLM separation}\label{sec:glm-separation}
+In this section we describe the separation of the GLM inequalities, as they were defined in Equation \eqref{eq:glm-inequality}.
+In our work we implemented both the integral and the fractional separation for this family of inequalities.
+However, in this section we will explain only the fractional separation and we will omit the details about integral separation.
+The integral separation follows naturally from adapting the ideas that will here after be presented in this section, and by employing a similar reasoning as was done in Section \ref{sec:gsec-integral-separation}, for the GSEC inequalities (i.e. using the connected components).
 
-\subsection{GLM separation}
+Let $F_1(s, t),\ F_2(s, t)$ be the bipartition induced in solving the min-cut problem as was presented in Section \ref{sec:fractional-separation}.
+Again we showed that we can pick a valid $S \subseteq V_0$ in the following way
 
-\subsection{RCI separation}
+\begin{equation}
+	S \subseteq V_0 =
+	\begin{cases}
+		F_1(s, t), & \texttt{if } 0 \notin F_1 \\
+		F_2(s, t), & \texttt{otherwise}
+	\end{cases}
+\end{equation}
+
+In case of the integral separation the same reasoning apply here, but instead of using the min-cut bipartition, we use the connected components array to find a valid $S \subseteq V_0$.
+
+We need to count the number of vertices $i$ in $S$ to verify that indeed $|S| \ge 2$.
+If $|S| < 2$, no GLM inequalities can be separated.
+Otherwise a single GLM cut can be separated if the following inequality
+
+\begin{equation}
+	\begin{split}
+		\sum_{(i, j) \in \delta(S)} x_{ij} \left( 1 - 2 \frac{q_j}{Q} \right)  -2 \sum_{i \in S} y_i \frac{q_i}{Q}  \ge  - \varepsilon_{\mt{GSEC}}
+	\end{split}
+\end{equation}
+
+is violated.
+The $\varepsilon_{\mt{GLM}}$ is a constant which denotes the violation tolerance for the GLM fractional separation.
+In our implementation we picked $\varepsilon_{\mt{GLM}} = 0.1$.
+We can separate $O(N^2)$ GLM cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
+
+
+\subsection{RCI separation}\label{sec:rci-separation}
+In this section we describe the separation of the RCI inequalities, as they were defined in Equation \eqref{eq:rci-inequality}.
+In our work we implemented both the integral and the fractional separation for this family of inequalities.
+However, we will omit the detail of the integral separation in this section, since they follow naturally from ideas explained in previous sections.
+
+The fractional separation of RCI inequalities is not any different from the separation of the GLM fractional inequalities presented in Section \ref{sec:glm-separation}.
+The only difference is that the set $S \subseteq V_0$, does not need to satisfy $|S| \ge 2$.
+
+Therefore, a set $|S| \subseteq V_0$ can separate a single RCI cut if the following inequality
+
+\begin{equation}
+	\begin{split}
+		\sum_{(i, j) \in \delta(S)} x_{ij} -2 \sum_{i \in S} y_i {\frac{q_i}{Q_\mt{R}(S)}}    \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{Q_{\mathrm{R}}(S)} \right) - \varepsilon_{\mt{RCI}}
+	\end{split}
+\end{equation}
+
+is violated.
+The $\varepsilon_{\mt{RCI}}$ is a constant which denotes the violation tolerance for the RCI fractional separation.
+In our implementation we picked $\varepsilon_{\mt{RCI}} = 0.1$.
+We can separate $O(N^2)$ RCI cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
