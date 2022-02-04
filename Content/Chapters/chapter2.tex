@@ -19,12 +19,12 @@
 \end{align}
 
 which follows closely the full IP formulation presented in \eqref{eq:obj-function} without the GSECs.
-We also added a non strictly necessary upper bound on the served demand, which details were already discussed earlier in Section \ref{sec:demand-lower-bound}.
+We also added a non strictly necessary lower bound on the served demand, which details were already discussed earlier in Section \ref{sec:demand-lower-bound}.
 
 \section{Cutoff values}
 
 
-\subsection{Upper cuttoff value}
+\subsection{Upper cutoff value}
 Since we're interested in solving the CPTP in the context of pricing for the CVRP, we're interested only in valid tours achieving a strictly negative objective value.
 Therefore we can specify an upper cutoff for objective function $z(x, y)$:
 
@@ -71,30 +71,31 @@ The insertion heuristic algorithm works iteratively where at each step of the it
 At the end of the whole algorithm, we will obtain a valid tour which is also feasible for the CPTP.
 Let's define $Q_t$ as the total demand served in the current tour.
 At each iteration, choose a vertex $a$ that belongs to the current tour and a vertex $h$ which is not yet part of the tour.
-Let's define $b$ as the successor of node $a$ in the current tour.
-The idea is to try to insert $h$ in the current tour, by deleting edge $(a, b)$, and inserting edges $(a, h),\ (h, b)$ but only if $h$ should be inserted or improves over the current tour.
+Let's define $a_s$ as the successor of node $a$ in the current tour.
+The idea is to try to insert $h$ in the current tour, by deleting edge $(a, a_s)$, and inserting edges $(a, h),\ (h, a_s)$ but only if $h$ must be inserted or improves over the current tour.
 Let's define the extra mileage as
 :
 \begin{equation}
 	\Delta_m(h, a) =
 	\begin{cases}
-		d_{ah} + d_{hb} - d_{ab} - p_h, & \texttt{if } Q_t + q_h \le Q \\
-		\infty,                         & \texttt{otherwise}
+		d_{ah} + d_{ha_s} - d_{aa_s} - p_h, & \texttt{if } Q_t + q_h \le Q \\
+		\infty,                             & \texttt{otherwise}
 	\end{cases}
 \end{equation}
 
 which represents the delta cost in inserting $h$ as the successor of $a$.
 A node $h$ is a good candidate for insertion if at least one of the following conditions is true:
 \begin{enumerate}
-	\item $\Delta_m(h, a) < 0$, i.e. improves over the current tour
+	\item $\Delta_m(h, a) < 0$, i.e. inserting $h$ improves over the current tour.
 	\item $h = 0$, i.e. $h$ is the depot node. The depot node at some point must be inserted regardless whether it is improving or not.
 	      Note that by convention we have defined $q_0 = 0$, therefore $Q_t + q_0 \le Q$ is always satisfied for the depot node.
 	\item The number of visited nodes in the current tour is $2$ and $Q_t + q_h \le Q$.
-	\item None of the above: no primal CPTP solution exist. Although this is a very unlikely case.
 \end{enumerate}
 
 In our implementation we employed a cheapest insertion scheme, therefore the pair $(h, a)$ for the current insertion iteration is picked such that it minimizes as much as possible the extra mileage $\Delta_m(h, a)$.
 The iteration stops when no more valid $h$ vertices can be found for insertion.
+It may happen that no valid $h$ can be found, yet the current tour length is $2$.
+In this very unlikely scenario, we can conclude that the CPTP formulation does not admit any feasible solution before even solving the IP formulation.
 
 In our implementation we picked $s = 0$ and $t \in V_0$, such that $q_s + q_t \le Q$.
 This allows us to generate $O(N)$ good feasible primal solutions using insertion heuristic in $O(N^3)$ time.
@@ -222,8 +223,16 @@ In this implementation we employed the usage of both the push relabel algorithm,
 Since running this full enumeration over each fractional separation, turned out to be quite costly, we decided to amortize the cost over multiple iterations.
 Namely, fractional separations iterations which are not multiple of $N$ become a no-op, no max-flow is performed, and therefore no set $S \subset V_0$ is separated.
 
+While there may be other ways to separate sets $S \subseteq V_0$, the described approach works very well for the inequalities considered in this thesis.
+This is very convenient because a single separation procedure for $S \subseteq V_0$ can be shared across all the inequalities, thus reducing computation time.
+Other kinds of inequalities, which are not considered in this thesis, may benefit from other more elaborate separation techniques.
+
+In the following sections we describe how we separate each inequality using the computed $S \subseteq V_0$.
 
 \subsection{GSEC separation}
+
+\subsubsection{GSEC integral separation}
+This is the most important separation technique, since it is mandatory to solve the CPTP.
 
 
 \subsection{GLM separation}
