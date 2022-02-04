@@ -179,6 +179,9 @@ The connected components can be computed by a simple depth first search traversa
 			$n_c \gets n_c + 1$\;
 		}
 	}
+
+	\Assert{$c[0] = 0$}\;
+	\Assert{$c[i] = -1 \quad \forall i \in V_0 \mid y_i \le 0.5$}\;
 	\Return{$n_c, cc$}
 \end{algorithm}
 Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
