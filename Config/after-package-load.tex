@@ -1,0 +1,11 @@
+\AfterPackage{layout}{
+	\AtEndDocument{\layout}%
+}
+
+\AfterPackage{geometry}{
+	\errmessage{Do not use the geometry package. Use the memoir native primitives to change the page geometry}
+}
+
+\AfterPackage{fancyhdr}{
+	\errmessage{Avoid using fancyhdr package, Use the memoir native primitives if possible.}
+}
