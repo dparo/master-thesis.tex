@@ -19,11 +19,14 @@
 %%
 %% ""Debug"" packages
 %%
+\usepackage{todonotes}        % For writing todos and notes in yor pdf
+\usepackage{lipsum}           % For Lorem Ipsum
+
 \ifthenelse{\equal{\DebugBuild}{1}} {
-	\usepackage{lipsum}           % For Lorem Ipsum
-	\usepackage{todonotes}        % For writing todos and notes in yor pdf
-	\usepackage{showframe}
-	\usepackage{layout}           % To generate automatically a layout page, comment it if you don't want it
+	\usepackage{showframe}        % To debug the frame border, padding, etc. It draws a box around each major region of the page
+	\usepackage{layout}           % To generate automatically a layout page
+} {
+	% Else clause
 }
 
 

@@ -1,6 +1,6 @@
 \chapter{BapCod model and parametrization}
 
-\mytodo{Introduce what is BapCod, point to the website, academic license, RCSP lib solver, etc...}
+\mytodo{Introduce what is BapCod, specify the version, point to the website, academic license, RCSP lib solver, etc...}
 
 \section{Model}
 
@@ -75,19 +75,28 @@ These parameters are used to control the main behaviour of BapCod.
 
 	\item Controlling the RCSP dynamic labeling pricer:
 	      \begin{itemize}
-		      \item \texttt{RCSPuseBidirectionalSearch = 2}, called $\phi^\mt{bidir}$ in the original paper, tells the RCSP pricer whether to use the bidirectional search for solving the pricing problem.
+		      \item \texttt{RCSPuseBidirectionalSearch = 2}, called $\phi^\mt{bidir}$ in the original paper, tells the RCSP pricer whether to use the bidirectional search for solving the pricing problem
+		      \item \texttt{RCSPapplyReducedCostFixing = 1}, called $\phi^\mt{elim}$ in the original paper, controls the bucket arc elimination procedure the labeling algorithm uses.
 		      \item \texttt{RCSPmaxNumOfColsPerExactIteration = 1}, \texttt{RCSPmaxNumOfColsPerIteration = 1}, called $\gamma^\mt{exact}, \gamma^\mt{heur}$ in the original paper, controls how many path solutions the pricer generates per pricer iteration respectively in the heuristic phase or in the exact phase.
 		            We force the RCSP pricer to generate a single path per pricing iteration.
 		      \item \texttt{RCSPallowRoutesWithSameVerticesSet = false} controls whether multiple paths which pass by the same set of vertices are allowed.
 		            Shouldn't matter since we are forcing to generate a single path per pricing iteration.
-
+		      \item \texttt{RCSPmaxNumOfEnumSolutionsForMIP = 1}, called $\omega^\mt{MIP}$ in the original paper, controls the threshold at which the number of enumerated path to trigger the solving through a MIP.
+		            By setting the parameter to $1$ we are essentially disabling this feature.
 		      \item \texttt{RCSPstopCutGenTimeThresholdInPricing = 1e21}, \texttt{RCSPhardTimeThresholdInPricing = 1e21}, called $\tau^\mt{soft}, \tau^\mt{hard}$ in the original paper, controls respectively the soft and hard time threshold for the pricing algorithm.
+		            This thresholds control a premature ending of the pricing algorithm in favour of cut generation or branching, if the running time increases above one of these thresholds.
+		            Since we want to measure the running time of the algorithm, even when it performs poorly, and we are not interested in generating cuts and branching, we increase these thresholds as high as possible.
+		      \item \texttt{RCSPdynamicNGmode = 1} tells BapCod to scale dynamically the ng-sets based on the fractional solution obtained by the column generation (not based on the solution received from the pricing problem).
+		      \item \texttt{RCSPinitNGneighbourhoodSize = 8}, \texttt{RCSPmaxNGneighbourhoodSize = 63}, called $\eta^\mt{init}, \eta^\mt{max}$ in the original paper, sets a "soft" elementary constraints that can dynamically be adjusted within the $\eta^\mt{init}, \eta^\mt{max}$ parameters.
+		            Raising $\eta^\mt{init}$ can improve the dual bound generated from the pricer, but usually leads to explosion of computation times, especially if it is raised a lot.
+		            Raising $\eta^\mt{max}$ can allow the ng-sets to reach higher values, thus improving the dual bound.
+		      \item \texttt{RCSPmaxNGaverNeighbourhoodSize = 63}, very similar to parameter $\eta^\mt{max}$, but for the average case.
+		            In our case we set this parameter to the same value of $\eta^\mt{max}$.
+		      \item \texttt{CutTailingOffThreshold = 0.0000001}, \texttt{CutTailingOffCounterThreshold = 999999}, named $\delta^\mt{gap}, \delta^\mt{num}$ in the original paper, controls the tailing off condition at which BapCod deems cuts ineffictive and threfore switches to lower priority cuts which are usually more computationally expensive.
+		            Despite their name, these two parameters also affect the pricing algorithm, as pointed in the original form, increasing the ng-sets can be seen as a form of "cut generation" since it improves the dual bound.
+		            Since we are not interested in cut generation, and we want BapCod to always prefer augmenting the ng-sets, these two parameters to disable the tailing off condition.
 	      \end{itemize}
 \end{itemize}
 
-\begin{verbatim}
-CutTailingOffThreshold = 0.0000001
-CutTailingOffCounterThreshold = 999999
-\end{verbatim}
 
 \section{Dual values extraction}

@@ -1,4 +1,4 @@
-\newcommand{\DebugBuild}{1}
+\newcommand{\DebugBuild}{0}
 
 \linespread{1.25}             % About 1.5 spacing in Word
 \setlength{\parindent}{0pt}   % No paragraph indents
@@ -9,3 +9,23 @@
 	\Large{Master Thesis Draft Report}}
 \date{January 2022}
 \author{Davide Paro}
+
+
+
+
+
+%%
+%% Fix hyphenitazion of \texttt going over the margin
+%%
+% (added at TeX3)
+% is used if TeX can not set the paragraph below the \tolerance badness,
+% but rather than make overfull boxes it tries an extra pass "pretending" that every
+% line has an additional \emergencystretch of stretchable glue, this allows the
+% overall badness to be kept below 1000 and stops TeX "giving up" and putting
+% all stretch into one line. So \emergencystretch does not change the setting of "good"
+% paragraphs, it only changes the setting of paragraphs that would have produced
+% over-full boxes. Note that you get warnings about the real badness calculation
+% from TeX even though it retries with \emergencystretch the extra stretch
+% is used to control the typesetting but it is not considered as good
+% for the purposes of logging.
+\emergencystretch 3em

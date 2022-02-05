@@ -6,27 +6,52 @@
 
 % section headings, etc., etc.---you just specify memoir
 % as your document class and use its settings
-\documentclass[a4paper,11pt]{memoir}
+
+
+
+%%% IMPORTANT:    oneside   vs   twoside
+%%%     twoside:
+%%%        The twoside flag to memoir generates a PDF where even and odd pages are treated differently.
+%%%        Specifically the margin is handled differently depending if it is an odd or even page.
+%%%
+%%%        PROS: The twoside flag is specifically useful for generating PDFs that should then be prepressed
+%%%              into an actual physical book.
+%%%              The first page of a chapter always starts in a odd page.
+%%%        CONS: Digital reading of the pdf becomes awkard since when scrolling the text constantly
+%%%              shifts left and right depending on the page index
+%%%
+%%%     oneside:
+%%%         All pages are handled with the same margin, and are all treated the same
+%%%
+%%%         PROS: PDF better suited for digital reading on a computer
+%%%         CONS: Prepressing on an actual book will lead to a lower quality result compared to the twoside.
+%%%               Chapter first page can start at even an odd pages
+
+%%% Memoir by default assumes twoside PDF if nothing is specified.
+\documentclass[a4paper,twoside,11pt]{memoir}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 
+
+\input{Config/config.tex}
 \input{Config/packages.tex}
 \input{Config/custom_commands.tex}
-\input{Config/config.tex}
 
 \addbibresource{biblio.bib}
 \addbibresource{ro2.bib}
 
+
 \begin{document}
-\frontmatter % turns off chapter numbering and uses roman numerals for page numbers
+
+% turns off chapter numbering and uses roman numerals for page numbers
+\frontmatter
+
 \input{preamble.tex}
 \pagebreak
 
-\begin{abstract}
-	\input{Content/abstract.tex}
-\end{abstract}
-
+% Turns on arabic numbering for the main content
 \pagenumbering{arabic}
+
 \mainmatter
 \input{Content/main_content.tex}
 \pagebreak
@@ -34,4 +59,5 @@
 
 \backmatter
 \printbibliography
+
 \end{document}
