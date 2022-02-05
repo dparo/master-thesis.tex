@@ -25,7 +25,7 @@ Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we c
 \begin{align}
 	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\substack{j \in V                                                                                 \\ j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}\\
 	                         & y_0 = 1                                           & \label{eq:depot-part-of-tour-constraint}                              \\
-	                         & \sum_{j \in \delta(i)}       x_{ij}    = 2        & \quad \forall i \in V         \label{eq:flow-conservation-constraint} \\
+	                         & \sum_{j \in \delta(i)}       x_{ij}  = 2 y_i      & \quad \forall i \in V         \label{eq:flow-conservation-constraint} \\
 	                         & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 y_{i}    & \quad \substack{\forall i \in S                                       \\ \forall S \subseteq V_0,\ |S| \ge 2} \label{eq:gsec-constraints} \\
 	                         & \sum_{i \in V} q_i y_i   \le Q                    & \label{eq:resource-upper-bound-constraint}                            \\
 	                         & x_{ij}                   \in \lbrace 0, 1 \rbrace & \quad \forall (i, j) \in E               \label{eq:x-mip-var-bounds}  \\
@@ -91,17 +91,47 @@ The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0$ 
 
 A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algorithm} and it is here presented and re-adapted for the CPTP problem.
 
-We first need to re-formulate the CPTP as an ESPPRC.
-We define a new network formulation composed of $N + 1$ nodes, where the depot node is essentially splitted in two nodes: a source and a sink.
-Let $0$ denote the depot source version of the depot node, and $N$ its duplicate playing the role of the sink vertex.
-Since we are creating a new node, we are also duplicating some edges and we must pay attention that these edges bind to the same CPTP original formulation.
-We can bind the new edges to the original CPTP edges with the following constraint:
+We first need to re-formulate the CPTP as an ESPPRC over a directed network.
+We define a new drected network formulation $G_d = (V_d, E_d)$ composed of $N + 1$ nodes, where the depot node is essentially splitted in two nodes: a source and a sink vertex.
+In the new network we use the value $0$ to denote the source version of the depot node, and $N$ its duplicate playing the role of the sink vertex.
+More formally, $V_d = \{ 0, \dots, N  \}$, and the edge set $E_d$ is
 
 \begin{equation}
-	x_{0i} + x_{iN} \le 1 \quad \forall i \in V_0
+	\begin{aligned}
+		E_d = & \left\{ (i, j) \mid i \in V_d, j \in V_d, i \ne j \right\} \\
+		      & \setminus \left\{ (i, 0) \quad \forall i \in V_d \right\}  \\
+		      & \setminus \left\{ (N, i) \quad \forall i \in V_d \right\}
+	\end{aligned}
 \end{equation}
 
-\mytodo{Continue writing about the method here}
+which briefly means: all possible pairs $(i, j),\ i \ne j$ excluding edges entering node $0$, and excluding edges flowing out of node $N$.
+At each directed edge $(i, j) \in E_d$ we associate a cost $c_{ij} \in \R$.
+We define a new set of binary variables $e_{ij} \in \{ 0, 1 \} \quad \forall (i, j) \in E_d$, to model solutions for ESPPRC over the directed network.
+
+Is is easy to see that $2 y_i$ in the original CPTP formulation can now be rewritten in the ESPPRC formulation as:
+\begin{equation}
+	2 y_i = \sum_{\substack{j \in V_d \\ j \ne i}} e_{ji} + \sum_{\substack{j \in V_d \\ j \ne i}} e_{ij} \quad \forall i \in V_0
+\end{equation}
+
+Since we are creating a new node, we are also duplicating some edges and we must pay attention that these edges bind to the same CPTP original formulation.
+We can bind the new edges to the original CPTP formulation by employing a mutually exclusive constraint of the form:
+
+\begin{equation}
+	e_{0i} + e_{iN} \le 1 \quad \forall i \in V_0
+\end{equation}
+
+Finally, we can rewrite the CPTP original formulation in the ESPPRC IP model:
+
+\begin{align}
+	\min_{x,y} \quad z(x, y) & =  \sum_{(i, j) \in E_d} \left( d_{ij} - \frac{p_i + p_j}{2} \right) e_{ij} \label{eq:espprc-obj-function}                                                                                \\
+	                         & y_0 = 1                                                                                                    & \label{eq:espprc-depot-part-of-tour-constraint}                              \\
+	                         & \sum_{j \in \delta(i)}       x_{ij}  = 2 y_i                                                               & \quad \forall i \in V         \label{eq:espprc-flow-conservation-constraint} \\
+	                         & \sum_{(i, j) \in \delta(S)} x_{ij} \ge \sum_{\substack{j \in V_d                                                                                                                          \\ j \ne i}} e_{ji} + \sum_{\substack{j \in V_d \\ j \ne i}} e_{ij}   & \quad \substack{\forall i \in S                                              \\ \forall S \subseteq V_0,\ |S| \ge 2} \label{eq:esppr-cgsec-constraints} \\
+	                         & \sum_{i \in V} q_i y_i   \le Q                                                                             & \label{eq:espprc-resource-upper-bound-constraint}                            \\
+	                         & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                          & \quad \forall (i, j) \in E               \label{eq:espprc-x-mip-var-bounds}  \\
+	                         & y_{i}                    \in \lbrace 0, 1 \rbrace                                                          & \quad \forall i \in V,\ i \ge 1          \label{eq:essprc-y-mip-var-bounds}
+\end{align}
+
 
 
 \section{Additional Valid Inequalities}\label{sec:additional-valid-inequalities}
