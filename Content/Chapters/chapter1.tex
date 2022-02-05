@@ -124,13 +124,24 @@ Finally, by setting $c_{ij} = d_{ij} - \frac{p_i + p_j}{2} \quad \forall (i, j) 
 
 \begin{align}
 	\min_{e} \quad z_\mt{ESPPRC}(e) & =  \sum_{(i, j) \in E_d} \left( d_{ij} - \frac{p_i + p_j}{2} \right) e_{ij} \label{eq:espprc-obj-function}                                                                                 \\
-	                                & \sum_{i \in V} q_i y_i   \le Q                                                                             & \label{eq:espprc-resource-upper-bound-constraint}                             \\
+	                                & \frac{1}{2}\sum_{j \in V} q_i \left( \sum_{\substack{j \in V_d                                                                                                                             \\ j \ne i}} e_{ji} + \sum_{\substack{j \in V_d \\ j \ne i}}  e_{ij} \right)   \le Q                                                                             & \label{eq:espprc-resource-upper-bound-constraint}                             \\
 	                                & \sum_{\substack{i \in V                                                                                                                                                                    \\ (i, j) \in E_d}}       e_{ij}  = \sum_{\substack{i \in V \\ (i, j) \in E_d}} e_{ji}                                                       & \quad \substack{\forall j \in V                                             \\ j \ne 0,\ j \ne N}         \label{eq:espprc-flow-conservation-constraint-customers} \\
 	                                & \sum_{\substack{i \in V_d                                                                                                                                                                  \\ i \ne 0}} e_{0i} = 1 & \label{eq:espprc-flow-conservation-constraint-depot1} \\
 	                                & \sum_{\substack{i \in V_d                                                                                                                                                                  \\ i \ne N}} e_{iN} = 1 & \label{eq:espprc-flow-conservation-constraint-depot2} \\
-	                                & \sum_{(i, j) \in \delta(S)} x_{ij} \ge \sum_{\substack{j \in V_d                                                                                                                           \\ j \ne i}} e_{ji} + \sum_{\substack{j \in V_d \\ j \ne i}} e_{ij}   & \quad \substack{\forall i \in S                                              \\ \forall S \subseteq V_0,\ |S| \ge 2} \label{eq:esppr-cgsec-constraints} \\
+	                                & e_{0i} + e_{iN} \le 1                                                                                      & \quad \forall i \in V_0 \label{eq:espprc-cptp-binding}                        \\
+	                                & \sum_{\substack{i \in S,\ j \in S                                                                                                                                                          \\ (i, j) \in E_d}} e_{ij} \ge |S| - 1                                                                   & \quad \forall S \subseteq V_d \label{eq:esppr-cgsec-constraints} \\
 	                                & e_{ij}                   \in \lbrace 0, 1 \rbrace                                                          & \quad \forall (i, j) \in E_d               \label{eq:espprc-e-mip-var-bounds} \\
 \end{align}
+
+where, \eqref{eq:espprc-obj-function} is the new objective function where we dropped the dependency on the $y$ MIP variable,
+\eqref{eq:espprc-resource-upper-bound-constraint} is the resource bound expressed as a function of only the $e$ MIP variable,
+\eqref{eq:espprc-flow-conservation-constraint-customers} is the flow conservation for all vertices except the source and sink node
+and \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow-conservation-constraint-depot2} are the flow conservation for respectively the source and sink node,
+\eqref{eq:espprc-cptp-binding} avoids forming paths where a single customer is visited,
+and finally \eqref{eq:esppr-cgsec-constraints} are the new subtour elimination constraints which avoid the forming of spurious subtours in unconnected regions of nodes.
+Equation \eqref{eq:espprc-resource-upper-bound-constraint} can also be further generalized by including a lower bound $B \ge 0$ as done in Section \ref{sec:demand-lower-bound}.
+
+
 
 
 
