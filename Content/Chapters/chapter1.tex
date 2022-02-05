@@ -168,6 +168,7 @@ The above problem entails in a simple shortest path problem, where the weights a
 
 \cite{beasley1989algorithm} propose a subgradient procedure to obtain feasible lower bound for the original CPTP problem.
 For simplicity and sake of speed, they suggest to use a standard Dijkstra algorithm, but in order to do so, the lagrange multipliers must be set such that $c'_{ij} \ge 0$ is satisfied.
+By considering only lagrange multipliers achieving $c_{ij} \ge 0$ has the additional benefit that neglecting the SEC were justified since these would be automatically satisfied.
 
 
 
