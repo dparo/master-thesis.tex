@@ -141,6 +141,11 @@ and \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow
 and finally \eqref{eq:esppr-cgsec-constraints} are the new subtour elimination constraints which avoid the forming of spurious subtours in unconnected regions of nodes.
 Equation \eqref{eq:espprc-resource-upper-bound-constraint} can also be further generalized by including a lower bound $B \ge 0$ as done in Section \ref{sec:demand-lower-bound}.
 
+\cite{beasley1989algorithm} propose to ignore the SEC in \eqref{eq:esppr-cgsec-constraints} and relaxing \eqref{eq:espprc-resource-upper-bound-constraint}, \eqref{eq:espprc-cptp-binding} in a Lagrangean fashion.
+By using a subgradient procedure it is possible to obtain feasible lower bound for the original CPTP problem.
+
+
+\mytodo{FINISH THIS SECTION. Show the relaxed model, and talk about how it can be solved through the subgradient procedure}
 
 
 
