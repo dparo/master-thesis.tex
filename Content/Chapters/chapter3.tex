@@ -6,8 +6,84 @@
 
 \mytodo{Write the BapCod model here}
 
+\mytodo{Point out that general branching and general cuts are disabled in BapCod}
+
+\mytodo{Note that specific ESPPRC type of non-robust branching\&cuts are disabled in the BapCod model}
 
 \section{Parametrization}
+
+This section introduces the parameters used in BapCod.
+These parameters were used by BapCod to solve the CVRP instances.
+At each pricing iteration we time the RCSP labeling algorithm pricer, and produce the CPTP instances that will be used to compare the running times.
+
+
+Most of the parameters are documented in the technical report in \cite{sadykov2021bapcod}, where they also discuss the user level API to use their solver.
+The technical report alone is not enough to understand all the nuances of each parameter, therefore it is important to follow along the technical report using also their original scientific document original work in \cite{pessoa2020generic}.
+
+In this section we will concentrate only on the parameters that were used to achieve the desired goal along with their associated values.
+
+\subsection{Core parameters}
+
+These parameters are used to control the main behaviour of BapCod.
+
+\begin{itemize}
+	\item Controlling the logging verbosity:
+	      \begin{itemize}
+		      \item \texttt{DEFAULTPRINTLEVEL = 0} controls the verbosity of the logging system by setting it to a relatively quiet level.
+		      \item \texttt{printMasterPrimalSols = 2} If set to 2, BaPCod will print the fractional solution after each column generation convergence (very useful information)
+	      \end{itemize}
+
+	\item Controlling the runtime:
+	      \begin{itemize}
+		      \item \texttt{GlobalTimeLimit = 3600} sets the maximum allowed overall time to solve a CVRP instance to one hour.
+		      \item \texttt{colGenSubProbSolMode = 3} tells BapCod to use the custom user defined pricing functor to solve the pricing problem, i.e. the dynamic bucket labeling algorithm.
+		            BapCod in fact supports also the possibility of solving the pricing problem through a MIP, which is not of interest to us.
+		      \item \texttt{ApplyPreprocessing = true} allow to apply preproccessing to both the master formulation and subproblem formulations.
+		            Preprocessing can simplify the model by removing redudant constraints or by improving bounds on variables and constraints.
+		      \item \texttt{PreprocessVariablesLocalBounds = false} tells whether the bounds of subproblem variables are adjusted or not. Disabled since changing bounds on variables is a form of non-robust inequality which is not supported in our CPTP solver.
+
+		      \item \texttt{CheckSpOracleFeasibility = false} allows to use a MIP to verify the pricer outputs a solution which satisfies the master constraints. Useful for debugging when developing new RCSP pricer for BapCod.
+		            In our case it is disabled.
+		      \item \texttt{CheckOracleOptimality = false} similar to \texttt{CheckSpOracleFeasibility} but also verifies the optimality of the solution.
+	      \end{itemize}
+
+
+	\item Controlling the column generation procedure:
+	      \begin{itemize}
+		      \item \texttt{GenerateProperColumns = false} restrict the pricer to generate solutions which respect the the subproblem variable bounds.
+		            Although, it probably makes sense to enable this parameter, from our experiment it doesn't play well with the RCSP pricer, which seem to ignore this parameter by generating paths that do not respect the variable bounds of the subproblem.
+		      \item \texttt{MaxNbOfStagesInColGenProcedure = 3} controls the number of phases that the RCSP pricer uses.
+		            When running in phases $\ge 1$ the RCSP pricer is allowed to use heuristic algorithms to solve the simpler pricing instances.
+		      \item \texttt{ReducedCostFixingThreshold = 0.0} controls how often the reduced cost fixing procedure of the RCSP pricer is called.
+		            Since it was not clear what this procedure does, and whether it is robust or not, it is disabled by setting it to the value $0.0$.
+	      \end{itemize}
+
+	\item Controlling the cut generation:
+	      \begin{itemize}
+		      \item \texttt{MasterCuttingPlanesDepthLimit = -1} controls the max tree depth fro cut generation.
+		            When set to $-1$ BapCod disables the generation of core cuts
+		      \item \texttt{MaxNbOfCutGeneratedAtEachIter = 0} controls the maxinum number of core cuts added per cut round.
+		            Set to $0$ to further enforce disabling the cut generation procedure.
+	      \end{itemize}
+
+	\item Controling the branching procedure:
+	      \begin{itemize}
+		      \item \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour} controls parameters determining how strong branching is performed for each of the phases.
+		            When set to empty strings, e.g. \texttt{StrongBranchingPhaseOne=""}, disables branching for the corresponding phase.
+		      \item \texttt{SimplifiedStrongBranchingParameterisation = false} if set to true, allows BapCod to perform strong branching by populating parameters \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour} to sane defaults.
+	      \end{itemize}
+
+	\item Controlling the RCSP dynamic labeling pricer:
+	      \begin{itemize}
+		      \item \texttt{RCSPuseBidirectionalSearch = 2}, called $\phi^\mt{bidir}$ in the original paper, tells the RCSP pricer whether to use the bidirectional search for solving the pricing problem.
+		      \item \texttt{RCSPmaxNumOfColsPerExactIteration = 1}, \texttt{RCSPmaxNumOfColsPerIteration = 1}, called $\gamma^\mt{exact}, \gamma^\mt{heur}$ in the original paper, controls how many path solutions the pricer generates per pricer iteration respectively in the heuristic phase or in the exact phase.
+		            We force the RCSP pricer to generate a single path per pricing iteration.
+		      \item \texttt{RCSPallowRoutesWithSameVerticesSet = false} controls whether multiple paths which pass by the same set of vertices are allowed.
+		            Shouldn't matter since we are forcing to generate a single path per pricing iteration.
+
+		      \item \texttt{RCSPstopCutGenTimeThresholdInPricing = 1e21}, \texttt{RCSPhardTimeThresholdInPricing = 1e21}, called $\tau^\mt{soft}, \tau^\mt{hard}$ in the original paper, controls respectively the soft and hard time threshold for the pricing algorithm.
+	      \end{itemize}
+\end{itemize}
 
 \begin{verbatim}
 CutTailingOffThreshold = 0.0000001
