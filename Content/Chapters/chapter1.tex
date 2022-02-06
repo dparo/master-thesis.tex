@@ -99,12 +99,13 @@ More formally, $V_d = \{ 0, \dots, N  \}$, and the edge set $E_d$ is
 \begin{equation}
 	\begin{aligned}
 		E_d = & \left\{ (i, j) \mid i \in V_d, j \in V_d, i \ne j \right\} \\
+		      & \setminus \left\{ (0, N) \right\}                          \\
 		      & \setminus \left\{ (i, 0) \quad \forall i \in V_d \right\}  \\
-		      & \setminus \left\{ (N, i) \quad \forall i \in V_d \right\}
+		      & \setminus \left\{ (N, i) \quad \forall i \in V_d \right\}  \\
 	\end{aligned}
 \end{equation}
 
-which briefly means: all possible pairs $(i, j),\ i \ne j$ excluding edges entering node $0$, and excluding edges flowing out of node $N$.
+which briefly means: all possible pairs $(i, j),\ i \ne j$ excluding edges entering node $0$, excluding edges flowing out of node $N$, and where nodes $0$ and $N$ are not directly connected.
 At each directed edge $(i, j) \in E_d$ we associate a cost $c_{ij} \in \R$.
 We define a new set of binary variables $e_{ij} \in \{ 0, 1 \} \quad \forall (i, j) \in E_d$, to model solutions for ESPPRC over the directed network.
 
@@ -158,8 +159,7 @@ where:
 	\begin{cases}
 		\left(\lambda_1 - \lambda_0 \right) \left( d_{ij} - \frac{p_i + p_j}{2} \right) \frac{q_i + q_j}{2},           & \texttt{if } i \in V_0,\ j \in V_0 \\
 		\left(\lambda_1 - \lambda_0 \right) \left( d_{ij} - \frac{p_i + p_j}{2} \right) \frac{q_i + q_j}{2} + \beta_j, & \texttt{if } i = 0,\ j \in V_0     \\
-		\left(\lambda_1 - \lambda_0 \right) \left( d_{ij} - \frac{p_i + p_j}{2} \right) \frac{q_i + q_j}{2} + \beta_i, & \texttt{if } i \in V_0,\ j = N     \\
-		\infty,                                                                                                        & \texttt{otherwise}
+		\left(\lambda_1 - \lambda_0 \right) \left( d_{ij} - \frac{p_i + p_j}{2} \right) \frac{q_i + q_j}{2} + \beta_i, & \texttt{if } i \in V_0,\ j = N
 	\end{cases}
 \end{equation}
 
