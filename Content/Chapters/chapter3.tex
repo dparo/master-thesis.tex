@@ -13,12 +13,12 @@
 \section{Parametrization}
 
 This section introduces the parameters used in BapCod.
-These parameters were used by BapCod to solve the CVRP instances.
+These parameters were used by BapCod to solve the CVRP instances through a B\&C\&P procedure.
 At each pricing iteration we time the RCSP labeling algorithm pricer, and produce the CPTP instances that will be used to compare the running times.
 
 
-Most of the parameters are documented in the technical report in \cite{sadykov2021bapcod}, where they also discuss the user level API to use their solver.
-The technical report alone is not enough to understand all the nuances of each parameter, therefore it is important to follow along the technical report using also their original scientific document original work in \cite{pessoa2020generic}.
+Most of the parameters are documented in the technical report in \cite{sadykov2021bapcod}, where they also introduce the user level API to use their code.
+The technical report alone is not enough to understand all the nuances of each parameter, therefore it is important to follow along using also their original scientific document original work in \cite{pessoa2020generic}.
 
 In this section we will concentrate only on the parameters that were used to achieve the desired goal along with their associated values.
 
@@ -30,14 +30,14 @@ These parameters are used to control the main behaviour of BapCod.
 	\item Controlling the logging verbosity:
 	      \begin{itemize}
 		      \item \texttt{DEFAULTPRINTLEVEL = 0} controls the verbosity of the logging system by setting it to a relatively quiet level.
-		      \item \texttt{printMasterPrimalSols = 2} If set to 2, BaPCod will print the fractional solution after each column generation convergence (very useful information)
+		      \item \texttt{printMasterPrimalSols = 2} If set to 2, BaPCod will print the fractional solution after each column generation convergence.
 	      \end{itemize}
 
 	\item Controlling the runtime:
 	      \begin{itemize}
 		      \item \texttt{GlobalTimeLimit = 3600} sets the maximum allowed overall time to solve a CVRP instance to one hour.
 		      \item \texttt{colGenSubProbSolMode = 3} tells BapCod to use the custom user defined pricing functor to solve the pricing problem, i.e. the dynamic bucket labeling algorithm.
-		            BapCod in fact supports also the possibility of solving the pricing problem through a MIP, which is not of interest to us.
+		            The reasoning behind the existence of this parameter, is that BapCod also supports the possibility of using a MIP for solving solving the pricing problem.
 		      \item \texttt{ApplyPreprocessing = true} allow to apply preproccessing to both the master formulation and subproblem formulations.
 		            Preprocessing can simplify the model by removing redudant constraints or by improving bounds on variables and constraints.
 		      \item \texttt{PreprocessVariablesLocalBounds = false} tells whether the bounds of subproblem variables are adjusted or not. Disabled since changing bounds on variables is a form of non-robust inequality which is not supported in our CPTP solver.
@@ -53,15 +53,15 @@ These parameters are used to control the main behaviour of BapCod.
 		      \item \texttt{GenerateProperColumns = false} restrict the pricer to generate solutions which respect the the subproblem variable bounds.
 		            Although, it probably makes sense to enable this parameter, from our experiment it doesn't play well with the RCSP pricer, which seem to ignore this parameter by generating paths that do not respect the variable bounds of the subproblem.
 		      \item \texttt{MaxNbOfStagesInColGenProcedure = 3} controls the number of phases that the RCSP pricer uses.
-		            When running in phases $\ge 1$ the RCSP pricer is allowed to use heuristic algorithms to solve the simpler pricing instances.
+		            When running in phases $\ge 1$ the RCSP pricer is allowed to use heuristic algorithms to solve simpler pricing instances.
 		      \item \texttt{ReducedCostFixingThreshold = 0.0} controls how often the reduced cost fixing procedure of the RCSP pricer is called.
 		            Since it was not clear what this procedure does, and whether it is robust or not, it is disabled by setting it to the value $0.0$.
 	      \end{itemize}
 
 	\item Controlling the cut generation:
 	      \begin{itemize}
-		      \item \texttt{MasterCuttingPlanesDepthLimit = -1} controls the max tree depth fro cut generation.
-		            When set to $-1$ BapCod disables the generation of core cuts
+		      \item \texttt{MasterCuttingPlanesDepthLimit = -1} controls the max tree depth for cut generation.
+		            When set to $-1$ BapCod disables the generation of core cuts.
 		      \item \texttt{MaxNbOfCutGeneratedAtEachIter = 0} controls the maxinum number of core cuts added per cut round.
 		            Set to $0$ to further enforce disabling the cut generation procedure.
 	      \end{itemize}
@@ -92,11 +92,14 @@ These parameters are used to control the main behaviour of BapCod.
 		            Raising $\eta^\mt{max}$ can allow the ng-sets to reach higher values, thus improving the dual bound.
 		      \item \texttt{RCSPmaxNGaverNeighbourhoodSize = 63}, very similar to parameter $\eta^\mt{max}$, but for the average case.
 		            In our case we set this parameter to the same value of $\eta^\mt{max}$.
-		      \item \texttt{CutTailingOffThreshold = 0.0000001}, \texttt{CutTailingOffCounterThreshold = 999999}, named $\delta^\mt{gap}, \delta^\mt{num}$ in the original paper, controls the tailing off condition at which BapCod deems cuts ineffictive and threfore switches to lower priority cuts which are usually more computationally expensive.
-		            Despite their name, these two parameters also affect the pricing algorithm, as pointed in the original form, increasing the ng-sets can be seen as a form of "cut generation" since it improves the dual bound.
-		            Since we are not interested in cut generation, and we want BapCod to always prefer augmenting the ng-sets, these two parameters to disable the tailing off condition.
+		      \item \texttt{CutTailingOffThreshold = 0.0000001}, \texttt{CutTailingOffCounterThreshold = 999999}, named $\delta^\mt{gap}, \delta^\mt{num}$ in the original paper, controls the tailing off condition at which BapCod deems cuts ineffective and switches to lower priority (usually more computationally expensive) cuts.
+		            Despite their name, these two parameters also affect the pricing algorithm.
+		            As pointed out in the original paper, increasing the ng-sets can be seen as a form of "cut generation" since it improves the dual bound.
+		            Since we are not interested in cut generation, and we want BapCod to always prefer augmenting the ng-sets, we disable the tailing off condition.
 	      \end{itemize}
 \end{itemize}
 
 
 \section{Dual values extraction}
+
+\mytodo{Talk about how we extract the dual values from the BapCod model reduced cost variables}

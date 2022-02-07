@@ -260,7 +260,7 @@ produces the same max flow when solving for $(0, 4)$ and $(4, 0)$ pair respectiv
 This behaviour is a direct consequence that flow networks don't guarantee unique min-cuts.
 
 In this thesis, we used the push relabel max flow algorithm first developed in \cite{goldberg_efficient_1997}, which is usually faster than more classical approaches such as the Ford-Fulkerson max-flow algorithm.
-The push relabel max flow algorithm runs in $O(N^4)$ time, and when combined with an exhausitive enumeration over all possible choices of $s, t$, can take up to $O(N^6)$ time.
+The push relabel max flow algorithm runs in $O(N^4)$ time, and when combined with an exhaustive enumeration over all possible choices of $s, t$, can take up to $O(N^6)$ time.
 
 The Gomory-Hu tree, first presented in \cite{gomory_multi-terminal_1961}, provides a way to compute the all pairs $(s, t)$ max-flows using only $N$ main max-flow computations.
 A Gomory-Hu tree can be seen as a data structure that represents a simpler reduced flow network, where max-flow computations become trivially solvable through a single iteration of the Ford-Fulkerson algorithm in $\Theta(N^2)$.
@@ -306,7 +306,7 @@ violated GSECs inequality, which can be promptly reported to the MIP solver to r
 
 \subsubsection{GSEC fractional separation}\label{sec:gsec-fractional-separation}
 
-By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the discussion about separating fractional $S \subseteq V_0$ in Section \ref{sec:fractional-separation}, it is easy to see that given $0 \le x^*_{ij} \le 1,\ 0 \le y^*_{i} \le 1$ fractional solutions to the CPTP we have that:
+By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the discussion about separating fractional $S \subseteq V_0$ in Section \ref{sec:fractional-separation}, it is easy to see that given a fractional solution instance of the form $0 \le x^*_{ij} \le 1,\ 0 \le y^*_{i} \le 1$ we have that:
 
 \begin{equation}
 	\sum_{(i, j) \in \delta(S)} x^*_{ij} = f_{\mt{max}}(s, t)
@@ -320,12 +320,12 @@ Therefore, if $|S| \ge 2$, any $i \in S$ that violates
 \end{equation}
 
 can be used to separate a violated GSEC inequality.
-Recall that the number of sets $S \subseteq V_0$ in a fractional iteration is in the order of $\Theta(N^2)$, it is possible to separate $O(N^3)$ GSECs in a fractional separation.
-We noticed that, generating and reporting all these GSECs inequalities at each fractional separation led to a slow down of the MIP solver, which was flooded with weak GSEC inequalities.
+Recall that the number of sets $S \subseteq V_0$ in a fractional iteration is in the order of $\Theta(N^2)$, it is possible to separate $O(N^3)$ GSECs per separation.
+We noticed that, generating and reporting all the violated GSECs inequalities across al fractional separation iterations led to a slow down of the MIP solver, which was flooded with weak GSEC inequalities.
 
 Therefore, in our implementation we took a slightly different approach, by relaxing the conditions in which GSEC inequalities are reported to the MIP.
 It is important to note that relaxing the conditions in which the GSEC fractional inequalities are reported, may lead to situations in which certain indispensible inequalities fall through without ever being handled in the fractional separation procedure.
-But this situation is of a little importance to us, the remaining GSEC constraints which are not caught in the fractional separation, will eventually be handled by the integral separation procedure.
+But this situation is of a little importance to us, the remaining GSEC constraints which are not caught in the fractional separation, will eventually be handled by the complete integral separation procedure.
 
 In our implementation a GSEC inequality is separated for $S \subseteq V_0,\ |S| \ge 2$ only if
 
@@ -335,9 +335,9 @@ In our implementation a GSEC inequality is separated for $S \subseteq V_0,\ |S| 
 
 is violated.
 The $\varepsilon_{\mt{GSEC}}$ is a constant which denotes the violation tolerance for the GSEC fractional separation.
-In our implementation we picked $\varepsilon_{\mt{GSEC}} = 0.5$.
+In our implementation we picked $\varepsilon_{\mt{GSEC}} = 0.2$.
 If the GSEC inequality violation does not surpass this tolerance, the GSEC inequality is not generated and reported to the MIP solver.
-On top of that, to further reduce the number of generated GSEC, we report only the single most violated GSEC per set $S \subseteq V_0$ by using the customer $i \in V_0$ that maximizes $f_{\mt{max}}(s, t) - 2 y_i$.
+On top of that, to further reduce the number of generated GSECs, we report only the single most violated GSEC per set $S \subseteq V_0$ by using the customer $i \in V_0$ that maximizes the $f_{\mt{max}}(s, t) - 2 y_i$ violation.
 
 
 \subsection{GLM separation}\label{sec:glm-separation}
@@ -371,7 +371,7 @@ Otherwise a single GLM cut can be separated if the following inequality
 
 is violated.
 The $\varepsilon_{\mt{GLM}}$ is a constant which denotes the violation tolerance for the GLM fractional separation.
-In our implementation we picked $\varepsilon_{\mt{GLM}} = 0.1$.
+In our implementation we picked $\varepsilon_{\mt{GLM}} = 0.05$.
 We can separate $O(N^2)$ GLM cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
 
 
@@ -393,5 +393,5 @@ Therefore, a set $|S| \subseteq V_0$ can separate a single RCI cut if the follow
 
 is violated.
 The $\varepsilon_{\mt{RCI}}$ is a constant which denotes the violation tolerance for the RCI fractional separation.
-In our implementation we picked $\varepsilon_{\mt{RCI}} = 0.1$.
+In our implementation we picked $\varepsilon_{\mt{RCI}} = 0.05$.
 We can separate $O(N^2)$ RCI cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
