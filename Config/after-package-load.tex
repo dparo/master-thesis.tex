@@ -1,11 +1,41 @@
+
 \AfterPackage{layout}{
 	\AtEndDocument{\layout}
+}
+
+
+
+%%
+%% Banned packages
+%%
+
+
+
+\AfterPackage{fancyhdr}{
+	\errmessage{Avoid using fancyhdr package, Use the memoir native primitives if possible.}
 }
 
 \AfterPackage{geometry}{
 	\errmessage{Do not use the geometry package. Use the memoir native primitives to change the page geometry}
 }
 
-\AfterPackage{fancyhdr}{
-	\errmessage{Avoid using fancyhdr package, Use the memoir native primitives if possible.}
+\AfterPackage{sidecap}{
+	\errmessage{Do not use the sidecap package. Use the memoir native primitives to change the page geometry}
 }
+
+\AfterPackage{subfigure}{
+	\errmessage{Do not use the subfigure package. Use the memoir native primitives to change the page geometry}
+}
+
+\AfterPackage{titlesec}{
+	\errmessage{Avoid using titlesec package, Use the memoir native primitives if possible.}
+}
+
+
+%\AfterPackage{crop}{
+%   \errmessage{Avoid using crop package, Use the memoir native primitives if possible.}
+%}
+
+%\AfterPackage{tocloft}{
+%	\errmessage{Avoid using tocloft package, Use the memoir native primitives if possible.}
+%}
