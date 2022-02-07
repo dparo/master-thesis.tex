@@ -129,30 +129,32 @@ In our implementation we scan for vertices $a, b$ achieving the cheapest exchang
 
 \section{Separation techniques}
 
-Inequality separation is a problem which consists in finding strong valid violated inequalities so that such inequalities can be embedded inside a Branch\&Cut framework.
+Inequality separation is a problem which consists in finding (strong) violated inequalities so that they can be embedded inside a Branch\&Cut framework.
 Integral inequality separation is concerned in determining violated inequalities for the original IP model.
 Integral inequalities separation is usually much easier to perform, and can be seen as a procedure to dynamically generate necessary constraints that would otherwise be impossible to insert statically in a MIP model.
-Fractional inequality separation, instead is usually harder to perform, and it is concerned in finding strong violated inequalities for fractional solution stemming out from a linear relaxation of a MIP formulation.
+Fractional inequality separation, instead is usually harder to perform, and it is concerned in finding (strong) violated inequalities for fractional solutions originated from the linear relaxation.
 
 In this thesis we are treating a CPTP problem, and more precisely, we are concerned in separating the GSEC, GLM, RCI inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
-This is achieved by finding a set $S \subseteq V_0$, through the usage of appropriate algorithms, that violates any valid inequality.
+This is achieved by finding sets $S \subseteq V_0$, through the usage of appropriate algorithms, that violate any valid inequality.
 
 All the cuts that we implemented, are backed by the same shared separation procedure for both integral solutions and for fractional solutions.
 In the next two sections, we describe the common separation procedure used to find good $S \subseteq V_0$ sets.
-Then for each cut, we describe how $S$ is used for generating the inequality and when each cut is reported to the MIP solver and when it is instead ignored.
+Then for each cut, we describe: how $S$ is used for generating the inequality and when each cut is reported to the MIP solver or when it is, instead, ignored.
 
 \subsection{Integral separation}\label{sec:integral-separation}
-The integral separation procedure is the most important, as this procedure is necessary to generate GSEC cuts dynamically, and to avoid that the MIP solver produces solutions with spurious subtours.
+The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
 Assume that the MIP solver finds an optimal integer solution $x^* \in \{0, 1\}, y^* \in \{0, 1\}$ that violates a GSEC constraint.
 If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
 In order to detect unconnected subtours, we need first to determine the connected components induced from the $x^*$ solution.
 
 Let $C = \{-1, 0, \dots, n_c - 1\}$ be the connected components formed with $n_c \ge 1$.
-By definition, we use the sentinel value $-1$ to denote that a node $i$ does belong to a singleton connected component containing only $i$ itself.
-We are only interested in modeling major connected components, i.e. containing at least two vertices, thus we ignore singleton connected components.
+A node $i$ is said to belong to a singleton connected components, if the connected component contains only $i$ itself.
+We are only interested in modeling \textbf{major} connected components, i.e. components containing at least two vertices.
+Therefore, we ignore singleton connected components, and we use the sentinel value $-1$ for all the nodes $i$ belonging to singletons.
 Thus, the $n_c$ represents the number of major connected components, i.e. the number of subtours formed in the current integral solution.
 Let $cc(i) \in C$ be an array which for each vertex $i \in V$ it encodes to which connected component it belongs to.
-Note that the depot node always belongs to a connected component, therefore by definition we fix $cc(0) = 0$, and $c(i) = -1  \quad \forall i \in V_0 \mid y_i = 0$.
+Note that the depot node always belongs to a connected component, therefore by definition we fix $cc(0) = 0$.
+For singletons instead we fix $c(i) = -1  \quad \forall i \in V_0 \mid y_i = 0$.
 The connected components can be computed by a simple depth first search traversal, for which a pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
 
 \begin{algorithm}
@@ -202,15 +204,12 @@ If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral soluti
 
 \subsection{Fractional separation}\label{sec:fractional-separation}
 Fractional separation is usually much harder and more computationally expensive to perform compared to integral separation.
-A valid set $S \subseteq V$ can be separated by solving a max-flow problem between two arbitrary source and sink vertices $s, t$ on a fully connected directed graph.
-Fractional separation is modeled through a directed symmetric flow network, where $x^*_{ij}$ constitutes the capacities of the flow network.
-
-One important notice is that writing good max-flow algorithms that operate directly with floating point arithmetic can be difficult and error-prone, since discharging and removing flow from edges is not an exact procedure.
-And it is possible to get stuck in long loops discharging atomically small quantity of flows.
+A valid set $S \subseteq V_0$ can be separated by solving a max-flow problem between two arbitrary source and sink vertices $s, t \in V,\ s \ne t$ on a fully connected directed graph.
+Fractional separation is modeled through a directed symmetric flow network, where $x^*_{ij}$, i.e. the current fractional solution, constitutes the capacities of the flow network.
 
 
 A solution to the max-flow problem outputs a maxflow $f_{\mt{max}}(s, t)$ and a bipartition, also called "coloring", of the set $V$, namely two complementary sets $F_1(s, t), F_2(s, t)$ such that $F_1(s, t) \cup F_2(s, t) = V$ and $F_1 \cap F_2 = \emptyset$, and such that $s \in F_1(s, t),\ t \in F_2(s, t)$.
-The $\delta(F_1(s, t))$ constitutes the min-cut induced from the solving the max-flow problem over $(s, t)$.
+The $\delta(F_1(s, t))$ constitutes the min-cut induced from solving the max-flow problem over $(s, t)$.
 It is known that solving a maxflow problem guarantees the following two properties:
 
 \begin{enumerate}
@@ -224,20 +223,20 @@ therefore the following result holds:
 	\sum_{(i, j) \in \delta(F_2(s, t))} f_{ij} & = 0
 \end{align}
 
-where $f_{ij}$ denotes the flow along the edge $(i, j) \in V$ in the corresponding flow network.
-Assuming we have already computed $F_1, F2$, a valid $S \subseteq V_0$ can then be picked such that:
+where $f_{ij}$ denotes the flow along the edge $(i, j),\ i, j \in V$ in the corresponding flow network.
+Assuming we have already computed $F_1(s, t), F_2(s, t)$, a valid $S \subseteq V_0$ can then be picked such that:
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
-		F_1(s, t), & \texttt{if } 0 \notin F_1 \\
+		F_1(s, t), & \texttt{if } 0 \notin F_1(s, t) \\
 		F_2(s, t), & \texttt{otherwise}
 	\end{cases}
 \end{equation}
 
 This fractional separation framework based on max-flow computations, can separate up to $N^2 - N$ different $S \subseteq V_0$ sets, one for each possible choice of $s, t \in V, s \ne t$.
-It is important to note that, since we are dealing with a symmetrical flow network, solving the maxflow problem between pairs $(s, t)$ and pair $(t, s)$ will output the same maxflow, i.e. $f_{\mt{max}}(s, t) = f_{\mt{max}}(t, s)$.
+It is important to note that, since we are dealing with a \textbf{symmetrical} flow network, solving the maxflow problem between pairs $(s, t)$ and pair $(t, s)$ will output the same maxflow, i.e. $f_{\mt{max}}(s, t) = f_{\mt{max}}(t, s)$.
 Although, and this is the more important aspect, the induced bipartitions in the general case are not guaranteed to be symmetric.
-Namely, in the general case $F_1(s, t) \ne F_2(t, s)$ and $F_2(s, t) \ne F_1(t, s)$.
+Namely, in general, $F_1(s, t) \ne F_2(t, s)$ and $F_2(s, t) \ne F_1(t, s)$.
 To see this is the case, this simple flow network:
 
 \begin{center}
@@ -274,6 +273,11 @@ Namely, fractional separations iterations which are not multiple of $N$ become a
 While there may be other ways to separate sets $S \subseteq V_0$, the described approach works very well for the inequalities considered in this thesis.
 This is very convenient because a single separation procedure for $S \subseteq V_0$ can be shared across all the inequalities, thus reducing computation time.
 Other kinds of inequalities, which are not considered in this thesis, may benefit from other more elaborate separation techniques.
+
+We conclude the section by pointing out that writing fast and correct max-flow algorithms that operate with floating point arithmetic can be difficult and error-prone, since most operations become non-exact.
+Any trivial implementation may "get stuck" in massively long loops pushing atomically small quantity of flows.
+Careful attention must be paid when developing one such algorithm.
+Good software engineering practices, such as unit testing, can help in spotting problematic implementations.
 
 In the following sections we describe how we separate each inequality using the computed $S \subseteq V_0$.
 
