@@ -1,16 +1,44 @@
 \begin{titlingpage}
-   \begin{center}
-        \vspace*{5cm}
+	\begin{center}
+		\vbox to0pt{\vbox to\textheight{\vfill \includegraphics[width=12.5cm]{static/unipd/unipd-light.png} \vspace{1.4cm}
+					\vfill}\vss}
+		\vspace{0.3cm}
+		\begin{figure}
+			\centering
+			\vspace{0.2cm}
+			\includegraphics[height=2.45cm]{static/unipd/unipd-dei.png}%\hspace{1cm}
+			%\includegraphics[height=2.3cm]{static/unipd/DEIlogoFULL.png}
+		\end{figure}
+		%\vfill
+		{\scshape\Large \UnivName \par}\vspace{0.25cm} % University name
+		\textit{\Large Department of \DeptName}\\
+		\vspace{0.25cm} % University name
+		\textbf{\Large \DegreeName}\\[1.6cm] % Thesis type
 
-        \Huge{\thetitle}
- 
-       
-        \vspace{0.25cm}
-        \large{\theauthor}
-       
-        \vspace{3 cm}
-        \Large{\thedate}
+		\vspace{1cm} % Horizontal line
+		{\Huge{\bfseries{\textcolor{SchoolColor}{\Title}}} \par}\vspace{0.7cm} % Thesis title
+		%\HRule
+		\vspace{2cm} % Horizontal line
 
-       \vfill
-    \end{center}
+		\begin{minipage}[t]{0.4\textwidth}
+			\begin{flushleft} \large
+				\emph{Author:}\\
+				\textcolor{SchoolColor}{\AuthName \ \textsc{\AuthSurname}} % Author name
+			\end{flushleft}
+		\end{minipage}
+		\begin{minipage}[t]{0.4\textwidth}
+			\begin{flushright} \large
+				\emph{Supervisor:} \\
+				\textcolor{SchoolColor}{Prof. \SupName \ \textsc{\SupSurname}} % Supervisor name
+				\vspace{10pt}\\
+				\emph{Co-Supervisor:} \\
+				\textcolor{SchoolColor}{\CosupName \ \textsc{\CosupSurname}} % Cosupervisor name - %comment these lines if there are no supervisors
+			\end{flushright}
+		\end{minipage}\\[4.35cm]
+		{\large A.Y. \AcademicYear}\\[0.2cm]
+		{\large \UnivPlace, \GraduationDay}\\[8cm] % Date
+		\vfill
+		%\includegraphics{Logo} % University/department logo - uncomment to place it
+		\vfill
+	\end{center}
 \end{titlingpage}
