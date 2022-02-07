@@ -9,6 +9,8 @@
 
 \section{Full static model}
 
+In this section we present the full static model that we implemented.
+
 \begin{align}
 	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\substack{j \in V                                                                                                   \\ j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}\\
 	                         & y_0 = 1                                           & \label{eq:full-static-model-depot-part-of-tour-constraint}                              \\
@@ -25,14 +27,14 @@ We also added a non strictly necessary lower bound on the served demand, which d
 
 
 \subsection{Upper cutoff value}
-Since we're interested in solving the CPTP in the context of pricing for the CVRP, we're interested only in valid tours achieving a strictly negative objective value.
-Therefore we can specify an upper cutoff for objective function $z(x, y)$:
+Since we're interested in solving the CPTP in the context of pricing for the CVRP, we're only searching for tours achieving a strictly negative objective value.
+Therefore, we can specify an upper cutoff for the objective function $z(x, y)$:
 
 \begin{equation}
 	z(x, y) \le 0 - \varepsilon_{\mt{ct}}
 \end{equation}
 
-where $\varepsilon_{\mt{ct}} \in \R$ is the upper cutoff tolerance, in our implementation we picked $\epsilon_{\mt{ct}} = 10^{-6}$, which is the default used in BapCod.
+where $\varepsilon_{\mt{ct}} \in \R$ is the upper cutoff tolerance, in our implementation we picked $\varepsilon_{\mt{ct}} = 10^{-6}$, which is the default used in BapCod.
 
 The upper cutoff value can improve the linear relaxation and reduce the number of branch and bound nodes that need to be explored, especially when the MIP solver cannot infer any good starting primal solution.
 
@@ -41,20 +43,20 @@ A good lower cutoff value on the objective function can improve the linear relax
 When combined with an upper cutoff value, and a good set of warm start solutions it can help to start the solution process with an already relatively closed gap.
 
 A lower cutoff value can be obtained by any feasible dual solution.
-For example we could use the method briefly described in Section \ref{sec:cptp-simple-dual-formulation} to obtain a good feasible dual solution.
-At the time of writing of this draft report (late Jan, firsts Feb 2022) the method described in Section \ref{sec:cptp-simple-dual-formulation} was not extensively explored.
+For example we could use the method briefly described in Section \ref{sec:cptp-simple-dual-formulation} to obtain a feasible lower bound.
+At the time of writing of this draft report, the method described in Section \ref{sec:cptp-simple-dual-formulation} was not extensively explored.
 
-Instead we opted for a much simpler dual bound:
+Instead, we opted for a much simpler approach:
 
 \begin{equation}
 	z(x, y) \ge - \sum_{i \in V} p_i
 \end{equation}
 
-which is a trivial and weak bound, and in pretty much all cases, is easily beaten by a better alternative computed from the preprocessing stage of a standard MIP solver.
+which is describes a very weak lower bound, and in pretty much all cases, is easily improved in the preprocessing stage of a standard MIP solver.
 
 \section{Warm start}
 
-Heuristic algorithms can be used to provide good feasible starting primal solutions to the MIP.
+Heuristic algorithms can be used to provide good feasible primal solutions to the MIP.
 A CPTP problem has many similarities with TSP, therefore heuristics for the TSP, if slightly adapted, ca be applied successfully to this problem domain.
 Much work was dedicated in studying good heuristics for the TSP, see \cite{rosenkrantz_analysis_1977}, \cite{johnson_traveling_1997}, \cite{laporte_traveling_1992}, \cite{johnson_experimental_2007}, \cite{hoffman_traveling_2013}.
 
@@ -67,19 +69,19 @@ The insertion heuristic algorithm can construct a new feasible primal solutions 
 In this section, we will focus on adapting the insertion heuristic for the TSP so that it can be applied to CPTP problems.
 Start by selecting two distinct nodes $s, t \in V,\ q_s + q_t \le Q$ and use these two nodes to form a tour back-to-back.
 
-The insertion heuristic algorithm works iteratively where at each step of the iteration we always have a valid tour, which is not necessarily feasible for the CPTP.
-At the end of the whole algorithm, we will obtain a valid tour which is also feasible for the CPTP.
-Let's define $Q_t$ as the total demand served in the current tour.
+The insertion heuristic algorithm works iteratively where, at each step of the iteration, we have a valid tour not necessarily feasible for the CPTP.
+At the end of the whole algorithm, the final obtained tour will be CPTP feasible (if any exist).
+Let's define $Q_t \le Q$ as the total demand served in the current tour.
 At each iteration, choose a vertex $a$ that belongs to the current tour and a vertex $h$ which is not yet part of the tour.
-Let's define $a_s$ as the successor of node $a$ in the current tour.
-The idea is to try to insert $h$ in the current tour, by deleting edge $(a, a_s)$, and inserting edges $(a, h),\ (h, a_s)$ but only if $h$ must be inserted or improves over the current tour.
+Let's define $b$ as the successor of node $a$ in the current tour.
+The idea is to try to insert $h$ in the current tour, by deleting edge $(a, b)$, and inserting edges $(a, h),\ (h, b)$ but only if $h$ must be inserted or improves over the current tour.
 Let's define the extra mileage as
 :
 \begin{equation}
 	\Delta_m(h, a) =
 	\begin{cases}
-		d_{ah} + d_{ha_s} - d_{aa_s} - p_h, & \texttt{if } Q_t + q_h \le Q \\
-		\infty,                             & \texttt{otherwise}
+		d_{ah} + d_{hb} - d_{ab} - p_h, & \texttt{if } Q_t + q_h \le Q \\
+		\infty,                         & \texttt{otherwise}
 	\end{cases}
 \end{equation}
 
