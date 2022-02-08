@@ -1,12 +1,19 @@
-\input{Config/titlepage.tex}
-\clearpage
-\begin{abstract}
-	\input{Content/abstract.tex}
-\end{abstract}
-\clearpage
+
+\IfFileExists{Config/titlepage.tex}{
+	\input{Config/titlepage.tex}
+	\cleardoublepage
+}
+
+\IfFileExists{Content/abstract.tex}{
+	\begin{abstract}
+		\input{Content/abstract.tex}
+	\end{abstract}
+	\cleardoublepage
+}
+
 \tableofcontents
-\clearpage
+\cleardoublepage
 \listoffigures
-\clearpage
+\cleardoublepage
 \listoftables
-\clearpage
+\cleardoublepage

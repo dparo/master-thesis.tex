@@ -162,7 +162,7 @@ where:
 	\end{cases}
 \end{equation}
 
-and $\lambda_0 \ge 0, \lambda_1 \ge 0, \beta_i \ge 0 \quad \forall i \in V_0$ are the respective lagrange multipliers.
+and $\lambda_0 \ge 0, \lambda_1 \ge 0, \beta_i \ge 0 \quad \forall i \in V_0$ are the respective Lagrange multipliers.
 The above IP describes an elementary shortest path problem, where the associated weights may be negative.
 
 \cite{beasley1989algorithm} propose a subgradient procedure to obtain feasible lower bound for the original CPTP problem.
@@ -187,22 +187,23 @@ The GLM inequalities can be expressed as:
 
 \begin{equation}\label{eq:glm-inequality-v1}
 	\begin{split}
-		\sum_{(i, j) \in \delta(S)} x_{ij} \ge \frac{2}{Q} \left(  \sum_{i \in S} q_i y_i + \sum_{i \in S} \sum_{j \in V_0 \setminus S} q_j  x_{ij}\right) \quad \forall S \subseteq V_0,\ |S| \ge 2
+		\ExprCptpFlowExiting{S} \ge \frac{2}{Q} \Expr*{  \ExprCptpDemandSumWithin[i]{S} + \ExprCptpDemandServedOutsideA{S} } \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 	\end{split}
 \end{equation}
 
 It is important to recall that we defined $q_0 = 0$.
-Therefore $\sum_{i \in S} \sum_{j \in V_0 \setminus S} q_j  x_{ij}$ becomes
+Therefore, $\sum_{i \in S} \sum_{j \in V_0 \setminus S} q_j  x_{ij}$ becomes
+
 
 \begin{equation}
-	\sum_{i \in S} \sum_{j \in V_0 \setminus S} q_j  x_{ij} = \sum_{i \in S} \sum_{j \in V \setminus S} q_j  x_{ij} = \sum_{(i, j) \in \delta(S)} q_j x_{ij}
+	\ExprCptpDemandServedOutsideA{S} = \ExprCptpDemandServedOutsideB{S} =\ExprCptpDemandServedOutside{S}
 \end{equation}
 
 Finally, equation \eqref{eq:glm-inequality-v1} can be rewritten more concisely as:
 
 \begin{equation}\label{eq:glm-inequality}
 	\begin{split}
-		\sum_{(i, j) \in \delta(S)} x_{ij} \left( 1 - 2 \frac{q_j}{Q} \right)  -2 \sum_{i \in S} y_i \frac{q_i}{Q}  \ge  0   \quad \forall S \subseteq V_0,\ |S| \ge 2
+		\ExprCptpFlowExitingWithWeight{S}{\Expr*{1 - 2 \frac{q_j}{Q}}} - 2 	\ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{Q}}  \ge  0   \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 	\end{split}
 \end{equation}
 
@@ -211,25 +212,25 @@ Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in
 By using equation \eqref{eq:glm-inequality} and the result obtained in \eqref{eq:delta-s-set-size}, we have
 
 \begin{equation}
-	\NNZGLM(S) = -|S|^2 + (N + 1)|S|
+	\NNZGLM(S) = -\SetSize*{S}^2 + (N + 1)\SetSize*{S}
 \end{equation}
 
-which is maximized when $|S| = \frac{N+1}{2}$.
+which is maximized when $\SetSize*{S} = \frac{N+1}{2}$.
 It is now easy to see that the following result holds
 \begin{equation}\label{eq:glm-nnz-ub}
-	\NNZGLM(S) \le \floor*{ \frac{\left( N + 1 \right)^2}{4}} \quad \forall S \subseteq V_0,\ |S| \ge 2
+	\NNZGLM(S) \le \floor*{ \frac{\Expr*{N + 1}^2}{4}} \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 \end{equation}
 
 
 \subsection{Rounded Capacity Inequalities (RCI)}
 The Rounded Capacity Inequalities, RCI for short, were first presented in \cite{achuthan_capacitated_1998}.
 
-Let $q(S) = \sum_{i \in S} q_i$ and $Q_{R}(S) = \mathop{mod}\left(q(S), Q \right)$ be respectively the total demand and remainder capacity associated to set $S \subseteq V_0$.
+Let $q(S) = \sum_{i \in S} q_i$ and $\ExprQrS = \fmod{q(S)}{Q}$ be respectively the total demand and remainder capacity associated to set $S \subseteq V_0$.
 The RCI inequalities can then be expressed as:
 
 \begin{equation}\label{eq:rci-inequality}
 	\begin{split}
-		\sum_{(i, j) \in \delta(S)} x_{ij} -2 \sum_{i \in S} y_i {\frac{q_i}{Q_\mt{R}(S)}}    \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{Q_{\mathrm{R}}(S)} \right) \quad \forall S \subseteq V_0
+		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQrS}}   \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{\ExprQrS} \right) \quad \forall S \subseteq V_0
 	\end{split}
 \end{equation}
 

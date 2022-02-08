@@ -29,6 +29,7 @@
 
 %%% Memoir by default assumes twoside PDF if nothing is specified.
 \documentclass[a4paper,twoside,11pt]{memoir}
+\usepackage{etoolbox}            % Useful for programmaticaly perform actions in latex: booleans, conditions, string comparisons, lists, iterations, etc
 \usepackage[dvipsnames]{xcolor}  % To use colors for specific texts, provides the \color{<COLOR>} to color text
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}

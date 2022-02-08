@@ -1,7 +1,6 @@
 % Adds comma in in-text citations
 \renewcommand*{\nameyeardelim}{\addcomma\space}
 
-
 \newcommand{\myinputchap}[1]{\input{#1}\clearpage}
 
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
@@ -20,6 +19,9 @@
 \DeclarePairedDelimiter{\Tuple}{\lparen}{\rparen}
 \DeclarePairedDelimiter{\Array}{\lbrack}{\rbrack}
 \DeclarePairedDelimiter{\Set}{\lbrace}{\rbrace}
+
+% Modulo function
+\newcommand{\fmod}[2]{\mathop{mod}\Expr*{#1, #2}}
 
 % Abs function
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}

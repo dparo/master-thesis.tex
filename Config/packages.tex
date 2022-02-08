@@ -22,7 +22,7 @@
 \usepackage{todonotes}        % For writing todos and notes in yor pdf
 \usepackage{lipsum}           % For Lorem Ipsum
 
-\ifthenelse{\equal{\DebugBuild}{1}} {
+\ifbool{DebugBuild} {
 	\usepackage{showframe}        % To debug the frame border, padding, etc. It draws a box around each major region of the page
 	\usepackage{layout}           % To generate automatically a layout page
 } {

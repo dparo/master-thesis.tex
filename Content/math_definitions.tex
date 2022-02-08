@@ -8,10 +8,21 @@
 %%      ExprCptpEdgesIncident{i}         the iterator name defaults to j
 %%      ExprCptpEdgesIncident[k]{i}      set iterator name explicitly to k
 %%
+
+
+\newcommand{\ExprQrS}{Q_{\mathrm{R}}(S)}
 \newcommand{\ExprCptpEdgesIncident}[2][j]{\sum_{#1 \in \delta(#2)}       x_{#2#1}}
 
+\newcommand{\ExprCptpDemandSumWithin}[2][i]{\sum_{#1 \in #2} q_{#1} y_{#1}}
 \newcommand{\ExprCptpDemandSum}[1][i]{\sum_{#1 \in V} q_{#1} y_{#1}}
-\newcommand{\ExprCptpFlowExiting}[1]{\sum_{(i, j) \in \delta(#1)} x_{ij}}
+\newcommand{\ExprCptpFlowExitingWithWeight}[2]{\sum_{\Tuple*{i, j} \in \delta(#1)} x_{ij} #2}
+\newcommand{\ExprCptpFlowExiting}[1]{\ExprCptpFlowExitingWithWeight{#1}{}}
+
+\newcommand{\ExprCptpServedDemandWithWeight}[3]{\sum_{#2 \in #1} y_{#2} #3}
+\newcommand{\ExprCptpDemandServedOutsideA}[1]{\sum_{i \in #1} \sum_{j \in V_0 \setminus #1} q_j  x_{ij}}
+\newcommand{\ExprCptpDemandServedOutsideB}[1]{\sum_{i \in #1} \sum_{j \in V \setminus #1} q_j  x_{ij}}
+\newcommand{\ExprCptpDemandServedOutside}[1]{\sum_{\Tuple*{i, j} \in \delta(#1)} q_j x_{ij}}
+
 
 \newcommand{\ExprCptpReducedCost}[2]{
 	d_{#1#2} - \frac{p_{#1} + p_{#2}}{2}
