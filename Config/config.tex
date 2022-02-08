@@ -1,6 +1,15 @@
-\newbool{DebugBuild}
+%%
+%% Main configuration flags
+%%
 \setbool{DebugBuild}{false}
+\setbool{GenerateTableOfContents}{true}
+\setbool{GenerateListOfFigures}{true}
+\setbool{GenerateListOfTables}{true}
 
+
+%%
+%% Customize your work
+%%
 \newcommand{\ThemeName}{draft}
 \newcommand{\UnivName}{University of Padova}
 \newcommand{\UnivPlace}{Padova}
@@ -29,6 +38,10 @@
 
 
 
+%%
+%% Customize part of the look-and-feel
+%%
+
 \chapterstyle{hansen}
 \linespread{1.25}             % About 1.5 spacing in Word
 \setlength{\parindent}{0pt}   % No paragraph indents
@@ -41,21 +54,3 @@
 % To which maximum section depth, latex produces a section numbering
 \setcounter{secnumdepth}{5}       % For the Book document class
 \setsecnumdepth{subsubsection}    % For the Memoir document class
-
-
-
-%%
-%% Fix hyphenitazion of \texttt going over the margin
-%%
-% (added at TeX3)
-% is used if TeX can not set the paragraph below the \tolerance badness,
-% but rather than make overfull boxes it tries an extra pass "pretending" that every
-% line has an additional \emergencystretch of stretchable glue, this allows the
-% overall badness to be kept below 1000 and stops TeX "giving up" and putting
-% all stretch into one line. So \emergencystretch does not change the setting of "good"
-% paragraphs, it only changes the setting of paragraphs that would have produced
-% over-full boxes. Note that you get warnings about the real badness calculation
-% from TeX even though it retries with \emergencystretch the extra stretch
-% is used to control the typesetting but it is not considered as good
-% for the purposes of logging.
-\emergencystretch 3em

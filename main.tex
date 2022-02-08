@@ -29,23 +29,22 @@
 
 %%% Memoir by default assumes twoside PDF if nothing is specified.
 \documentclass[a4paper,twoside, 12pt, extrafontsizes]{memoir}
+\usepackage[utf8]{inputenc}                    % Better handling of inputencoding, i.e. for the actual latex file
+\usepackage{lmodern} \usepackage[T1]{fontenc}  % Better font encoding, i.e. for the actual output
 
-% Better font encoding
-% \usepackage{lmodern}
-% \usepackage[T1]{fontenc}
+\usepackage[english]{babel}
 % \usepackage{mathptmx}       % Times new roman font
 
-
-\usepackage{etoolbox}            % Useful for programmaticaly perform actions in latex: booleans, conditions, string comparisons, lists, iterations, etc
+\usepackage{etoolbox}            % Useful for programmatically perform actions in latex: booleans, conditions, string comparisons, lists, iterations, etc
 \usepackage[dvipsnames]{xcolor}  % To use colors for specific texts, provides the \color{<COLOR>} to color text
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
 
-
+\input{Config/flags_decls.tex}
 \input{Config/config.tex}
 \input{Config/packages.tex}
+\input{Config/after_package_load.tex}
+\input{Config/fix_latex_quirks.tex}
 \input{Config/custom_commands.tex}
-\input{Content/math_definitions.tex}
+\input{Utils/math_definitions.tex}
 
 
 \addbibresource{biblio.bib}
@@ -57,7 +56,7 @@
 % turns off chapter numbering and uses roman numerals for page numbers
 \frontmatter
 
-\input{preamble.tex}
+\input{Content/preamble.tex}
 \pagebreak
 
 % Turns on arabic numbering for the main content

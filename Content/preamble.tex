@@ -1,0 +1,44 @@
+%%
+%% Handle titlepage: Eg the first page which is usually fancy with lots of university logos
+%%
+\newcommand\ThemeTitlePage{themes/\ThemeName/titlepage.tex}
+
+\IfFileExists{\ThemeTitlePage}{
+	\input{\ThemeTitlePage}
+	\cleardoublepage
+}{}
+
+
+% %%
+% %% Include the abstract if any
+% %%
+\IfFileExists{Content/abstract.tex}{
+	\begin{abstract}
+		\input{Content/abstract.tex}
+	\end{abstract}
+	\cleardoublepage
+}{}
+
+%%
+%% Produce table of contents
+%%
+\ifbool{GenerateTableOfContents}{
+	\tableofcontents
+	\cleardoublepage
+}{}
+
+%%
+%% Produce list of figures
+%%
+\ifbool{GenerateListOfFigures}{
+	\listoffigures
+	\cleardoublepage
+}{}
+
+%%
+%% Produce list of tables
+%%
+\ifbool{GenerateListOfTables}{
+	\listoftables
+	\cleardoublepage
+}{}
