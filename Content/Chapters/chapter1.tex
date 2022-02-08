@@ -124,14 +124,14 @@ We can bind the new edges to the original CPTP formulation by employing a mutual
 Finally, by setting $c_{ij} = \ExprCptpReducedCost{i}{j} \quad \forall \Tuple*{i, j} \in E_d$, we can rewrite the CPTP original formulation in the ESPPRC IP model:
 
 \begin{align}
-	\min_{e} \quad z_\mt{ESPPRC}(e) & =  \sum_{(i, j) \in E_d} \Expr*{ \ExprCptpReducedCost{i}{j} } e_{ij} \label{eq:espprc-obj-function}                                                                                 \\
-	                                & \frac{1}{2}\sum_{j \in V} q_i \left( \sum_{\substack{j \in V_d                                                                                                                      \\ (j, i) \in E_d}} e_{ji} + \sum_{\substack{j \in V_d \\ (i, j) \in E_d}} e_{ij}  \right)   \le Q                                                                             & \label{eq:espprc-resource-upper-bound-constraint}                             \\
-	                                & \sum_{\substack{i \in V                                                                                                                                                             \\ (i, j) \in E_d}}       e_{ij}  = \sum_{\substack{i \in V \\ (i, j) \in E_d}} e_{ji}                                                       & \quad \substack{\forall j \in V                                             \\ j \ne 0,\ j \ne N}         \label{eq:espprc-flow-conservation-constraint-customers} \\
-	                                & \sum_{\substack{i \in V_0                                                                                                                                                           \\ (0, i) \in E_d}} e_{0i} = 1 & \label{eq:espprc-flow-conservation-constraint-depot1} \\
-	                                & \sum_{\substack{i \in V_0                                                                                                                                                           \\ (i, N) \in E_d}} e_{iN} = 1 & \label{eq:espprc-flow-conservation-constraint-depot2} \\
-	                                & e_{0i} + e_{iN} \le 1                                                                               & \quad \forall i \in V_0 \label{eq:espprc-cptp-binding}                        \\
-	                                & \sum_{\substack{i \in S,\ j \in S                                                                                                                                                   \\ (i, j) \in E_d}} e_{ij} \le |S| - 1                                                                   & \quad \forall S \subseteq V_d \label{eq:esppr-cgsec-constraints} \\
-	                                & e_{ij}                   \in \lbrace 0, 1 \rbrace                                                   & \quad \forall (i, j) \in E_d               \label{eq:espprc-e-mip-var-bounds} \\
+	\min_{e} \quad z_\mt{ESPPRC}(e) & =  \sum_{(i, j) \in E_d} \Expr*{ \ExprCptpReducedCost{i}{j} } e_{ij} \label{eq:espprc-obj-function}                                                                                           \\
+	                                & B \le \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}       \\
+	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0         \label{eq:espprc-flow-conservation-constraint-customers} \\
+	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-flow-conservation-constraint-depot1}   \\
+	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:espprc-flow-conservation-constraint-depot2}   \\
+	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_d   \label{eq:esppr-cgsec-constraints}                      \\
+	                                & e_{0i} + e_{iN} \le 1                                                                                \qquad \forall i \in V_0         \label{eq:espprc-cptp-binding}                          \\
+	                                & e_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall (i, j) \in E_d    \label{eq:espprc-e-mip-var-bounds}                      \\
 \end{align}
 
 where, \eqref{eq:espprc-obj-function} is the new objective function where we dropped the dependency on the $y$ MIP variable,
@@ -140,7 +140,6 @@ where, \eqref{eq:espprc-obj-function} is the new objective function where we dro
 and \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow-conservation-constraint-depot2} are the flow conservation for respectively the source and sink node,
 \eqref{eq:espprc-cptp-binding} avoids forming paths where a single customer is visited,
 and finally \eqref{eq:esppr-cgsec-constraints} are the new subtour elimination constraints which avoid the forming of spurious subtours in unconnected regions of nodes.
-Equation \eqref{eq:espprc-resource-upper-bound-constraint} can also be further generalized by including a lower bound $B \ge 0$ as done in Section \ref{sec:demand-lower-bound}.
 
 \cite{beasley1989algorithm} propose to ignore the SEC in \eqref{eq:esppr-cgsec-constraints} and relaxing \eqref{eq:espprc-resource-upper-bound-constraint}, \eqref{eq:espprc-cptp-binding} in a Lagrangean fashion:
 
