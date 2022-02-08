@@ -28,7 +28,14 @@
 %%%               Chapter first page can start at even an odd pages
 
 %%% Memoir by default assumes twoside PDF if nothing is specified.
-\documentclass[a4paper,twoside,11pt]{memoir}
+\documentclass[a4paper,twoside, 12pt, extrafontsizes]{memoir}
+
+% Better font encoding
+% \usepackage{lmodern}
+% \usepackage[T1]{fontenc}
+% \usepackage{mathptmx}       % Times new roman font
+
+
 \usepackage{etoolbox}            % Useful for programmaticaly perform actions in latex: booleans, conditions, string comparisons, lists, iterations, etc
 \usepackage[dvipsnames]{xcolor}  % To use colors for specific texts, provides the \color{<COLOR>} to color text
 \usepackage[utf8]{inputenc}

@@ -1,6 +1,9 @@
 
-\IfFileExists{Config/titlepage.tex}{
-	\input{Config/titlepage.tex}
+\newcommand\ThemeTitlePage{themes/\ThemeName/titlepage.tex}
+
+
+\IfFileExists{\ThemeTitlePage}{
+	\input{\ThemeTitlePage}
 	\cleardoublepage
 }
 
