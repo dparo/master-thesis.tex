@@ -7,13 +7,27 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
+
+\renewcommand{\(}{\left(}                                     % Automatically scaled open paren
+\renewcommand{\)}{\right)}                                    % Automatically scaled close paren
+\renewcommand{\[}{\left[}                                     % Automatically scaled open bracket
+\renewcommand{\]}{\right]}                                    % Automatically scaled close bracket
+
+% Abs function
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+
 \newcommand{\N}{\mathbb N}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\R}{\mathbb R}
 
+
+
 % Shorten \mathrr for equation: this is useful to define multi-character variables in mathemtical equations
 \newcommand{\mt}[1]{\mathrm{#1}}
+
+
+
 
 \newcommand{\mytodo}[1]{\todo[inline]{TODO: #1}}
 
