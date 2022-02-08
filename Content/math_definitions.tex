@@ -3,15 +3,14 @@
 \newcommand{\NNZGLM}{\mathrm{NNZ}_\mathrm{GLM}}
 \newcommand{\NNZRCI}{\mathrm{NNZ}_\mathrm{GLM}}
 
-%%
-%% Example:
-%%      ExprCptpEdgesIncident{i}         the iterator name defaults to j
-%%      ExprCptpEdgesIncident[k]{i}      set iterator name explicitly to k
-%%
+\newcommand{\maxflow}{f_{\mt{max}}}
+
 
 
 \newcommand{\ExprQrS}{Q_{\mathrm{R}}(S)}
 \newcommand{\ExprCptpEdgesIncident}[2][j]{\sum_{#1 \in \delta(#2)}       x_{#2#1}}
+
+\newcommand{\ExprCptpObjValDef}{\sum_{i \in V} \sum_{\EqStackTwo{j \in V}{j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i}
 
 \newcommand{\ExprCptpDemandSumWithin}[2][i]{\sum_{#1 \in #2} q_{#1} y_{#1}}
 \newcommand{\ExprCptpDemandSum}[1][i]{\sum_{#1 \in V} q_{#1} y_{#1}}
