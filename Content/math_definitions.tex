@@ -1,0 +1,40 @@
+\newcommand{\NNZ}{\mathrm{NNZ}}
+\newcommand{\NNZGSEC}{\mathrm{NNZ}_\mathrm{GSEC}}
+\newcommand{\NNZGLM}{\mathrm{NNZ}_\mathrm{GLM}}
+\newcommand{\NNZRCI}{\mathrm{NNZ}_\mathrm{GLM}}
+
+%%
+%% Example:
+%%      ExprCptpEdgesIncident{i}         the iterator name defaults to j
+%%      ExprCptpEdgesIncident[k]{i}      set iterator name explicitly to k
+%%
+\newcommand{\ExprCptpEdgesIncident}[2][j]{\sum_{#1 \in \delta(#2)}       x_{#2#1}}
+
+\newcommand{\ExprCptpDemandSum}[1][i]{\sum_{#1 \in V} q_{#1} y_{#1}}
+\newcommand{\ExprCptpFlowExiting}[1]{\sum_{(i, j) \in \delta(#1)} x_{ij}}
+
+\newcommand{\ExprCptpReducedCost}[2]{
+	d_{#1#2} - \frac{p_{#1} + p_{#2}}{2}
+}
+
+
+%%
+%% ESPP expressions
+%%
+
+
+\newcommand{\ExprESPPIngoingEdges}[2][j]{
+	\sum_{\EqStackTwo{#1 \in V_d}{\Tuple*{#1, #2} \in E_d}} e_{#1#2}
+}
+
+\newcommand{\ExprESPPOutgoingEdges}[2][j]{
+	\sum_{\EqStackTwo{#1 \in V_d}{\Tuple*{#2, #1} \in E_d}} e_{#2#1}
+}
+
+\newcommand{\ExprESPPCustomersIngoingEdges}[2][j]{
+	\sum_{\EqStackTwo{#1 \in V_0}{\Tuple*{#1, #2} \in E_d}} e_{#1#2}
+}
+
+\newcommand{\ExprESPPCustomersOutgoingEdges}[2][j]{
+	\sum_{\EqStackTwo{#1 \in V_0}{\Tuple*{#2, #1} \in E_d}} e_{#2#1}
+}

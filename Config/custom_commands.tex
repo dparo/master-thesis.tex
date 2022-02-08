@@ -13,8 +13,18 @@
 \renewcommand{\[}{\left[}                                     % Automatically scaled open bracket
 \renewcommand{\]}{\right]}                                    % Automatically scaled close bracket
 
+
+% Better parenthesized parenthesis: Use the star version '*' to automatically scale these parenthesis
+%%       Example: a \Expr*{ \sum_{i} b_i }
+\DeclarePairedDelimiter{\Expr}{\lparen}{\rparen}
+\DeclarePairedDelimiter{\Tuple}{\lparen}{\rparen}
+\DeclarePairedDelimiter{\Array}{\lbrack}{\rbrack}
+\DeclarePairedDelimiter{\Set}{\lbrace}{\rbrace}
+
 % Abs function
-\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\SetSize}{\lvert}{\rvert}
+
 
 \newcommand{\N}{\mathbb N}
 \newcommand{\Z}{\mathbb Z}
@@ -26,7 +36,9 @@
 % Shorten \mathrr for equation: this is useful to define multi-character variables in mathemtical equations
 \newcommand{\mt}[1]{\mathrm{#1}}
 
+\newcommand{\EqStackTwo}[2]{\substack{#1 \\ #2}}
 
+% Abs function
 
 
 \newcommand{\mytodo}[1]{\todo[inline]{TODO: #1}}

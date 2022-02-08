@@ -3,33 +3,33 @@
 \cite{Jepsen2014} provided in their work an IP formulation for the CPTP.
 The IP model presented in this section is derived from their work, and it is here summarized.
 
-Let $G = \left(V, E \right)$ denote a complete undirected graph, where $V = \lbrace 0, 1, \dots, N - 1 \rbrace$ denotes the set of nodes,
-$E = \lbrace  e = (i, j) \mid i,j \in V, j \ge i + 1 \rbrace$ the set of edges, and $N$ the number of nodes in the graph.
+Let $G = \Tuple*{V, E}$ denote a complete undirected graph, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
+$E = \Set*{e = (i, j) \mid i,j \in V, j \ge i + 1}$ the set of edges, and $N$ the number of nodes in the graph.
 The value $0 \in V$ is used to denote the depot node.
-For convenience, we define $V_0 = V \setminus \{0\}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
+For convenience, we define $V_0 = V \setminus \Set*{0}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
 Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
-More formally we can express $\delta(S)$ as $\delta(S) = \lbrace (i, j) \in E \mid i \in \lparen S \cap V \rparen, j \in \lparen \overline{S} \cap V \rparen \rbrace$.
-For brevity, we also define $\delta(i) = \delta(\{i\})$ to denote the set of edges incident to node $i \in V$.
+More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ (i, j) \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
+For brevity, we also define $\delta(i) = \delta(\Set*{i})$ to denote the set of edges incident to node $i \in V$.
 
 Let $p_{i} \in \R, p_{i} \ge 0$ denote the profit function, and $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent respectively the profit gain and required demand in visiting a vertex $i \in V$.
 By convention $q_0 = 0$, but notice that the profit at the depot is allowed to be $p_0 \ge 0$.
 Let $d_{ij} \in \R, d_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 We assume that the distance function is symmetric $d_{ij} = d_{ji}$ and satisfies the triangle inequality $d_{ij} \le d_{ih} + d_{hj}$.
 
-We define two sets of binary variables: $x_{ij}$, $y_{i} \in \lbrace 0, 1 \rbrace$, used to compose output solutions for the CPTP.
+We define two sets of binary variables: $x_{ij}$, $y_{i} \in \Set*{0, 1}$, used to compose output solutions for the CPTP.
 Together they model respectively an edge and a vertex as being part of the tour solution.
 
 Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we can finally express the CPTP problem as an integer programming formulation
 
 
 \begin{align}
-	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\substack{j \in V                                                                                 \\ j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}\\
-	                         & y_0 = 1                                           & \label{eq:depot-part-of-tour-constraint}                              \\
-	                         & \sum_{j \in \delta(i)}       x_{ij}  = 2 y_i      & \quad \forall i \in V         \label{eq:flow-conservation-constraint} \\
-	                         & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 y_{i}    & \quad \substack{\forall i \in S                                       \\ \forall S \subseteq V_0,\ |S| \ge 2} \label{eq:gsec-constraints} \\
-	                         & \sum_{i \in V} q_i y_i   \le Q                    & \label{eq:resource-upper-bound-constraint}                            \\
-	                         & x_{ij}                   \in \lbrace 0, 1 \rbrace & \quad \forall (i, j) \in E               \label{eq:x-mip-var-bounds}  \\
-	                         & y_{i}                    \in \lbrace 0, 1 \rbrace & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
+	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\EqStackTwo{j \in V}{j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}                                                                                                                \\
+	                         & y_0 = 1                                                                                                                   & \label{eq:depot-part-of-tour-constraint}                                                                     \\
+	                         & \ExprCptpEdgesIncident{i}  = 2 y_i                                                                                        & \quad \forall i \in V         \label{eq:flow-conservation-constraint}                                        \\
+	                         & \ExprCptpFlowExiting{S} \ge 2 y_{i}                                                                                       & \quad \EqStackTwo{\forall i \in S}{\forall S \subseteq V_0,\ \SetSize*{S} \ge 2} \label{eq:gsec-constraints} \\
+	                         & \ExprCptpDemandSum  \le Q                                                                                                 & \label{eq:resource-upper-bound-constraint}                                                                   \\
+	                         & x_{ij}                   \in \Set*{0, 1}                                                                                  & \quad \forall (i, j) \in E               \label{eq:x-mip-var-bounds}                                         \\
+	                         & y_{i}                    \in \Set*{0, 1}                                                                                  & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
 \end{align}
 
 The equation \eqref{eq:obj-function} denotes the objective function, and it is made of two terms: the cost of traveling through the tour (positive contribution) and the total sum of the profits associated to visiting a subset of the vertices (negative contribution).
@@ -54,23 +54,23 @@ After the resolution of the IP model, we check for improving single-customer sol
 \mytodo{Add more details/history/literature about GSECs here.}
 
 
-It may be interesting to study the relationship between the number of non-zero binary variables participating in a GSEC as a function of the set size $|S|$.
+It may be interesting to study the relationship between the number of non-zero binary variables participating in a GSEC as a function of the set size $\SetSize*{S}$.
 To achieve this we can express the size of the edge crossing set $\delta(S)$ as
 
 \begin{equation}\label{eq:delta-s-set-size}
-	|\delta(S)| = |S| (N - |S|)
+	\SetSize*{\delta(S)} = \SetSize*{S} (N - \SetSize*{S})
 \end{equation}
 
-which is maximized when $|S| = \frac{N}{2}$, thus leading to the following easy upper bound:
+which is maximized when $\SetSize*{S} = \frac{N}{2}$, thus leading to the following easy upper bound:
 
 \begin{equation}\label{eq:delta-s-set-size-ub}
-	|\delta(S)| \le \frac{N^2}{4}
+	\SetSize*{\delta(S)} \le \frac{N^2}{4}
 \end{equation}
 
-Let $\mt{NNZ}_{\mt{GSEC}}(S)$ denote the number of non-zero binary variables participating in a GSEC inequality.
+Let $\NNZGSEC(S)$ denote the number of non-zero binary variables participating in a GSEC inequality.
 It is easy to see that the following result holds
 \begin{equation}\label{eq:gsec-nnz-ub}
-	\mt{NNZ}_{\mt{GSEC}}(S) \le 1 + \floor*{\frac{N^2}{4}} \quad \forall S \subseteq V_0,\ |S| \ge 2
+	\NNZGSEC(S) \le 1 + \floor*{\frac{N^2}{4}} \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 \end{equation}
 This trivial bound allows us to preallocate a fixed amount of memory beforehand prior to performing any inequality separation, saving us copious memory allocation time.
 
@@ -80,7 +80,7 @@ This trivial bound allows us to preallocate a fixed amount of memory beforehand 
 Although non strictly-necessary, it is possible to improve the linear relaxation of the IP model by introducing a static constraint modeling a lower bound on the minimum served demand:
 
 \begin{equation}\label{eq:resource-lower-bound-constraint}
-	\sum_{i \in V} q_i y_i   \ge B
+	\ExprCptpDemandSum[i]   \ge B
 \end{equation}
 
 where $B \in \R, B \ge 0$ is a constant and represents the the required minimum served demand.
@@ -91,26 +91,27 @@ The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0, 
 A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algorithm} and it is here presented and re-adapted for the CPTP problem.
 
 We first need to re-formulate the CPTP as an ESPPRC over a directed network.
-We define a new drected network formulation $G_d = (V_d, E_d)$ composed of $N + 1$ nodes, where the depot node is essentially splitted in two nodes: a source and a sink vertex.
+We define a new drected network formulation $G_d = \Tuple*{V_d, E_d}$ composed of $N + 1$ nodes, where the depot node is essentially split in two nodes: a source and a sink vertex.
 In the new network we use the value $0$ to denote the source version of the depot node, and $N$ its duplicate playing the role of the sink vertex.
-More formally, $V_d = \{ 0, \dots, N  \}$, and the edge set $E_d$ is
+More formally, $V_d = \Set*{ 0,\dots, N }$, and the edge set $E_d$ is
 
 \begin{equation}
 	\begin{aligned}
-		E_d = & \left\{ (i, j) \mid i \in V_d, j \in V_d, i \ne j \right\} \\
-		      & \setminus \left\{ (0, N) \right\}                          \\
-		      & \setminus \left\{ (i, 0) \quad \forall i \in V_d \right\}  \\
-		      & \setminus \left\{ (N, i) \quad \forall i \in V_d \right\}  \\
+		E_d = & \Set*{\Tuple*{i, j} \quad \forall i, j \in V_d,\ i \ne j } \\
+		      & \setminus \Set*{ \Tuple*{0, N} }                           \\
+		      & \setminus \Set*{ \Tuple*{i, 0} \quad \forall i \in V_d }   \\
+		      & \setminus \Set*{ \Tuple*{N, i} \quad \forall i \in V_d }   \\
 	\end{aligned}
 \end{equation}
 
-which briefly means: all possible pairs $(i, j),\ i \ne j$ excluding: direct connection between $0$ and $N$, and by exluding edges entering node $0$ and flowing out of node $N$.
-At each directed edge $(i, j) \in E_d$ we associate a cost $c_{ij} \in \R$.
-We define a new set of binary variables $e_{ij} \in \{ 0, 1 \} \quad \forall (i, j) \in E_d$, to model solutions for ESPPRC over the directed network.
+which briefly means: all possible pairs $\Tuple*{i, j},\ i \ne j$ excluding: direct connection between $0$ and $N$, and by exluding edges entering node $0$ and flowing out of node $N$.
+At each directed edge $\Tuple*{i, j} \in E_d$ we associate a cost $c_{ij} \in \R$.
+We define a new set of binary variables $e_{ij} \in \Set*{0, 1} \quad \forall \Tuple*{i, j} \in E_d$, to model solutions for ESPPRC over the directed network.
 
 Is is easy to see that $2 y_i$ in the original CPTP formulation can now be rewritten in the ESPPRC formulation as:
+
 \begin{equation}
-	2 y_i = \sum_{\substack{j \in V_d \\ (j, i) \in E_d}} e_{ji} + \sum_{\substack{j \in V_d \\ (i, j) \in E_d}} e_{ij} \quad \forall i \in V_0
+	2 y_i = \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} \quad \forall i \in V_0
 \end{equation}
 
 Since we are creating a new node, we are also duplicating some edges and we must pay attention that these edges bind to the same CPTP original formulation.
@@ -120,17 +121,17 @@ We can bind the new edges to the original CPTP formulation by employing a mutual
 	e_{0i} + e_{iN} \le 1 \quad \forall i \in V_0
 \end{equation}
 
-Finally, by setting $c_{ij} = d_{ij} - \frac{p_i + p_j}{2} \quad \forall (i, j) \in E_d$, we can rewrite the CPTP original formulation in the ESPPRC IP model:
+Finally, by setting $c_{ij} = \ExprCptpReducedCost{i}{j} \quad \forall \Tuple*{i, j} \in E_d$, we can rewrite the CPTP original formulation in the ESPPRC IP model:
 
 \begin{align}
-	\min_{e} \quad z_\mt{ESPPRC}(e) & =  \sum_{(i, j) \in E_d} \left( d_{ij} - \frac{p_i + p_j}{2} \right) e_{ij} \label{eq:espprc-obj-function}                                                                                 \\
-	                                & \frac{1}{2}\sum_{j \in V} q_i \left( \sum_{\substack{j \in V_d                                                                                                                             \\ (j, i) \in E_d}} e_{ji} + \sum_{\substack{j \in V_d \\ (i, j) \in E_d}} e_{ij}  \right)   \le Q                                                                             & \label{eq:espprc-resource-upper-bound-constraint}                             \\
-	                                & \sum_{\substack{i \in V                                                                                                                                                                    \\ (i, j) \in E_d}}       e_{ij}  = \sum_{\substack{i \in V \\ (i, j) \in E_d}} e_{ji}                                                       & \quad \substack{\forall j \in V                                             \\ j \ne 0,\ j \ne N}         \label{eq:espprc-flow-conservation-constraint-customers} \\
-	                                & \sum_{\substack{i \in V_0                                                                                                                                                                  \\ (0, i) \in E_d}} e_{0i} = 1 & \label{eq:espprc-flow-conservation-constraint-depot1} \\
-	                                & \sum_{\substack{i \in V_0                                                                                                                                                                  \\ (i, N) \in E_d}} e_{iN} = 1 & \label{eq:espprc-flow-conservation-constraint-depot2} \\
-	                                & e_{0i} + e_{iN} \le 1                                                                                      & \quad \forall i \in V_0 \label{eq:espprc-cptp-binding}                        \\
-	                                & \sum_{\substack{i \in S,\ j \in S                                                                                                                                                          \\ (i, j) \in E_d}} e_{ij} \le |S| - 1                                                                   & \quad \forall S \subseteq V_d \label{eq:esppr-cgsec-constraints} \\
-	                                & e_{ij}                   \in \lbrace 0, 1 \rbrace                                                          & \quad \forall (i, j) \in E_d               \label{eq:espprc-e-mip-var-bounds} \\
+	\min_{e} \quad z_\mt{ESPPRC}(e) & =  \sum_{(i, j) \in E_d} \Expr*{ \ExprCptpReducedCost{i}{j} } e_{ij} \label{eq:espprc-obj-function}                                                                                 \\
+	                                & \frac{1}{2}\sum_{j \in V} q_i \left( \sum_{\substack{j \in V_d                                                                                                                      \\ (j, i) \in E_d}} e_{ji} + \sum_{\substack{j \in V_d \\ (i, j) \in E_d}} e_{ij}  \right)   \le Q                                                                             & \label{eq:espprc-resource-upper-bound-constraint}                             \\
+	                                & \sum_{\substack{i \in V                                                                                                                                                             \\ (i, j) \in E_d}}       e_{ij}  = \sum_{\substack{i \in V \\ (i, j) \in E_d}} e_{ji}                                                       & \quad \substack{\forall j \in V                                             \\ j \ne 0,\ j \ne N}         \label{eq:espprc-flow-conservation-constraint-customers} \\
+	                                & \sum_{\substack{i \in V_0                                                                                                                                                           \\ (0, i) \in E_d}} e_{0i} = 1 & \label{eq:espprc-flow-conservation-constraint-depot1} \\
+	                                & \sum_{\substack{i \in V_0                                                                                                                                                           \\ (i, N) \in E_d}} e_{iN} = 1 & \label{eq:espprc-flow-conservation-constraint-depot2} \\
+	                                & e_{0i} + e_{iN} \le 1                                                                               & \quad \forall i \in V_0 \label{eq:espprc-cptp-binding}                        \\
+	                                & \sum_{\substack{i \in S,\ j \in S                                                                                                                                                   \\ (i, j) \in E_d}} e_{ij} \le |S| - 1                                                                   & \quad \forall S \subseteq V_d \label{eq:esppr-cgsec-constraints} \\
+	                                & e_{ij}                   \in \lbrace 0, 1 \rbrace                                                   & \quad \forall (i, j) \in E_d               \label{eq:espprc-e-mip-var-bounds} \\
 \end{align}
 
 where, \eqref{eq:espprc-obj-function} is the new objective function where we dropped the dependency on the $y$ MIP variable,
@@ -207,17 +208,17 @@ Finally, equation \eqref{eq:glm-inequality-v1} can be rewritten more concisely a
 \end{equation}
 
 
-Let $\mt{NNZ}_{\mt{GLM}}(S)$ denote the number of non-zero binary variables participating in a GLM inequality as a function of the set $S$.
+Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a GLM inequality as a function of the set $S$.
 By using equation \eqref{eq:glm-inequality} and the result obtained in \eqref{eq:delta-s-set-size}, we have
 
 \begin{equation}
-	\mt{NNZ}_{\mt{GLM}}(S) = -|S|^2 + (N + 1)|S|
+	\NNZGLM(S) = -|S|^2 + (N + 1)|S|
 \end{equation}
 
 which is maximized when $|S| = \frac{N+1}{2}$.
 It is now easy to see that the following result holds
 \begin{equation}\label{eq:glm-nnz-ub}
-	\mt{NNZ}_{\mt{GLM}}(S) \le \floor*{ \frac{\left( N + 1 \right)^2}{4}} \quad \forall S \subseteq V_0,\ |S| \ge 2
+	\NNZGLM(S) \le \floor*{ \frac{\left( N + 1 \right)^2}{4}} \quad \forall S \subseteq V_0,\ |S| \ge 2
 \end{equation}
 
 
@@ -233,9 +234,9 @@ The RCI inequalities can then be expressed as:
 	\end{split}
 \end{equation}
 
-Let $\mt{NNZ}_{\mt{RCI}}(S)$ denote the number of non-zero binary variables participating in a RCI inequality as a function of the set $S$.
-The upper bound on $\mt{NNZ}_{\mt{RCI}}(S)$ follows the same reasoning of equation \eqref{eq:glm-nnz-ub}:
+Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a RCI inequality as a function of the set $S$.
+The upper bound on $\NNZ_{\mt{RCI}}(S)$ follows the same reasoning of equation \eqref{eq:glm-nnz-ub}:
 
 \begin{equation}\label{eq:rc-nnz-ub}
-	\mt{NNZ}_{\mt{RCI}}(S) \le \floor*{\frac{\left( N + 1\right)^2}{4}} \quad \forall S \subseteq V_0
+	\NNZRCI(S) \le \floor*{\frac{\left( N + 1\right)^2}{4}} \quad \forall S \subseteq V_0
 \end{equation}
