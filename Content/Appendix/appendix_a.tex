@@ -1,24 +1,33 @@
-\chapter{Placeholder}
+\chapter{Performance Profiles}
+These experiments are updated as of the current date: 8 February 2022.
 
-\todo{TODO: Currently this appendix is just a placeholder. Write it!!!}
+I've made some experiments by inflating the vehicle capacity of the original CVRP instances.
 
-\begin{algorithm}
-	\caption{An algorithm with caption}\label{alg:two}
-	\KwData{$n \geq 0$}
-	\KwResult{$y = x^n$}
-	$y \gets 1$\;
-	$X \gets x$\;
-	$N \gets n$\;
-	\While{$N \neq 0$}{
-		\eIf{$N$ is even}{
-			$X \gets X \times X$\;
-			$N \gets \frac{N}{2}$ \Comment*[r]{This is a comment}
-		}{\If{$N$ is odd}{
-				$y \gets y \times X$\;
-				$N \gets N - 1$\;
-			}
-		}
-	}
-\end{algorithm}
+Let $Q$ and $k$ denote respectively the CVRP instance vehicle capacity and the number of vehicles.
+Define a scale factor $s \in \N$, a new CVRP instance is generated from the old one using pseudo algorithm steps:
 
-\lorem
+\begin{align}
+	Q \gets Q \times s \\
+	k \gets \ceil*{\frac{k}{s}}
+\end{align}
+
+\renewcommand{\do}[1]{
+	\begin{figure}[ht]
+		\centering
+		\begin{subfigure}{0.5\textwidth}
+			\centering
+			\includegraphics[width=1.0\linewidth]{#1/Time Ratio Plot.pdf}
+		\end{subfigure}%
+		\begin{subfigure}{0.5\textwidth}
+			\centering
+			\includegraphics[width=1.0\linewidth]{#1/Relative Cost Plot.pdf}
+		\end{subfigure}%
+	\end{figure}
+}
+
+\docsvlist{Imgs/perfprofs/E-scaled-1.0-last-10}
+\docsvlist{Imgs/perfprofs/E-scaled-2.0-last-10}
+\docsvlist{Imgs/perfprofs/E-scaled-4.0-last-10}
+\docsvlist{Imgs/perfprofs/F-scaled-1.0-last-10}
+\docsvlist{Imgs/perfprofs/F-scaled-2.0-last-10}
+\docsvlist{Imgs/perfprofs/F-scaled-4.0-last-10}
