@@ -28,7 +28,15 @@
 %%%               Chapter first page can start at even an odd pages
 
 %%% Memoir by default assumes twoside PDF if nothing is specified.
-\documentclass[a4paper,twoside, 12pt, extrafontsizes]{memoir}
+\documentclass[12pt,
+                a4paper,
+                twoside,
+                openright,               % Set chapter to begin on the right page
+                english,
+                italian
+                extrafontsizes]
+                {memoir}
+
 \usepackage[utf8]{inputenc}                    % Better handling of inputencoding, i.e. for the actual latex file
 \usepackage{lmodern} \usepackage[T1]{fontenc}  % Better font encoding, i.e. for the actual output
 
