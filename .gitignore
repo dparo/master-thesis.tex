@@ -1,5 +1,5 @@
-/.vscode
-/build/
+.vscode
+build/
 __latexindent_*.tex
 
 ## Core latex/pdflatex auxiliary files:
