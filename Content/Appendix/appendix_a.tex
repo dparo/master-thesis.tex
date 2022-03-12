@@ -1,24 +1,46 @@
-\chapter{Placeholder}
+\chapter{Performance Profiles}
+These experiments were last updated at February 8, 2022.
 
-\todo{TODO: Currently this appendix is just a placeholder. Write it!!!}
+Let $Q$ and $k$ denote respectively the CVRP vehicle capacity and number of vehicles.
+Define a scale factor $s \in \N$, a new CVRP instance is generated from the old one using the following steps (described as pseudoalgorithm):
 
-\begin{algorithm}
-	\caption{An algorithm with caption}\label{alg:two}
-	\KwData{$n \geq 0$}
-	\KwResult{$y = x^n$}
-	$y \gets 1$\;
-	$X \gets x$\;
-	$N \gets n$\;
-	\While{$N \neq 0$}{
-		\eIf{$N$ is even}{
-			$X \gets X \times X$\;
-			$N \gets \frac{N}{2}$ \Comment*[r]{This is a comment}
-		}{\If{$N$ is odd}{
-				$y \gets y \times X$\;
-				$N \gets N - 1$\;
-			}
-		}
-	}
-\end{algorithm}
+\begin{align}
+	Q \gets Q \times s \\
+	k \gets \ceil*{\frac{k}{s}}
+\end{align}
 
-\lorem
+Each performance profile follows the syntax:
+
+\begin{verbatim}
+	<FAMILY-NAME>-scaled-<s>-last-10
+\end{verbatim}
+
+where \texttt{<FAMILY>} denotes the CVRP instances family (i.e. E, F, etc) and \texttt{<s>} is the scale factor for the vehicle capacity.
+The term \texttt{last-10} is used to denote that the performance profile uses only the last 10 pricing iterations for performing the comparison.
+
+
+At the time of writing, only the following scaling factors were tested: $s = 1.0,\ s = 2.0,\ s = 4.0$.
+
+\newcommand{\IncludePerfProf}[1]{
+	\begin{figure}[ht]
+		\centering
+		\begin{subfigure}{0.5\textwidth}
+			\centering
+			\includegraphics[width=1.0\linewidth]{#1/Time Ratio Plot.pdf}
+		\end{subfigure}%
+		\begin{subfigure}{0.5\textwidth}
+			\centering
+			\includegraphics[width=1.0\linewidth]{#1/Relative Cost Plot.pdf}
+		\end{subfigure}%
+	\end{figure}
+}
+
+
+\forcsvlist{\IncludePerfProf}{
+	Imgs/perfprofs/E-scaled-1.0-last-10,
+	Imgs/perfprofs/E-scaled-2.0-last-10,
+	Imgs/perfprofs/E-scaled-4.0-last-10,
+	Imgs/perfprofs/F-scaled-1.0-last-10,
+	Imgs/perfprofs/F-scaled-2.0-last-10,
+	Imgs/perfprofs/F-scaled-4.0-last-10,
+}
