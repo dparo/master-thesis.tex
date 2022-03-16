@@ -39,6 +39,18 @@
 	\cleardoublepage
 }{}
 
+\IfFileExists{Content/Preamble/abstract_ita.tex}{
+	\pdfbookmark{Sommario}{Sommario}
+	\begin{otherlanguage}{italian}
+		\begin{abstract}
+			\input{Content/Preamble/abstract_ita.tex}
+		\end{abstract}
+	\end{otherlanguage}
+
+	\cleardoublepage
+}{}
+
+
 %%
 %% Produce table of contents
 %%
