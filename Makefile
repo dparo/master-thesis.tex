@@ -43,7 +43,7 @@ $(BUILD_DIR)/main.pdf: prebuild
 	latexmk -pdf
 
 spellcheck:
-	find ./ -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;
+	find ./ -name "*.tex" -exec aspell --mode=tex --encoding=utf-8 --lang=en --add-extra-dicts=./dictionary.en.pws check "{}" \;
 
 $(RELEASE_PDF): $(BUILD_DIR)/main.pdf
 	# Compress and Convert into PDF/A using ghostscript
