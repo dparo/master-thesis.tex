@@ -9,12 +9,19 @@
 }{}
 
 
+\IfFileExists{Content/Preamble/colophon.tex}{
+	\input{Content/Preamble/colophon.tex}
+	\clearpage
+}{}
+
+
+
 % %%
 % %% Include the abstract if any
 % %%
-\IfFileExists{Content/abstract.tex}{
+\IfFileExists{Content/Preamble/abstract.tex}{
 	\begin{abstract}
-		\input{Content/abstract.tex}
+		\input{Content/Preamble/abstract.tex}
 	\end{abstract}
 	\cleardoublepage
 }{}
