@@ -1,4 +1,4 @@
-%%
+%
 %% "Core" packages
 %%
 \usepackage{ifthen}              % To write sane if-then statemnts
@@ -41,3 +41,54 @@
 
 \usepackage{tikz}            % A drawing package to draw arbitrary shapes, usefull even for drawing networks/graphs
 \usepackage{fancyvrb}        % Better verbatim environment, supporting also centering of the verbatim
+
+\definecolor{webgreen}{rgb}{0,.5,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{Pantone}{RGB}{155,0,20}
+\definecolor{GrigioLight}{RGB}{152, 152, 152}
+
+
+\hypersetup{
+	%hyperfootnotes=false,
+	%pdfpagelabels,
+	%draft,	% = elimina tutti i link (utile per stampe in bianco e nero)
+	colorlinks=true,
+	linktocpage=true,
+	pdfstartpage=1,
+	pdfstartview=FitV,
+	% decommenta la riga seguente per avere link in nero (per esempio per la
+	%stampa in bianco e nero)
+	%colorlinks=false, linktocpage=false, pdfborder={0 0 0}, pdfstartpage=1,
+	%pdfstartview=FitV,
+	breaklinks=true,
+	pdfpagemode=UseNone,
+	pageanchor=true,
+	pdfpagemode=UseOutlines,
+	plainpages=false,
+	bookmarksnumbered,
+	bookmarksopen=true,
+	bookmarksopenlevel=1,
+	hypertexnames=true,
+	pdfhighlight=/O,
+	%nesting=true,
+	%frenchlinks,
+	urlcolor=webbrown,
+	linkcolor=webbrown,
+	citecolor=webgreen,
+	%pagecolor=RoyalBlue,
+	%urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,
+	pdftitle={\Title},
+	pdfauthor={\textcopyright\ \AuthorName, \UnivName, \DeptName},
+	pdfsubject={},
+	pdfkeywords={},
+	pdfcreator={pdfLaTeX},
+	pdfproducer={LaTeX}
+}
+
+\captionsetup{
+	tableposition=top,
+	figureposition=bottom,
+	font=small,
+	format=hang,
+	labelfont=bf
+}
