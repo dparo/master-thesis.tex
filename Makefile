@@ -1,6 +1,9 @@
 .DEFAULT_GOAL := all
 .PHONY: all release clean hard_clean watch spellcheck svg2pdf prebuild
 
+export PRINT= n
+
+
 BUILD_DIR:=./build
 STUDENT_NAME:=Paro_Davide
 RELEASE_PDF:=$(BUILD_DIR)/$(STUDENT_NAME).pdf
