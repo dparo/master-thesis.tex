@@ -15,11 +15,24 @@
 }{}
 
 
+\IfFileExists{Content/Preamble/inscription.tex}{
+	\input{Content/Preamble/inscription.tex}
+	\clearpage
+}{}
+
+
+\IfFileExists{Content/Preamble/acknowledgements.tex}{
+	\input{Content/Preamble/acknowledgements.tex}
+	\clearpage
+}{}
+
+
 
 % %%
 % %% Include the abstract if any
 % %%
 \IfFileExists{Content/Preamble/abstract.tex}{
+	\pdfbookmark{Abstract}{Abstract}
 	\begin{abstract}
 		\input{Content/Preamble/abstract.tex}
 	\end{abstract}
