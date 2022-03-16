@@ -1,13 +1,17 @@
 .DEFAULT_GOAL := all
 .PHONY: all release clean hard_clean watch spellcheck svg2pdf prebuild
 
+BUILD_DIR:=./build
+STUDENT_NAME:=Paro_Davide
+RELEASE_PDF:=$(BUILD_DIR)/$(STUDENT_NAME).pdf
+
+
 SVGS := $(shell find ./Imgs -type f -name '*.svg')
 SVGS_AS_PDFS := $(patsubst %.svg, %.out.pdf, $(SVGS))
 
-BUILD_DIR:=./build
 
 all: $(BUILD_DIR)/main.pdf
-release: spellcheck all $(BUILD_DIR)/Release.pdf
+release: spellcheck all $(RELEASE_PDF)
 clean:
 	# Clean generated pdfs
 	find ./Imgs -type f -name "*.out.pdf" -exec rm -rf {} \;
@@ -41,12 +45,12 @@ $(BUILD_DIR)/main.pdf: prebuild
 spellcheck:
 	find ./ -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;
 
-$(BUILD_DIR)/Release.pdf: $(BUILD_DIR)/main.pdf
+$(RELEASE_PDF): $(BUILD_DIR)/main.pdf
 	# Compress and Convert into PDF/A using ghostscript
 	gs -dNOPAUSE -dQUIET -dBATCH \
 		-dPDFSETTINGS=/prepress \
 		-dPDFA=1 -sColorConversionStrategy=RGB -dPDFACompatibilityPolicy=2 \
-		-sDEVICE=pdfwrite -sOutputFile=$(BUILD_DIR)/Release.pdf $(BUILD_DIR)/main.pdf
+		-sDEVICE=pdfwrite -sOutputFile=$(RELEASE_PDF) $(BUILD_DIR)/main.pdf
 
 	# Show pdf files of the original uncompressed file and the new compressed one
-	du --all -hc -d 1 $(BUILD_DIR)/main.pdf $(BUILD_DIR)/Release.pdf
+	du --all -hc -d 1 $(BUILD_DIR)/main.pdf $(RELEASE_PDF)
