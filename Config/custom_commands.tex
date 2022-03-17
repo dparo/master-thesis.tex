@@ -6,12 +6,10 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
-
 \renewcommand{\(}{\left(}                                     % Automatically scaled open paren
 \renewcommand{\)}{\right)}                                    % Automatically scaled close paren
 \renewcommand{\[}{\left[}                                     % Automatically scaled open bracket
 \renewcommand{\]}{\right]}                                    % Automatically scaled close bracket
-
 
 % Better parenthesized parenthesis: Use the star version '*' to automatically scale these parenthesis
 %%       Example: a \Expr*{ \sum_{i} b_i }
@@ -27,13 +25,10 @@
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\SetSize}{\lvert}{\rvert}
 
-
 \newcommand{\N}{\mathbb N}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\R}{\mathbb R}
-
-
 
 % Shorten \mathrr for equation: this is useful to define multi-character variables in mathemtical equations
 \newcommand{\mt}[1]{\mathrm{#1}}
@@ -42,14 +37,17 @@
 
 % Abs function
 
-
 \newcommand{\mytodo}[1]{\todo[inline]{TODO: #1}}
-
 
 \newcommand{\lorem}{\lipsum[1]}
 
 % algorithm2e package customization
 %   Define \Comment command inside \begin{algorithm}\end{...} environment to define comments
+\SetKw{Or}{or}
+\SetKw{And}{and}
+\SetKw{Const}{const}
+\SetKw{Let}{let}
+\SetKwBlock{Condition}{}{}
 \SetKwProg{Proc}{proc}{}{end}
 \SetKwComment{Comment}{/* }{ */}
 \SetKw{Assert}{assert}
