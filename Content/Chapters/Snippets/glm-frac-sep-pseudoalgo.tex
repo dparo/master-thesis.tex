@@ -1,0 +1,33 @@
+\Proc{\textit{glm\_frac\_sep}($\maxflow(s, t)$, $F_1(s, t)$, $F_2(s, t)$, $x^*$, $y^*$)}{
+	\Const $\varepsilon_{\mt{GLM}} \gets 0.05$\;
+	\Let $S$\;
+	\uIf{$0 \notin F_1(s, t)$}{
+		$S \gets F_1(s, t)$\;
+	}\Else{
+		$S \gets F_2(s, t)$\;
+	}
+
+	\If{$|S| \ge 2$}{
+		\Comment{Build the cut}
+		\Let lhs $\gets 0$\;
+		\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+		\For{$i \in V \mid i \in S$}{
+			\For{$j \in V \mid j \notin S$}{
+				index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
+				value[nnz] $\gets$ $1 - 2 q_j / Q$\;
+				lhs $\gets$ lhs + $x^*_{ij} \cdot (1 - 2 q_j / Q)$\;
+				nnz $\gets$ nnz + $1$\;
+			}
+		}
+		\For{$i \in V \mid i \in S$}{
+			index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
+			value[nnz] $\gets$ $-2 q_i / Q$\;
+			lhs $\gets$ lhs + $y^*_{i} \cdot (2 q_i / Q)$\;
+			nnz $\gets$ nnz + $1$\;
+		}
+		\If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
+			\Comment{Reject and report cut to MIP}
+			mip\_add\_user\_cut(nnz, index, value)\;
+		}
+	}
+}

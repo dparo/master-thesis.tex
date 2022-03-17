@@ -1,0 +1,30 @@
+\Proc{\textit{cc\_dfs}($x^*$, $y^*$)}{
+	\Let $cc[i] \gets -1 \quad \forall i \in V$\;
+	\Let $nc \gets 0$\;
+	\For{$i\gets0$ \KwTo $N$}{
+		\If{$cc[i] < 0, y^*_i \ge 0.5$}{
+			\Comment{Found a non visited subtour}
+			$cc[i] \gets n_c$\;
+			\Let $u \gets -1$\;
+			\Comment{Traverse the subtour}
+			\Do{$u \ge 0$}{
+				\Let $v \gets -1$\;
+				\For{$j \in V \mid (u, j) \in E, cc[j] < 0, x^*_{uj} \ge 0.5$}{
+					\Comment{The body of this loop will execute only once}
+					$cc[j] = n_c$\;
+					$v \gets j$\;
+				}
+				$u \gets v$
+			}
+			$n_c \gets n_c + 1$\;
+		}
+	}
+
+	\Comment{Validate some invariants}
+	\Assert{$n_c \ge 0$}\;
+	\Assert{$c[0] = 0$}\;
+	\Assert{$c[i] = -1 \quad \forall i \in V_0 \mid y_i < 0.5$}\;
+	\Assert{$c[i] \ge 0 \quad \forall i \in V_0 \mid y_i \ge 0.5$}\;
+	\Comment{Done: terminate}
+	\Return{$n_c, cc$}
+}

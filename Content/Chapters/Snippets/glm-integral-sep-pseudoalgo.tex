@@ -1,0 +1,30 @@
+\Proc{\textit{glm\_integral\_sep}($n_c$, $cc$, $x^*$, $y^*$)}{
+	\Const $\varepsilon_{\mt{GLM}} \gets 0.01$\;
+
+	\For{$c \gets 1$ \KwTo $n_c$}{
+		\Let $S \gets  \Set* {i \mid cc[i] = c}$\;
+		\If{$|S| \ge 2$}{
+			\Comment{Build the cut}
+			\Let lhs $\gets 0$\;
+			\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+			\For{$i \in V \mid i \in S$}{
+				\For{$j \in V \mid j \notin S$}{
+					index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
+					value[nnz] $\gets$ $1 - 2 q_j / Q$\;
+					lhs $\gets$ lhs + $x^*_{ij} \cdot (1 - 2 q_j / Q)$\;
+					nnz $\gets$ nnz + $1$\;
+				}
+			}
+			\For{$i \in V \mid i \in S$}{
+				index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
+				value[nnz] $\gets$ $-2 q_i / Q$\;
+				lhs $\gets$ lhs + $y^*_{i} \cdot (2 q_i / Q)$\;
+				nnz $\gets$ nnz + $1$\;
+			}
+			\If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
+				\Comment{Reject and report cut to MIP}
+				mip\_add\_user\_cut(nnz, index, value)\;
+			}
+		}
+	}
+}

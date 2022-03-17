@@ -158,41 +158,12 @@ For singletons instead we fix $c(i) = -1  \quad \forall i \in V_0 \mid y_i = 0$.
 The connected components can be computed by a simple depth first search traversal, for which a pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
 
 \begin{algorithm}
-	\caption{An algorithm for computing the connected components through a DFS traversal}
 	\label{algo:cc-dfs}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
-	\KwResult{$n_c$: number of subtours formed}
-	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
-    \Proc{\textit{cc\_dfs}($x^*$, $y^*$)}{
-        \Let $cc[i] \gets -1 \quad \forall i \in V$\;
-        \Let $nc \gets 0$\;
-        \For{$i\gets0$ \KwTo $N$}{
-            \If{$cc[i] < 0, y^*_i \ge 0.5$}{
-                \Comment{Found a non visited subtour}
-                $cc[i] \gets n_c$\;
-                \Let $u \gets -1$\;
-                \Comment{Traverse the subtour}
-                \Do{$u \ge 0$}{
-                    \Let $v \gets -1$\;
-                    \For{$j \in V \mid (u, j) \in E, cc[j] < 0, x^*_{uj} \ge 0.5$}{
-                        \Comment{The body of this loop will execute only once}
-                        $cc[j] = n_c$\;
-                        $v \gets j$\;
-                    }
-                    $u \gets v$
-                }
-                $n_c \gets n_c + 1$\;
-            }
-        }
-
-        \Comment{Validate some invariants}
-        \Assert{$n_c \ge 0$}\;
-        \Assert{$c[0] = 0$}\;
-        \Assert{$c[i] = -1 \quad \forall i \in V_0 \mid y_i < 0.5$}\;
-        \Assert{$c[i] \ge 0 \quad \forall i \in V_0 \mid y_i \ge 0.5$}\;
-        \Comment{Done: terminate}
-        \Return{$n_c, cc$}
-    }
+    \caption{An algorithm for computing the connected components through a DFS traversal}
+    \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
+    \KwResult{$n_c$: number of subtours formed}
+    \KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
+    \input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
 \end{algorithm}
 
 Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
@@ -349,44 +320,7 @@ The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 	\label{algo:gsec-frac-sep}
     \KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
     \KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
-    \Proc{\textit{gsec\_frac\_sep}($\maxflow(s, t)$, $F_1(s, t)$, $F_2(s, t)$, $x^*$, $y^*$)}{
-        \Const $\varepsilon_{\mt{GSEC}} \gets 0.2$\;
-        \Let $S$\;
-        \uIf{$0 \notin F_1(s, t)$}{
-            $S \gets F_1(s, t)$\;
-        }\Else{
-            $S \gets F_2(s, t)$\;
-        }
-
-        \Comment{Scan for most violated customer}
-        \Let $c \gets -1$, $m \gets \infty$\;
-        \For{$i \in V \mid i \in S$}{
-            \Let $v \gets \maxflow(s, t) - 2 y^*_i$\;
-
-        \If{$\Expr*{\maxflow(s, t) < 2 y^*_i - \varepsilon_{\mt{GSEC}}}$ \And $v < m$}{
-                $c \gets i$\;
-                $m \gets v$\;
-            }
-        }
-
-        \If{$c \ge 0$ \And $|S| \ge 2$}{
-            \Comment{Build the cut}
-            \Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
-            \For{$i \in V \mid i \in S$}{
-                \For{$j \in V \mid j \notin S$}{
-                    index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
-                    value[nnz] $\gets$ $1.0$\;
-                    nnz $\gets$ nnz + $1$\;
-                }
-            }
-
-            index[nnz] $\gets$ y\_mip\_var\_idx($c$)\;
-            value[nnz] $\gets$ $-2.0$\;
-            nnz $\gets$ nnz + $1$\;
-            \Comment{Reject and report cut to MIP}
-            mip\_add\_user\_cut(nnz, index, value)\;
-        }
-    }
+    \input{Content/Chapters/Snippets/gsec-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
 
@@ -434,36 +368,7 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\KwResult{$n_c$: number of subtours formed}
     \KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
     \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
-    \Proc{\textit{glm\_integral\_sep}($n_c$, $cc$, $x^*$, $y^*$)}{
-        \Const $\varepsilon_{\mt{GLM}} \gets 0.01$\;
-
-        \For{$c \gets 1$ \KwTo $n_c$}{
-            \Let $S \gets  \Set* {i \mid cc[i] = c}$\;
-            \If{$|S| \ge 2$}{
-                \Comment{Build the cut}
-                \Let lhs $\gets 0$\;
-                \Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
-                \For{$i \in V \mid i \in S$}{
-                    \For{$j \in V \mid j \notin S$}{
-                        index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
-                        value[nnz] $\gets$ $1 - 2 q_j / Q$\;
-                        lhs $\gets$ lhs + $x^*_{ij} \cdot (1 - 2 q_j / Q)$\;
-                        nnz $\gets$ nnz + $1$\;
-                    }
-                }
-                \For{$i \in V \mid i \in S$}{
-                    index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
-                    value[nnz] $\gets$ $-2 q_i / Q$\;
-                    lhs $\gets$ lhs + $y^*_{i} \cdot (2 q_i / Q)$\;
-                    nnz $\gets$ nnz + $1$\;
-                }
-                \If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
-                    \Comment{Reject and report cut to MIP}
-                    mip\_add\_user\_cut(nnz, index, value)\;
-                }
-            }
-        }
-    }
+    \input{Content/Chapters/Snippets/glm-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
 
@@ -472,39 +377,7 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\label{algo:glm-frac-sep}
     \KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
     \KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
-    \Proc{\textit{glm\_frac\_sep}($\maxflow(s, t)$, $F_1(s, t)$, $F_2(s, t)$, $x^*$, $y^*$)}{
-        \Const $\varepsilon_{\mt{GLM}} \gets 0.05$\;
-        \Let $S$\;
-        \uIf{$0 \notin F_1(s, t)$}{
-            $S \gets F_1(s, t)$\;
-        }\Else{
-            $S \gets F_2(s, t)$\;
-        }
-
-        \If{$|S| \ge 2$}{
-            \Comment{Build the cut}
-            \Let lhs $\gets 0$\;
-            \Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
-            \For{$i \in V \mid i \in S$}{
-                \For{$j \in V \mid j \notin S$}{
-                    index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
-                    value[nnz] $\gets$ $1 - 2 q_j / Q$\;
-                    lhs $\gets$ lhs + $x^*_{ij} \cdot (1 - 2 q_j / Q)$\;
-                    nnz $\gets$ nnz + $1$\;
-                }
-            }
-            \For{$i \in V \mid i \in S$}{
-                index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
-                value[nnz] $\gets$ $-2 q_i / Q$\;
-                lhs $\gets$ lhs + $y^*_{i} \cdot (2 q_i / Q)$\;
-                nnz $\gets$ nnz + $1$\;
-            }
-            \If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
-                \Comment{Reject and report cut to MIP}
-                mip\_add\_user\_cut(nnz, index, value)\;
-            }
-        }
-    }
+    \input{Content/Chapters/Snippets/glm-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
 

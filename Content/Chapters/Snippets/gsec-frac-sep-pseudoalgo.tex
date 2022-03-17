@@ -1,0 +1,38 @@
+\Proc{\textit{gsec\_frac\_sep}($\maxflow(s, t)$, $F_1(s, t)$, $F_2(s, t)$, $x^*$, $y^*$)}{
+	\Const $\varepsilon_{\mt{GSEC}} \gets 0.2$\;
+	\Let $S$\;
+	\uIf{$0 \notin F_1(s, t)$}{
+		$S \gets F_1(s, t)$\;
+	}\Else{
+		$S \gets F_2(s, t)$\;
+	}
+
+	\Comment{Scan for most violated customer}
+	\Let $c \gets -1$, $m \gets \infty$\;
+	\For{$i \in V \mid i \in S$}{
+		\Let $v \gets \maxflow(s, t) - 2 y^*_i$\;
+
+		\If{$\Expr*{\maxflow(s, t) < 2 y^*_i - \varepsilon_{\mt{GSEC}}}$ \And $v < m$}{
+			$c \gets i$\;
+			$m \gets v$\;
+		}
+	}
+
+	\If{$c \ge 0$ \And $|S| \ge 2$}{
+		\Comment{Build the cut}
+		\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+		\For{$i \in V \mid i \in S$}{
+			\For{$j \in V \mid j \notin S$}{
+				index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
+				value[nnz] $\gets$ $1.0$\;
+				nnz $\gets$ nnz + $1$\;
+			}
+		}
+
+		index[nnz] $\gets$ y\_mip\_var\_idx($c$)\;
+		value[nnz] $\gets$ $-2.0$\;
+		nnz $\gets$ nnz + $1$\;
+		\Comment{Reject and report cut to MIP}
+		mip\_add\_user\_cut(nnz, index, value)\;
+	}
+}
