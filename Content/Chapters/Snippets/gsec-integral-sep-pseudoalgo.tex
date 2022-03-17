@@ -1,0 +1,22 @@
+\Proc{\textit{gsec\_integral\_sep}($n_c$, $cc$, $x^*$, $y^*$)}{
+	\For{$c \gets 1$ \KwTo $n_c$}{
+		\Let $S \gets  \Set* {i \mid cc[i] = c}$\;
+		\If{$|S| \ge 2$}{
+			\Comment{Build the cut}
+			\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+			\For{$i \in V \mid i \in S$}{
+				\For{$j \in V \mid j \notin S$}{
+					index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
+					value[nnz] $\gets$ $1$\;
+					nnz $\gets$ nnz + $1$\;
+				}
+			}
+			\For{$i \in V \mid i \in S$}{
+				index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
+				value[nnz] $\gets$ $-2.0$\;
+				\Comment{Reject and report cut to MIP}
+				mip\_add\_user\_cut(nnz, index, value)\;
+			}
+		}
+	}
+}

@@ -316,6 +316,17 @@ On top of that, to further reduce the number of generated GSECs, we report only 
 The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 
 \begin{algorithm}
+	\caption{An algorithm for separating GSEC integral inequalities for the CPTP}
+	\label{algo:glm-integral-sep}
+	\KwResult{$n_c$: number of subtours formed}
+    \KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
+    \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+    \input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
+\end{algorithm}
+
+
+
+\begin{algorithm}
 	\caption{An algorithm for separating GSEC fractional inequalities for the CPTP}
 	\label{algo:gsec-frac-sep}
     \KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
