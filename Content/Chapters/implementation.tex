@@ -163,34 +163,36 @@ The connected components can be computed by a simple depth first search traversa
 	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
-	$cc[i] \gets -1 \quad \forall i \in V$\;
-	$nc \gets 0$\;
-	\For{$i\gets0$ \KwTo $N$}{
-		\If{$cc[i] < 0, y_i \ge 0.5$}{
-			\Comment{Found a non visited subtour}
-			$cc[i] \gets n_c$\;
-			$u \gets -1$\;
-			\Comment{Traverse the subtour}
-			\Do{$u \ge 0$}{
-				$v \gets -1$\;
-				\For{$j \in V \mid (u, j) \in E, cc[j] < 0, x^*_{uj} \ge 0.5$}{
-					\Comment{The body of this loop will execute only once}
-					$cc[j] = n_c$\;
-					$v \gets j$\;
-				}
-				$u \gets v$
-			}
-			$n_c \gets n_c + 1$\;
-		}
-	}
+    \Proc{\textit{cc\_dfs}($x^*$: float[], $y^*$: float[])}{
+    $cc[i] \gets -1 \quad \forall i \in V$\;
+    $nc \gets 0$\;
+    \For{$i\gets0$ \KwTo $N$}{
+        \If{$cc[i] < 0, y^*_i \ge 0.5$}{
+            \Comment{Found a non visited subtour}
+            $cc[i] \gets n_c$\;
+            $u \gets -1$\;
+            \Comment{Traverse the subtour}
+            \Do{$u \ge 0$}{
+                $v \gets -1$\;
+                \For{$j \in V \mid (u, j) \in E, cc[j] < 0, x^*_{uj} \ge 0.5$}{
+                    \Comment{The body of this loop will execute only once}
+                    $cc[j] = n_c$\;
+                    $v \gets j$\;
+                }
+                $u \gets v$
+            }
+            $n_c \gets n_c + 1$\;
+        }
+    }
 
-	\Comment{Validate some invariants}
-	\Assert{$n_c \ge 0$}\;
-	\Assert{$c[0] = 0$}\;
-	\Assert{$c[i] = -1 \quad \forall i \in V_0 \mid y_i < 0.5$}\;
-	\Assert{$c[i] \ge 0 \quad \forall i \in V_0 \mid y_i \ge 0.5$}\;
-	\Comment{Done: terminate}
-	\Return{$n_c, cc$}
+    \Comment{Validate some invariants}
+    \Assert{$n_c \ge 0$}\;
+    \Assert{$c[0] = 0$}\;
+    \Assert{$c[i] = -1 \quad \forall i \in V_0 \mid y_i < 0.5$}\;
+    \Assert{$c[i] \ge 0 \quad \forall i \in V_0 \mid y_i \ge 0.5$}\;
+    \Comment{Done: terminate}
+    \Return{$n_c, cc$}
+}
 \end{algorithm}
 Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
 
