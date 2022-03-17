@@ -413,3 +413,24 @@ is violated.
 The $\varepsilon_{\mt{RCI}}$ is a constant which denotes the violation tolerance for the RCI fractional separation.
 In our implementation we picked $\varepsilon_{\mt{RCI}} = 0.05$.
 We can separate $O(N^2)$ RCI cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
+
+The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:rci-integral-sep}, \ref{algo:rci-frac-sep} respectively.
+
+
+\begin{algorithm}
+	\caption{An algorithm for separating RCI integral inequalities for the CPTP}
+	\label{algo:rci-integral-sep}
+	\KwResult{$n_c$: number of subtours formed}
+    \KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
+    \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+    \input{Content/Chapters/Snippets/rci-integral-sep-pseudoalgo.tex}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\caption{An algorithm for separating RCI fractional inequalities for the CPTP}
+	\label{algo:rci-frac-sep}
+    \KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+    \KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+    \input{Content/Chapters/Snippets/rci-frac-sep-pseudoalgo.tex}
+\end{algorithm}

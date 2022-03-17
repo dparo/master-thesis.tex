@@ -1,0 +1,34 @@
+\Proc{\textit{rci\_frac\_sep}($n_c$, $cc$, $x^*$, $y^*$)}{
+	\Const $\varepsilon_{\mt{RCI}} \gets 0.05$\;
+
+	\For{$c \gets 1$ \KwTo $n_c$}{
+		\Let $S$\;
+		\uIf{$0 \notin F_1(s, t)$}{
+			$S \gets F_1(s, t)$\;
+		}\Else{
+			$S \gets F_2(s, t)$\;
+		}
+		\Let $Q_S$ $\gets \sum_{i \in S} q_i$\;
+		\Let $S_S$ $\gets \sum_{i \in S} y_i \cdot q_i$\;
+		\Let $Q_R$ $\gets$ $\mod(Q_S, Q)$\;
+		\If{$Q_R > 0$ \And $|S| \ge 1$}{
+			\If{$\maxflow(s, t) -2 S_S / Q_R$ $<$ $2 \ceil*{Q_S / Q} - 2 Q_S / Q_R$ - $\varepsilon_{\mt{RCI}}$}{
+				\Comment{Build the cut}
+				\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+				\For{$i \in V \mid i \in S$}{
+					index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
+					value[nnz] $\gets$ $-2 q_i / Q_R$\;
+					nnz $\gets$ nnz + $1$\;
+
+					\For{$j \in V \mid j \notin S$}{
+						index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
+						value[nnz] $\gets$ $1$\;
+						nnz $\gets$ nnz + $1$\;
+					}
+				}
+				\Comment{Reject and report cut to MIP}
+				mip\_add\_user\_cut(nnz, index, value)\;
+			}
+		}
+	}
+}
