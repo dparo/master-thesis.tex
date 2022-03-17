@@ -342,7 +342,7 @@ In our implementation we picked $\varepsilon_{\mt{GSEC}} = 0.2$.
 If the GSEC inequality violation does not surpass this tolerance, the GSEC inequality is not generated and reported to the MIP solver.
 On top of that, to further reduce the number of generated GSECs, we report only the single most violated GSEC per set $S \subseteq V_0$ by using the customer $i \in V_0$ that maximizes the $\maxflow(s, t) - 2 y_i$ violation.
 
-The complete pseudo-algorithm can be found in \ref{algo:gsec-frac-sep}.
+The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC fractional inequalities for the CPTP}
@@ -363,7 +363,7 @@ The complete pseudo-algorithm can be found in \ref{algo:gsec-frac-sep}.
         \For{$i \in V \mid i \in S$}{
             \Let $v \gets \maxflow(s, t) - 2 y^*_i$\;
 
-            \If{$\maxflow(s, t) \ge 2 y^*_i - \varepsilon_{\mt{GSEC}}$ \And $v < m$}{
+        \If{$\Expr*{\maxflow(s, t) < 2 y^*_i - \varepsilon_{\mt{GSEC}}}$ \And $v < m$}{
                 $c \gets i$\;
                 $m \gets v$\;
             }
@@ -416,7 +416,7 @@ Otherwise a single GLM cut can be separated if the following inequality
 
 \begin{equation}
 	\begin{split}
-		\ExprCptpFlowExitingWithWeight{S}{\Expr*{1 - 2 \frac{q_j}{Q}}} - 2 	\ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{Q}} \ge - \varepsilon_{\mt{GSEC}}
+		\ExprCptpFlowExitingWithWeight{S}{\Expr*{1 - 2 \frac{q_j}{Q}}} - 2 	\ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{Q}} \ge - \varepsilon_{\mt{GLM}}
 	\end{split}
 \end{equation}
 
@@ -424,6 +424,89 @@ is violated.
 The $\varepsilon_{\mt{GLM}}$ is a constant which denotes the violation tolerance for the GLM fractional separation.
 In our implementation we picked $\varepsilon_{\mt{GLM}} = 0.05$.
 We can separate $O(N^2)$ GLM cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
+
+The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:glm-integral-sep}, \ref{algo:glm-frac-sep} respectively.
+
+
+\begin{algorithm}
+	\caption{An algorithm for separating GLM integral inequalities for the CPTP}
+	\label{algo:glm-integral-sep}
+	\KwResult{$n_c$: number of subtours formed}
+    \KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
+    \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+    \Proc{\textit{glm\_integral\_sep}($n_c$, $cc$, $x^*$, $y^*$)}{
+        \Const $\varepsilon_{\mt{GLM}} \gets 0.01$\;
+
+        \For{$c \gets 1$ \KwTo $n_c$}{
+            \Let $S \gets  \Set* {i \mid cc[i] = c}$\;
+            \If{$|S| \ge 2$}{
+                \Comment{Build the cut}
+                \Let lhs $\gets 0$\;
+                \Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+                \For{$i \in V \mid i \in S$}{
+                    \For{$j \in V \mid j \notin S$}{
+                        index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
+                        value[nnz] $\gets$ $1 - 2 q_j / Q$\;
+                        lhs $\gets$ lhs + $x^*_{ij} \cdot (1 - 2 q_j / Q)$\;
+                        nnz $\gets$ nnz + $1$\;
+                    }
+                }
+                \For{$i \in V \mid i \in S$}{
+                    index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
+                    value[nnz] $\gets$ $-2 q_i / Q$\;
+                    lhs $\gets$ lhs + $y^*_{i} \cdot (2 q_i / Q)$\;
+                    nnz $\gets$ nnz + $1$\;
+                }
+                \If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
+                    \Comment{Reject and report cut to MIP}
+                    mip\_add\_user\_cut(nnz, index, value)\;
+                }
+            }
+        }
+    }
+\end{algorithm}
+
+
+\begin{algorithm}
+	\caption{An algorithm for separating GLM fractional inequalities for the CPTP}
+	\label{algo:glm-frac-sep}
+    \KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+    \KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+    \Proc{\textit{glm\_frac\_sep}($\maxflow(s, t)$, $F_1(s, t)$, $F_2(s, t)$, $x^*$, $y^*$)}{
+        \Const $\varepsilon_{\mt{GLM}} \gets 0.05$\;
+        \Let $S$\;
+        \uIf{$0 \notin F_1(s, t)$}{
+            $S \gets F_1(s, t)$\;
+        }\Else{
+            $S \gets F_2(s, t)$\;
+        }
+
+        \If{$|S| \ge 2$}{
+            \Comment{Build the cut}
+            \Let lhs $\gets 0$\;
+            \Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+            \For{$i \in V \mid i \in S$}{
+                \For{$j \in V \mid j \notin S$}{
+                    index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
+                    value[nnz] $\gets$ $1 - 2 q_j / Q$\;
+                    lhs $\gets$ lhs + $x^*_{ij} \cdot (1 - 2 q_j / Q)$\;
+                    nnz $\gets$ nnz + $1$\;
+                }
+            }
+            \For{$i \in V \mid i \in S$}{
+                index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
+                value[nnz] $\gets$ $-2 q_i / Q$\;
+                lhs $\gets$ lhs + $y^*_{i} \cdot (2 q_i / Q)$\;
+                nnz $\gets$ nnz + $1$\;
+            }
+            \If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
+                \Comment{Reject and report cut to MIP}
+                mip\_add\_user\_cut(nnz, index, value)\;
+            }
+        }
+    }
+\end{algorithm}
+
 
 
 \subsection{RCI separation}\label{sec:rci-separation}
