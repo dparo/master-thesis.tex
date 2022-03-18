@@ -11,6 +11,8 @@ RELEASE_PDF:=$(BUILD_DIR)/$(STUDENT_NAME).pdf
 
 SVGS := $(shell find ./Imgs -type f -name '*.svg')
 SVGS_AS_PDFS := $(patsubst %.svg, %.out.pdf, $(SVGS))
+PDFS := $(shell find ./Imgs -type f -name '*.pdf' | grep -v ".cropped.")
+PDFS_CROPPED := $(patsubst %.pdf, %.cropped.pdf, $(PDFS))
 
 
 all: $(BUILD_DIR)/main.pdf
@@ -35,12 +37,17 @@ watch:
 
 svg2pdf: $(SVGS_AS_PDFS)
 
+croppdfs: $(PDFS_CROPPED)
+
 %.out.pdf: %.svg
-	inkscape --export-overwrite --export-type=pdf --export-filename=$@ $<
+	inkscape --export-overwrite --export-type=pdf --export-filename="$@" "$<"
+
+%.cropped.pdf: %.pdf
+	pdfcrop "$<" "$@"
 
 
 
-prebuild: $(BUILD_DIR) svg2pdf
+prebuild: $(BUILD_DIR) svg2pdf croppdfs
 
 $(BUILD_DIR)/main.pdf: prebuild
 	latexmk -pdf
