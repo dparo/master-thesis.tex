@@ -4,7 +4,7 @@
 	\For{$c \gets 1$ \KwTo $n_c$}{
 		\Let $S \gets  \Set* {i \mid cc[i] = c}$\;
 		\Let $Q_S$ $\gets \sum_{i \in S} q_i$\;
-		\Let $S_S$ $\gets \sum_{i \in S} y_i \cdot q_i$\;
+		\Let $S_S$ $\gets \sum_{i \in S} y^*_i \cdot q_i$\;
 		\Let $Q_R$ $\gets$ $\mod(Q_S, Q)$\;
 		\If{$Q_R > 0$ \And $|S| \ge 1$}{
 			\If{$-2 S_S / Q_R$ $<$ $2 \ceil*{Q_S / Q} - 2 Q_S / Q_R$ - $\varepsilon_{\mt{RCI}}$}{
