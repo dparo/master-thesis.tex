@@ -21,7 +21,6 @@ Together they model respectively an edge and a vertex as being part of the tour 
 
 Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we can finally express the CPTP problem as an integer programming formulation
 
-
 \begin{align}
 	\min_{x,y} \quad z(x, y) & =  \sum_{i \in V} \sum_{\EqStackTwo{j \in V}{j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}                                                                                                                \\
 	                         & y_0 = 1                                                                                                                   & \label{eq:depot-part-of-tour-constraint}                                                                     \\
@@ -52,7 +51,6 @@ After the resolution of the IP model, we check for improving single-customer sol
 \subsection{GSECs inequalities}\label{sec:gsec-inequality}
 
 \mytodo{Add more details/history/literature about GSECs here.}
-
 
 It may be interesting to study the relationship between the number of non-zero binary variables participating in a GSEC as a function of the set size $\SetSize*{S}$.
 To achieve this we can express the size of the edge crossing set $\delta(S)$ as
@@ -86,93 +84,6 @@ Although non strictly-necessary, it is possible to improve the linear relaxation
 where $B \in \R, B \ge 0$ is a constant and represents the the required minimum served demand.
 The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0, u \ne v$ represent the least two demanding customers among all the customers, i.e. $q_u \le q_v \le q_i \quad \forall i \in V_0,\ i \ne u, v$.
 
-\section{A simple dual formulation}\label{sec:cptp-simple-dual-formulation}
-
-A simple dual formulation for the ESPPRC is presented in \cite{beasley1989algorithm} and it is here presented and re-adapted for the CPTP problem.
-
-We first need to re-formulate the CPTP as an ESPPRC over a directed network.
-We define a new drected network formulation $G_d = \Tuple*{V_d, E_d}$ composed of $N + 1$ nodes, where the depot node is essentially split in two nodes: a source and a sink vertex.
-In the new network we use the value $0$ to denote the source version of the depot node, and $N$ its duplicate playing the role of the sink vertex.
-More formally, $V_d = \Set*{ 0,\dots, N }$, and the edge set $E_d$ is
-
-\begin{equation}
-	\begin{aligned}
-		E_d = & \Set*{\Tuple*{i, j} \quad \forall i, j \in V_d,\ i \ne j } \\
-		      & \setminus \Set*{ \Tuple*{0, N} }                           \\
-		      & \setminus \Set*{ \Tuple*{i, 0} \quad \forall i \in V_d }   \\
-		      & \setminus \Set*{ \Tuple*{N, i} \quad \forall i \in V_d }   \\
-	\end{aligned}
-\end{equation}
-
-which briefly means: all possible pairs $\Tuple*{i, j},\ i \ne j$ excluding: direct connection between $0$ and $N$, and by exluding edges entering node $0$ and flowing out of node $N$.
-At each directed edge $\Tuple*{i, j} \in E_d$ we associate a cost $c_{ij} \in \R$.
-We define a new set of binary variables $e_{ij} \in \Set*{0, 1} \quad \forall \Tuple*{i, j} \in E_d$, to model solutions for ESPPRC over the directed network.
-
-Is is easy to see that $2 y_i$ in the original CPTP formulation can now be rewritten in the ESPPRC formulation as:
-
-\begin{equation}
-	2 y_i = \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} \quad \forall i \in V_0
-\end{equation}
-
-Since we are creating a new node, we are also duplicating some edges and we must pay attention that these edges bind to the same CPTP original formulation.
-We can bind the new edges to the original CPTP formulation by employing a mutually exclusive constraint of the form:
-
-\begin{equation}
-	e_{0i} + e_{iN} \le 1 \quad \forall i \in V_0
-\end{equation}
-
-Finally, by setting $c_{ij} = \ExprCptpReducedCost{i}{j} \quad \forall \Tuple*{i, j} \in E_d$, we can rewrite the CPTP original formulation in the ESPPRC IP model:
-
-\begin{align}
-	\min_{e} \quad z_\mt{ESPPRC}(e) & =  \sum_{(i, j) \in E_d} \Expr*{ \ExprCptpReducedCost{i}{j} } e_{ij} \label{eq:espprc-obj-function}                                                                                            \\
-	                                & B \le \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}        \\
-	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers} \\
-	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-flow-conservation-constraint-depot1}    \\
-	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:espprc-flow-conservation-constraint-depot2}    \\
-	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_d   \label{eq:espprc-sec-constraints}                        \\
-	                                & e_{0i} + e_{iN} \le 1                                                                                \qquad \forall i \in V_0         \label{eq:espprc-cptp-binding}                           \\
-	                                & e_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in E_d    \label{eq:espprc-e-mip-var-bounds}                \\
-\end{align}
-
-where, \eqref{eq:espprc-obj-function} is the new objective function where we dropped the dependency on the $y$ MIP variable,
-\eqref{eq:espprc-resource-upper-bound-constraint} is the resource bound expressed as a function of only the $e$ MIP variable,
-\eqref{eq:espprc-flow-conservation-constraint-customers} is the flow conservation for all vertices except the source and sink node
-and \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow-conservation-constraint-depot2} are the flow conservation for respectively the source and sink node,
-\eqref{eq:espprc-cptp-binding} avoids forming paths where a single customer is visited,
-and finally \eqref{eq:espprc-sec-constraints} are the new subtour elimination constraints which avoid the forming of spurious subtours in unconnected regions of nodes.
-
-\cite{beasley1989algorithm} propose to ignore the SEC in \eqref{eq:espprc-sec-constraints} and relaxing \eqref{eq:espprc-resource-upper-bound-constraint}, \eqref{eq:espprc-cptp-binding} in a Lagrangean fashion:
-
-\begin{align}
-	\min_{e} \quad z_\mt{ESPP}(e) & = \lambda_0 B - \lambda_1 Q + \sum_{(i, j) \in E_d}  c'_{ij} e_{ij} - \sum_{i \in V_0} \beta_i  \label{eq:esp-relaxed-obj-function} \\
-	                              & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}        \qquad \forall i \in V_0                                                \\
-	                              & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                    \\
-	                              & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                     \\
-	                              & e_{ij}                   \in \lbrace 0, 1 \rbrace           \qquad \forall \Tuple*{i, j} \in E_d
-\end{align}
-
-where:
-
-\begin{equation}
-	c'_{ij} =
-	\begin{cases}
-		\Expr*{\ExprCptpReducedCost{i}{j}} + \Expr*{\lambda_1 - \lambda_0} \frac{q_i + q_j}{2},           & \texttt{if } i \in V_0,\ j \in V_0 \\
-		\Expr*{\ExprCptpReducedCost{i}{j}} + \Expr*{\lambda_1 - \lambda_0} \frac{q_i + q_j}{2} + \beta_j, & \texttt{if } i = 0,\ j \in V_0     \\
-		\Expr*{\ExprCptpReducedCost{i}{j}} + \Expr*{\lambda_1 - \lambda_0} \frac{q_i + q_j}{2} + \beta_i, & \texttt{if } i \in V_0,\ j = N
-	\end{cases}
-\end{equation}
-
-and $\lambda_0 \ge 0, \lambda_1 \ge 0, \beta_i \ge 0 \quad \forall i \in V_0$ are the respective Lagrange multipliers.
-The above IP describes an elementary shortest path problem, where the associated weights may be negative.
-
-\cite{beasley1989algorithm} propose a subgradient procedure to obtain feasible lower bound for the original CPTP problem.
-Since the ESPP problem with arbitrary weights is an NP-hard problem, they suggest to use a standard Dijkstra algorithm, but in order to do so, the lagrange multipliers must be set such that $c'_{ij} \ge 0$ is satisfied.
-By considering only lagrange multipliers achieving $c'_{ij} \ge 0$ has the additional benefit that neglecting the SEC were justified since these would be automatically satisfied.
-The advantage of this approach is that it allows for the usage of simple of the shelf algorithms to obtain lower bounds for the CPTP.
-But, unfortunately, the lower bounds generated by such approach are unsatisfactory at best.
-As pointed out in \cite{righini2004dynamic}, solving the ESPPRC problem through Lagrangean relaxation is effective only when the Lagrangean subproblem is easy, i.e. for which $c'_{ij} \ge 0$ over a good portion of the lagrange multipliers search space.
-
-
 \section{Additional Valid Inequalities}\label{sec:additional-valid-inequalities}
 
 In this section we present additional valid inequalities for the CPTP problem.
@@ -194,7 +105,6 @@ The GLM inequalities can be expressed as:
 It is important to recall that we defined $q_0 = 0$.
 Therefore, $\sum_{i \in S} \sum_{j \in V_0 \setminus S} q_j  x_{ij}$ becomes
 
-
 \begin{equation}
 	\ExprCptpDemandServedOutsideA{S} = \ExprCptpDemandServedOutsideB{S} =\ExprCptpDemandServedOutside{S}
 \end{equation}
@@ -206,7 +116,6 @@ Finally, equation \eqref{eq:glm-inequality-v1} can be rewritten more concisely a
 		\ExprCptpFlowExitingWithWeight{S}{\Expr*{1 - 2 \frac{q_j}{Q}}} - 2 	\ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{Q}}  \ge  0   \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 	\end{split}
 \end{equation}
-
 
 Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a GLM inequality as a function of the set $S$.
 By using equation \eqref{eq:glm-inequality} and the result obtained in \eqref{eq:delta-s-set-size}, we have
@@ -220,7 +129,6 @@ It is now easy to see that the following result holds
 \begin{equation}\label{eq:glm-nnz-ub}
 	\NNZGLM(S) \le \floor*{ \frac{\Expr*{N + 1}^2}{4}} \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 \end{equation}
-
 
 \subsection{Rounded Capacity Inequalities (RCI)}
 The Rounded Capacity Inequalities, RCI for short, were first presented in \cite{achuthan_capacitated_1998}.
