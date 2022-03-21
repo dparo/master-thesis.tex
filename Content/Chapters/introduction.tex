@@ -2,12 +2,17 @@
 
 \section{The Capacitated Vehicle Routing Problem (CVRP)}
 
-The Capacitated Vehicle Routing Problem (CVRP) can be considered as a generalization of
+The Capacitated Vehicle Routing Problem (CVRP), first formulated in \cite{dantzig1959truck},
+can be considered as a generalization of
 the well-known Travelling Salesman Problem (TSP).
-It was first formulated in \cite{dantzig1959truck}
-under the initial name of "the truck dispatching problem".
+The problem consists in finding an optimal route for a delivery problem,
+where a fleet composed of a fixed number of trucks, subject to capacity constraints,
+need to serve customer demands.
+Given as input a weighted graph, the customer demands and the vehicle capacity,
+the problem consists in minimizing the total travel distance of all the routes,
+while serving all the customers.
 
-\subsection{CVRP mathematical formulations}
+\subsection{Mathematical formulations}
 
 \subsubsection{Compact formulation}
 
@@ -20,3 +25,26 @@ under the initial name of "the truck dispatching problem".
 \section{Literature Review}
 
 \section{Thesis contributions}
+The objective of the thesis is to study the feasibility of employing a MIP solver
+based on a Branch \& Cut Framework to solve the pricing problem induced in solving
+CVRP instances.
+A similar study was already performed in \cite{Jepsen2014}.
+Part of the objective of the thesis is to revisit the work of Jepsen comparing
+the performance of a Branch \& Cut Framework against the state of the art work
+\cite{pessoa2020generic}.
+One of the core contributions is the verification of whether a Branch \& Cut Framework
+can perform better than the dynamic labeling algorithm employed \cite{pessoa2020generic},
+especially when the optimal routes tend to be longer than usual.
+
+One of the main issues in the work of \cite{pessoa2020generic}, is that
+most of the algorithms were optimized for dated datasets, the problem
+is that these instances are quite anachronistic, in practice, in modern
+distribution problems, the vehicle capacity is rarely the bottleneck.
+The same truck within a single day is meant to serve a higher number of customers
+compared to the widely employed standard datasets.
+It is known that the labeling algorithm tend to deteriorate in performance when
+the optimal routes that need to be generated tend to become longer.
+
+This thesis aims at providing a first proof-of-concept answer to the question
+whether it is better to employ a Branch \& Cut framework to solve the pricing problem
+when the routes become longer.
