@@ -2,15 +2,24 @@
 
 \section{The Capacitated Vehicle Routing Problem (CVRP)}
 
-The Capacitated Vehicle Routing Problem (CVRP), first formulated in \cite{dantzig1959truck},
+The Capacitated Vehicle Routing Problem (CVRP), first presented in \cite{dantzig1959truck},
 can be considered as a generalization of
 the well-known Travelling Salesman Problem (TSP).
-The problem consists in finding an optimal route for a delivery problem,
-where a fleet composed of a fixed number of trucks, subject to capacity constraints,
+The problem consists in finding an optimal route for a delivery problem
+starting from a common point called the depot,
+where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
 need to serve customer demands.
-Given as input a weighted graph, the customer demands and the vehicle capacity,
-the problem consists in minimizing the total travel distance of all the routes,
+Given as input: a weighted graph, the customer demands and the vehicle capacity,
+the problem consists in minimizing the overall travel distance,
 while serving all the customers.
+
+The CVRP belongs to the wider class of problems called the Vehicle Routing Problems (VRPs).
+There are many variations of VRPs proposed in the literature such as
+famous is the Vehicle Routing Problem with Time Windows (VRPTW) and more, but still, CVRP remains
+probably the most central and studied VRP problem.
+For a more complete survey of the various variations of the VRP problems refer to \cite{poggi2014chapter}.
+
+
 
 \subsection{Mathematical formulations}
 
@@ -23,6 +32,23 @@ while serving all the customers.
 \section{Column generation and the Pricing Problem}
 
 \section{Literature Review}
+
+\begin{quote}
+	Before 1980 very few exact algorithms for cvrp and vrptw had been
+	proposed, but in the early 1980s two new exact methods where proposed.
+	From this point the history of exact methods for cvrp and vrptw can
+	be divided into three phases. The first phase was the introduction of the
+	Set Partition and the development of Branch-and-Cut-and-Price (bp) algo-
+	rithms using a relaxed pricing problem. The second was the development of
+	Branch-and-Cut (bac) algorithms. In the current phase the pricing problem
+	is no longer relaxed and cuts in the master problem of the Branch-and-Cut-
+	and-Price algorithms is used. The first two phases where started at the same
+	point in time and there is still development on the algorithms in the context
+	of cvrp and vrptw. The algorithms from these two phases are also used
+	on several other variants of the Vehicle Routing Problem. The third phase
+	was started in the middle of the 2000s and the algorithms from this phase
+	are currently the best overall performing algorithms \cite{jepsen_branch-and-cut_2011}.
+\end{quote}
 
 \section{Thesis contributions}
 The objective of the thesis is to study the feasibility of employing a MIP solver
