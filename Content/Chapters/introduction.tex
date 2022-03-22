@@ -4,7 +4,8 @@
 
 The Capacitated Vehicle Routing Problem (CVRP), first presented in \textcite{dantzig1959truck},
 can be considered as a generalization of
-the well-known Travelling Salesman Problem (TSP).
+the well-known Travelling Salesman Problem (TSP), and it is a
+very well-known combinatorial optimization problem.
 The problem consists in finding an optimal route for a delivery problem
 starting from a common point called the depot,
 where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
@@ -45,13 +46,30 @@ Let $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent the 
 For convenience we fix $q_0 = 0$.
 Let $d_{ij} \in \R, d_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 We assume that the distance function is symmetric $d_{ij} = d_{ji}$ and satisfies the triangle inequality $d_{ij} \le d_{ih} + d_{hj}$.
+Finally, given the total number of trucks $K > 0, K \in \N_+$ and an upper bound $Q \in \R,Q \ge 0$ representing the capacity of each truck, we can finally express the CVRP problem as an Integer Programming (IP) formulation.
 
-We define a set of binary variables $x_{ij} \in \Set*{0, 1}, (i, j) \in E$, to encode whether edge $(i, j)$ is picked in the CVRP solution.
-Finally, given an upper bound $Q \in \R,Q \ge 0$ representing the capacity of each truck, we can finally express the CVRP problem as an Integer Programming (IP) formulation.
-
+A feasible solution to the CVRP problem consists of $K$ tours starting from the depot node, each customer is visited exactly once, and the sum of the customer demands visited in each tour does not exceed the truck capacity $Q$.
+An optimal solution to the CVRP is a feasible solution which minimizes the sum of the overall edge weights across all the tours.
 In the remainder of the section we introduce the two most common IP mathematical formulations for the CVRP.
 
 \subsubsection{The three-index flow formulation}
+The tree-index flow formulation, first presented in \textcite{toth_vehicle_2002}, is an IP model using $O(N^2 K + N K)$ binary variables.
+
+We define a set of binary variables $x_{ijk} \in \Set*{0, 1}, (i, j) \in E, k = 1, \dots, K$, to encode whether vehicle $k$ traverses edge $(i, j)$,
+and another set of binary variables $y_{ik} \in \Set*{0, 1}, i \in V, k = 1, \dots, K$ to encode whether truck $k$ serves node $i \in V$.
+
+\begin{align}
+	\min_{x, y} \quad z(x, y) & =  \sum_{k = 1}^K \sum_{(i, j) \in E} d_{ij} x_{ijk}\label{eq:three-index-flow-obj-func}                                                                                                                          \\
+	                          & \sum_{k = 1}^K y_{ik}                                                                    & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited} \\
+	                          & \sum_{k = 1}^K y_{0k}                                                                    & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                              \\
+	                          & \sum_{\EqStackTwo{j \in V}{(i, j) \in E}} x_{ijk} = y_{ik}                               & \quad \forall i \in V,\ k = 1, \dots, K \label{eq:three-index-flow-force-visited-customer-if-flow}                     \\
+	                          & \sum_{i \in V} q_i y_{ik} \le Q                                                          & \quad \forall k = 1, \dots, K \label{eq:three-index-flow-force-visited-customer-if-flow}                               \\
+	                          & \sum_{i, j \in S} x_{ijk} \le |S| - 1                                                    & \quad \forall S \subseteq V, |S| \ge 2,\ k = 1, \dots, K \label{eq:three-index-flow-secs}                              \\
+	                          & x_{ijk}                   \in \Set*{0, 1}                                                & \quad \forall (i, j) \in E,\ k = 1, \dots, K             \label{eq:three-index-flow-x-mip-var-bounds}                  \\
+	                          & y_{ik}                    \in \Set*{0, 1}                                                & \quad \forall i \in V,k = 1, \dots, K  \label{eq:three-index-flow-y-mip-var-bounds}
+\end{align}
+
+
 
 
 \subsubsection{The Set Partitioning (SP) formulation}
