@@ -75,7 +75,8 @@ constraint \ref{eq:three-index-flow-tour-starts-and-ends-at-depot} force all the
 constraint \ref{eq:three-index-flow-force-visited-customer-if-flow} binds the $y_{ik}$ variables to appropriate $x_{ijk}$ variables,
 namely if truck $k$ serves customer $i$, then at least two incident edges to $i$ must be picked in the tour of truck $k$,
 constraint \ref{eq:three-index-flow-force-resource-upper-bound} is the resource upper bound contraint and it ensures that the demand served by each truck does not exceed the truck capacity,
-finally, constraint \ref{eq:three-index-flow-secs} are the TSP subtour elimination constraints and are used to avoid the formation of spurious unconnected subtours.
+finally, constraint \ref{eq:three-index-flow-secs} are the TSP subtour elimination constraints (SECs) and are used to avoid the formation of spurious unconnected subtours.
+Since the number of SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
 
 The three-index flow formulation is usually solved through the usage of a standard Branch \& Cut framework approach.
 Modern CVRP solvers, instead, rely on a different mathematical formulation and employ a  mostly Branch \& Price based-approach (although hybridization are also possible).
@@ -85,6 +86,24 @@ In the next subsection we will introduce the set partitioning formulation, and i
 we will briefly introduce the key ingredients of modern Branch \& Price solvers.
 
 \subsubsection{The Set Partitioning (SP) formulation}
+The Set Partitioning (SP) integer programming formulation presented in \textcite{balinski1964integer},
+works substantially differently from the three-index flow formulation or any other commonly employed
+IP formulations, by basically offloading all the model complexity to an exponential number of binary variables.
+
+Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
+let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
+and finally let $a_{ijp} \in \Set*{0, 1}$ be a "static encoding" for a route $p$, i.e. if arc $(i, j)$ is used by route $p$.
+We can write the full model as:
+
+
+\begin{align}
+	\min_{\lambda} \quad z(\lambda) & = \sum_{p \in P} \sum_{(i, j) \in E} d_{ij} a_{ijp} \lambda_p \label{eq:set-partitioning-obj-func}                                                                                                                                           \\
+	                                & \sum_{p \in P} \sum_{(i, j) \in \delta(i)} a_{ijp} \lambda_p = 2                                   & \quad \forall i \in V_0                                              \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
+	                                & \sum_{p \in P} \lambda_{p} = K                                                                     & \quad \forall i \in V_0                                              \label{eq:set-partitioning-K-routes}                               \\
+	                                & \lambda_p                    \in \Set*{0, 1}                                                       & \quad \forall p \in P \label{eq:set-partitioning-lambda-mip-var-bounds}
+\end{align}
+
+
 
 \section{Resolution methods}
 
