@@ -59,18 +59,30 @@ We define a set of binary variables $x_{ijk} \in \Set*{0, 1}, (i, j) \in E, k = 
 and another set of binary variables $y_{ik} \in \Set*{0, 1}, i \in V, k = 1, \dots, K$ to encode whether truck $k$ serves node $i \in V$.
 
 \begin{align}
-	\min_{x, y} \quad z(x, y) & =  \sum_{k = 1}^K \sum_{(i, j) \in E} d_{ij} x_{ijk}\label{eq:three-index-flow-obj-func}                                                                                                                          \\
-	                          & \sum_{k = 1}^K y_{ik}                                                                    & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited} \\
-	                          & \sum_{k = 1}^K y_{0k}                                                                    & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                              \\
-	                          & \sum_{\EqStackTwo{j \in V}{(i, j) \in E}} x_{ijk} = y_{ik}                               & \quad \forall i \in V,\ k = 1, \dots, K \label{eq:three-index-flow-force-visited-customer-if-flow}                     \\
-	                          & \sum_{i \in V} q_i y_{ik} \le Q                                                          & \quad \forall k = 1, \dots, K \label{eq:three-index-flow-force-visited-customer-if-flow}                               \\
-	                          & \sum_{i, j \in S} x_{ijk} \le |S| - 1                                                    & \quad \forall S \subseteq V, |S| \ge 2,\ k = 1, \dots, K \label{eq:three-index-flow-secs}                              \\
-	                          & x_{ijk}                   \in \Set*{0, 1}                                                & \quad \forall (i, j) \in E,\ k = 1, \dots, K             \label{eq:three-index-flow-x-mip-var-bounds}                  \\
-	                          & y_{ik}                    \in \Set*{0, 1}                                                & \quad \forall i \in V,k = 1, \dots, K  \label{eq:three-index-flow-y-mip-var-bounds}
+	\min_{x, y} \quad z(x, y) & =  \sum_{k = 1}^K \sum_{(i, j) \in E} d_{ij} x_{ijk} \label{eq:three-index-flow-obj-func}                                                                                                                          \\
+	                          & \sum_{k = 1}^K y_{ik}                                                                     & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited} \\
+	                          & \sum_{k = 1}^K y_{0k}                                                                     & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                              \\
+	                          & \sum_{\EqStackTwo{j \in V}{(i, j) \in E}} x_{ijk} = 2 y_{ik}                              & \quad \forall i \in V,\ k = 1, \dots, K \label{eq:three-index-flow-force-visited-customer-if-flow}                     \\
+	                          & \sum_{i \in V} q_i y_{ik} \le Q                                                           & \quad \forall k = 1, \dots, K \label{eq:three-index-flow-force-resource-upper-bound}                                   \\
+	                          & \sum_{i, j \in S} x_{ijk} \le |S| - 1                                                     & \quad \forall S \subseteq V, |S| \ge 2,\ k = 1, \dots, K \label{eq:three-index-flow-secs}                              \\
+	                          & x_{ijk}                   \in \Set*{0, 1}                                                 & \quad \forall (i, j) \in E,\ k = 1, \dots, K             \label{eq:three-index-flow-x-mip-var-bounds}                  \\
+	                          & y_{ik}                    \in \Set*{0, 1}                                                 & \quad \forall i \in V,k = 1, \dots, K  \label{eq:three-index-flow-y-mip-var-bounds}
 \end{align}
 
+where \ref{eq:three-index-flow-obj-func} is the objective function to be minimized (i.e. the overall travel distance),
+constraint \ref{eq:three-index-flow-all-customers-visited} force all customers to be served exactly once,
+constraint \ref{eq:three-index-flow-tour-starts-and-ends-at-depot} force all the truck tours to start at the depot and end at the same spot,
+constraint \ref{eq:three-index-flow-force-visited-customer-if-flow} binds the $y_{ik}$ variables to appropriate $x_{ijk}$ variables,
+namely if truck $k$ serves customer $i$, then at least two incident edges to $i$ must be picked in the tour of truck $k$,
+constraint \ref{eq:three-index-flow-force-resource-upper-bound} is the resource upper bound contraint and it ensures that the demand served by each truck does not exceed the truck capacity,
+finally, constraint \ref{eq:three-index-flow-secs} are the TSP subtour elimination constraints and are used to avoid the formation of spurious unconnected subtours.
 
-
+The three-index flow formulation is usually solved through the usage of a standard Branch \& Cut framework approach.
+Modern CVRP solvers, instead, rely on a different mathematical formulation and employ a  mostly Branch \& Price based-approach (although hybridization are also possible).
+The Set Partitioning (SP) formulation is the main starting point employed by Branch \& Price solvers.
+In this thesis we will mostly concentrate onm Branch \& Price approeaches for the CVRP.
+In the next subsection we will introduce the set partitioning formulation, and in the remainder of the section
+we will briefly introduce the key ingredients of modern Branch \& Price solvers.
 
 \subsubsection{The Set Partitioning (SP) formulation}
 
