@@ -90,6 +90,7 @@ The Set Partitioning (SP) integer programming formulation presented in \textcite
 works substantially differently from the three-index flow formulation or any other commonly employed
 IP formulations, by using a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
 
+The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig_decomposition_1960} of the three-index flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
 let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
 and finally let $a_{ijp} \in \Set*{0, 1}$ be a "static encoding" for a route $p$, i.e. if arc $(i, j)$ is used by route $p$.
@@ -104,18 +105,15 @@ We can write the full model as:
 \end{align}
 
 where \eqref{eq:set-partitioning-obj-func} is the objective function to be minimized (i.e. the overall travel distance),
-constraint \eqref{eq:set-partitioning-lambda-mip-var-bound} is the integrality constraint of all the feasible routes,
+constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the integrality constraint of all the feasible routes,
 constraint \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be served from a single unique route,
 constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are picked.
 
 As one may guess, the SP formulation cannot be used in as-is practice due the exponential number of binary variables.
-However, by employing a properly engineered column generation approach embedde inside a Branch \& Price framework has
+However, by employing a properly engineered column generation approach embedded inside a Branch \& Price framework has
 been shown to work remarkably well for the standard employed CVRP instances of the literature.
 
-In the next sections we will introduce the Branch \& Price framework and the column generation approach, key componenets employed in modern state-of-the-art CVRP solvers.
-
-
-
+In the next sections we will introduce the Branch \& Price framework and the column generation approach, key components employed in modern state-of-the-art CVRP solvers.
 
 \section{Resolution methods}
 
