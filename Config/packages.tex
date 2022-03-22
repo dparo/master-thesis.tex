@@ -15,7 +15,11 @@
 \usepackage{subcaption}    % For handling subfigures, i.e. nesting figures, list of figures, array of figures, etc
 
 % biblatex is better than default bibtex
-\usepackage[backend=biber,style=authoryear,autocite=plain]{biblatex}
+\usepackage[
+	backend=biber,
+	natbib,       % natbib comptability: Create natbib aliases commands that map to biblatex core commands
+	style=authoryear,
+	autocite=plain]{biblatex}
 
 
 %%

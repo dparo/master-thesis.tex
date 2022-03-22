@@ -13,25 +13,46 @@ Given as input: a weighted graph, the customer demands and the vehicle capacity,
 the problem consists in minimizing the overall travel distance,
 while serving all the customers.
 
-The CVRP belongs to the wider class of problems called the Vehicle Routing Problems (VRPs).
+The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
-famous is the Vehicle Routing Problem with Time Windows (VRPTW) and more, but still, CVRP remains
-probably the most central and studied VRP problem.
+the Vehicle Routing Problem with Time Windows (VRPTW) and many others, but still, CVRP remains
+probably the most central and studied one.
 For a more complete survey of the various variations of the VRP problems refer to \cite{poggi2014chapter}.
 
 \section{Mathematical formulations}
 
-In this section we define the CVRP through two very-known mathematical formulations:
+In this section we define the CVRP through two very well known mathematical formulations:
 the three-index flow formulation presented in \textcite{toth_vehicle_2002} and
 the Set Partitioning (SP) formulation presented in \textcite{balinski1964integer}.
-Despite the SP formulation being older, thanks to modern advances in efficient
-algorithms and Branch \& Price solvers, the SP formulation has gained traction in the later years.
+Despite the SP formulation being older, in later years thanks to algorithmic advances
+and the development of efficient Branch \& Price frameworks, it has become the defacto
+state-of-the-art core component for solving CVRP problems \parencite{pessoa2020generic}.
 
-
-We first need to define some mathematical quantities that will be used throughout
+We begin the section by defining some mathematical quantities that will be used throughout
 the remainder of the chapter.
 
+\medskip
+
+Let $G = \Tuple*{V, E}$ denote a complete undirected graph, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
+$E = \Set*{e = (i, j) \mid \allowbreak i,j \in V, \allowbreak  j \ge i + 1}$ the set of edges, and $N$ the number of nodes in the graph.
+The value $0 \in V$ is used to denote the depot node.
+For convenience, we define $V_0 = V \setminus \Set*{0}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
+Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
+More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ (i, j) \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
+For brevity, we also define $\delta(i) = \delta(\Set*{i})$ to denote the set of edges incident to node $i \in V$.
+
+Let $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent the required demand in visiting a vertex $i \in V$.
+For convenience we fix $q_0 = 0$.
+Let $d_{ij} \in \R, d_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
+We assume that the distance function is symmetric $d_{ij} = d_{ji}$ and satisfies the triangle inequality $d_{ij} \le d_{ih} + d_{hj}$.
+
+We define a set of binary variables $x_{ij} \in \Set*{0, 1}, (i, j) \in E$, to encode whether edge $(i, j)$ is picked in the CVRP solution.
+Finally, given an upper bound $Q \in \R,Q \ge 0$ representing the capacity of each truck, we can finally express the CVRP problem as an Integer Programming (IP) formulation.
+
+In the remainder of the section we introduce the two most common IP mathematical formulations for the CVRP.
+
 \subsubsection{The three-index flow formulation}
+
 
 \subsubsection{The Set Partitioning (SP) formulation}
 
