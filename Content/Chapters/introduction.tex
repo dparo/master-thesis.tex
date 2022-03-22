@@ -106,7 +106,14 @@ We can write the full model as:
 where \eqref{eq:set-partitioning-obj-func} is the objective function to be minimized (i.e. the overall travel distance),
 constraint \eqref{eq:set-partitioning-lambda-mip-var-bound} is the integrality constraint of all the feasible routes,
 constraint \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be served from a single unique route,
-constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are picked,
+constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are picked.
+
+As one may guess, the SP formulation cannot be used in as-is practice due the exponential number of binary variables.
+However, by employing a properly engineered column generation approach embedde inside a Branch \& Price framework has
+been shown to work remarkably well for the standard employed CVRP instances of the literature.
+
+In the next sections we will introduce the Branch \& Price framework and the column generation approach, key componenets employed in modern state-of-the-art CVRP solvers.
+
 
 
 
