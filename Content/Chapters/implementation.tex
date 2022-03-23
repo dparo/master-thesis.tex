@@ -159,11 +159,11 @@ The connected components can be computed by a simple depth first search traversa
 
 \begin{algorithm}
 	\label{algo:cc-dfs}
-    \caption{An algorithm for computing the connected components through a DFS traversal}
-    \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
-    \KwResult{$n_c$: number of subtours formed}
-    \KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
-    \input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
+	\caption{An algorithm for computing the connected components through a DFS traversal}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
+	\KwResult{$n_c$: number of subtours formed}
+	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
+	\input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
 \end{algorithm}
 
 Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
@@ -177,10 +177,10 @@ If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral soluti
 A block diagram summarizing the integral separation is provided in Figure \ref{fig:integral-separation-block-diagram}.
 
 \begin{figure}[ht]
-\centering
-\framebox{\includegraphics[width=6cm]{Imgs/integral-separation-block-diagram.cropped.pdf}}
-\caption{A block diagram representing the structure of the employed integral separation procedure.}
-\label{fig:integral-separation-block-diagram}
+	\centering
+	\framebox{\includegraphics[width=6cm]{Imgs/integral-separation-block-diagram.cropped.pdf}}
+	\caption{A block diagram representing the structure of the employed integral separation procedure.}
+	\label{fig:integral-separation-block-diagram}
 \end{figure}
 
 
@@ -267,10 +267,10 @@ A block diagram summarizing the fractioanl separation is provided in Figure \ref
 In the following sections we describe how we separate each inequality using the computed $S \subseteq V_0$.
 
 \begin{figure}[ht]
-\centering
-\framebox{\includegraphics[width=8cm]{Imgs/fractional-separation-block-diagram.cropped.pdf}}
-\caption{A block diagram representing the structure of the employed fractional separation procedure. Recall that fractional separation occurrs only at iterations multiple of $N$. This is done to amortize the cost of the expensive maxflow/mincut procedure.}
-\label{fig:fractional-separation-block-diagram}
+	\centering
+	\framebox{\includegraphics[width=8cm]{Imgs/fractional-separation-block-diagram.cropped.pdf}}
+	\caption{A block diagram representing the structure of the employed fractional separation procedure. Recall that fractional separation occurrs only at iterations multiple of $N$. This is done to amortize the cost of the expensive maxflow/mincut procedure.}
+	\label{fig:fractional-separation-block-diagram}
 \end{figure}
 
 
@@ -302,9 +302,9 @@ A complete pseudo-code is provided in Algorithm \ref{algo:gsec-integral-sep}.
 	\caption{An algorithm for separating GSEC integral inequalities for the CPTP}
 	\label{algo:gsec-integral-sep}
 	\KwResult{$n_c$: number of subtours formed}
-    \KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-    \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
-    \input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
+	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+	\input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
 
@@ -348,14 +348,21 @@ The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC fractional inequalities for the CPTP}
 	\label{algo:gsec-frac-sep}
-    \KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
-    \KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
-    \input{Content/Chapters/Snippets/gsec-frac-sep-pseudoalgo.tex}
+	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+	\input{Content/Chapters/Snippets/gsec-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
 
 
 \subsection{GLM separation}\label{sec:glm-separation}
+\begin{quote}
+	The idea in the GLM is to consider the number of vehicles needed to service
+	the set S. A valid lower bound for this is the demand of the set plus any
+	customer visited directly from the set divided by the capacity \cite{jepsen_branch-and-cut_2011}.
+\end{quote}
+
+
 In this section we describe the separation of the GLM inequalities, as they were defined in Equation \eqref{eq:glm-inequality}.
 In our work we implemented both the integral and the fractional separation for this family of inequalities.
 However, in this section we will explain only the fractional separation and we will omit the details about integral separation.
@@ -396,18 +403,18 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\caption{An algorithm for separating GLM integral inequalities for the CPTP}
 	\label{algo:glm-integral-sep}
 	\KwResult{$n_c$: number of subtours formed}
-    \KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-    \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
-    \input{Content/Chapters/Snippets/glm-integral-sep-pseudoalgo.tex}
+	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+	\input{Content/Chapters/Snippets/glm-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
 
 \begin{algorithm}
 	\caption{An algorithm for separating GLM fractional inequalities for the CPTP}
 	\label{algo:glm-frac-sep}
-    \KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
-    \KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
-    \input{Content/Chapters/Snippets/glm-frac-sep-pseudoalgo.tex}
+	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+	\input{Content/Chapters/Snippets/glm-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
 
@@ -440,16 +447,16 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\caption{An algorithm for separating RCI integral inequalities for the CPTP}
 	\label{algo:rci-integral-sep}
 	\KwResult{$n_c$: number of subtours formed}
-    \KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-    \KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
-    \input{Content/Chapters/Snippets/rci-integral-sep-pseudoalgo.tex}
+	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+	\input{Content/Chapters/Snippets/rci-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
 
 \begin{algorithm}
 	\caption{An algorithm for separating RCI fractional inequalities for the CPTP}
 	\label{algo:rci-frac-sep}
-    \KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
-    \KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
-    \input{Content/Chapters/Snippets/rci-frac-sep-pseudoalgo.tex}
+	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+	\input{Content/Chapters/Snippets/rci-frac-sep-pseudoalgo.tex}
 \end{algorithm}
