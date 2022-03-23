@@ -28,3 +28,25 @@ At each directed edge $\Tuple*{i, j} \in E^\prime$ we have an associated weight 
 
 where $\pi$ represent the dual variables associated to constraints constraints \eqref{eq:mp-customers-visited-by-exactly-one-route}\eqref{eq:mp-K-routes},
 as was already explained in Section \ref{sec:column-generation-and-pricing-problem}.
+
+Let $x_{ij} \in \Set*{0, 1} \quad \forall i, j \in V^\prime$ be a new set of binary variables
+encoding feasible solutions for the ESPRCC problem (i.e. $x_{ij} = 1$ if edge $(i, j)$ is picked in the optimal path).
+We can finally write the full ESPPRC IP formulation as:
+
+\begin{align}
+	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in E^\prime} \bar{c_{ij}} x_{ij} \label{eq:espprc-obj-function}                                                                                                               \\
+	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}              \\
+	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers} \\
+	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-flow-conservation-constraint-depot1}    \\
+	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:espprc-flow-conservation-constraint-depot2}    \\
+	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_d   \label{eq:espprc-sec-constraints}                        \\
+	                                & x_{0i} + x_{iN} \le 1                                                                                \qquad \forall i \in V_0         \label{eq:espprc-cptp-binding}                           \\
+	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in E^\prime    \label{eq:espprc-e-mip-var-bounds}           \\
+\end{align}
+
+where, \eqref{eq:espprc-obj-function} is the new objective function where we dropped the dependency on the $y$ MIP variable,
+\eqref{eq:espprc-resource-upper-bound-constraint} is the resource bound expressed as a function of only the $e$ MIP variable,
+\eqref{eq:espprc-flow-conservation-constraint-customers} is the flow conservation for all vertices except the source and sink node
+and \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow-conservation-constraint-depot2} are the flow conservation for respectively the source and sink node,
+\eqref{eq:espprc-cptp-binding} avoids forming paths where a single customer is visited,
+and finally \eqref{eq:espprc-sec-constraints} are the new subtour elimination constraints which avoid the forming of spurious subtours in unconnected regions of nodes.

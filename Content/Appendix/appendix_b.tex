@@ -38,30 +38,30 @@ We can bind the new edges to the original CPTP formulation by employing a mutual
 Finally, by setting $c_{ij} = \ExprCptpReducedCost{i}{j} \quad \forall \Tuple*{i, j} \in E_d$, we can rewrite the CPTP original formulation in the ESPPRC IP model:
 
 \begin{align}
-	\min_{e} \quad z_\mt{ESPPRC}(e) & =  \sum_{(i, j) \in E_d} \Expr*{ \ExprCptpReducedCost{i}{j} } e_{ij} \label{eq:espprc-obj-function}                                                                                            \\
-	                                & B \le \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}        \\
-	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers} \\
-	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-flow-conservation-constraint-depot1}    \\
-	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:espprc-flow-conservation-constraint-depot2}    \\
-	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_d   \label{eq:espprc-sec-constraints}                        \\
-	                                & e_{0i} + e_{iN} \le 1                                                                                \qquad \forall i \in V_0         \label{eq:espprc-cptp-binding}                           \\
-	                                & e_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in E_d    \label{eq:espprc-e-mip-var-bounds}                \\
+	\min_{e} \quad z_\mt{ESPPRC}(e) & =  \sum_{(i, j) \in E_d} \Expr*{ \ExprCptpReducedCost{i}{j} } e_{ij} \label{eq:aB:espprc-obj-function}                                                                                            \\
+	                                & B \le \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:aB:espprc-resource-upper-bound-constraint}        \\
+	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:aB:espprc-flow-conservation-constraint-customers} \\
+	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:aB:espprc-flow-conservation-constraint-depot1}    \\
+	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:aB:espprc-flow-conservation-constraint-depot2}    \\
+	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_d   \label{eq:aB:espprc-sec-constraints}                        \\
+	                                & e_{0i} + e_{iN} \le 1                                                                                \qquad \forall i \in V_0         \label{eq:aB:espprc-cptp-binding}                           \\
+	                                & e_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in E_d    \label{eq:aB:espprc-e-mip-var-bounds}                \\
 \end{align}
 
-where, \eqref{eq:espprc-obj-function} is the new objective function where we dropped the dependency on the $y$ MIP variable,
-\eqref{eq:espprc-resource-upper-bound-constraint} is the resource bound expressed as a function of only the $e$ MIP variable,
-\eqref{eq:espprc-flow-conservation-constraint-customers} is the flow conservation for all vertices except the source and sink node
-and \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow-conservation-constraint-depot2} are the flow conservation for respectively the source and sink node,
-\eqref{eq:espprc-cptp-binding} avoids forming paths where a single customer is visited,
-and finally \eqref{eq:espprc-sec-constraints} are the new subtour elimination constraints which avoid the forming of spurious subtours in unconnected regions of nodes.
+where, \eqref{eq:aB:espprc-obj-function} is the new objective function where we dropped the dependency on the $y$ MIP variable,
+\eqref{eq:aB:espprc-resource-upper-bound-constraint} is the resource bound expressed as a function of only the $e$ MIP variable,
+\eqref{eq:aB:espprc-flow-conservation-constraint-customers} is the flow conservation for all vertices except the source and sink node
+and \eqref{eq:aB:espprc-flow-conservation-constraint-depot1}, \eqref{eq:aB:espprc-flow-conservation-constraint-depot2} are the flow conservation for respectively the source and sink node,
+\eqref{eq:aB:espprc-cptp-binding} avoids forming paths where a single customer is visited,
+and finally \eqref{eq:aB:espprc-sec-constraints} are the new subtour elimination constraints which avoid the forming of spurious subtours in unconnected regions of nodes.
 
-\cite{beasley1989algorithm} propose to ignore the SEC in \eqref{eq:espprc-sec-constraints} and relaxing \eqref{eq:espprc-resource-upper-bound-constraint}, \eqref{eq:espprc-cptp-binding} in a Lagrangean fashion:
+\cite{beasley1989algorithm} propose to ignore the SEC in \eqref{eq:aB:espprc-sec-constraints} and relaxing \eqref{eq:aB:espprc-resource-upper-bound-constraint}, \eqref{eq:aB:espprc-cptp-binding} in a Lagrangean fashion:
 
 \begin{align}
-	\min_{e} \quad z_\mt{ESPP}(e) & = \lambda_0 B - \lambda_1 Q + \sum_{(i, j) \in E_d}  c'_{ij} e_{ij} - \sum_{i \in V_0} \beta_i  \label{eq:esp-relaxed-obj-function} \\
-	                              & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}        \qquad \forall i \in V_0                                                \\
-	                              & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                    \\
-	                              & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                     \\
+	\min_{e} \quad z_\mt{ESPP}(e) & = \lambda_0 B - \lambda_1 Q + \sum_{(i, j) \in E_d}  c'_{ij} e_{ij} - \sum_{i \in V_0} \beta_i  \label{eq:aB:esp-relaxed-obj-function} \\
+	                              & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}        \qquad \forall i \in V_0                                                   \\
+	                              & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                       \\
+	                              & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                        \\
 	                              & e_{ij}                   \in \lbrace 0, 1 \rbrace           \qquad \forall \Tuple*{i, j} \in E_d
 \end{align}
 

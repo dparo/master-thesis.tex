@@ -33,13 +33,13 @@
 %%
 
 \newcommand{\ExprESPPIngoingEdges}[2][j]{
-	\sum_{\EqStackTwo{#1 \in V_d}{\Tuple*{#1, #2} \in E_d}} e_{#1#2}
+	\sum_{\EqStackTwo{#1 \in V_d}{\Tuple*{#1, #2} \in E_d}} x_{#1#2}
 }
 
 \newcommand{\ExprESPPOutgoingEdges}[2][j]{
-	\sum_{\EqStackTwo{#1 \in V_d}{\Tuple*{#2, #1} \in E_d}} e_{#2#1}
+	\sum_{\EqStackTwo{#1 \in V_d}{\Tuple*{#2, #1} \in E_d}} x_{#2#1}
 }
 
 \newcommand{\ExprESPPEdgesWithin}[1][S] {
-	\sum_{\EqStackTwo{i \in #1,\ j \in #1}{\Tuple*{i, j} \in E_d}} e_{ij}
+	\sum_{\EqStackTwo{i \in #1,\ j \in #1}{\Tuple*{i, j} \in E_d}} x_{ij}
 }
