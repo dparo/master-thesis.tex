@@ -1,2 +1,30 @@
 \chapter{The ESPPRC}
 In this chapter we will introduce more formally the Elementary Shortest Path Problem with Resource Constraints (ESPPRC).
+In this thesis we interested in studying the ESPPRC induced from the PP when solving the RMP through a BAP framework employing the usage of robust inequalities only.
+
+
+\section{ESPPRC: IP formulation}
+Contrary to CVRP, the ESPPRC is usually defined over a directed network $G^\prime = (V^\prime, E^\prime)$ composed
+of $N + 1$ nodes where the original depot node is essentially split in two nodes: a source and a sink vertex.
+In the new network we use the value $0$ to denote the source version of the depot node, and $N$ its duplicate
+playing the role of the sink vertex.
+More formally, $V^\prime = V \cup Set*{N} = \Set*{ 0,\dots, N }$, and the edge set $E^\prime$ is
+
+\begin{equation}
+	\begin{aligned}
+		E^\prime = & \Set*{\Tuple*{i, j} \quad \forall i, j \in V^\prime,\ i \ne j } \\
+		           & \setminus \Set*{ \Tuple*{0, N} }                                \\
+		           & \setminus \Set*{ \Tuple*{i, 0} \quad \forall i \in V^\prime }   \\
+		           & \setminus \Set*{ \Tuple*{N, i} \quad \forall i \in V^\prime }   \\
+	\end{aligned}
+\end{equation}
+
+which briefly means: all possible pairs $\Tuple*{i, j},\ i \ne j$ excluding: direct connection between $0$ and $N$, and by exluding edges entering node $0$ and flowing out of node $N$.
+At each directed edge $\Tuple*{i, j} \in E^\prime$ we have an associated weight $\bar{c_{ij}} \in \R$ which is directly linked to the dual variables of the RMP through the following equation:
+
+\begin{equation}
+	\bar{c_{ij}} = d_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V^\prime
+\end{equation}
+
+where $\pi$ represent the dual variables associated to constraints constraints \eqref{eq:mp-customers-visited-by-exactly-one-route}\eqref{eq:mp-K-routes},
+as was already explained in Section \ref{sec:column-generation-and-pricing-problem}.
