@@ -160,18 +160,18 @@ we seek to solve the so-called pricing problem (PP) defined as:
 \end{equation}
 
 where $\bar{c_p}$ denotes the reduced cost of a route $p \in P$, and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$ that leads to the best dual bound improvement.
-Any $p \in P$ which satisfies $c_p < 0$ is a valid column which can enter the basis of the RMP.
+Any $p \in P$ which satisfies $\bar{c_p} < 0$ is a valid column which can enter the basis of the RMP.
 The Branch \& Price solver needs to smartly manage the set $\mc{P} \subseteq P$, which stores in a pool.
 It is responsibility of the BAP framework to efficiently manage which routes get dropped or remained stored in the pool during the running time of the resolution process.
 
 The resolution method, or algorithm, used to solve the PP is usually called "oracle" in the literature.
 The oracle needs to solve the pricing problem which, due to the definition of the set $P$, coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC) over a directed graph with weights $c_{ij} = d_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$, where the source and sink vertex collapse at the depot node.
 
-The BAP solver at each iteration of the simplex algorithm
+Note that, the BAP solver need not to solve the PP optimally at each iteration of the simplex algorithm.
+To improve the dual bound, it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$, which allow the usage of heuristic algorithms especially during the very first few iterations, where finding good reduced cost routes is surprisingly easy.
+Branching occurs when either the optimal solution of the PP, $p^\star$, achieves $c^\star_p \ge 0$ and $\exists p \in \mc{P} \mid \lambda_p \notin \Set*{0, 1}$, or, the column generation procedure tails off, meaning the gained dual bound improvements compared to the running time to generate a column become suboptimal.
 
-
-
-\subsection{Branch and Cut and Price frameworks}
+\subsection{Branching and Cut Generation within BAP frameworks}
 
 \section{Literature Review}
 
