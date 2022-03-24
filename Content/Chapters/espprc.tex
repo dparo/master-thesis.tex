@@ -55,6 +55,7 @@ constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and integrality cons
 
 Finally, the most important inequalities, constraint \eqref{eq:espprc-sec-constraints}, represents the subtour elimination constraints.
 These inequalities have two major impacts: first they avoid the form of spurious unconnected subtours, second they force the elementarity condition, namely they impose that each node must be visited at most once.
+Two examples depicting respectively a solution containing spurious subtours and a non-elementary solution are provided in Figures \ref{fig:espprc-example-with-spurious-subtours} and \ref{fig:espprc-example-non-elementary-solution}.
 
 
 
@@ -84,7 +85,7 @@ These inequalities have two major impacts: first they avoid the form of spurious
 	\end{tikzpicture}
 
 	\centering
-	\caption{An example of ESPRRC solution containing spurious subtours.
+	\caption{An example of an ESPRRC solution containing spurious subtours.
 		$V^\prime = \Set*{0, \dots, 7}$, ($0$ is the source vertex, $7$ the sink vertex).
 		SEC inequalities, presented in Equation \eqref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
 	}
@@ -121,7 +122,6 @@ These inequalities have two major impacts: first they avoid the form of spurious
 		SEC inequalities, presented in Equation \eqref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
 	}
 	\label{fig:espprc-example-non-elementary-solution}
-
 \end{figure}
 
 
