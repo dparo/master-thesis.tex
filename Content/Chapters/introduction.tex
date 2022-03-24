@@ -2,23 +2,29 @@
 
 \section{The Capacitated Vehicle Routing Problem (CVRP)}
 
-The Capacitated Vehicle Routing Problem (CVRP), first presented in \textcite{dantzig1959truck},
-can be considered as a generalization of
-the well-known Travelling Salesman Problem (TSP), and it is a
-very well-known combinatorial optimization problem.
+The Capacitated Vehicle Routing Problem (CVRP) is a very well-known combinatorial optimization problem,
+first presented in \textcite{dantzig1959truck},
+which can be considered a generalization of the well-known Travelling Salesman Problem (TSP).
 The problem consists in finding an optimal route for a delivery problem
 starting from a common point called the depot,
 where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
 need to serve customer demands.
 Given as input: a weighted graph, the customer demands and the vehicle capacity,
 the problem consists in minimizing the overall travel distance,
-while serving all the customers.
+while serving all the customers exactly once.
 
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
-the Vehicle Routing Problem with Time Windows (VRPTW) and many others, but still, CVRP remains
-probably the most central and studied one.
-For a more complete survey of the various variations of the VRP problems refer to \cite{poggi2014chapter}.
+the Vehicle Routing Problem with Time Windows (VRPTW) and many others.
+Nonetheless, CVRP remains probably the most central and studied one.
+For a more complete survey of the many variations of the VRP problems refer to \cite{poggi2014chapter}.
+
+
+CVRP is usually defined more rigorously through an Integer Programming (IP) formulation.
+The IP formulation is a mathematical tool which can describe combinatorial optimization problems
+through the usage of constraints, usually defined with linear inequalities.
+In the next section we will present the most common IP formulations for the CVRP, which
+are required to understand the content of this thesis.
 
 \section{Mathematical formulations}
 
