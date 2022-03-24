@@ -1,7 +1,19 @@
 \chapter{The ESPPRC}
 In this chapter we will introduce more formally the Elementary Shortest Path Problem with Resource Constraints (ESPPRC).
-In this thesis we interested in studying the ESPPRC induced from the PP when solving the RMP through a BAP framework employing the usage of robust inequalities only.
+In this thesis we're interested in studying the ESPPRC induced from the PP when solving the RMP through a BAP framework employing the usage of robust inequalities only.
 
+In the general case, the underlying network of ESPPRC problems may have negative cost cyles, which makes solving the ESPPRC an NP-hard problem \cite{dror_note_1994}.
+
+\begin{comment}
+\cite{bettinelli2010mathematical} ---------------
+It is possible to address the pricing problem by optimizing its relaxation,
+obtained by dropping the elementarity constraints. Solving a resource con-
+strained shortest path problem (RCSPP) requires less computing time but
+yields less tight lower bounds, since columns may include cycles. The two
+different approaches have been followed for instance by Feillet et al. [42] and
+Desrochers et al. [29] to solve the vehicle routing problem with time windows
+(VRPTW) through column generation.
+\end{comment}
 
 \section{ESPPRC: IP formulation}
 Contrary to CVRP, the ESPPRC is usually defined over a directed network $G^\prime = (V^\prime, E^\prime)$ composed
