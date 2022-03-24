@@ -26,7 +26,7 @@ At each directed edge $\Tuple*{i, j} \in E^\prime$ we have an associated weight 
 	\bar{c_{ij}} = d_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V^\prime
 \end{equation}
 
-where $\pi$ represent the dual variables associated to constraints constraints \eqref{eq:mp-customers-visited-by-exactly-one-route}\eqref{eq:mp-K-routes},
+where $\pi$ represent the dual variables associated to constraints \eqref{eq:mp-customers-visited-by-exactly-one-route}\eqref{eq:mp-K-routes},
 as was already explained in Section \ref{sec:column-generation-and-pricing-problem}.
 
 Let $x_{ij} \in \Set*{0, 1} \quad \forall i, j \in V^\prime$ be a new set of binary variables
@@ -39,7 +39,7 @@ We can finally write the full ESPPRC IP formulation as:
 	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers} \\
 	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-flow-conservation-constraint-depot1}    \\
 	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:espprc-flow-conservation-constraint-depot2}    \\
-	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V^\prime   \label{eq:espprc-sec-constraints}                   \\
+	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V^\prime,\ |S| \ge 2 \label{eq:espprc-sec-constraints}         \\
 	                                & x_{0i} + x_{iN} \le 1                                                                                \qquad \forall i \in V_0         \label{eq:espprc-binding-directed}                       \\
 	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in E^\prime    \label{eq:espprc-x-mip-var-bounds}           \\
 \end{align}
@@ -50,35 +50,15 @@ a directed network, and the depot node is duplicated twice.
 Namely, constraint \eqref{eq:espprc-resource-upper-bound-constraint} expresses the resource bound modeled as a function of only the $x$ MIP variables,
 constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices excluding the source and the sink node,
 constraint \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow-conservation-constraint-depot2} are the flow imposition for respectively the source and sink node,
-constraint \eqref{eq:espprc-sec-constraints} are the subtour elimination constraints which avoid the forming of spurious subtours in unconnected regions of nodes,
 constraint  \eqref{eq:espprc-binding-directed} avoids forming paths where a single customer is visited, this constraint is a direct consequence of the fact that the CVRP is defined over an undirected network,
-and finally, constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and integrality constraints on the $x$ MIP variables.
+constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and integrality constraints on the $x$ MIP variables.
 
-\begin{center}
-	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
-		\centering
+Finally, the most important inequalities, constraint \eqref{eq:espprc-sec-constraints}, represents the subtour elimination constraints.
+These inequalities have two major impacts: first they avoid the form of spurious unconnected subtours, second they force the elementarity condition, namely they impose that each node must be visited at most once.
 
-		\node[main] (0) at (0.1\textwidth,0bp) {0};
-		\node[main] (1) at (0.3\textwidth,0bp){1};
-		\node[main] (2) at (0.5\textwidth,0bp){2};
-		\node[main] (3) at (0.6\textwidth,-30bp) {3};
-		\node[main] (4) at (0.5\textwidth,-60bp) {4};
-		\node[main] (5) at (0.4\textwidth,-30bp) {5};
-		\node[main] (6) at (0.7\textwidth,0bp){6};
-		\node[main] (7) at (0.9\textwidth,0bp) {7};
 
-		\draw [->,thick] (0) -- (1);
-		\draw [->,thick] (1) -- (2);
-		\draw [->,thick] (2) -- (3);
-		\draw [->,thick] (3) -- (4);
-		\draw [->,thick] (4) -- (5);
-		\draw [->,thick] (5) -- (2);
-		\draw [->,thick] (2) -- (6);
-		\draw [->,thick] (6) -- (7);
-	\end{tikzpicture}
-\end{center}
 
-\begin{center}
+\begin{figure}[ht]
 	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
 		\centering
 
@@ -102,7 +82,48 @@ and finally, constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and int
 		\draw [->,thick] (4) -- (5);
 		\draw [->,thick] (5) -- (2);
 	\end{tikzpicture}
-\end{center}
+
+	\centering
+	\caption{An example of ESPRRC solution containing spurious subtours.
+		$V^\prime = \Set*{0, \dots, 7}$, ($0$ is the source vertex, $7$ the sink vertex).
+		SEC inequalities, presented in Equation \eqref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
+	}
+	\label{fig:espprc-example-with-spurious-subtours}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
+		\centering
+
+		\node[main] (0) at (0.1\textwidth,0bp) {0};
+		\node[main] (1) at (0.3\textwidth,0bp){1};
+		\node[main] (2) at (0.5\textwidth,0bp){2};
+		\node[main] (3) at (0.6\textwidth,-30bp) {3};
+		\node[main] (4) at (0.5\textwidth,-60bp) {4};
+		\node[main] (5) at (0.4\textwidth,-30bp) {5};
+		\node[main] (6) at (0.7\textwidth,0bp){6};
+		\node[main] (7) at (0.9\textwidth,0bp) {7};
+
+		\draw [->,thick] (0) -- (1);
+		\draw [->,thick] (1) -- (2);
+		\draw [->,thick] (2) -- (3);
+		\draw [->,thick] (3) -- (4);
+		\draw [->,thick] (4) -- (5);
+		\draw [->,thick] (5) -- (2);
+		\draw [->,thick] (2) -- (6);
+		\draw [->,thick] (6) -- (7);
+	\end{tikzpicture}
+
+	\centering
+	\caption{An example of an ESPRRC non-elementary solution.
+		$V^\prime = \Set*{0, \dots, 7}$, ($0$ is the source vertex, $7$ the sink vertex).
+		SEC inequalities, presented in Equation \eqref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
+	}
+	\label{fig:espprc-example-non-elementary-solution}
+
+\end{figure}
+
 
 
 As done in \textcite{beasley1989algorithm} the elementarity condition can be relaxed by substituting constraint \eqref{eq:espprc-sec-constraints} in favour of:
@@ -112,4 +133,5 @@ As done in \textcite{beasley1989algorithm} the elementarity condition can be rel
 \end{equation}
 
 where, $N = |V_0| + 1$ (recall $V_0$ is the set of customers) represents the sink vertex, and $M \in \R$ is a large positive constant.
+In some cases, it is possible to relax the elementarity condition.
 Relaxing the elementarity condition can simplify the pricing problem at the cost of obtaining weaker dual bounds for the RMP.
