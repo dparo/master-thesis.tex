@@ -1,6 +1,7 @@
 \chapter{Introduction}
 
 \section{The Capacitated Vehicle Routing Problem (CVRP)}
+\label{sec:intro-cvrp-problem}
 
 The Capacitated Vehicle Routing Problem (CVRP) is a very well-known combinatorial optimization problem,
 first presented in \textcite{dantzig1959truck},
@@ -27,6 +28,8 @@ In the next section we will present the most common IP formulations for the CVRP
 are required to understand the content of this thesis.
 
 \section{Mathematical formulations}
+\label{sec:intro-cvrp-mathematical-formulations}
+
 
 In this section we define the CVRP through two very well known mathematical formulations:
 the three-index flow formulation presented in \textcite{toth_vehicle_2002} and
@@ -60,6 +63,8 @@ An optimal solution to the CVRP is a feasible solution which minimizes the sum o
 In the remainder of the section we introduce the two most common IP mathematical formulations for the CVRP.
 
 \subsubsection{The three-index flow formulation}
+\label{sec:intro-cvrp-three-index-flow-formulation}
+
 The three-index flow formulation, first presented in \textcite{toth_vehicle_2002},
 is an IP model employing $O(N^2 K + N K)$ binary variables.
 
@@ -96,6 +101,8 @@ In the next subsection we will introduce the set partitioning formulation, and i
 we will briefly introduce the key ingredients of modern Branch \& Price solvers.
 
 \subsubsection{The Set Partitioning (SP) formulation}
+\label{sec:intro-set-partition-formulation}
+
 The Set Partitioning (SP) integer programming formulation presented in \textcite{balinski1964integer},
 works substantially differently from the three-index flow formulation or any other commonly employed IP formulations.
 The SP formulation uses a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
@@ -126,10 +133,14 @@ Branch \& Price frameworks and column generation have been shown to work remarka
 In the next sections we will introduce the Branch \& Price framework and the column generation approach, key components employed in modern state-of-the-art CVRP solvers.
 
 \section{Resolution methods}
+\label{sec:intro-resolution-methods}
 
 \subsection{Branch and Cut}
+\label{sec:intro-branch-and-cut}
 
 \subsection{Branch and Price}
+\label{sec:intro-branch-and-price}
+
 Branch-and-price frameworks are in essence a branch-and-bound framework, i.e. making use of a search tree, that originates when solving the SP formulation for vehicle routing problems.
 Compared to more traditional Branch \& Cut frameworks, their primary focus is the usage of a column generation technique for improving the dual bound, see \textcite{righini2008new}.
 Branch and Price frameworks were first applied successfully in \textcite{gilmore_linear_1961} to the Cutting-Stock problem.
@@ -184,7 +195,11 @@ Note that, the BAP solver need not to solve the PP optimally at each iteration o
 To improve the dual bound, it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$, which allow the usage of heuristic algorithms especially during the very first few iterations, where finding good reduced cost routes is surprisingly easy.
 Branching occurs when either the optimal solution of the PP, $p^\star$, achieves $c^\star_p \ge 0$ (non-negative solution) and $\exists p \in \mc{P} \mid \lambda_p \notin \Set*{0, 1}$, or, the column generation procedure tails off, i.e. the gained dual bound improvements compared to the running time to generate a column become suboptimal.
 
+
+
 \subsection{Branching and Cut Generation within BAP frameworks}
+\label{sec:intro-branching-and-cut-generation-within-bap-frameworks}
+
 In order to satisfy the integrality constraints for the SP formulation, solving the RMP at the root node
 is almost always not enough.
 Therefore, a search-tree and a branching scheme is employed to seek for the optimal integral solution $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in P$.
@@ -209,9 +224,13 @@ Therefore, their usage must be assessed on a case-by-case basis.
 In this thesis we will mostly concentrate on branching and cut generation schemes which make use of \textbf{robust} inequalities.
 
 \subsection{Solving the Pricing Problem}
+\label{sec:intro-solving-the-pricing-problem}
+
 
 
 \section{Literature Review}
+\label{sec:intro-literature-review}
+
 
 \begin{quote}
 	Before 1980 very few exact algorithms for cvrp and vrptw had been
@@ -231,6 +250,9 @@ In this thesis we will mostly concentrate on branching and cut generation scheme
 \end{quote}
 
 \section{Thesis Contributions}
+\label{sec:intro-thesis-contributions}
+
+
 The objective of the thesis is to study the feasibility of employing a MIP solver
 based on a Branch \& Cut Framework to solve the pricing problem induced in solving
 CVRP instances.
@@ -257,3 +279,4 @@ when the routes become longer.
 
 
 \section{Outline}
+\label{sec:intro-outline}
