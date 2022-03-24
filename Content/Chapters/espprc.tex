@@ -61,9 +61,9 @@ and finally, constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and int
 		\node[main] (0) at (0.1\textwidth,0bp) {0};
 		\node[main] (1) at (0.3\textwidth,0bp){1};
 		\node[main] (2) at (0.5\textwidth,0bp){2};
-		\node[main] (3) at (0.4\textwidth,-40bp) {3};
-		\node[main] (4) at (0.5\textwidth,-80bp) {4};
-		\node[main] (5) at (0.6\textwidth,-40bp) {5};
+		\node[main] (3) at (0.6\textwidth,-30bp) {3};
+		\node[main] (4) at (0.5\textwidth,-60bp) {4};
+		\node[main] (5) at (0.4\textwidth,-30bp) {5};
 		\node[main] (6) at (0.7\textwidth,0bp){6};
 		\node[main] (7) at (0.9\textwidth,0bp) {7};
 
@@ -77,3 +77,39 @@ and finally, constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and int
 		\draw [->,thick] (6) -- (7);
 	\end{tikzpicture}
 \end{center}
+
+\begin{center}
+	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
+		\centering
+
+		\node[main] (0) at (0.1\textwidth,-20bp) {0};
+		\node[main] (1) at (0.25\textwidth,0bp){1};
+		\node[main] (6) at (0.4\textwidth,+10bp){6};
+		\node[main] (7) at (0.55\textwidth,+30bp) {7};
+
+		\node[main] (2) at (0.7\textwidth, +20bp){2};
+		\node[main] (3) at (0.8\textwidth, -0bp) {3};
+		\node[main] (4) at (0.7\textwidth, -20bp) {4};
+		\node[main] (5) at (0.6\textwidth, -0bp) {5};
+
+
+		\draw [->,thick] (0) -- (1);
+		\draw [->,thick] (1) -- (6);
+		\draw [->,thick] (6) -- (7);
+
+		\draw [->,thick] (2) -- (3);
+		\draw [->,thick] (3) -- (4);
+		\draw [->,thick] (4) -- (5);
+		\draw [->,thick] (5) -- (2);
+	\end{tikzpicture}
+\end{center}
+
+
+As done in \textcite{beasley1989algorithm} the elementarity condition can be relaxed by substituting constraint \eqref{eq:espprc-sec-constraints} in favour of:
+
+\begin{equation}
+	\sum_{i \in S} \sum_{j \in S}  x_{ij} \le M \sum_{i \in S} \sum_{j \in V^\prime \setminus S} x_{ij} \quad \forall S \subseteq V^\prime \setminus \Set*{N}
+\end{equation}
+
+where, $N = |V_0| + 1$ (recall $V_0$ is the set of customers) represents the sink vertex, and $M \in \R$ is a large positive constant.
+Relaxing the elementarity condition can simplify the pricing problem at the cost of obtaining weaker dual bounds for the RMP.
