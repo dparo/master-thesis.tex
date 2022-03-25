@@ -2,7 +2,7 @@
 In this chapter we will introduce more formally the Elementary Shortest Path Problem with Resource Constraints (ESPPRC).
 In this thesis we're interested in studying the ESPPRC induced from the PP when solving the RMP through a BAP framework employing the usage of robust inequalities only.
 
-In the general case, the underlying network of ESPPRC problems may have negative cost cyles, which makes solving the ESPPRC an NP-hard problem \parencite{dror_note_1994}.
+In the general case, the underlying network of ESPPRC problems may have negative cost cyles, which makes solving the ESPPRC an NP-hard problem \parencite{dror1994}.
 
 \begin{comment}
 \cite{bettinelli2010mathematical} ---------------
@@ -138,7 +138,7 @@ Two examples depicting respectively a solution containing spurious subtours and 
 
 
 
-As done in \textcite{beasley1989algorithm} the elementarity condition can be relaxed by substituting constraint \eqref{eq:espprc-sec-constraints} in favour of:
+As done in \textcite{beasley1989} the elementarity condition can be relaxed by substituting constraint \eqref{eq:espprc-sec-constraints} in favour of:
 
 \begin{equation}
 	\sum_{i \in S} \sum_{j \in S}  x_{ij} \le M \sum_{i \in S} \sum_{j \in V^\prime \setminus S} x_{ij} \quad \forall S \subseteq V^\prime \setminus \Set*{N}

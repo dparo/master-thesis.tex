@@ -4,7 +4,7 @@
 \label{sec:intro-cvrp-problem}
 
 The Capacitated Vehicle Routing Problem (CVRP) is a very well-known combinatorial optimization problem,
-first presented in \textcite{dantzig1959truck},
+first presented in \textcite{dantzig1959},
 which can be considered a generalization of the well-known Travelling Salesman Problem (TSP).
 The problem consists in finding an optimal route for a delivery problem
 starting from a common point called the depot,
@@ -18,7 +18,7 @@ The CVRP belongs to the wider class of problems known as the Vehicle Routing Pro
 There are many variations of VRPs proposed in the literature such as
 the Vehicle Routing Problem with Time Windows (VRPTW) and many others.
 Nonetheless, CVRP remains probably the most central and studied one.
-For a more complete survey of the many variations of the VRP problems refer to \cite{poggi2014chapter}.
+For a more complete survey of the many variations of the VRP problems refer to \cite{poggi2014}.
 
 
 CVRP is usually defined more rigorously through an Integer Programming (IP) formulation.
@@ -32,11 +32,11 @@ are required to understand the content of this thesis.
 
 
 In this section we define the CVRP through two very well known mathematical formulations:
-the three-index flow formulation presented in \textcite{toth_vehicle_2002} and
-the Set Partitioning (SP) formulation presented in \textcite{balinski1964integer}.
+the three-index flow formulation presented in \textcite{toth2002} and
+the Set Partitioning (SP) formulation presented in \textcite{balinski1964}.
 Despite the SP formulation being older, in later years thanks to algorithmic advances
 and the development of efficient Branch \& Price frameworks, it has become the de facto
-state-of-the-art core component for solving CVRP problems \parencite{pessoa2020generic}.
+state-of-the-art core component for solving CVRP problems \parencite{pessoa2020}.
 
 We begin the section by defining some mathematical quantities that will be used throughout
 the remainder of the chapter.
@@ -65,7 +65,7 @@ In the remainder of the section we introduce the two most common IP mathematical
 \subsubsection{The three-index flow formulation}
 \label{sec:intro-cvrp-three-index-flow-formulation}
 
-The three-index flow formulation, first presented in \textcite{toth_vehicle_2002},
+The three-index flow formulation, first presented in \textcite{toth2002},
 is an IP model employing $O(N^2 K + N K)$ binary variables.
 
 We define a set of binary variables $x_{ijk} \in \Set*{0, 1}, (i, j) \in E, k = 1, \dots, K$, to encode whether vehicle $k$ traverses edge $(i, j)$,
@@ -103,11 +103,11 @@ we will briefly introduce the key ingredients of modern Branch \& Price solvers.
 \subsubsection{The Set Partitioning (SP) formulation}
 \label{sec:intro-set-partition-formulation}
 
-The Set Partitioning (SP) integer programming formulation presented in \textcite{balinski1964integer},
+The Set Partitioning (SP) integer programming formulation presented in \textcite{balinski1964},
 works substantially differently from the three-index flow formulation or any other commonly employed IP formulations.
 The SP formulation uses a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
 
-The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig_decomposition_1960} of the three-index flow formulation.
+The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the three-index flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
 let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
 and finally let $a_{ijp} \in \Set*{0, 1}$ be a "static encoding" for a route $p$, i.e. if arc $(i, j) \in E$ is used by route $p$.
@@ -146,8 +146,8 @@ In the next sections we will introduce the Branch \& Price framework and the col
 \label{sec:intro-branch-and-price}
 
 Branch-and-price frameworks are in essence a branch-and-bound scheme, i.e. making use of a search tree, that originates when solving the SP formulation for vehicle routing problems.
-Compared to more traditional Branch \& Cut frameworks, their primary focus is the usage of a column generation technique for improving the dual bound, see \textcite{righini2008new}.
-Branch and Price frameworks were first applied successfully in \textcite{gilmore_linear_1961} to the Cutting-Stock problem.
+Compared to more traditional Branch \& Cut frameworks, their primary focus is the usage of a column generation technique for improving the dual bound, see \textcite{righini2008}.
+Branch and Price frameworks were first applied successfully in \textcite{gilmore1961} to the Cutting-Stock problem.
 
 \subsubsection{Column generation and the Pricing Problem}
 \label{sec:column-generation-and-pricing-problem}
@@ -240,16 +240,16 @@ In this thesis we will mostly concentrate on branching and cut generation scheme
 First attempts, in solving the CVRP were based on branch-and-cut algorithms
 which had historical prevalence.
 Some notable BAC contributions are provided in the works of
-\textcite{araque_g_branch-and-cut_1994}, \textcite{augerat_computational_1995}, \textcite{blasum_application_2000}, \textcite{achuthan_improved_2003}, \textcite{ralphs_capacitated_2003}, \textcite{lysgaard2004new},
+\textcite{araqueg1994}, \textcite{augerat1995}, \textcite{blasum2000}, \textcite{achuthan2003}, \textcite{ralphs2003}, \textcite{lysgaard2004},
 These works showed that CVRP instances, even with small number of customers (less than 100) proved
 to be very challenging for the BAC approaches.
 
-Then, \textcite{fukasawa_robust_2006} solved all CVRP instances up to approximately 100 customers
+Then, \textcite{fukasawa2006} solved all CVRP instances up to approximately 100 customers
 using a branch-cut-and-price approach.
-Later, the works of \textcite{baldacci2008exact}, \textcite{baldacci2011new}
+Later, the works of \textcite{baldacci2008}, \textcite{baldacci2011}
 improved the overall running times by employing a column and cut generation scheme.
-Later, \textcite{contardo_new_2014} was able to solve a CVRP instance made of 151 (M-n151-k12).
-Later, \textcite{pecin2017improved} solved CVRP instances made of 200 customers (M-n200-k16, M-n200-k7).
+Later, \textcite{contardo2014} was able to solve a CVRP instance made of 151 (M-n151-k12).
+Later, \textcite{pecin2017} solved CVRP instances made of 200 customers (M-n200-k16, M-n200-k7).
 
 \begin{comment}
 \cite{jepsen_branch-and-cut_2011}
@@ -278,16 +278,16 @@ is that they are usually developed and tuned using historical
 benchmark instances.
 The historical test instances are classified in different sets (or families), and
 are usually referred in the literature through a single upper case letter:
-(i) sets A, B, P proposed in \textcite{augerat_computational_1995},
-(ii) set E proposed in \textcite{christofides_algorithm_1969},
-(iii) set F proposed in \textcite{fisher_optimal_1994},
-(iv) set M proposed in \textcite{christofides_vehicle_1979}.
-Another popular tested is the one proposed in \textcite{golden_impact_1998},
+(i) sets A, B, P proposed in \textcite{augerat1995},
+(ii) set E proposed in \textcite{christofides1969},
+(iii) set F proposed in \textcite{fisher1994},
+(iv) set M proposed in \textcite{christofides1979}.
+Another popular tested is the one proposed in \textcite{golden1998},
 containing large scale instances ranging from 200 to 480 customers,
 generated programmatically following concentric geometric figures.
 These benchmark instances suffer from being either too homogeneous, or too artificial,
 while not covering the main characteristics found in current real-world application problems.
-In the work of \textcite{uchoa2017new}, for example, they propose
+In the work of \textcite{uchoa2017}, for example, they propose
 a new more modern set of benchmark instances to replace the historical
 used ones.
 Despite some efforts in proposing new instances for the CVRP, the scientific community
@@ -299,15 +299,15 @@ and assessing the performance of CVRP contributions.
 The objective of the thesis is to study the feasibility of employing a MIP solver
 based on a Branch \& Cut Framework to solve the pricing problem induced in solving
 CVRP instances.
-A similar study was already performed in \cite{Jepsen2014}.
+A similar study was already performed in \cite{jepsen2014}.
 Part of the objective of the thesis is to revisit the work of Jepsen comparing
 the performance of a Branch \& Cut Framework against the state-of-the-art work
-\cite{pessoa2020generic}.
+\cite{pessoa2020}.
 One of the core contributions is the verification of whether a Branch \& Cut Framework
-can perform better than the dynamic labeling algorithm employed \cite{pessoa2020generic},
+can perform better than the dynamic labeling algorithm employed \cite{pessoa2020},
 especially when the optimal routes tend to be longer than usual.
 
-One of the main issues in the work of \cite{pessoa2020generic}, is that
+One of the main issues in the work of \cite{pessoa2020}, is that
 most of the algorithms were optimized for dated datasets, the problem
 is that these instances are quite anachronistic, in practice, in modern
 distribution problems, the vehicle capacity is rarely the bottleneck.

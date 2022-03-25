@@ -58,12 +58,12 @@ which is describes a very weak lower bound, and in pretty much all cases, is eas
 
 Heuristic algorithms can be used to provide good feasible primal solutions to the MIP.
 A CPTP problem has many similarities with TSP, therefore heuristics for the TSP, if slightly adapted, ca be applied successfully to this problem domain.
-Much work was dedicated in studying good heuristics for the TSP, see \cite{rosenkrantz_analysis_1977}, \cite{johnson_traveling_1997}, \cite{laporte_traveling_1992}, \cite{johnson_experimental_2007}, \cite{hoffman_traveling_2013}.
+Much work was dedicated in studying good heuristics for the TSP, see \cite{rosenkrantz1977}, \cite{johnson1997}, \cite{laporte1992}, \cite{johnson2007}, \cite{hoffman2013}.
 
 In the remainder of this section we explain the implemented warm start procedure which is characterized by two stage: a constructive insertion heuristic stage followed by a 2-OPT refinement stage.
 
 \subsection{Insertion heuristic}
-\cite{rosenkrantz_analysis_1977} do a fantastic job describing the insertion heuristic algorithm for the TSP and various facets in which it can be implemented.
+\cite{rosenkrantz1977} do a fantastic job describing the insertion heuristic algorithm for the TSP and various facets in which it can be implemented.
 The insertion heuristic algorithm can construct a new feasible primal solutions in $\Theta(N^2)$ time.
 
 In this section, we will focus on adapting the insertion heuristic for the TSP so that it can be applied to CPTP problems.
@@ -104,10 +104,10 @@ This allows us to generate $O(N)$ good feasible primal solutions using insertion
 
 \subsection{2-OPT refinement}
 In our implementation, each solution produced from the insertion heuristic is further improved using a 2-OPT refinement procedure.
-The 2-OPT algorithm is a heuristic local-search hill-climbing procedure proposed originally for the TSP in \cite{flood_traveling-salesman_1956}, \cite{croes_method_1958}.
+The 2-OPT algorithm is a heuristic local-search hill-climbing procedure proposed originally for the TSP in \cite{flood1956}, \cite{croes1958}.
 
 An application of the 2-OPT algorithm works iteratively requiring $\Omega(N^2)$ time.
-Unfortunately, as it is pointed out in \cite{chandra_new_1999}, the 2-OPT algorithm may in the worst case take an exponential number of iterations when fed with purposely artificially constructed instances.
+Unfortunately, as it is pointed out in \cite{chandra1999}, the 2-OPT algorithm may in the worst case take an exponential number of iterations when fed with purposely artificially constructed instances.
 Although this is bad news, it is also worth pointing out that this rarely occur in practice, as the probabilistic average number of iterations required for 2-OPT is at most polynomial.
 
 Each iteration of the 2-OPT procedure searches for an existing edge crossing, and if any exists, it performs a 2-OPT exchange to undo it.
@@ -243,10 +243,10 @@ To see this is the case, this simple flow network:
 produces the same max flow when solving for $(0, 4)$ and $(4, 0)$ pair respectively, and produces $F_1(0, 4) = \{ 0\},\ F_2(0, 4) = \{ 1, 2, 3, 4\}$, $F_1(4, 0) = \{ 4 \},\ F_2(4, 0) = \{ 0, 1, 2, 3\}$, which clearly represent a non symmetric coloring.
 This behaviour is a direct consequence that flow networks don't guarantee unique min-cuts.
 
-In this thesis, we used the push relabel max flow algorithm first developed in \cite{goldberg_efficient_1997}, which is usually faster than more classical approaches such as the Ford-Fulkerson max-flow algorithm.
+In this thesis, we used the push relabel max flow algorithm first developed in \cite{goldberg1997}, which is usually faster than more classical approaches such as the Ford-Fulkerson max-flow algorithm.
 The push relabel max flow algorithm runs in $O(N^4)$ time, and when combined with an exhaustive enumeration over all possible choices of $s, t$, can take up to $O(N^6)$ time.
 
-The Gomory-Hu tree, first presented in \cite{gomory_multi-terminal_1961}, provides a way to compute the all pairs $(s, t)$ max-flows using only $N$ main max-flow computations.
+The Gomory-Hu tree, first presented in \cite{gomory1961}, provides a way to compute the all pairs $(s, t)$ max-flows using only $N$ main max-flow computations.
 A Gomory-Hu tree can be seen as a data structure that represents a simpler reduced flow network, where max-flow computations become trivially solvable through a single iteration of the Ford-Fulkerson algorithm in $\Theta(N^2)$.
 Combining Gomory-Hu trees and the push relabel max flow algorithm, an exhaustive enumeration of all possible $(s, t)$ vertices takes up to $O(N^5)$ time to build the tree, and further $\Theta(N^4)$ to query for all the possible $F_1(s, t), F_2(s, t)$ bipartitions.
 
@@ -359,7 +359,7 @@ The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 \begin{quote}
 	The idea in the GLM is to consider the number of vehicles needed to service
 	the set S. A valid lower bound for this is the demand of the set plus any
-	customer visited directly from the set divided by the capacity \cite{jepsen_branch-and-cut_2011}.
+	customer visited directly from the set divided by the capacity \cite{jepsen2011}.
 \end{quote}
 
 
