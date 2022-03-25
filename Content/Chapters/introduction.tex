@@ -278,10 +278,10 @@ is that they are usually developed and tuned using historical
 benchmark instances.
 The historical test instances are classified in different sets (or families), and
 are usually referred in the literature through a single upper case letter:
-(i) set E proposed in \textcite{christofides1969},
-(ii) set M proposed in \textcite{christofides1979}.
-(iii) set F proposed in \textcite{fisher1994},
-(iv) sets A, B, P proposed in \textcite{augerat1995},
+(i) set E proposed in \textcite{christofides1969} (no description about the generation),
+(ii) set M proposed in \textcite{christofides1979} (obtained by adding some instances from the E set),
+(iii) set F proposed in \textcite{fisher1994} (obtained from an actual distribution problem of groceries in the city of Ontario),
+(iv) sets A, B, P proposed in \textcite{augerat1995} (generated artificially: A is random, B is clustered, P generated from A,B,E by changing capacities).
 Another popular tested is the one proposed in \textcite{golden1998},
 containing large scale instances ranging from 200 to 480 customers,
 generated programmatically following concentric geometric figures.
@@ -294,7 +294,8 @@ Despite some efforts in proposing new instances for the CVRP, the scientific com
 has not agreed on a common denominator for new more-modern benchmark set, and therefore,
 the common and historical instances remain the main central test-bed for comparing
 and assessing the performance of CVRP contributions.
-It has been shown that the performance of branch-and-price frameworks tends to drop as the lenght of the routes increases. \todo{Citation needed}
+It \todo{Citation needed} has been shown that the performance of branch-and-price frameworks tends to drop as the length of the routes increases.
+
 
 
 The objective of the thesis is to study the feasibility of employing a MIP solver
