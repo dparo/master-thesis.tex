@@ -93,6 +93,12 @@ Finally, Constraints \eqref{eq:three-index-flow-x-mip-var-bounds}, \eqref{eq:thr
 
 Since the number of SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
 
+There's an important observation to be made on constraint \eqref{eq:three-index-flow-tour-starts-and-ends-at-depot}.
+By using the equality sign, we're forcing solutions to use all the available $K$ trucks, even though better solutions making use of less trucks may exist.
+In our case, we decided to fix the number of routes in the CVRP formulation since it seems that this is the most agreed contention in the literature.
+Some authors, instead, prefer a different CVRP formulation, by not fixing the number of routes, and by essentially using a less-than-sign in place of the equality.
+
+
 The three-index flow formulation is usually solved through the usage of a standard Branch \& Cut framework approach.
 Modern CVRP solvers, instead, rely on a different mathematical formulation and employ a  mostly Branch \& Price based-approach (although hybridization are also possible).
 The Set Partitioning (SP) formulation is the main starting point employed by Branch \& Price solvers.
