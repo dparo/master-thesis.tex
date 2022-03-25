@@ -280,17 +280,19 @@ are currently the best overall performing algorithms.
 \label{sec:intro-thesis-contributions}
 
 One of the major problems of current state-of-the-art CVRP solvers
-is that they are usually developed and tuned using historical
+is that they are usually developed and tuned through the use of historical
 benchmark instances.
-The historical test instances are classified in different sets (or families), and
-are usually referred in the literature through a single upper case letter:
-(i) set E proposed in \textcite{christofides1969} (no description about the generation),
-(ii) set M proposed in \textcite{christofides1979} (obtained by adding some instances from the E set),
-(iii) set F proposed in \textcite{fisher1994} (obtained from an actual distribution problem of groceries in the city of Ontario),
-(iv) sets A, B, P proposed in \textcite{augerat1995} (generated artificially: A is random, B is clustered, P generated from A,B,E by changing capacities).
-Another popular tested is the one proposed in \textcite{golden1998},
-containing large scale instances ranging from 200 to 480 customers,
+The major historical test instances are classified in different sets (or families), and
+they are usually referred in the literature through a single upper case letter.
+We here summarize the core sets proposed by the operations research community for the CVRP problem:
+(i) set E is proposed in \textcite{christofides1969} and contains no description about how the instances were generate,
+(ii) set M is proposed in \textcite{christofides1979} and it is obtained by merging together some instances from the E set,
+(iii) set F is proposed in \textcite{fisher1994} and it obtained from an actual distribution problem of groceries in the city of Ontario,
+finally (iv) sets A, B, P are proposed in \textcite{augerat1995} and are generated artificially: A is random, B is clustered, P generated from A,B,E by changing capacities.
+Another popular test set is the one proposed in \textcite{golden1998},
+which contains large scale instances ranging from 200 to 480 customers,
 generated programmatically following concentric geometric figures.
+
 These benchmark instances suffer from being either too homogeneous, or too artificial,
 while not covering the main characteristics found in current real-world application problems.
 In the work of \textcite{uchoa2017}, for example, they propose
@@ -300,33 +302,36 @@ Despite this recent effort in proposing new instances for the CVRP, the scientif
 has yet to fully agree on a common denominator for new more-modern benchmark set, and therefore,
 the common and historical instances played (and still remains) the main central test-bed for comparing
 and assessing the performance of CVRP contributions.
-It \todo{Citation needed} has been shown that the performance of branch-and-price frameworks tends to drop as the length of the routes increases.
 
+These historical instances are usually characterized with stringent vehicle capacities
+which consequently give rise to optimal solutions characterized by small routes, each visiting few customers.
+In practice, the vehicle capacity is rarely the bottleneck and
+real-world modern distribution problems are instead characterized by much longer routes.
+When solving the pricing problem, it \todo{Citation needed} has been shown that the performance of the dynamic labeling algorithm
+tends to drop as the length of the routes increases,
+while at the same time,
+the performance of branch-and-cut algorithms seem to improve in this domain.
 
+The goal of the thesis lies in studying the feasibility and competitiveness of a
+branch-and-cut algorithm, implemented through a commercial MIP software package,
+for solving the pricing problem.
+The objective is to empirically evaluate the performance of the proposed
+branch-and-cut framework against the state-of-the-art labeling
+algorithm, while empirically measuring how the two frameworks behave
+as the lengths of the route they need to generate increases.
+\cite{jepsen2014} proposed a branch-and-cut framework for solving the pricing problem.
+In their work, \citeauthor{jepsen2014} showed that, despite the dynamic programming algorithm
+turned out to be much faster in many instances, the BAC framework exhibited
+better performance for some larger instances; proving that
+a BAC framework could complement the dynamic programming algorithm for solving the PP.
+This thesis stems from the original work \citeauthor{jepsen2014}.
+The objective of this thesis is to revisit the work of \citeauthor{jepsen2014},
+and verify whether recent development improvements in MIP solvers
+have made them competitive at solving the pricing problem,
+or vice versa,
+if the current situation and modern dynamic programming algorithms have
+made BAC approaches completely obsolete.
 
-The objective of the thesis is to study the feasibility of employing a MIP solver
-based on a Branch \& Cut Framework to solve the pricing problem induced in solving
-CVRP instances.
-A similar study was already performed in \cite{jepsen2014}.
-Part of the objective of the thesis is to revisit the work of Jepsen comparing
-the performance of a Branch \& Cut Framework against the state-of-the-art work
-\cite{pessoa2020}.
-One of the core contributions is the verification of whether a Branch \& Cut Framework
-can perform better than the dynamic labeling algorithm employed \cite{pessoa2020},
-especially when the optimal routes tend to be longer than usual.
-
-One of the main issues in the work of \cite{pessoa2020}, is that
-most of the algorithms were optimized for dated datasets, the problem
-is that these instances are quite anachronistic, in practice, in modern
-distribution problems, the vehicle capacity is rarely the bottleneck.
-The same truck within a single day is meant to serve a higher number of customers
-compared to the widely employed standard datasets.
-It is known that the labeling algorithm tend to deteriorate in performance when
-the optimal routes that need to be generated tend to become longer.
-
-This thesis aims at providing a first proof-of-concept answer
-to whether it is better to employ a Branch \& Cut framework to solve the pricing problem
-when the routes become longer.
 
 
 \section{Outline}
