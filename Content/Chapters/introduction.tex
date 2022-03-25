@@ -244,7 +244,12 @@ Some notable BAC contributions are provided in the works of
 These works showed that CVRP instances, even with small number of customers (less than 100) proved
 to be very challenging for the BAC approaches.
 
-
+Then, \textcite{fukasawa_robust_2006} solved all CVRP instances up to approximately 100 customers
+using a branch-cut-and-price approach.
+Later, the works of \textcite{baldacci2008exact}, \textcite{baldacci2011new}
+improved the overall running times by employing a column and cut generation scheme.
+Later, \textcite{contardo_new_2014} was able to solve a CVRP instance made of 151 (M-n151-k12).
+Later, \textcite{pecin2017improved} solved CVRP instances made of 200 customers (M-n200-k16, M-n200-k7).
 
 \begin{comment}
 \cite{jepsen_branch-and-cut_2011}
@@ -271,7 +276,16 @@ are currently the best overall performing algorithms.
 One of the major problems of current state-of-the-art CVRP solvers
 is that they are usually developed and tuned using historical
 benchmark instances.
-These benchmark instances suffer from being too homogeneous and artificial
+The historical test instances are classified in different sets (or families), and
+are usually referred in the literature through a single upper case letter:
+(i) sets A, B, P proposed in \textcite{augerat_computational_1995},
+(ii) set E proposed in \textcite{christofides_algorithm_1969},
+(iii) set F proposed in \textcite{fisher_optimal_1994},
+(iv) set M proposed in \textcite{christofides_vehicle_1979}.
+Another popular tested is the one proposed in \textcite{golden_impact_1998},
+containing large scale instances ranging from 200 to 480 customers,
+generated programmatically following concentric geometric figures.
+These benchmark instances suffer from being either too homogeneous, or too artificial,
 while not covering the main characteristics found in current real-world application problems.
 In the work of \textcite{uchoa2017new}, for example, they propose
 a new more modern set of benchmark instances to replace the historical
