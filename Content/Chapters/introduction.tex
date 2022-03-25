@@ -194,7 +194,7 @@ The oracle needs to solve the pricing problem which, due to the definition of th
 
 Note that, the BAP solver need not to solve the PP optimally at each iteration of the simplex algorithm.
 To improve the dual bound, it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$, which allow the usage of heuristic algorithms especially during the very first few iterations, where finding good reduced cost columns is surprisingly easy.
-Branching occurs when either the optimal solution of the PP, $p^\star$, achieves $c^\star_p \ge 0$ (non-negative solution) and $\exists p \in \mc{P} \mid \lambda_p \notin \Set*{0, 1}$, or, the column generation procedure tails off, i.e. the gained dual bound improvements compared to the running time to generate a column become suboptimal.
+Branching occurs when either: (i) the optimal solution of the PP, $p^\star$, achieves $c^\star_p \ge 0$ (non-negative solution) and $\exists p \in \mc{P} \mid \lambda_p \notin \Set*{0, 1}$; (ii) the column generation procedure tails off, i.e. the gained dual bound improvements compared to the running time to generate a column become suboptimal.
 
 
 
@@ -227,10 +227,14 @@ In this thesis we will mostly concentrate on branching and cut generation scheme
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
 
+\mytodo{Write this section or merge it}
 
 
 \section{Literature Review}
 \label{sec:intro-literature-review}
+
+\mytodo{Write this section}
+
 
 \begin{comment}
 \cite{jepsen_branch-and-cut_2011}
@@ -253,6 +257,19 @@ are currently the best overall performing algorithms.
 
 \section{Thesis Contributions}
 \label{sec:intro-thesis-contributions}
+
+One of the major problems of current state-of-the-art CVRP solvers
+is that they are usually developed and tuned using historical
+benchmark instances.
+These benchmark instances suffer from being too homogeneous and artificial
+while not covering the main characteristics found in current real-world application problems.
+In the work of \textcite{uchoa2017new}, for example, they propose
+a new more modern set of benchmark instances to replace the historical
+used ones.
+Despite some efforts in proposing new instances for the CVRP, the scientific community
+has not agreed on a common denominator for new more-modern benchmark set, and therefore,
+the common and historical instances remain the main central test-bed for comparing
+and assessing the performance of CVRP contributions.
 
 
 The objective of the thesis is to study the feasibility of employing a MIP solver
