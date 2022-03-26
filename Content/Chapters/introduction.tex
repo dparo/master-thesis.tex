@@ -237,14 +237,28 @@ In this thesis we will mostly concentrate on branching and cut generation scheme
 
 \mytodo{Write this section or merge it}
 
+The label-setting algorithm work by label construction and propagation from node to node.
+The dominance rules in the label-setting algorithm allows the oracle
+to efficiently prune the search space by ignoring dominated labels.
+
+In order to simplify the pricing problem further,
+some authors started to propose to relax the elementarity condition
+to speed up the convergence of the label-setting algorithm, worsening however, the dual improvement.
+It is in fact possible to drop the elementarity constraints, only if, the BAP framework supports
+branching on the edges of the original three-index flow formulation.
+Notable contributions in relaxing the elementarity constraints include:
+(i) the q-route relaxation suggested in \textcite{christofides1981},
+(ii) a state-space relaxation procedure suggested in \textcite{christofides1981a},
+(iii) shortest path relaxation suggested in \textcite{desrosiers1984}.
+
 
 \section{Literature Review}
 \label{sec:intro-literature-review}
 
 \mytodo{Write this section, by integrating the literature as I read it}
 
-First attempts, in solving the CVRP were based on branch-and-cut algorithms
-which had historical prevalence.
+One of the very first few attempts, in solving the CVRP, were based on branch-and-cut algorithms
+which at that time had historical prevalence.
 Some notable BAC contributions are provided in the works of
 \textcite{araqueg1994}, \textcite{augerat1995}, \textcite{blasum2000}, \textcite{achuthan2003}, \textcite{ralphs2003}, \textcite{lysgaard2004},
 These works showed that CVRP instances, even with small number of customers (less than 100) proved
