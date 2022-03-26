@@ -1,6 +1,6 @@
 \chapter{The Capacitated Profitable Tour Problem (CPTP)}
 
-\cite{Jepsen2014} provided in their work an IP formulation for the CPTP.
+\cite{jepsen2014} provided in their work an IP formulation for the CPTP.
 The IP model presented in this section is derived from their work, and it is here summarized.
 
 Let $G = \Tuple*{V, E}$ denote a complete undirected graph, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
@@ -88,12 +88,12 @@ The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0, 
 
 In this section we present additional valid inequalities for the CPTP problem.
 These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can heavily speed up the resolution process.
-Most of these cuts follow the presentation proposed in \cite{Jepsen2014}.
-We will concentrate mostly on the most important ones, additional inequalities and information are treated in more detail in \cite{Jepsen2014}.
+Most of these cuts follow the presentation proposed in \cite{jepsen2014}.
+We will concentrate mostly on the most important ones, additional inequalities and information are treated in more detail in \cite{jepsen2014}.
 
 \subsection{Generalized Large Multistar (GLM) inequalities}
-The Generalized Large Multistar inequalities, GLM for short, were first proposed in \cite{gouveia_result_1995}, and further discussed in \cite{letchford2006projection}.
-In the additional work of \cite{letchford_multistars_2002}, the GLM cuts are further generalized in the so-called Knapsack Large Multistar (KLM) inequalities.
+The Generalized Large Multistar inequalities, GLM for short, were first proposed in \cite{gouveia1995}, and further discussed in \cite{letchford2006}.
+In the additional work of \cite{letchford2002}, the GLM cuts are further generalized in the so-called Knapsack Large Multistar (KLM) inequalities.
 The GLM inequalities can be expressed as:
 
 \begin{equation}\label{eq:glm-inequality-v1}
@@ -131,7 +131,7 @@ It is now easy to see that the following result holds
 \end{equation}
 
 \subsection{Rounded Capacity Inequalities (RCI)}
-The Rounded Capacity Inequalities, RCI for short, were first presented in \cite{achuthan_capacitated_1998}.
+The Rounded Capacity Inequalities, RCI for short, were first presented in \cite{achuthan1998}.
 
 Let $q(S) = \sum_{i \in S} q_i$ and $\ExprQrS = \fmod{q(S)}{Q}$ be respectively the total demand and remainder capacity associated to set $S \subseteq V_0$.
 The RCI inequalities can then be expressed as:

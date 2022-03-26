@@ -158,12 +158,12 @@ For singletons instead we fix $c(i) = -1  \quad \forall i \in V_0 \mid y_i = 0$.
 The connected components can be computed by a simple depth first search traversal, for which a pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
 
 \begin{algorithm}
-	\label{algo:cc-dfs}
 	\caption{An algorithm for computing the connected components through a DFS traversal}
 	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
 	\input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
+	\label{algo:cc-dfs}
 \end{algorithm}
 
 Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
