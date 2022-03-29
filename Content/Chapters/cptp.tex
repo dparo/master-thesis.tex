@@ -1,5 +1,76 @@
 \chapter{The Capacitated Profitable Tour Problem (CPTP)}
 
+
+\begin{comment}
+\cite{jepsen2011}
+This paper considers the capacitated profitable tour problem (CPTP).
+The CPTP belongs to the group of problems known as travelling salesman
+problems with profits. In CPTP each customer is associated with a profit
+and a demand and the objective is to find a capacitated tour (rooted in
+a depot node) that minimizes the total travel distance minus the profit of
+the visited customers. The CPTP can be recognized as the sub-problem in
+many column generation applications. We present a branch-and-cut algo-
+he objective is to find a tour
+rooted in the depot where the demand accumulated at the customers does
+not exceed the capacity, and the total travel distance subtracting the profits
+gained by visiting customers is minimized.
+
+The CPTP is a side-constrained version of the profitable tour problem
+named by Dell’Amico et al. [On prize-collecting tours and the asymmetric travelling salesman problem, 1995]
+, a problem that falls within the category of
+traveling salesman problems with profits as classified by Feillet et al. [Traveling salesman problems with profits, 2005]
+Other problems in this category are the orienteering problem (OP) (also
+known as the selective travelling salesman problem) and the prize-collecting
+travelling salesman problem (PCTSP). In the OP the total tour length is
+bounded from above, and the objective is to maximize the profit gained by
+visiting customers. In the PCTSP the objective is similar to the CPTP but a
+minimum amount of profits must be collected on the tour. In the context of
+the capacitated vehicle routing problem (CVRP) the CPTP appears as the
+sub-problem in column generation methods, see e.g. Baldacci et al. [3, 2].
+In this context, the CPTP is often transformed to a path problem (a path
+is obtained from the tour by splitting the depot into two nodes) and is de-
+noted the elementary shortest path problem with resource constraints. The
+resource is given as an accumulation of demand of the visited customers and
+is constrained by the capacity. However, in recent routing applications the
+sub-problem is complicated considerably by the introduction of additional
+cuts in the column generating master problem, such as the strong capacity
+inequalities [2], the subset-row inequalities [20], the Chvátal-Gomory rank-1
+cuts [28], and the clique inequalities [33]. The sub-problem can no longer
+be considered a CPTP. Moreover, the sub-problems are often solved as fea-
+sibility problems instead of optimization problems which may favour other
+types of combinatorial algorithms than branch-and-cut algorithms.
+Laporte and Martello [21] showed that the OP is NP-hard by reduc-
+tion from the Hamilton circuit problem. Using a similar reduction it can
+be shown that the CPTP also belongs to the class of NP-hard problems.
+If there are no cycles with negative cost in the graph G, then the CPTP
+is solvable in pseudo-polynomial time using a dynamic programming algo-
+rithm. In this particular case the CPTP relates to the constrained shortest
+path problem (again by transformation to a path problem). Several al-
+gorithms based on dynamic programming exist for this problem, see e.g.,
+Beasley and Christofides [6],Carlyle et al. [9], Dumitrescu and Boland [13],
+and Muhandiramge and Boland [25].
+Bixby [Polyhedral analysis and effective algorithms for the capacitated vehicle routing problem, 1999]
+considers the CPTP in her PhD thesis on the CVRP and present a mathematical model
+and a branch-and-cut (BAC) algorithm.  Letch-
+ford and Salazar-Gonzalez [24] discuss projection results for the CVRP and
+present two families of multistar inequalities that are valid for the CPTP.
+Other work on the CPTP in a CVRP context is mainly concerned with
+dynamic programming algorithms.
+The contribution of this paper is the introduction of an IP model for the
+CPTP and a BAC algorithm for solving it. This includes the adaption of
+several valid inequalities from e.g. the OP and the CCCP, the introduction
+of the rounded multistar inequalities, and a proof of validity for all inequal-
+ities with regard to the CPTP. Also, we have successfully implemented a
+separation heuristic for finding knapsack large multistar inequalities that
+prove their usefulness for the CPTP. The computational experiments show
+that the BAC algorithm is competitive with the state-of-the-art dynamic
+programming algorithms. In particular, the BAC algorithm is able to solve
+instances with 800 nodes to optimality where the dynamic programming
+algorithms cannot solve instances with more than 200 nodes. In general
+the two algorithms appear to complement each other well. The
+\end{comment}
+
+
 \cite{jepsen2014} provided in their work an IP formulation for the CPTP.
 The IP model presented in this section is derived from their work, and it is here summarized.
 
