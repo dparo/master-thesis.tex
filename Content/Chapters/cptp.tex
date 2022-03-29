@@ -1,4 +1,20 @@
-\chapter{The Capacitated Profitable Tour Problem (CPTP)}
+\chapter{The CPTP}
+\label{sec:cptp-chapter}
+
+\section{Introduction}
+\label{sec:cptp-intro}
+
+The Capacitated Profitable Tour Problem, abbreviated as CPTP,
+belongs to the group of the so-called travelling salesman
+problems with profits.
+The CPTP is a problem, in which, given as input a set of customers
+defined over a fully connected undirected network, the goal resides in finding
+a capacitated tour starting from a common point called the depot,
+that minimizes the overall travel distance while maximinizing
+the profits associated in visiting the customers.
+The CPTP can be also described in simple words
+as a single-truck ($k = 1$) (C)VRP where all customers
+do not need to be necessarily served.
 
 
 \begin{comment}
@@ -70,6 +86,9 @@ algorithms cannot solve instances with more than 200 nodes. In general
 the two algorithms appear to complement each other well. The
 \end{comment}
 
+
+\section{Mathematical Formulation}
+\label{sec:cptp-mathematical-formulation}
 
 \cite{jepsen2014} provided in their work an IP formulation for the CPTP.
 The IP model presented in this section is derived from their work, and it is here summarized.
