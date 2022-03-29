@@ -113,6 +113,8 @@ The Set Partitioning (SP) integer programming formulation presented in \textcite
 works substantially differently from the three-index flow formulation or any other commonly employed IP formulations.
 The SP formulation uses a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
 
+When a violated inequality in the two-index formulation or three-index formulation is found, it is decomposed at runtime and introduced in the master problem.
+
 The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the three-index flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
 let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
@@ -231,6 +233,7 @@ Therefore, their usage must be assessed on a case-by-case basis.
 
 
 In this thesis we will mostly concentrate on branching and cut generation schemes which make use of \textbf{robust} inequalities.
+Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
 
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
@@ -297,6 +300,20 @@ Later, the works of \textcite{baldacci2008}, \textcite{baldacci2011}
 improved the overall running times by employing a column and cut generation scheme.
 Later, \textcite{contardo2014} was able to solve a CVRP instance made of 151 (M-n151-k12).
 Later, \textcite{pecin2017} solved CVRP instances made of 200 customers (M-n200-k16, M-n200-k7).
+
+
+\textcite{kohl1999}, later generalized in \cite{desaulniers2008}, introduce the
+2-paths inequalities, and were one of the first authors to integrate
+cutting-planes within the BAP framework for solving the CVRP.
+\textcite{fukasawa2006} integrate the cutting planes proposed in \cite{lysgaard2004}
+within the BAP framework for solving the CVRP.
+Some authors, instead, developed inequalities for the CVRP directly
+in the SP formulation.
+Major contributions includes: the strong capacity inequalities in \textcite{baldacci2008},
+and the subset row inequalities in \textcite{jepsen2011}.
+
+
+
 
 \begin{comment}
 \cite{jepsen_branch-and-cut_2011}
