@@ -6,35 +6,29 @@
 
 The Capacitated Profitable Tour Problem, abbreviated as CPTP,
 belongs to the group of the so-called travelling salesman
-problems with profits, see \cite{dellamico1995}, \cite{feillet2005a},
+problems with profits (see \cite{dellamico1995}, \cite{feillet2005a}),
 and therefore presents many similarities with other very well known
-problems such as the Orienteering Problem (OP).
-The CPTP is a problem, in which, given as input a set of customers
+problems such as the Orienteering Problem (OP) \parencite{laporte1990}.
+The CPTP is a combinatorial optimization problem representing
+a distribution problem, in which,
+given as input a set of customers
 defined over a fully connected undirected network, the goal resides in finding
 a capacitated tour starting from a common point called the depot,
 that minimizes the overall travel distance while maximizing
-the profits associated in visiting the customers.
-It is a special case of the ESPPRC, when the source and sink vertices coincide,
-or the other way around depending on the point of view.
-The CPTP can be also described in simple words
+the profits associated in serving only a subset of the customers.
+The CPTP can also be described in simple words
 as a single-truck ($k = 1$) (C)VRP where all customers
 do not need to be necessarily served.
+The CPTP shows up naturally in the column generation approach employed in solving many VRP variants.
+It is an important special case of the ESPPRC, when the source and sink vertices coincide.
+This problem is easier to describe than the ESPRRC,
+but due to its narrower scope,
+it is much less covered in the literature.
+
 
 
 \begin{comment}
 \cite{jepsen2011}
-This paper considers the capacitated profitable tour problem (CPTP).
-The CPTP belongs to the group of problems known as travelling salesman
-problems with profits. In CPTP each customer is associated with a profit
-and a demand and the objective is to find a capacitated tour (rooted in
-a depot node) that minimizes the total travel distance minus the profit of
-the visited customers. The CPTP can be recognized as the sub-problem in
-many column generation applications. We present a branch-and-cut algo-
-he objective is to find a tour
-rooted in the depot where the demand accumulated at the customers does
-not exceed the capacity, and the total travel distance subtracting the profits
-gained by visiting customers is minimized.
-
 The CPTP is a side-constrained version of the profitable tour problem
 named by Dell’Amico et al. [On prize-collecting tours and the asymmetric travelling salesman problem, 1995]
 , a problem that falls within the category of
