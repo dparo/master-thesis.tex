@@ -236,7 +236,7 @@ Note that, the BAP solver need not to solve the PP optimally at each iteration o
 To improve the dual bound, it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$, which allow the usage of heuristic algorithms especially during the very first few iterations, where finding good reduced cost columns is surprisingly easy.
 Branching occurs when either: (i) the optimal solution of the PP, $p^\star$, achieves $c^\star_p \ge 0$ (non-negative solution) and $\exists p \in \mc{P} \mid \lambda_p \notin \Set*{0, 1}$; (ii) the column generation procedure tails off, i.e. the gained dual bound improvements compared to the running time to generate a column become suboptimal.
 
-
+The subproblem can be seen as a variant of the elementary shortest path problem with resource constraints (ESPPRC).
 
 \subsection{Branching and Cut Generation within BAP frameworks}
 \label{sec:intro-branching-and-cut-generation-within-bap-frameworks}
