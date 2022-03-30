@@ -14,21 +14,24 @@ The CPTP is an NP-hard combinatorial optimization problem representing
 a distribution problem, in which,
 given as input a set of customers
 defined over a fully connected undirected network, the goal resides in finding
-a capacitated (accumulated demand in visiting customers)
-tour (or circuit) starting from a common point called the depot,
+a resource constrained elementary tour (or circuit) starting from a common point called the depot,
 that minimizes the overall travel distance while maximizing
 the profits associated in serving only a subset of the customers.
+The elementarity constraint dictates that no vertex
+can be visited twice or more, thus implying that the earnable profit
+per customer is available only once.
 The CPTP can also be described in simple words
-as a single-truck ($k = 1$) (C)VRP where all customers
-do not need to be necessarily served.
+as a single-truck ($k = 1$) (C)VRP where it is possible to serve only a small set of customers,
+based on a profit value that is gained when serving occurs.
 The CPTP shows up naturally as a sub-problem in the column generation approach employed in solving many VRP variants.
 It is an important special case of the ESPPRC, where the source and sink vertices coincide.
-This problem is easier to describe than the ESPRRC,
-but due to its narrower scope,
-it is much less covered in the literature.
+This problem is easier to describe than the ESPPRC,
+however due to its narrower scope,
+it is less addressed in the literature.
 Instead, major contributions are dedicated in solving the ESPPRC through dynamic programming algorithms.
 
-The major contributions regarding the CPTP directly are \cite{jepsen2011, jepsen2014}, \dots.
+The few contributions studying the CPTP directly to solve the PP
+are \cite{jepsen2011, jepsen2014}.
 
 \section{Mathematical Formulation}
 \label{sec:cptp-mathematical-formulation}
