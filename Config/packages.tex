@@ -1,7 +1,6 @@
 %
 %% "Core" packages
 %%
-\usepackage{ifthen}              % To write sane if-then statemnts
 \usepackage{afterpackage}        % To run commands conditionally after a package is loaded (if it is loaded)
 \usepackage[htt]{hyphenat}       % To enable hyphenation and provides hyphenatable monospaced fonts, i.e. \texttt{} reflows on new lines correctly
 \usepackage{hyperref}            % To allow for interactive links (click with the mouse)
@@ -28,10 +27,10 @@
 \usepackage{todonotes}        % For writing todos and notes in yor pdf
 \usepackage{lipsum}           % For Lorem Ipsum
 
-\ifbool{DebugBuild} {
+\ifbool{DebugBuild}{
 	\usepackage{showframe}        % To debug the frame border, padding, etc. It draws a box around each major region of the page
 	\usepackage{layout}           % To generate automatically a layout page
-} {
+}{
 	% Else clause
 }
 
@@ -63,6 +62,12 @@
 \definecolor{codelightblue}{RGB}{0,204,204}
 \definecolor{codepurple}{RGB}{0.58,0,0.82}
 \definecolor{backcolour}{RGB}{235,235,235}
+
+
+\ifbool{GenerateGlossary}{
+	\usepackage[acronym]{glossaries} % For list of acronyms
+}{}
+
 
 \hypersetup{
 	%hyperfootnotes=false,
