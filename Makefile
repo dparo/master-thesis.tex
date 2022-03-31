@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-.PHONY: all release clean hard_clean watch spellcheck svg2pdf prebuild
+.PHONY: all release clean watch spellcheck svg2pdf prebuild
 
 export PRINT= n
 
@@ -20,11 +20,9 @@ release: spellcheck all $(RELEASE_PDF)
 clean:
 	# Clean generated pdfs
 	find ./Imgs -type f -name "*.out.pdf" -exec rm -rf {} \;
+	find ./Imgs -type f -name "*.cropped.pdf" -exec rm -rf {} \;
 	# Clean latexmk files
 	latexmk -c
-
-hard_clean: clean
-	# Remove build directory
 	rm -rf build
 
 # Ensure build directory exists
