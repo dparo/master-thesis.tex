@@ -216,7 +216,6 @@ The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dan
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
 let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
 and finally let $a_{i}^p \in \Set*{0, 1}$ be "static encoding" (binary coefficient) for a route $p$, i.e. if vertex $i \in V$ is visited (or covered) by route $p$.
-The main advantage of the SP model is that it can handle many constraints, since their definition are captured within the definition of the set $P$ itself.
 Anyhow, by finally defining $c_p$ as the cost of a feasible route $p \in P$,
 which can be trivially computed in $O(N)$,
 we can write the full SP model as:
@@ -236,7 +235,7 @@ Finally, constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the bou
 
 As one may guess, due the exponential number of binary variables, the SP formulation cannot be used in as-is in practice.
 However, a variant of the SP formulation can be tackled efficiently by column generation approaches embedded inside a Branch \& Price framework.
-Branch \& Price frameworks and column generation have been shown to work remarkably well for solving the CVRP.
+Branch \& Price frameworks and column generation have been shown to work remarkably well for solving routing problems.
 
 When a violated inequality in the two-index formulation is found, it is decomposed at runtime and introduced in the master problem.
 
@@ -246,7 +245,11 @@ by substituting inequality \eqref{eq:set-partitioning-customers-visited-by-exact
 
 \begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
 	\sum_{p \in P}  a_{i}^p \lambda_p \ge 1  \quad \forall i \in V_0
-\end{equation}
+\end{equation},
+
+under this assumption, any feasible solution for the SP formulation is also feasible for the SC formulation.
+Transformign the SP to the SC formulation vastly shrinks the size of the dual solution space.
+The main advantage of the SP model is that it can handle many constraints, since their definition are captured within the definition of the set $P$ itself.
 
 In the next sections we will introduce the Branch \& Price framework and the column generation approach, key components employed in modern state-of-the-art CVRP solvers.
 
