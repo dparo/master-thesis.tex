@@ -5,15 +5,20 @@
 \label{sec:intro-cvrp-problem}
 
 The Capacitated Vehicle Routing Problem (CVRP), first presented in \textcite{dantzig1959},
-is one of the most studied combinatorial optimization problem,
+is one of the most studied combinatorial optimization routing problem,
 which can be considered a generalization of the well-known Travelling Salesman Problem (TSP).
-The problem consists in finding an optimal route for a delivery problem
+The problem consists in finding an optimal route for a transportation/distribution/delivery problem
 starting from a common point called the depot,
 where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
-need to serve customer demands.
+need to serve customer demands of a single good.
 Given as input: a weighted graph, the customer demands and the vehicle capacity,
 the problem consists in minimizing the overall travel distance,
 while serving all the customers exactly once.
+
+Studying effective solutions methods for the CVRP may lead to tremendous real-world economic
+savings for the management of the provision of goods in distribution systems.
+Optimal delivery planning can reduce the overall transportation and good costs while
+also reducing the waiting time experienced by the customers.
 
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
