@@ -139,7 +139,7 @@ We can therefore describe the two-index flow formulation as an Integer Programme
     \min_{x} \quad z_\mt{2F}(x) & =  \sum_{(i, j) \in E} d_{ij} x_{ij} \label{eq:two-index-flow-obj-func}                                                                                                                          \\
                                 & \sum_{(i, j) \in \delta(i)} x_{ij} = 2                                                        & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer}                                                             \\
                                 & \sum_{j \in V_0} x_{0i} = 2 K                                                        & \label{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}                                                             \\
-                                & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 r(S)                                                        & \quad \forall S \subseteq V_0, |S| \ge 1 \label{eq:two-index-flow-ccc}                                                             \\
+                                & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 r(S)                                                        & \quad \forall S \subseteq V_0,\ |S| \ge 1 \label{eq:two-index-flow-ccc}                                                             \\
 	                            & x_{ij}                   \in \Set*{0, 1}                                                 & \quad \forall (i, j) \in E \label{eq:two-index-flow-x-mip-var-bounds}
 \end{align}
 
@@ -158,6 +158,24 @@ thus obtaining the following inequality:
 \begin{equation}
     \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 \ceil*{\frac{q(S)}{Q}}   \quad \forall S \subseteq V_0, |S| \ge 1 \label{eq:two-index-flow-ccc-bpp-lower-bound}                                                             \\
 \end{equation}
+
+Traditionally, the CCC constraints of \eqref{eq:two-index-flow-ccc}, are usually transformed in the so called Generalized Subtour Elimination Constraints (GSEC),
+by means of the degree constraints \eqref{eq:two-index-flow-two-edges-incident-per-customer, eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
+
+\begin{equation}\label{eq:cvrp-2flow-gsec}
+    \sum_{(i, j) \in E, i \in S, j \in S} x_{ij} \le |S| - r(S) \quad \forall S \subseteq V_0,\ |S| \ge 1
+\end{equation}.
+
+The GSEC avoid the formation of spurious unconnected subtours, and impose that at least $r(S)$ edges leave set $S$.
+The number of GSEC (or CCC) inequalities appear in exponential number in the two-index formulation model,
+thus making a direct solution of the linear programming relaxation impracticle.
+To overcome this issue, it is possible to avoid adding the GSEC inequalities staticaly in the model.
+Instead, an appropriate separation procedure may be employed to generate dynamically only the required
+GSEC constraints during the running time of the branch-and-cut algorithm.
+Another approach to use the so-called compact models, that make use of a polynomial number
+of constraints (see \cite{miller1960, christofides1979, desrochers1991}), but these
+models have shown to provide weak formulations,
+while the GSEC constraints are in the TSP case facet-defining.
 
 
 \subsection{The three-index flow formulation}
