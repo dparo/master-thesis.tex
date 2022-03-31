@@ -104,7 +104,7 @@ The value of $r(S)$ can be obtained by solving an NP-hard Bin Packing Problem as
 Often, it is simpler to consider $r(S)$ by replacing it with the trivial lower bound of the Bin Packing Problem:
 
 \begin{equation}
-    r(S) \ge \ceil*{q(S) / Q}
+    r(S) \ge \ceil*{\frac{q(S)}{Q}}
 \end{equation}
 
 A feasible solution to the CVRP problem consists of \textbf{exactly} $K$ tours (or circuits) associated with each vehicle starting from the depot node.
@@ -123,11 +123,42 @@ Therefore, all the relaxations and many results obtained for the TSP are valid, 
 \label{sec:intro-cvrp-two-index-flow-formulation}
 
 The two-index vehicle flow formulation was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
-and later generalized to the assymetric case in \cite{laporte1986}.
+and later generalized to the asymmetric case in \cite{laporte1986}.
 
-We assume that vehicles must visit at least two customers,
-We define a set of binary variables $x_{ij}$ in \Set*{0, 1} to indicate if a vehicle traverses
+As already mentioned in the introduction,
+to avoid edge cases in modeling we assume a CVRP problem where
+vehicles must visit at least two customers,
+We define a set of binary variables $x_{ij} \in \Set*{0, 1}$ to indicate if any vehicle traverses
 edge $(i, j) \in E$ in the optimal solution.
+There are $O(N^2)$ number of binary variables in the model.
+We can therefore describe the two-index flow formulation as an Integer Programme (IP) model:
+
+
+
+\begin{align}
+    \min_{x} \quad z_\mt{2F}(x) & =  \sum_{(i, j) \in E} d_{ij} x_{ij} \label{eq:two-index-flow-obj-func}                                                                                                                          \\
+                                & \sum_{(i, j) \in \delta(i)} x_{ij} = 2                                                        & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer}                                                             \\
+                                & \sum_{j \in V_0} x_{0i} = 2 K                                                        & \label{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}                                                             \\
+                                & \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 r(S)                                                        & \quad \forall S \subseteq V_0, |S| \ge 1 \label{eq:two-index-flow-ccc}                                                             \\
+	                            & x_{ij}                   \in \Set*{0, 1}                                                 & \quad \forall (i, j) \in E \label{eq:two-index-flow-x-mip-var-bounds}
+\end{align}
+
+where $z_\mt{2F}(x)$, as defined in \eqref{eq:two-index-flow-obj-func}, is the objective function which aim to minimize the total travel time.
+Constraint \eqref{eq:two-index-flow-two-edges-incident-per-customer} is the degree constraint (flow conservation), which imposes that exactly two incident edges must be picked for each customer.
+Constraint \eqref{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}, is the degree constraint at the depot, it forces that exactly $2K$ incident edges at the depot are picked, thus forcing the CVRP optimal solution to be composed of exactly $K$ routes.
+Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), they impose both:
+(i) connectivity of the solution by avoiding the formation of spurious unconnected subtours,
+(ii) constraint the vehicle capacity, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$, which
+represent the minimum number of vehicles needed to serve set $S$.
+
+It was shown in \textcite{cornuejols1993}, that it is possible to replace $r(S)$ in constraint
+\eqref{eq:two-index-flow-ccc}, with the much simpler Bin Packing Problem lower bound $\ceil*{q(S) / Q}$
+thus obtaining the following inequality:
+
+\begin{equation}
+    \sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 \ceil*{\frac{q(S)}{Q}}   \quad \forall S \subseteq V_0, |S| \ge 1 \label{eq:two-index-flow-ccc-bpp-lower-bound}                                                             \\
+\end{equation}
+
 
 \subsection{The three-index flow formulation}
 \label{sec:intro-cvrp-three-index-flow-formulation}
