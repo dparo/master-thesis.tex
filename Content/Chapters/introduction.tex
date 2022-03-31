@@ -199,44 +199,58 @@ The three-index vehicle flow formulation can be useful to model the CVRP variant
 where the fleet of trucks is heterogenous, i.e. the capacity
 $Q_1, \dots, Q_k$ associated to each truck is not constant.
 
+For more details on this formulation please refer to \textcite{2002}.
+
 
 
 
 \subsection{The Set Partitioning (SP) formulation}
 \label{sec:intro-set-partition-formulation}
 
-The Set Partitioning (SP) integer programming formulation presented in \textcite{balinski1964},
-works substantially differently from the three-index flow formulation or any other commonly employed IP formulations.
+The Set Partitioning (SP) formulation, which was originally presented in \textcite{balinski1964},
+works substantially differently from the two-index vehicle flow formulation or many other commonly known IP formulations.
 The SP formulation uses a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
 
-When a violated inequality in the two-index formulation or three-index formulation is found, it is decomposed at runtime and introduced in the master problem.
 
-The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the three-index flow formulation.
+The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the two-index vehicle flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
 let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
-and finally let $a_{ijp} \in \Set*{0, 1}$ be a "static encoding" for a route $p$, i.e. if arc $(i, j) \in E$ is used by route $p$.
+and finally let $a_{i}^p \in \Set*{0, 1}$ be "static encoding" (binary coefficient) for a route $p$, i.e. if vertex $i \in V$ is visited (or covered) by route $p$.
 The main advantage of the SP model is that it can handle many constraints, since their definition are captured within the definition of the set $P$ itself.
-Anyhow, we can write the full SP model as:
+Anyhow, by finally defining $c_p$ as the cost of a feasible route $p \in P$,
+which can be trivially computed in $O(N)$,
+we can write the full SP model as:
 
 
 \begin{align}
-	\min_{\lambda} \quad z_\mt{SP}(\lambda) & = \sum_{p \in P} \sum_{(i, j) \in E} d_{ij} a_{ijp} \lambda_p \label{eq:set-partitioning-obj-func}                                                                                                                                           \\
-	                                        & \sum_{p \in P} \sum_{(i, j) \in \delta(i)} a_{ijp} \lambda_p = 2                                   & \quad \forall i \in V_0                                              \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
+	\min_{\lambda} \quad z_\mt{SP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:set-partitioning-obj-func}                                                                                                                                           \\
+	                                        & \sum_{p \in P}  a_{i}^p \lambda_p = 1                                   & \quad \forall i \in V_0                                              \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
 	                                        & \sum_{p \in P} \lambda_{p} = K\label{eq:set-partitioning-K-routes}                                                                                                                                                                           \\
 	                                        & \lambda_p                    \in \Set*{0, 1}                                                       & \quad \forall p \in P \label{eq:set-partitioning-lambda-mip-var-bounds}
 \end{align}
 
 where, $z_\mt{SP}(\lambda)$, as defined in \eqref{eq:set-partitioning-obj-func} is the objective function to be minimized (i.e. the overall travel distance).
 Constraint \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be served from a single unique route.
-Constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are picked.
-Finally, constraints \eqref{eq:set-partitioning-lambda-mip-var-bounds} are the bounding and integrality constraints for all the feasible routes.
-
+Constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are selected.
+Finally, constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for all the feasible routes.
 
 As one may guess, due the exponential number of binary variables, the SP formulation cannot be used in as-is in practice.
 However, a variant of the SP formulation can be tackled efficiently by column generation approaches embedded inside a Branch \& Price framework.
 Branch \& Price frameworks and column generation have been shown to work remarkably well for solving the CVRP.
 
+When a violated inequality in the two-index formulation is found, it is decomposed at runtime and introduced in the master problem.
+
+As, \textcite{toth2002} points out, if the distance matrix satisfies the triangle inequality,
+than it is possible to rewrite the SP formulation into a totally equivalent Set Covering (SC) formulation
+by substituting inequality \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} in favor of:
+
+\begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
+	\sum_{p \in P}  a_{i}^p \lambda_p \ge 1  \quad \forall i \in V_0
+\end{equation}
+
 In the next sections we will introduce the Branch \& Price framework and the column generation approach, key components employed in modern state-of-the-art CVRP solvers.
+
+
 
 \section{Resolution methods}
 \label{sec:intro-resolution-methods}
