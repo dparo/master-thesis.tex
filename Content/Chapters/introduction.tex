@@ -23,7 +23,9 @@ also reducing the waiting time experienced by the customers.
 
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
-the Vehicle Routing Problem with Time Windows (VRPTW) and many others.
+the Vehicle Routing Problem with Time Windows (VRPTW), in which
+each customer is associated with a time window in which it can be served,
+and many others.
 Nonetheless, CVRP remains probably the most central and studied one.
 For a more complete survey of the many variations of the VRP problems refer to \cite{poggi2014}.
 
@@ -110,13 +112,22 @@ Some variants of the basic version of the CVRP, not considered in this thesis, a
 or consider a heterogenous fleet characterized by different capacities $Q_1, \dots, Q_k$.
 In classic CVRP, each customer is visited exactly once, and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $Q$.
 An optimal solution to the CVRP is a feasible solution which minimizes the sum of the overall edge weights across all the tours.
+To simplify the symmetric formulations, we assume that tours must visit at least two customers.
+This avoids the edge case of handling tours that cross the same edge twice.
 In the remainder of the section we introduce the two most common IP mathematical formulations for the CVRP.
 
 The TSP can be considered a special case of CVRP where $Q \ge q(V)$ and $K = 1$.
 Therefore, all the relaxations and many results obtained for the TSP are valid, or at least extendable, to the CVRP.
 
-\subsection{The two-index flow formaulation}
-Presented in \cite{laporte1983, laporte1985}.
+\subsection{The two-index vehicle flow formulation}
+\label{sec:intro-cvrp-two-index-flow-formulation}
+
+The two-index vehicle flow formulation was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
+and later generalized to the assymetric case in \cite{laporte1986}.
+
+We assume that vehicles must visit at least two customers,
+We define a set of binary variables $x_{ij}$ in \Set*{0, 1} to indicate if a vehicle traverses
+edge $(i, j) \in E$ in the optimal solution.
 
 \subsection{The three-index flow formulation}
 \label{sec:intro-cvrp-three-index-flow-formulation}
