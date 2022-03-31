@@ -121,10 +121,10 @@ In the remainder of the section we introduce the two most common IP mathematical
 The TSP can be considered a special case of CVRP where $Q \ge q(V)$ and $K = 1$.
 Therefore, all the relaxations and many results obtained for the TSP are valid, or at least extendable, to the CVRP.
 
-\subsection{The two-index vehicle flow formulation}
+\subsection{The two-index arc flow formulation}
 \label{sec:intro-cvrp-two-index-flow-formulation}
 
-The two-index vehicle flow formulation was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
+The two-index arc flow formulation was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
 and later generalized to the asymmetric case in \cite{laporte1986}.
 
 As already mentioned in the introduction,
@@ -136,7 +136,7 @@ Notice that it could be possible to impose $x_{0j} \in \Set*{0, 1, 2} \quad \for
 to allow for single customer routes.
 There are $O(N^2)$ number of binary variables in the model.
 
-The two-index vehicle flow formulation is usually solved through a branch-and-cut framework.
+The two-index arc flow formulation is usually solved through a branch-and-cut framework.
 We finally give the two-index flow description as an Integer Programme (IP) model:
 
 
@@ -183,19 +183,19 @@ of constraints, but these formulations are known to provide consistently weaker 
 The Subtour Eliminations Constraints (SEC) obtained for the TSP, are in fact facet-defining.
 
 
-\subsubsection{The three-index vehicle flow formulation}
-It needs mentionining, that to model more "colorful" variations of the CVRP, the two-index vehicle flow model may not be  sufficient.
-A very popular formulation to model complex variations of the CVRP is the three-index vehicle flow formulation,
+\subsubsection{The three-index arc flow formulation}
+It needs mentionining, that to model more "colorful" variations of the CVRP, the two-index arc flow model may not be  sufficient.
+A very popular formulation to model complex variations of the CVRP is the three-index arc flow formulation,
 preseted in \textcite{toth2002}.
 
 We quickly recap the model here.
-The three-index vehicle flow formulation makes use $O(N^2 K + N K)$ binary variables.
+The three-index arc flow formulation makes use $O(N^2 K + N K)$ binary variables.
 A set of binary variables $x_{ijk} \in \Set*{0, 1}, (i, j) \in E, k = 1, \dots, K$
 now encode wheter vehicle $k$ traverses edge $(i, j)$.
 Another set of binary variables $y_{ik} \in \Set*{0, 1}, i \in V, k = 1, \dots, K$ is used to model
 whether truck $k$ serves customer $i$.
 
-The three-index vehicle flow formulation can be useful to model the CVRP variant
+The three-index arc flow formulation can be useful to model the CVRP variant
 where the fleet of trucks is heterogenous, i.e. the capacity
 $Q_1, \dots, Q_k$ associated to each truck is not constant.
 
@@ -208,11 +208,11 @@ For more details on this formulation please refer to \textcite{2002}.
 \label{sec:intro-set-partition-formulation}
 
 The Set Partitioning (SP) formulation, which was originally presented in \textcite{balinski1964},
-works substantially differently from the two-index vehicle flow formulation or many other commonly known IP formulations.
+works substantially differently from the two-index arc flow formulation or many other commonly known IP formulations.
 The SP formulation uses a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
 
 
-The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the two-index vehicle flow formulation.
+The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the two-index arc flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
 let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
 and finally let $a_{i}^p \in \Set*{0, 1}$ be "static encoding" (binary coefficient) for a route $p$, i.e. if vertex $i \in V$ is visited (or covered) by route $p$.
