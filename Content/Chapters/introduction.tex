@@ -20,11 +20,20 @@ savings for the management of the provision of goods in distribution systems.
 Optimal delivery planning can reduce the overall transportation and good costs while
 also reducing the waiting time experienced by the customers.
 
+
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
 the Vehicle Routing Problem with Time Windows (VRPTW) and many others.
 Nonetheless, CVRP remains probably the most central and studied one.
 For a more complete survey of the many variations of the VRP problems refer to \cite{poggi2014}.
+
+While effective (meta-)heuristic algorithms have been proposed and applied
+successfully to many VRP variants to obtain good-enough solutions
+in reduced computation time, in this thesis we are mainly concerned
+with exact algorithms for solving the CVRP.
+Exact algorithms are usually slower than (meta-)heuristics, but given
+enough computation time, they can produce a proven optimal solution.
+This is achieved by closing the primal-dual bound gap of the objective function.
 
 
 CVRP is usually defined more rigorously through an Integer Programming (IP) formulation.
@@ -32,6 +41,25 @@ The IP formulation is a mathematical tool which can describe combinatorial optim
 through the usage of constraints, usually defined with linear inequalities.
 In the next section we will present the most common IP formulations for the CVRP, which
 are required to understand the content of this thesis.
+
+
+\begin{comment}
+\cite{toth2002}
+The distribution of goods concerns the service, in a given time period, of a set of
+customers by a set of vehicles, which are located in one or more depots, are operated by a
+set of crews (drivers), and perform their movements by using an appropriate road network. In
+particular, the solution of a VRP calls for the determination of a set of routes, each performed
+by a single vehicle that starts and ends at its own depot, such that all the requirements
+of the customers are fulfilled, all the operational constraints are satisfied, and the global
+transportation cost is minimized. In this section, we describe the typical characteristics of
+the routing and scheduling problems by considering their main components (road network,
+customers, depots, vehicles, and drivers), the different operational constraints that can be
+imposed on the construction of the routes, and the possible objectives to be achieved in the
+optimization process.
+The road network, used for the transportation of goods, is generally described through
+a graph, whose arcs represent the road sections and whose vertices correspond to the road
+junctions and to the depot and customer locations.
+\end{comment}
 
 \section{Mathematical formulations}
 \label{sec:intro-cvrp-mathematical-formulations}
@@ -42,7 +70,7 @@ the three-index flow formulation presented in \textcite{toth2002} and
 the Set Partitioning (SP) formulation presented in \textcite{balinski1964}.
 Despite the SP formulation being older, in later years thanks to algorithmic advances
 and the development of efficient Branch \& Price frameworks, it has become the de facto
-state-of-the-art core component for solving CVRP problems \parencite{pessoa2020}.
+state-of-the-art core ingredient for solving CVRP problems \parencite{pessoa2020}.
 
 We begin the section by defining some mathematical quantities that will be used throughout
 the remainder of the chapter.
