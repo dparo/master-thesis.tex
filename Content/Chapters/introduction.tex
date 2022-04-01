@@ -22,7 +22,7 @@ Optimal delivery planning can reduce the overall transportation and good costs w
 also reducing the waiting time experienced by the customers.
 Therefore, studying optimal efficient algorithms and mathematical models for
 respectively solving and describing real-world distribution problems, become vital
-important for the operational management of a cost-efficient planning process.
+important for the operational management of a cost-efficient planning processes.
 
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
@@ -93,6 +93,7 @@ where: (i) the nodes of the network represent the customers and the depot,
 Let $G = \Tuple*{V, E}$ denote a \textbf{complete undirected network}, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
 $E = \Set*{e = (i, j) \mid \allowbreak i,j \in V, \allowbreak  j \ge i + 1}$ the set of edges, and $N$ the number of nodes in the network.
 The value $0 \in V$ is used to denote the depot node.
+The edge set $E$ has size $|E| = \frac{n(n+1)}{2}$.
 For convenience, we define $V_0 = V \setminus \Set*{0}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
 Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
 More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ (i, j) \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
@@ -114,13 +115,16 @@ Often, it is simpler to consider $r(S)$ by replacing it with the trivial lower b
 	r(S) \ge \ceil*{\frac{q(S)}{Q}}
 \end{equation}
 
-A feasible solution to the CVRP problem consists of \textbf{exactly} $K$ tours (or circuits) associated with each vehicle starting from the depot node.
+A route is a sequence $p = (i_0, i_1, \dots, i_s, s_{s+1})$, with $i_0 = i_{s + 1} = 0$ in which
+$\Set*{i_1, \dots, i_s} \subseteq V_0$ customers are visited.
+The route $p$ has a travel cost of $c_p = c(p) = \sum_{j=0}^s c_{i_j,i_{j+1}}$.
+A feasible solution to the CVRP problem consists of \textbf{exactly} $K$ routes (or circuits) associated with each vehicle starting from the depot node.
 Some variants of the basic version of the CVRP, not considered in this thesis, allows using only a subset of the total available vehicles,
 or consider a heterogenous fleet characterized by different capacities $Q_1, \dots, Q_k$.
 In classic CVRP, each customer is visited exactly once, and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $Q$.
 An optimal solution to the CVRP is a feasible solution which minimizes the sum of the overall edge weights across all the tours.
-To simplify the symmetric formulations, we assume that tours must visit at least two customers.
-This avoids the edge case of handling tours that cross the same edge twice.
+To simplify the symmetric formulations, we assume that routes must visit at least two customers.
+This assumption avoids some edge cases in modeling when handling single-customer routes.
 In the remainder of the section we introduce the two most common IP mathematical formulations for the CVRP.
 
 The TSP can be considered a special case of CVRP where $Q \ge q(V)$ and $K = 1$.
