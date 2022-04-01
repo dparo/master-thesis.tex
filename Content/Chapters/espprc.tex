@@ -10,7 +10,6 @@ The proposed algorithm is a natural extension of the Bellman–Ford algorithm \p
 which omputes shortest paths from a source vertex to all other vertices,
 by taking also in consideration a resource constraint.
 
-
 \begin{comment}
 \cite{bettinelli2010mathematical} ---------------
 It is possible to address the pricing problem by optimizing its relaxation,
@@ -23,23 +22,29 @@ Desrochers et al. [29] to solve the vehicle routing problem with time windows
 \end{comment}
 
 \section{ESPPRC: IP formulation}
-Contrary to CVRP, the ESPPRC is usually defined over a directed network $G^\prime = (V^\prime, E^\prime)$ composed
+Contrary to CVRP, the ESPPRC is usually defined over a directed network $G^\prime = (V^\prime, A^\prime)$ composed
 of $N + 1$ nodes where the original depot node is essentially split in two nodes: a source and a sink vertex.
 In the new network we use the value $0$ to denote the source version of the depot node, and $N$ its duplicate
 playing the role of the sink vertex.
-More formally, $V^\prime = V \cup Set*{N} = \Set*{ 0,\dots, N }$, and the edge set $E^\prime$ is
+More formally, $V^\prime = V \cup Set*{N} = \Set*{ 0,\dots, N }$, and the edge set $A^\prime$ is
 
 \begin{equation}
 	\begin{aligned}
-		E^\prime = & \Set*{\Tuple*{i, j} \quad \forall i, j \in V^\prime,\ i \ne j } \\
-		           & \setminus \Set*{ \Tuple*{0, N} }                                \\
-		           & \setminus \Set*{ \Tuple*{i, 0} \quad \forall i \in V^\prime }   \\
-		           & \setminus \Set*{ \Tuple*{N, i} \quad \forall i \in V^\prime }   \\
+		A^\prime = & \Set*{(i, j) \mid i, j \in V,\ i \ne j}                       \\
+		           & \setminus \Set*{ \Tuple*{0, N} }                              \\
+		           & \setminus \Set*{ \Tuple*{i, 0} \quad \forall i \in V^\prime } \\
+		           & \setminus \Set*{ \Tuple*{N, i} \quad \forall i \in V^\prime } \\
 	\end{aligned}
 \end{equation}
 
-which briefly means: all possible pairs $\Tuple*{i, j},\ i \ne j$ excluding: direct connection between $0$ and $N$, and by exluding edges entering node $0$ and flowing out of node $N$.
-At each directed edge $\Tuple*{i, j} \in E^\prime$ we have an associated weight $\bar{c_{ij}} \in \R$ which is directly linked to the dual variables of the RMP through the following equation:
+which briefly means: all possible pairs $\Tuple*{i, j},\ i \ne j$ excluding: direct connection between $0$ and $N$, and by excluding edges entering node $0$ and flowing out of node $N$.
+
+We use $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$ to denote the out-arcs of set $S \subset V^\prime$.
+We use $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$ to denote the in-arcs of set $S \subset V^\prime$.
+For brevity, we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltaminus(\Set*{i})$
+to denote respectively the singleton version of the in and out arcs for vertices $i \in V$.
+
+At each directed edge $\Tuple*{i, j} \in A^\prime$ we have an associated weight $\bar{c_{ij}} \in \R$ which is directly linked to the dual variables of the RMP through the following equation:
 
 \begin{equation}
 	\bar{c_{ij}} = d_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V^\prime
@@ -53,14 +58,14 @@ encoding feasible solutions for the ESPRCC problem (i.e. $x_{ij} = 1$ if edge $(
 We can finally write the full ESPPRC IP formulation as:
 
 \begin{align}
-	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in E^\prime} \bar{c_{ij}} x_{ij} \label{eq:espprc-obj-function}                                                                                                               \\
+	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c_{ij}} x_{ij} \label{eq:espprc-obj-function}                                                                                                               \\
 	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}              \\
 	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers} \\
 	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-flow-conservation-constraint-depot1}    \\
 	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:espprc-flow-conservation-constraint-depot2}    \\
 	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V^\prime,\ |S| \ge 2 \label{eq:espprc-sec-constraints}         \\
 	                                & x_{0i} + x_{iN} \le 1                                                                                \qquad \forall i \in V_0         \label{eq:espprc-binding-directed}                       \\
-	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in E^\prime    \label{eq:espprc-x-mip-var-bounds}           \\
+	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds}           \\
 \end{align}
 
 where, \eqref{eq:espprc-obj-function} is the objective function which we aim to minimize.
@@ -76,8 +81,6 @@ Finally, the most important inequalities, constraint \eqref{eq:espprc-sec-constr
 These inequalities have two major impacts: first they avoid the form of spurious unconnected subtours, second they force the elementarity condition, namely they impose that each node must be visited at most once.
 Two examples depicting respectively a solution containing spurious subtours and a non-elementary solution are provided in Figures \ref{fig:espprc-example-with-spurious-subtours} and \ref{fig:espprc-example-non-elementary-solution}.
 
-
-
 \begin{figure}[ht]
 	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
 		\centering
@@ -91,7 +94,6 @@ Two examples depicting respectively a solution containing spurious subtours and 
 		\node[main] (3) at (0.8\textwidth, -0bp) {3};
 		\node[main] (4) at (0.7\textwidth, -20bp) {4};
 		\node[main] (5) at (0.6\textwidth, -0bp) {5};
-
 
 		\draw [->,thick] (0) -- (1);
 		\draw [->,thick] (1) -- (6);
@@ -110,7 +112,6 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	}
 	\label{fig:espprc-example-with-spurious-subtours}
 \end{figure}
-
 
 \begin{figure}[ht]
 	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
@@ -142,8 +143,6 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	}
 	\label{fig:espprc-example-non-elementary-solution}
 \end{figure}
-
-
 
 As done in \textcite{beasley1989} the elementarity condition can be relaxed by substituting constraint \eqref{eq:espprc-sec-constraints} in favour of:
 

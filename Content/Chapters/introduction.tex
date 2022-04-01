@@ -91,12 +91,12 @@ The CVRP is traditionally described as a symmetric and complete graph theoretica
 where: (i) the nodes of the network represent the customers and the depot,
 (ii) the edges represent road interconnections.
 Let $G = \Tuple*{V, E}$ denote a \textbf{complete undirected network}, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
-$E = \Set*{e = (i, j) \mid \allowbreak i,j \in V, \allowbreak  j \ge i + 1}$ the set of edges, and $N$ the number of nodes in the network.
+$E = \Set*{e = \Set*{i, j} = \Set*{j, i} \mid \allowbreak i,j \in V, \allowbreak i \ne j}$ the set of edges, and $N$ the number of nodes in the network.
 The value $0 \in V$ is used to denote the depot node.
 The edge set $E$ has size $|E| = \frac{n(n+1)}{2}$.
 For convenience, we define $V_0 = V \setminus \Set*{0}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
 Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
-More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ (i, j) \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
+More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ \Set*{i, j} \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
 For brevity, we also define $\delta(i) = \delta(\Set*{i})$ to denote the set of edges incident to node $i \in V$.
 
 Let $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent the required demand that need to be served for vertex $i \in V$.
@@ -104,7 +104,7 @@ For convenience, we fix a fictitious demand for the depot: $q_0 = 0$.
 Given a set $S \subseteq V$, we define $q(S) = \sum_{i \in S} q_i$ as the total demand of the set $S$.
 Let $d_{ij} \in \R, d_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 The loop arcs $(i, i)$ in CVRP are traditionally not allowed, thus we fix $d_{ii} = \infty$.
-We assume an Euclidian CVRP problem, i.e. the distance function is symmetric $d_{ij} = d_{ji}$ and satisfies the triangle inequality $d_{ij} \le d_{ih} + d_{hj}$.
+We assume an Euclidian CVRP problem, i.e. the distance function is symmetric $d_e = d_{ij} = d_{ji}$ and satisfies the triangle inequality $d_{ij} \le d_{ih} + d_{hj}$.
 Finally, given the total number of identical trucks $K \in \N_+$ and an upper bound $Q \in \R_+$ representing the capacity of each truck,
 we can finally express the CVRP problem as an Integer Programming (IP) formulation.
 Given a set $S \subseteq V_0$, we denote by $r(S)$ as the minimum number of vehicles required to serve all customers $i \in S$.

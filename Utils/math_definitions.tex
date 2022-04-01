@@ -5,7 +5,8 @@
 
 \newcommand{\maxflow}{f_{\mt{max}}}
 
-
+\newcommand{\deltaplus}{\delta^+}
+\newcommand{\deltaminus}{\delta^-}
 
 \newcommand{\ExprQrS}{Q_{\mathrm{R}}(S)}
 \newcommand{\ExprCptpEdgesIncident}[2][j]{\sum_{#1 \in \delta(#2)}       x_{#2#1}}
@@ -22,11 +23,9 @@
 \newcommand{\ExprCptpDemandServedOutsideB}[1]{\sum_{i \in #1} \sum_{j \in V \setminus #1} q_j  x_{ij}}
 \newcommand{\ExprCptpDemandServedOutside}[1]{\sum_{\Tuple*{i, j} \in \delta(#1)} q_j x_{ij}}
 
-
 \newcommand{\ExprCptpReducedCost}[2]{
 	d_{#1#2} - \frac{p_{#1} + p_{#2}}{2}
 }
-
 
 %%
 %% ESPP expressions
