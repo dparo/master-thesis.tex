@@ -40,8 +40,8 @@ More formally, $V^\prime = V \cup \Set*{N} = \Set*{ 0,\dots, N }$, and the edge 
 which briefly means: all possible pairs $\Tuple*{i, j},\ i \ne j$ excluding: direct connection between $0$ and $N$, and by excluding edges entering node $0$ and flowing out of node $N$.
 The edge set $A^\prime$ has size $|A^\prime| = N(N - 1) + 2(N - 1)$.
 
-We use $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$ to denote the out-arcs of set $S \subset V^\prime$.
-We use $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$ to denote the in-arcs of set $S \subset V^\prime$.
+We use $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$ to denote the out-arcs crossing the set $S \subset V^\prime$.
+We use $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$ to denote the in-arcs crossing the set $S \subset V^\prime$.
 For brevity, we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltaminus(\Set*{i})$
 to denote respectively the singleton version of the in and out arcs for vertices $i \in V$.
 

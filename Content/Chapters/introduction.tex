@@ -73,16 +73,24 @@ junctions and to the depot and customer locations.
 \label{sec:intro-cvrp-mathematical-formulations}
 
 
-In this section we define the CVRP through two very well known mathematical formulations:
-the three-index flow formulation presented in \textcite{toth2002} and
-the Set Partitioning (SP) formulation presented in \textcite{balinski1964}.
+In this section we present the CVRP through some very well known mathematical formulations.
+These mathematical formulation are expressed through (Mixed) Integer Programming (MIP, IP)
+models.
+We present: the two-index arc flow formulation presented in \textcite{toth2002},
+the three-index arc flow formulation presented in \textcite{laporte1983, laporte1985},
+and  the Set Partitioning (SP) formulation presented in \textcite{balinski1964}.
+The first two formulations, traditionally designed
+for branch-and-cut algorithms, employ a polynomial number of variables
+but use an exponential number of constraints,
+the latter formulation, instead, makes use of a polynomial number of constraints,
+but uses an exponential number of variables.
 Despite the SP formulation being older, in later years thanks to algorithmic advances
-and the development of efficient Branch \& Price frameworks, it has become the de facto
-state-of-the-art core ingredient for solving CVRP problems \parencite{pessoa2020}.
+and the development of efficient branch-and-price frameworks, it has become the de facto
+state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020}).
 
-We begin the section by defining some mathematical quantities that will be used throughout
-the remainder of the chapter.
-\textcite{toth2002} provides a comprehensive overview of the mathematical models
+Before presenting the formulation we first need to define some basic notation
+and mathematical quantities that will be used throughout the remainder of the thesis.
+\textcite{toth2002, toth2014} provides a comprehensive overview of the mathematical models
 for VRP and some VRP variants, both for the symmetric and asymmetric case.
 
 \medskip
@@ -104,13 +112,12 @@ Let $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent the 
 For convenience, we fix a fictitious demand for the depot: $q_0 = 0$.
 Given a set $S \subseteq V$, we define $q(S) = \sum_{i \in S} q_i$ as the total demand of the set $S$.
 Let $d_{ij} \in \R, d_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
-The loop arcs $(i, i)$ in CVRP are traditionally not allowed, thus we fix $d_{ii} = \infty$.
+The loop arcs ${i, i}$ in CVRP are traditionally not allowed, thus we fix $d_{ii} = \infty$.
 We assume an Euclidian CVRP problem, i.e. the distance function is symmetric $d_e = d_{ij} = d_{ji}$ and satisfies the triangle inequality $d_{ij} \le d_{ih} + d_{hj}$.
-Finally, given the total number of identical trucks $K \in \N_+$ and an upper bound $Q \in \R_+$ representing the capacity of each truck,
-we can finally express the CVRP problem as an Integer Programming (IP) formulation.
+We are also given the total number of identical trucks $K \in \N_+$ and an upper bound $Q \in \R_+$ representing the capacity of each truck.
 Given a set $S \subseteq V_0$, we denote by $r(S)$ as the minimum number of vehicles required to serve all customers $i \in S$.
 The value of $r(S)$ can be obtained by solving an NP-hard Bin Packing Problem associated with the CVRP and set $S$.
-Often, it is simpler to consider $r(S)$ by replacing it with the trivial lower bound of the Bin Packing Problem:
+Often, it is simpler to consider $r(S)$ by replacing it with the trivial lower bound of the Bin Packing Problem \parencite{martello1990}:
 
 \begin{equation}
 	r(S) \ge \ceil*{\frac{q(S)}{Q}}
@@ -190,9 +197,11 @@ thus making a direct solution of the linear programming relaxation impracticle.
 To overcome this issue, it is possible to avoid adding the GSEC inequalities staticaly in the model.
 Instead, an appropriate separation procedure may be employed to generate dynamically only the required
 GSEC constraints during the running time of the branch-and-cut algorithm.
-Another approach to use the so-called compact (in the number of constraints) models that, make use of a polynomial number
-of constraints, but these formulations are known to provide consistently weaker relaxations (see \cite{miller1960, christofides1979, desrochers1991}).
-The Subtour Eliminations Constraints (SEC) obtained for the TSP, are in fact facet-defining.
+Another approach is to avoid the usage of the exponential number of SECS entirely.
+This is the approach taken by the so-called compact models (see \cite{miller1960, christofides1979, desrochers1991}).
+These models make use of a polynomial number of constraints.
+Unfortunately these compact formulations are known to provide consistently weaker relaxations.
+It has been known for quiet some time, that the SECs are very strong for the TSP polytope, so strong in fact, that are facet-defining.
 
 
 \subsubsection{The three-index arc flow formulation}
