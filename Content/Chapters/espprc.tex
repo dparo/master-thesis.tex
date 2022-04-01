@@ -26,18 +26,19 @@ Contrary to CVRP, the ESPPRC is usually defined over a directed network $G^\prim
 of $N + 1$ nodes where the original depot node is essentially split in two nodes: a source and a sink vertex.
 In the new network we use the value $0$ to denote the source version of the depot node, and $N$ its duplicate
 playing the role of the sink vertex.
-More formally, $V^\prime = V \cup Set*{N} = \Set*{ 0,\dots, N }$, and the edge set $A^\prime$ is
+More formally, $V^\prime = V \cup \Set*{N} = \Set*{ 0,\dots, N }$, and the edge set $A^\prime$ is
 
 \begin{equation}
 	\begin{aligned}
-		A^\prime = & \Set*{(i, j) \mid i, j \in V,\ i \ne j}                       \\
-		           & \setminus \Set*{ \Tuple*{0, N} }                              \\
-		           & \setminus \Set*{ \Tuple*{i, 0} \quad \forall i \in V^\prime } \\
-		           & \setminus \Set*{ \Tuple*{N, i} \quad \forall i \in V^\prime } \\
+		A^\prime = \  & \Set*{(i, j) \mid i, j \in V,\ i \ne j}                       \\
+		              & \setminus \Set*{ \Tuple*{0, N} }                              \\
+		              & \setminus \Set*{ \Tuple*{i, 0} \quad \forall i \in V^\prime } \\
+		              & \setminus \Set*{ \Tuple*{N, i} \quad \forall i \in V^\prime } \\
 	\end{aligned}
 \end{equation}
 
 which briefly means: all possible pairs $\Tuple*{i, j},\ i \ne j$ excluding: direct connection between $0$ and $N$, and by excluding edges entering node $0$ and flowing out of node $N$.
+The edge set $A^\prime$ has size $|A^\prime| = N(N - 1) + 2(N - 1)$.
 
 We use $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$ to denote the out-arcs of set $S \subset V^\prime$.
 We use $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$ to denote the in-arcs of set $S \subset V^\prime$.
