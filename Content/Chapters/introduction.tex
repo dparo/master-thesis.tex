@@ -91,7 +91,7 @@ state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020
 Before presenting the formulation we first need to define some basic notation
 and mathematical quantities that will be used throughout the remainder of the thesis.
 \textcite{toth2002, toth2014} provides a comprehensive overview of the mathematical models
-for VRP and some VRP variants, both for the symmetric and asymmetric case.
+for VRP and some VRP variants, both for the directed and undirected case.
 
 \medskip
 
@@ -142,7 +142,7 @@ Therefore, all the relaxations and many results obtained for the TSP are valid, 
 \label{sec:intro-cvrp-two-index-flow-formulation}
 
 The two-index arc flow formulation was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
-and later generalized to the asymmetric case in \cite{laporte1986}.
+and later generalized to the undirected case in \cite{laporte1986}.
 
 As already mentioned in the introduction,
 to avoid edge cases in modeling we assume a CVRP problem where
@@ -161,18 +161,19 @@ We finally give the two-index flow description as an Integer Programme (IP) mode
 \begin{align}
 	\min_{x} \quad z_\mt{2F}(x) & = \sum_{e \in E} d_e x_e \label{eq:two-index-flow-obj-func}                                                                                     \\
 	                            & \sum_{e \in \delta(i)} x_e = 2                                  & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer} \\
-                                & \sum_{i \in V_0} x_{0i} = 2 K                                           & \label{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}                  \\
+                                & \sum_{e \in \delta(0)} x_e = 2 K                                           & \label{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}                  \\
 	                            & \sum_{e \in \delta(S)} x_e \ge 2 r(S)                           & \quad \forall S \subseteq V_0,\ |S| \ge 1 \label{eq:two-index-flow-ccc}           \\
 	                            & x_e                   \in \Set*{0, 1}                                & \quad \forall e \in E \label{eq:two-index-flow-x-mip-var-bounds}
 \end{align}
 
-where $z_\mt{2F}(x)$, as defined in \eqref{eq:two-index-flow-obj-func}, is the objective function which aim to minimize the total travel time.
-Constraint \eqref{eq:two-index-flow-two-edges-incident-per-customer} is the degree constraint (flow conservation), which imposes that exactly two incident edges must be picked for each customer.
-Constraint \eqref{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}, is the degree constraint at the depot, it forces that exactly $2K$ incident edges at the depot are picked, thus forcing the CVRP optimal solution to be composed of exactly $K$ routes.
-Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), they impose both:
-(i) connectivity of the solution by avoiding the formation of spurious unconnected subtours,
-(ii) constraint the vehicle capacity, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
-$r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$.
+where $z_\mt{2F}(x)$, as defined in \eqref{eq:two-index-flow-obj-func}, is the objective function which aim to minimize the overall routing cost (travel time).
+Constraint \eqref{eq:two-index-flow-two-edges-incident-per-customer} is the degree constraint which imposes flow conservation: exactly two incident edges must be picked for each customer.
+Constraint \eqref{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}, is the degree constraint at the depot, it forces that exactly $2K$ incident edges at the depot are picked, thus forcing exactly $K$ routes to be constructed.
+Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), they function both as:
+(i) Subtour Elimination Constraints (SECs), by imposing connectivity of the solution by avoiding the formation of spurious unconnected subtours,
+(ii) and as a capacity constraint, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
+Recall that, $r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$,
+also, $r(S)$ always satisfies $r(S) \ge 1$ for non-trivial CVRP instances.
 
 It was shown in \textcite{cornuejols1993}, that it is possible to replace $r(S)$ in constraint
 \eqref{eq:two-index-flow-ccc}, with the much simpler Bin Packing Problem lower bound $\ceil*{q(S) / Q}$
