@@ -40,7 +40,7 @@
 \usepackage{lmodern} \usepackage[T1]{fontenc}  % Better font encoding, i.e. for the actual output
 
 \usepackage[english]{babel}
-% \usepackage{mathptmx}       % Times new roman font
+\usepackage{mathptmx}       % Times new roman font
 
 \usepackage{etoolbox}            % Useful for programmatically perform actions in latex: booleans, conditions, string comparisons, lists, iterations, etc
 \usepackage[dvipsnames]{xcolor}  % To use colors for specific texts, provides the \color{<COLOR>} to color text
@@ -74,11 +74,9 @@
 % Turns on arabic numbering for the main content
 \pagenumbering{arabic}
 
-
 \mainmatter
 \input{Content/main_content.tex}
 \pagebreak
-
 
 \backmatter
 \printbibliography
