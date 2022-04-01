@@ -90,21 +90,21 @@ As pointed out in \cite{righini2004}, solving the ESPPRC problem through Lagrang
 \label{sec:intro-cvrp-three-index-flow-formulation}
 
 The three-index flow formulation, first presented in \textcite{toth2002},
-is an IP model employing $O(N^2 K + N K)$ binary variables.
+is an IP model employing $O(\frac{N (N+1)}{2} K + N K)$ binary variables.
 
-We define a set of binary variables $x_{ijk} \in \Set*{0, 1}, (i, j) \in E, k = 1, \dots, K$, to encode whether vehicle $k$ traverses edge $(i, j)$,
+We define a set of binary variables $x_{ek} \in \Set*{0, 1}, e = \Set*{i, j} \in E, k = 1, \dots, K$, to encode whether vehicle $k$ traverses edge $e$,
 and another set of binary variables $y_{ik} \in \Set*{0, 1}, i \in V, k = 1, \dots, K$ to encode whether truck $k$ serves node $i \in V$.
 We can therefore define the three-index flow formulation through an IP model as follows:
 
 \begin{align}
-	\min_{x, y} \quad z_\mt{3F}(x, y) & =  \sum_{k = 1}^K \sum_{(i, j) \in E} d_{ij} x_{ijk} \label{eq:three-index-flow-obj-func}                                                                                                                          \\
-	                                  & \sum_{k = 1}^K y_{ik} = 1                                                                 & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited} \\
-	                                  & \sum_{k = 1}^K y_{0k} = K                                                                 & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                              \\
-	                                  & \sum_{\EqStackTwo{j \in V}{(i, j) \in E}} x_{ijk} = 2 y_{ik}                              & \quad \forall i \in V,\ k = 1, \dots, K \label{eq:three-index-flow-force-visited-customer-if-flow}                     \\
-	                                  & \sum_{i \in V} q_i y_{ik} \le Q                                                           & \quad \forall k = 1, \dots, K \label{eq:three-index-flow-force-resource-upper-bound}                                   \\
-	                                  & \sum_{i, j \in \delta(S)} x_{ijk} \ge 2 y_{hk}                                            & \quad \EqStackTwo{\forall S \subseteq V_0, |S| \ge 2}{k = 1, \dots, K} \label{eq:three-index-flow-secv1}               \\
-	                                  & x_{ijk}                   \in \Set*{0, 1}                                                 & \quad \forall (i, j) \in E,\ k = 1, \dots, K             \label{eq:three-index-flow-x-mip-var-bounds}                  \\
-	                                  & y_{ik}                    \in \Set*{0, 1}                                                 & \quad \forall i \in V,k = 1, \dots, K  \label{eq:three-index-flow-y-mip-var-bounds}
+	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k = 1}^K \sum_{e \in E} d_{e} x_{ek} \label{eq:three-index-flow-obj-func}                                                                                                                               \\
+	                                  & \sum_{k = 1}^K y_{ik} = 1                                                         & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited}      \\
+	                                  & \sum_{k = 1}^K y_{0k} = K                                                         & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                                   \\
+	                                  & \sum_{e \in \delta(i)} x_{ek} = 2 y_{ik}                                          & \quad \forall i \in V,\ k = 1, \dots, K \label{eq:three-index-flow-force-visited-customer-if-flow}                          \\
+	                                  & \sum_{i \in V} q_i y_{ik} \le Q                                                   & \quad k = 1, \dots, K \label{eq:three-index-flow-force-resource-upper-bound}                                                \\
+	                                  & \sum_{e \in \delta(S)} x_{ek} \ge 2 y_{hk}                                        & \quad \EqStackTwo{\forall h \in S,\ \forall S \subseteq V_0,\ |S| \ge 2}{k = 1, \dots, K} \label{eq:three-index-flow-secv1} \\
+	                                  & x_{ek}                   \in \Set*{0, 1}                                          & \quad \forall e \in E,\ k = 1, \dots, K             \label{eq:three-index-flow-x-mip-var-bounds}                            \\
+	                                  & y_{ik}                    \in \Set*{0, 1}                                         & \quad \forall i \in V,k = 1, \dots, K  \label{eq:three-index-flow-y-mip-var-bounds}
 \end{align}
 
 where $z_\mt{3F}(x, y)$, as defined in \eqref{eq:three-index-flow-obj-func}, is the objective function to be minimized (i.e. the overall travel distance).
@@ -112,17 +112,16 @@ Constraint \eqref{eq:three-index-flow-all-customers-visited} forces all customer
 Constraint \eqref{eq:three-index-flow-tour-starts-and-ends-at-depot} forces all the truck tours to start at the depot and end at the same spot.
 Constraint \eqref{eq:three-index-flow-force-visited-customer-if-flow} binds the $y_{ik}$ variables to the corresponding $x_{ijk}$ variables, by ensuring that if a truck's route passes through a vertex, then the corresponding node is marked as visited.
 Constraint \eqref{eq:three-index-flow-force-resource-upper-bound} is the resource upper bound constraint and it ensures that the demand served by each truck does not exceed the truck capacity.
-Constraints \eqref{eq:three-index-flow-secv1} are traditional TSP Subtour Elimination Constraints (SECs), they impose the connectivity of the route and are used to avoid the formation of spurious unconnected subtours.
+Constraints \eqref{eq:three-index-flow-secv1} are the Generalized Subtour Elimination Constraints (GSECs), they impose the connectivity of the route and are used to avoid the formation of spurious unconnected subtours.
 Finally, Constraints \eqref{eq:three-index-flow-x-mip-var-bounds}, \eqref{eq:three-index-flow-y-mip-var-bounds} bound and force integrality for the IP variables.
 
-
-Constraint \eqref{eq:three-index-flow-secv1} can be rewritten in an equivalent form:
+Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent form with traditional (non generalized) TSP subtour elimination constraints (see \textcite{fisher1981}):
 
 \begin{equation}\label{eq:three-index-flow-secv2}
-	\sum_{i, j \in S} x_{ijk} \le |S| - 1 \quad \forall S \subseteq V_0, |S| \ge 2,\ k = 1, \dots, K
+	\sum_{e \in E(S)} x_{ek} \le |S| - 1 \quad \forall S \subseteq V_0, |S| \ge 2,\ k = 1, \dots, K
 \end{equation}
 
-Since the number of SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
+Since the number of (G)SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
 
 There's an important observation to be made on constraint \eqref{eq:three-index-flow-tour-starts-and-ends-at-depot}.
 By using the equality sign, we're forcing solutions to use all the available $K$ trucks, even though better solutions making use of less trucks may exist.

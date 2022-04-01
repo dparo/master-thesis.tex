@@ -93,7 +93,7 @@ where: (i) the nodes of the network represent the customers and the depot,
 Let $G = \Tuple*{V, E}$ denote a \textbf{complete undirected network}, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
 $E = \Set*{e = \Set*{i, j} = \Set*{j, i} \mid \allowbreak i,j \in V, \allowbreak i \ne j}$ the set of edges, and $N$ the number of nodes in the network.
 The value $0 \in V$ is used to denote the depot node.
-The edge set $E$ has size $|E| = \frac{n(n+1)}{2}$.
+The edge set $E$ has size $|E| = \frac{N (N+1)}{2}$.
 For convenience, we define $V_0 = V \setminus \Set*{0}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
 Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
 More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ \Set*{i, j} \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
@@ -152,7 +152,7 @@ We finally give the two-index flow description as an Integer Programme (IP) mode
 
 
 \begin{align}
-	\min_{x} \quad z_\mt{2F}(x) & =  \sum_{e \in E} d_e x_e \label{eq:two-index-flow-obj-func}                                                                                     \\
+	\min_{x} \quad z_\mt{2F}(x) & = \sum_{e \in E} d_e x_e \label{eq:two-index-flow-obj-func}                                                                                     \\
 	                            & \sum_{e \in \delta(i)} x_e = 2                                  & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer} \\
                                 & \sum_{i \in V_0} x_{0i} = 2 K                                           & \label{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}                  \\
 	                            & \sum_{e \in \delta(S)} x_e \ge 2 r(S)                           & \quad \forall S \subseteq V_0,\ |S| \ge 1 \label{eq:two-index-flow-ccc}           \\
@@ -190,7 +190,7 @@ thus making a direct solution of the linear programming relaxation impracticle.
 To overcome this issue, it is possible to avoid adding the GSEC inequalities staticaly in the model.
 Instead, an appropriate separation procedure may be employed to generate dynamically only the required
 GSEC constraints during the running time of the branch-and-cut algorithm.
-Another approach to use the so-called compact models that, make use of a polynomial number
+Another approach to use the so-called compact (in the number of constraints) models that, make use of a polynomial number
 of constraints, but these formulations are known to provide consistently weaker relaxations (see \cite{miller1960, christofides1979, desrochers1991}).
 The Subtour Eliminations Constraints (SEC) obtained for the TSP, are in fact facet-defining.
 
@@ -202,8 +202,8 @@ preseted in \textcite{toth2002}.
 
 We quickly recap the model here.
 The three-index arc flow formulation makes use $O(N^2 K + N K)$ binary variables.
-A set of binary variables $x_{ijk} \in \Set*{0, 1}, (i, j) \in E, k = 1, \dots, K$
-now encode wheter vehicle $k$ traverses edge $(i, j)$.
+A set of binary variables $x_{ek} \in \Set*{0, 1}, e = \Set*{i, j} \in E, k = 1, \dots, K$
+now encode whether vehicle $k$ traverses edge $e$.
 Another set of binary variables $y_{ik} \in \Set*{0, 1}, i \in V, k = 1, \dots, K$ is used to model
 whether truck $k$ serves customer $i$.
 
@@ -211,7 +211,7 @@ The three-index arc flow formulation can be useful to model the CVRP variant
 where the fleet of trucks is heterogeneous, i.e. the capacity
 $Q_1, \dots, Q_k$ associated to each truck is not constant.
 
-For more details on this formulation please refer to \textcite{2002}.
+For more details on this formulation please refer to \textcite{toth2002}.
 
 
 
