@@ -1,10 +1,10 @@
 \chapter{Introduction}
 \label{sec:introduction-chapter}
 
-\section{The Capacitated Vehicle Routing Problem (CVRP)}
+\section{The Capacitated Vehicle Routing Problem}
 \label{sec:intro-cvrp-problem}
 
-The Capacitated Vehicle Routing Problem (CVRP), first presented in \textcite{dantzig1959},
+The Capacitated Vehicle Routing Problem (\textbf{CVRP}), first presented in \textcite{dantzig1959},
 is one of the most studied combinatorial optimization routing problem.
 The CVRP is an NP-hard (in the strong sense) problem which can be considered a generalization
 of the well-known Travelling Salesman Problem (TSP).
@@ -30,7 +30,7 @@ the Vehicle Routing Problem with Time Windows (VRPTW), in which
 each customer is associated with a time window in which it can be served,
 and many others.
 Nonetheless, CVRP remains probably the most central and studied one.
-For a more complete survey of the many variations of the VRP problems refer to \cite{poggi2014}.
+For a more complete survey of the many variations of the VRP problems refer to \cite{toth2014}.
 
 While effective (meta-)heuristic algorithms have been proposed and applied
 successfully to many VRP variants to obtain good-enough solutions
@@ -72,17 +72,17 @@ junctions and to the depot and customer locations.
 \section{Mathematical formulations}
 \label{sec:intro-cvrp-mathematical-formulations}
 
-
 In this section we present the CVRP through some very well known mathematical formulations.
 These mathematical formulation are expressed through (Mixed) Integer Programming (MIP, IP)
 models.
-We present: the two-index arc flow formulation presented in \textcite{toth2002},
-the three-index arc flow formulation presented in \textcite{laporte1983, laporte1985, laporte1986},
-and  the Set Partitioning (SP) formulation presented in \textcite{balinski1964}.
+We present:
+(i) the two-index arc flow formulation presented in \textcite{laporte1983, laporte1985, laporte1986},
+(ii) the three-index arc flow formulation presented in \textcite{toth2002},
+and (iii) the Set Partitioning (SP) formulation presented in \textcite{balinski1964}.
 The first two formulations, traditionally designed
 for branch-and-cut algorithms, employ a polynomial number of variables
-but use an exponential number of constraints,
-the latter formulation, instead, makes use of a polynomial number of constraints,
+but use an exponential number of constraints.
+The latter formulation, instead, makes use of a polynomial number of constraints,
 but uses an exponential number of variables.
 Despite the SP formulation being older, in later years thanks to algorithmic advances
 and the development of efficient branch-and-price frameworks, it has become the de facto
@@ -207,7 +207,7 @@ Unfortunately these compact formulations are known to lead to significantly weak
 It has been known for quiet some time, that the SECs are very strong for the TSP polytope, so strong in fact, that are facet-defining.
 
 
-\subsubsection{The three-index arc flow formulation}
+\subsection{The three-index arc flow formulation}
 \label{sec:intro-cvrp-three-index-flow-formulation}
 
 When modeling more "colorful" variations of the CVRP, the two-index arc flow model falls shorts in providing sufficient descriptive power.
