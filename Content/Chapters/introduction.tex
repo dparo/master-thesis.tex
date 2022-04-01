@@ -154,8 +154,8 @@ Constraint \eqref{eq:two-index-flow-two-edges-incident-per-customer} is the degr
 Constraint \eqref{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}, is the degree constraint at the depot, it forces that exactly $2K$ incident edges at the depot are picked, thus forcing the CVRP optimal solution to be composed of exactly $K$ routes.
 Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), they impose both:
 (i) connectivity of the solution by avoiding the formation of spurious unconnected subtours,
-(ii) constraint the vehicle capacity, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$, which
-represent the minimum number of vehicles needed to serve set $S$.
+(ii) constraint the vehicle capacity, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
+$r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$.
 
 It was shown in \textcite{cornuejols1993}, that it is possible to replace $r(S)$ in constraint
 \eqref{eq:two-index-flow-ccc}, with the much simpler Bin Packing Problem lower bound $\ceil*{q(S) / Q}$
@@ -166,11 +166,13 @@ thus obtaining the following inequality:
 \end{equation}
 
 Traditionally, the CCC constraints of \eqref{eq:two-index-flow-ccc}, are usually transformed in the so called Generalized Subtour Elimination Constraints (GSEC),
-by means of the degree constraints \eqref{eq:two-index-flow-two-edges-incident-per-customer, eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
+by means of the degree constraints \eqref{eq:two-index-flow-two-edges-incident-per-customer}\eqref{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
 
 \begin{equation}\label{eq:cvrp-2flow-gsec}
 	\sum_{(i, j) \in E, i \in S, j \in S} x_{ij} \le |S| - r(S) \quad \forall S \subseteq V_0,\ |S| \ge 1
 \end{equation}.
+
+where again $r(S)$ may be replaced by the trivial Bin Packing Problem lower bound $\ceil*{q(S) / Q}$.
 
 The GSEC avoid the formation of spurious unconnected subtours, and impose that at least $r(S)$ edges leave set $S$.
 The number of GSEC (or CCC) inequalities appear in exponential number in the two-index formulation model,
@@ -179,7 +181,7 @@ To overcome this issue, it is possible to avoid adding the GSEC inequalities sta
 Instead, an appropriate separation procedure may be employed to generate dynamically only the required
 GSEC constraints during the running time of the branch-and-cut algorithm.
 Another approach to use the so-called compact models that, make use of a polynomial number
-of constraints, but these formulations are known to provide consistently weaker relaxations. (see \cite{miller1960, christofides1979, desrochers1991}).
+of constraints, but these formulations are known to provide consistently weaker relaxations (see \cite{miller1960, christofides1979, desrochers1991}).
 The Subtour Eliminations Constraints (SEC) obtained for the TSP, are in fact facet-defining.
 
 
