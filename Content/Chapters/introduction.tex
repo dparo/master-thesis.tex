@@ -6,8 +6,9 @@
 
 The Capacitated Vehicle Routing Problem (CVRP), first presented in \textcite{dantzig1959},
 is one of the most studied combinatorial optimization routing problem.
-The CVRP is an NP-hard (in the strong sense) problem which can be considered a generalization of the well-known Travelling Salesman Problem (TSP).
-The problem consists in finding an optimal route for a transportation/distribution/delivery problem
+The CVRP is an NP-hard (in the strong sense) problem which can be considered a generalization
+of the well-known Travelling Salesman Problem (TSP).
+The problem can be defined verbally as finding an optimal route for a transportation/distribution/delivery problem
 starting from a common point called the depot,
 where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
 need to serve customer demands of a single good.
@@ -19,7 +20,9 @@ Studying effective solutions methods for the CVRP may lead to tremendous real-wo
 savings for the management of the provision of goods in distribution systems.
 Optimal delivery planning can reduce the overall transportation and good costs while
 also reducing the waiting time experienced by the customers.
-
+Therefore, studying optimal efficient algorithms and mathematical models for
+respectively solving and describing real-world distribution problems, become vital
+important for the operational management of a cost-efficient planning process.
 
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
@@ -38,7 +41,7 @@ enough computation time, they can produce a proven optimal solution.
 This is achieved by closing the primal-dual bound gap of the objective function.
 
 For a fairly complete set of notions and facts about VRP, we highly suggest
-the book \cite{toth2014}.
+the book \citetitle{toth2014} of \textcite{toth2014}.
 
 
 CVRP is usually defined more rigorously through an Integer Programming (IP) formulation.
@@ -84,7 +87,9 @@ for VRP and some VRP variants, both for the symmetric and asymmetric case.
 
 \medskip
 
-The CVRP may be described as a symmetric and complete graph theoretical problem.
+The CVRP is traditionally described as a symmetric and complete graph theoretical problem,
+where: (i) the nodes of the network represent the customers and the depot,
+(ii) the edges represent road interconnections.
 Let $G = \Tuple*{V, E}$ denote a \textbf{complete undirected network}, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
 $E = \Set*{e = (i, j) \mid \allowbreak i,j \in V, \allowbreak  j \ge i + 1}$ the set of edges, and $N$ the number of nodes in the network.
 The value $0 \in V$ is used to denote the depot node.
@@ -198,7 +203,7 @@ Another set of binary variables $y_{ik} \in \Set*{0, 1}, i \in V, k = 1, \dots, 
 whether truck $k$ serves customer $i$.
 
 The three-index arc flow formulation can be useful to model the CVRP variant
-where the fleet of trucks is heterogenous, i.e. the capacity
+where the fleet of trucks is heterogeneous, i.e. the capacity
 $Q_1, \dots, Q_k$ associated to each truck is not constant.
 
 For more details on this formulation please refer to \textcite{2002}.
@@ -214,7 +219,7 @@ works substantially differently from the two-index arc flow formulation or many 
 The SP formulation uses a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
 
 
-The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the two-index arc flow formulation.
+The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the three-index arc flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
 let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
 and finally let $a_{i}^p \in \Set*{0, 1}$ be "static encoding" (binary coefficient) for a route $p$, i.e. if vertex $i \in V$ is visited (or covered) by route $p$.
@@ -426,6 +431,10 @@ optimization problem.
 \textcite{dantzig1959} propose for the first time the CVRP problem,
 followed a few years later from \textcite{clarke1964} proposing
 an effective greedy heuristic algorithm.
+In the last 60 years, a huge number of contributors in
+the operations reasearch community have studied and proposed many
+mathematical models, and algorithms (both exact and (meta-)heuristic)
+for solving the VRP.
 
 One of the very first few attempts, in solving the CVRP, were based on branch-and-cut algorithms
 which at that time had historical prevalence.
