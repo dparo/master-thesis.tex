@@ -212,7 +212,7 @@ It has been known for quiet some time, that the SECs are very strong for the TSP
 
 When modeling more "colorful" variations of the CVRP, the two-index arc flow model falls shorts in providing sufficient descriptive power.
 For example, the simple CVRP variant where the fleet of trucks is heterogenous and characterized by capacities $Q_1, \dots, Q_K$,
-cannot be described with the two-index arc flow formulation, since there's no clear one-to-one mapping on which truck crosses and edge $e \in E$.
+cannot be described with the two-index arc flow formulation, since there's no clear one-to-one mapping on which truck crosses an edge $e \in E$.
 The three-index arc flow formulation fixes this issue.
 This formulation instead, compared to the two-index version, makes use $O(N^2 K + N K)$ binary variables.
 A set of binary variables $x_{ek} \in \Set*{0, 1}, e = \Set*{i, j} \in E, k \in \mcK$ is now used encode whether vehicle $k$ traverses edge $e$.
@@ -228,9 +228,9 @@ $$
 $$
 
 \begin{align}
-	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k = 1}^K \sum_{e \in E} d_{e} x_{ek} \label{eq:three-index-flow-obj-func}                                                                                                                               \\
-	                                  & \sum_{k = 1}^K y_{ik} = 1                                                         & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited}      \\
-	                                  & \sum_{k = 1}^K y_{0k} = K                                                         & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                                   \\
+	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} d_{e} x_{ek} \label{eq:three-index-flow-obj-func}                                                                                                                               \\
+	                                  & \sum_{k \in \mcK} y_{ik} = 1                                                         & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited}      \\
+	                                  & \sum_{k \in \mcK} y_{0k} = K                                                         & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                                   \\
 	                                  & \sum_{e \in \delta(i)} x_{ek} = 2 y_{ik}                                          & \quad \forall i \in V,\ \forall k \in \mcK \label{eq:three-index-flow-force-visited-customer-if-flow}                          \\
 	                                  & \sum_{i \in V} q_i y_{ik} \le Q                                                   & \quad \forall k \in \mcK \label{eq:three-index-flow-force-resource-upper-bound}                                                \\
 	                                  & \sum_{e \in \delta(S)} x_{ek} \ge 2 y_{hk}                                        & \quad \forall h \in S,\ \forall S \subseteq V_0,\ |S| \ge 2,\ \forall k \in \mcK \label{eq:three-index-flow-secv1} \\
@@ -253,6 +253,14 @@ Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent fo
 \end{equation}
 
 Since the number of (G)SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
+
+The three-index arc flow model generalizes the two-index version.
+In fact, the two-index arc flow model may be viewed as a special case of the three-index by defining:
+
+\begin{equation}
+    x_e = \sum_{k \in \mcK} x_{ek} \quad \forall e \in E
+\end{equation}
+
 
 
 \begin{comment}
