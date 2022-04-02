@@ -387,7 +387,7 @@ The Branch \& Price solver needs to smartly manage the set $\mcP \subseteq P$, w
 It is responsibility of the BAP framework to efficiently manage which routes to preserve or drop within the pool during the running time of the resolution process.
 
 The resolution method, or algorithm, used to solve the PP is usually called "oracle" in the literature.
-The oracle needs to solve the pricing problem which, due to the definition of the set $P$, coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC) over a directed graph with weights $\hat{c_{ij}} = d_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$, where the source and sink vertex collapse at the depot node.
+The oracle needs to solve the pricing problem which, due to the definition of the set $P$, coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC) over a directed graph with weights $\bar{c_{ij}} = d_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$, where the source and sink vertex collapse at the depot node.
 
 Note that, the BAP solver need not to solve the PP optimally at each iteration of the simplex algorithm.
 To improve the dual bound, it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$, which allow the usage of heuristic algorithms especially during the very first few iterations, where finding good reduced cost columns is surprisingly easy.
@@ -450,7 +450,7 @@ but, general k-cycle elimination algorithms for the pricing problem, have since 
 in great details.
 
 \subsection{Shortest Path Problem with Resource Constraints}
-If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\hat{c_{ij}} \ge 0$,
+If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\bar{c_{ij}} \ge 0$,
 the ESPPRC problem is solvable in polynomial time, since the elementarity conditions are guaranteed
 to be satisfied in this case.
 In this particular case, some authors have proposed efficient methods to tackle this case:
@@ -581,10 +581,10 @@ These historical instances are usually characterized with stringent vehicle capa
 which consequently give rise to optimal solutions characterized by small routes, each visiting few customers.
 In practice, the vehicle capacity is rarely the bottleneck and
 real-world modern distribution problems are instead characterized by much longer routes.
-When solving the pricing problem, it \todo{Citation needed} has been shown that the performance of the dynamic labeling algorithm
+When solving the pricing problem, it has been shown that the performance of the dynamic labeling algorithm
 tends to drop as the length of the routes increases,
 while at the same time,
-the performance of branch-and-cut algorithms seem to improve in this domain.
+the performance of branch-and-cut algorithms seem to improve in this domain \inlinetodo{Citation needed}.
 
 The goal of the thesis lies in studying the feasibility and competitiveness of a
 branch-and-cut algorithm, implemented through a commercial MIP software package,
