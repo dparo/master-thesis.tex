@@ -69,7 +69,7 @@ The insertion heuristic algorithm can construct a new feasible primal solutions 
 In this section, we will focus on adapting the insertion heuristic for the TSP so that it can be applied to CPTP problems.
 Start by selecting two distinct nodes $s, t \in V,\ q_s + q_t \le Q$ and use these two nodes to form a tour back-to-back.
 
-The insertion heuristic algorithm works iteratively where, at each step of the iteration, we have a valid tour not necessarily feasible for the CPTP.
+The insertion heuristic algorithm works iteratively where, at each step of the iteration, we have an almost feasible CPTP tour (since the depot node might not yet be covered).
 At the end of the whole algorithm, the final obtained tour will be CPTP feasible (if any exist).
 Let's define $Q_t \le Q$ as the total demand served in the current tour.
 At each iteration, choose a vertex $a$ that belongs to the current tour and a vertex $h$ which is not yet part of the tour.
@@ -111,7 +111,7 @@ Unfortunately, as it is pointed out in \cite{chandra1999}, the 2-OPT algorithm m
 Although this is bad news, it is also worth pointing out that this rarely occur in practice, as the probabilistic average number of iterations required for 2-OPT is at most polynomial.
 
 Each iteration of the 2-OPT procedure searches for an existing edge crossing, and if any exists, it performs a 2-OPT exchange to undo it.
-A 2-OPT exchange always maintain the original feasibility, therefore if the 2-OPT algorithm is applied on a feasible solution, it will remain feasible at the end of the whole procedure.
+A 2-OPT exchange is a primal operation: it always maintain the original feasibility, therefore if the 2-OPT algorithm is applied on a feasible solution, it will remain feasible at the end of the whole procedure.
 We briefly describe the 2-OPT exchange.
 Let $a, b \in V$ be two vertices visited in the current tour, and let's use $a_s, b_s \in V$ to denote respectively the successor of $a$ and $b$ in the current tour.
 A 2-OPT exchange removes edges $(a, a_s)$, $(b, b_s)$ in favor of $(a, b)$, $(a_s, b_s)$ but only if the delta distance defined as:

@@ -11,7 +11,7 @@ of the well-known Travelling Salesman Problem (TSP).
 The problem can be defined verbally as finding an optimal route for a transportation/distribution/delivery problem
 starting from a common point called the depot,
 where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
-need to serve customer demands of a single good.
+need to serve customer demands of a single good (i.e. delivery of gasoline to gas stations).
 Given as input: a weighted graph, the customer demands and the vehicle capacity,
 the problem consists in minimizing the overall travel distance,
 while serving all the customers exactly once.
@@ -41,7 +41,8 @@ enough computation time, they can produce a proven optimal solution.
 This is achieved by closing the primal-dual bound gap of the objective function.
 
 For a fairly complete set of notions and facts about VRP, we highly suggest
-the book \citetitle{toth2014} of \textcite{toth2014}.
+the book \citetitle{toth2014} of \textcite{toth2014}, which
+played a central role in writing this introductory chapter.
 
 
 CVRP is usually defined more rigorously through an Integer Programming (IP) formulation.
@@ -91,12 +92,12 @@ state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020
 Before presenting the formulation we first need to define some basic notation
 and mathematical quantities that will be used throughout the remainder of the thesis.
 \textcite{toth2002, toth2014} provides a comprehensive overview of the mathematical models
-for VRP and some VRP variants, both for the directed and undirected case.
+for VRP and plentiful taxonomy of VRP variants, both for the directed and undirected case.
 
 \medskip
 
-The CVRP is traditionally described as a symmetric and complete graph theoretical problem,
-where: (i) the nodes of the network represent the customers and the depot,
+The CVRP is traditionally described as a node routing problem modeled through a symmetric and complete graph theoretical problem,
+where: (i) the vertices of the network represent the customers and the depot,
 (ii) the edges represent road interconnections.
 Let $G = \Tuple*{V, E}$ denote a \textbf{complete undirected network}, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
 $E = \Set*{e = \Set*{i, j} = \Set*{j, i} \mid \allowbreak i,j \in V, \allowbreak i \ne j}$ the set of edges, and $N$ the number of nodes in the network.
@@ -124,7 +125,7 @@ Often, it is simpler to consider $r(S)$ by replacing it with the trivial lower b
 	r(S) \ge \ceil*{\frac{q(S)}{Q}}
 \end{equation}
 
-A route is a sequence $p = (i_0, i_1, \dots, i_s, s_{s+1})$, with $i_0 = i_{s + 1} = 0$ in which
+A route $p$ is a loop-back sequence $p = \Tuple*{i_0, i_1, \dots, i_s}$, with $i_0 = 0$ in which
 $\Set*{i_1, \dots, i_s} \subseteq V_0$ customers are visited.
 The route $p$ has a travel cost of $c_p = c(p) = \sum_{j=0}^s c_{i_j,i_{j+1}}$.
 A feasible solution to the CVRP problem consists of \textbf{exactly} $K$ routes (or circuits) associated with each vehicle starting from the depot node.
@@ -281,49 +282,61 @@ we will briefly introduce the key ingredients of modern Branch \& Price solvers.
 \subsection{The Set Partitioning (SP) formulation}
 \label{sec:intro-set-partition-formulation}
 
-The Set Partitioning (SP) formulation, which was originally presented in \textcite{balinski1964},
-works substantially differently from the two-index arc flow formulation or many other commonly known IP formulations.
+The Set Partitioning (SP) formulation, sometimes also called Path Flow formulation, is an extended formulation, which was originally presented in \textcite{balinski1964},
+works substantially differently from the two/three-index arc flow formulation or many other commonly encountered IP models.
 The SP formulation uses a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
 
 
-The SP formulation can be viewed as a Dantzig-Wolfe reformulation \parencite{dantzig1960} of the three-index arc flow formulation.
-Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes,
-let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is used
-and finally let $a_{i}^p \in \Set*{0, 1}$ be "static encoding" (binary coefficient) for a route $p$, i.e. if vertex $i \in V$ is visited (or covered) by route $p$.
-Anyhow, by finally defining $c_p$ as the cost of a feasible route $p \in P$,
-which can be trivially computed in $O(N)$,
-we can write the full SP model as:
+The SP formulation can be viewed as a Dantzig-Wolfe decomposition \parencite{dantzig1960}
+and commodity aggregation \parencite{desaulniers1998}
+of the three-index arc flow formulation.
+Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes.
+Let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is selected.
+Let $a_{ip} \in \Set*{0, 1}$ be a "static encoding" (binary coefficient) for a route $p$,
+i.e. $a_{ip} = 1 \texttt{ if } i \in p = \Tuple*{0, i_1, i_2, \dots, i_s}$,
+namely if vertex $i \in V$ is visited (or covered) by route $p$.
+
+We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$, which can be trivially computed in $O(N)$.
+The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included in the optimal solution.
+The SP is described through an Integer Programme (IP) formulation:
 
 
 \begin{align}
 	\min_{\lambda} \quad z_\mt{SP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:set-partitioning-obj-func}                                                                                                                                           \\
-	                                        & \sum_{p \in P}  a_{i}^p \lambda_p = 1                                & \quad \forall i \in V_0                                              \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
+	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1                                & \quad \forall i \in V_0                                              \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
 	                                        & \sum_{p \in P} \lambda_{p} = K\label{eq:set-partitioning-K-routes}                                                                                                                                             \\
 	                                        & \lambda_p                    \in \Set*{0, 1}                         & \quad \forall p \in P \label{eq:set-partitioning-lambda-mip-var-bounds}
 \end{align}
 
 where, $z_\mt{SP}(\lambda)$, as defined in \eqref{eq:set-partitioning-obj-func} is the objective function to be minimized (i.e. the overall travel distance).
-Constraint \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be served from a single unique route.
+Constraint \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be covered by exactly one route.
 Constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are selected.
-Finally, constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for all the feasible routes.
+Finally, constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for binary variables $\lambda_p \ \forall p \in P$.
 
-As one may guess, due the exponential number of binary variables, the SP formulation cannot be used in as-is in practice.
+As one may guess, due the exponential number of binary variables, the SP formulation cannot be instantiated nor directly solved.
 However, a variant of the SP formulation can be tackled efficiently by column generation approaches embedded inside a Branch \& Price framework.
 Branch \& Price frameworks and column generation have been shown to work remarkably well for solving routing problems.
 
-When a violated inequality in the two-index formulation is found, it is decomposed at runtime and introduced in the master problem.
 
 As, \textcite{toth2002} points out, if the distance matrix satisfies the triangle inequality,
 than it is possible to rewrite the SP formulation into a totally equivalent Set Covering (SC) formulation
-by substituting inequality \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} in favor of:
+by substituting the equality constraints \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} in favor of the simpler inequlities:
 
 \begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
-	\sum_{p \in P}  a_{i}^p \lambda_p \ge 1  \quad \forall i \in V_0
-\end{equation},
+    \sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0
+\end{equation}
 
-under this assumption, any feasible solution for the SP formulation is also feasible for the SC formulation.
+Under the triangle inequality assumption, any feasible solution for the SP formulation is also feasible for the SC formulation.
 Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
-The main advantage of the SP model is that it can handle many constraints, since their definition are captured within the definition of the set $P$ itself.
+The SP has two main advantages.
+First, its linear relaxation provides excellent lower bounds \parencite{bramel1997}.
+Second, it can handle many VRP variants even described
+through very complex constraints
+since their definitions are captured within the definition of the set $P$ itself.
+In fact, the SP formulation can be used to model a wide variaty of VRP classes,
+since the constraints that decides whether a route is feasible or not are handled
+by the pricer algorithm.
+
 
 In the next sections we will introduce the Branch \& Price framework and the column generation approach, key components employed in modern state-of-the-art CVRP solvers.
 
@@ -343,6 +356,8 @@ In the next sections we will introduce the Branch \& Price framework and the col
 Branch-and-price frameworks are in essence a branch-and-bound scheme, i.e. making use of a search tree, that originates when solving the SP formulation for vehicle routing problems.
 Compared to more traditional Branch \& Cut frameworks, their primary focus is the usage of a column generation technique for improving the dual bound, see \textcite{righini2008}.
 Branch and Price frameworks were first applied successfully in \textcite{gilmore1961} to the Cutting-Stock problem.
+A BPC is in essence a branch-and-bound algorithm where lower bounds are computed by column generation (CG) and cutting-planes are added to strengthen the linear relaxations.
+
 
 \subsubsection{Column generation and the Pricing Problem}
 \label{sec:column-generation-and-pricing-problem}
@@ -352,7 +367,7 @@ Consider the Master Problem (MP) of the set partitioning formulation defined by 
 
 \begin{align}
 	\min_{\lambda} \quad z_\mt{MP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:mp-obj-func}                                                                                                                             \\
-	                                        & \sum_{p \in P}  a_{i}^p \lambda_p = 1                  & \quad \forall i \in V_0                                              \label{eq:mp-customers-visited-by-exactly-one-route} \\
+	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1                  & \quad \forall i \in V_0                                              \label{eq:mp-customers-visited-by-exactly-one-route} \\
 	                                        & \sum_{p \in P} \lambda_{p} = K\label{eq:mp-K-routes}                                                                                                                               \\
 	                                        & 0 \le \lambda_p \le 1                                  & \quad \forall p \in P \label{eq:mp-lambda-mip-var-bounds}
 \end{align}
@@ -368,14 +383,14 @@ Therefore, a valid approach taken by Branch \& Price framework consists of consi
 
 \begin{align}
 	\min_{\lambda} \quad z_\mt{RMP}(\lambda) & = \sum_{p \in \mcP}  c_p \lambda_p \label{eq:rmp-obj-func}                                                                                                                              \\
-	                                         & \sum_{p \in \mcP}  a_{i}^p \lambda_p = 1                   & \quad \forall i \in V_0                                              \label{eq:rmp-customers-visited-by-exactly-one-route} \\
+                                             & \sum_{p \in \mcP}  a_{ip} \lambda_p = 1                   & \quad \forall i \in V_0                                              \label{eq:rmp-customers-visited-by-exactly-one-route} \\
 	                                         & \sum_{p \in \mcP} \lambda_{p} = K\label{eq:rmp-K-routes}                                                                                                                                \\
 	                                         & 0 \le \lambda_p \le 1                                        & \quad \forall p \in \mcP \label{eq:rmp-lambda-mip-var-bounds}
 \end{align}
 
 which takes the name of Restricted Master Problem (RMP).
 
-In BAP frameworks, we seek to solve the so-called pricing problem (PP) defined as:
+In BAP frameworks, we seek to solve the so-called Pricing Problem (PP) defined as:
 
 \begin{equation}
 	{c^\star_p} = \min_{p \in P} \Set*{ \bar{c_p} = \sum_{(i, j) \in E} \Expr*{d_{ij} - \frac{\pi_i + \pi_j}{2}} a_{ijp}  }
@@ -386,14 +401,25 @@ Any $p \in P$ which satisfies $\bar{c_p} < 0$ is a valid column which can enter 
 The Branch \& Price solver needs to smartly manage the set $\mcP \subseteq P$, which stores in a pool.
 It is responsibility of the BAP framework to efficiently manage which routes to preserve or drop within the pool during the running time of the resolution process.
 
-The resolution method, or algorithm, used to solve the PP is usually called "oracle" in the literature.
-The oracle needs to solve the pricing problem which, due to the definition of the set $P$, coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC) over a directed graph with weights $\bar{c_{ij}} = d_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$, where the source and sink vertex collapse at the depot node.
+The resolution method, or algorithm, used to solve the PP is usually called "oracle" or "pricer" in the literature.
+The oracle needs to solve the PP which, due to the definition of the set $P$, coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC) over a directed graph with weights $\bar{c_{ij}} = d_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$, where the source and sink vertex collapse at the depot node.
+
+The column generation is an iterative algorithm which alternates between two phases \parencite{desaulniers2018}:
+\begin{enumerate}
+    \item The simplex algorithm for solving the RMP, which is characterized by one or more pivot operations.
+    \item One or several iterations of the Pricing Problem (PP) solved by invoking the pricer algorithm.
+        The simplex algorithm invokes the pricer to verify whether other pivot operations are possible for improving the dual bound.
+        The pricer algorithm is usually external, and lives in a separate module compared to the branch-and-price code.
+\end{enumerate}
+
+The column generation procedure stops when no more negative reduced cost routes exist.
 
 Note that, the BAP solver need not to solve the PP optimally at each iteration of the simplex algorithm.
 To improve the dual bound, it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$, which allow the usage of heuristic algorithms especially during the very first few iterations, where finding good reduced cost columns is surprisingly easy.
 Branching occurs when either: (i) the optimal solution of the PP, $p^\star$, achieves $c^\star_p \ge 0$ (non-negative solution) and $\exists p \in \mcP \mid \lambda_p \notin \Set*{0, 1}$; (ii) the column generation procedure tails off, i.e. the gained dual bound improvements compared to the running time to generate a column become suboptimal.
 
 The subproblem can be seen as a variant of the elementary shortest path problem with resource constraints (ESPPRC).
+
 
 \subsection{Branching and Cut Generation within BAP frameworks}
 \label{sec:intro-branching-and-cut-generation-within-bap-frameworks}
@@ -418,6 +444,7 @@ Non-robust inequalities may in general be quite strong but, unfortunately, requi
 These types of inequalities can drastically complicate the pricing problem, trading better dual improvements for increased column generation times.
 Therefore, their usage must be assessed on a case-by-case basis.
 
+When a violated inequality in the two/three-index formulation is found, it is decomposed at runtime and introduced in the master problem.
 
 In this thesis we will mostly concentrate on branching and cut generation schemes which make use of \textbf{robust} inequalities.
 Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
