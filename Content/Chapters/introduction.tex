@@ -451,6 +451,14 @@ When a violated inequality in the two/three-index formulation is found, it is de
 In this thesis we will mostly concentrate on branching and cut generation schemes which make use of \textbf{robust} inequalities.
 Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
 
+Many branching schemes for the CVRP are mere extension of the one used for the TSP.
+Probably, the most simple and known branching scheme in the \textbf{branching on arcs} proposed in \textcite{christofides1969a},
+and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
+Also, some reduction and dominance rules may be employed to remove some arcs
+which can be proved that they cannot belong to an optimal solution,
+thus it is possible to branch with a single descendant node to eliminate
+a good portion of the solution space.
+
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
 
@@ -531,6 +539,11 @@ In the last 60 years, a huge number of contributors in
 the operations research community have studied and proposed many
 mathematical models, and algorithms (both exact and (meta-)heuristic)
 for solving the VRP.
+Up to the late 1980s, the exact approaches for tackling the CVRP was
+based on tree-search algorithm employing branch-and-bound schemes
+(see \textcite{christofides1969a, christofides1981, laporte1986}),
+sometimes employing Lagrangian duality relaxation (see \textcite{fisher1994a, miller1995}),
+or additive approaches (see \textcite{fischetti1994a, hadjiconstantinou1995}).
 
 One of the very first few attempts, in solving the CVRP, were based on branch-and-cut algorithms
 which at that time had historical prevalence.
