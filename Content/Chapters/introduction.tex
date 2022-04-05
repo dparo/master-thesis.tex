@@ -208,6 +208,8 @@ This is the approach taken by the so-called compact models (see \cite{miller1960
 These models make use of a polynomial number of constraints.
 Unfortunately these compact formulations are known to lead to significantly weaker linear relaxations.
 It has been known for quiet some time, that the SECs are very strong for the TSP polytope, so strong in fact, that are facet-defining.
+However, the presence of facet-defining inequalities hold only for the TSP, since due to the more complex structure of the CVRP,
+little satisfactory results have been obtained in studying the polyhedral characteristics for the standard CVRP, see \textcite{campos1991, cornuejols1993}.
 
 
 \subsection{The three-index arc flow formulation}
@@ -459,6 +461,40 @@ which can be proved that they cannot belong to an optimal solution,
 thus it is possible to branch with a single descendant node to eliminate
 a good portion of the solution space.
 
+
+First attempts in proposing valid inequalities for the CVRP,
+with the aim to improve the linear relaxation,
+were obtained by generalizing constraints for the TSP, see \textcite{naddef1993}.
+
+Some non-robust cuts were also deployed for the CVRP,
+showing that they can be effectively used if they are separated
+carefully, by taking into consideration the aggravation of the pricing problem.
+Major contributions in the non-robust cuts domain are: the subset row inequalities in \textcite{jepsen2008a},
+the strong capacity inequalities in \textcite{baldacci2008}.
+
+
+\subsubsection{Families of Cuts}
+
+As is done in \textcite{toth2014}, families of valid inequalities for the CVRP can
+be separated in different families.
+
+\begin{itemize}
+    \item \textbf{TSP-Related Valid inequalities}.
+        \textcite{naddef1993} showed that it is possible to re-adapt (by putting into a tight triangular form)
+        every valid constraint for the symmetric TSP to the CVRP.
+    \item \textbf{Capacity Constraints}
+    The capacity constraints can be expressed in the form $\sum_{e in \delta(S)} x_e \ge 2 r(S) \quad \forall S \subseteq V_0, |S| \ge 2$.
+    Depending on how $r(S)$ is computed, the set of constraints take different names.
+    If $r(S) = \sum_{i \in S} q_i / Q$, we have the so-called fractional capacity inequality.
+    If $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we have the so-called rounded capacity inequality.
+
+\item \textbf{Multistar Inequalities}, proposed in \textcite{araque1990}.
+    \textcite{letchford2002} propose extended version of inequalities for this family of cuts.
+    The idea lies in first computing an upper bound on the value of $x(E(S))$, then
+    for each value of $x(E(S))$ an upper boun on the $x(\delta(S) \cap \delta(T))$.
+    The related inequalities called generalized large multistar inequalities were proposed by \textcite{gouveia1995}.
+\end{itemize}
+
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
 
@@ -544,12 +580,6 @@ based on tree-search algorithm employing branch-and-bound schemes
 (see \textcite{christofides1969a, christofides1981, laporte1986}),
 sometimes employing Lagrangian duality relaxation (see \textcite{fisher1994a, miller1995}),
 or additive approaches (see \textcite{fischetti1994a, hadjiconstantinou1995}).
-\textcite{agarwal1989}, was on of the very few first attempt in applying the SP formulation
-through a column generation approach to the CVRP.
-Later, \textcite{desrochers1992} proposes the dynamic programming
-label setting algorithm, a major breakthrough in VRP research,
-still employed today in modern BPC schemes, to efficiently solve
-the pricing problem.
 
 From the 1980s to the first 2000s, some authors applied branch-and-cut
 algorithms to the VRP.
@@ -564,23 +594,61 @@ can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ra
 These works based on branch-and-cut frameworks, showed that CVRP instances, even with small number of customers (less than 100) proved
 to be very challenging to solve exactly.
 
-Then, \textcite{fukasawa2006} solved all CVRP instances up to approximately 100 customers
-using a branch-cut-and-price approach.
-Later, the works of \textcite{baldacci2008}, \textcite{baldacci2011}
-improved the overall running times by employing a column and cut generation scheme.
-Later, \textcite{contardo2014} was able to solve a CVRP instance made of 151 (M-n151-k12).
-Later, \textcite{pecin2017} solved CVRP instances made of 200 customers (M-n200-k16, M-n200-k7).
 
-
+One of the very few first attempts of applying
+the SP formulation and a column generation scheme can
+be attributed to\textcite{desrosiers1984, agarwal1989}.
+These authors, showed that the column generation scheme proved
+very satisfactory to solve the VRPTW under tight constraints,
+but did not achieve satisfactory results for the CVRP.
+Therefore, until the first 2000s, the branch-and-cut approaches were
+deemed to be the best approach for solving the CVRP.
+In \citeyear{desrochers1992}, \citeauthor{desrochers1992} proposed the dynamic programming
+based label setting algorithm.
+This algorithm still constites the major core component
+in modern BPC schemes to efficiently solve the pricing problem.
 \textcite{kohl1999}, later generalized in \cite{desaulniers2008}, introduce the
-2-paths inequalities, and were one of the first authors to integrate
+2-paths inequalities, and were one of the first attemps to integrate
 cutting-planes within the BAP framework for solving the CVRP.
-\textcite{fukasawa2006} integrate the cutting planes proposed in \cite{lysgaard2004}
-within the BAP framework for solving the CVRP.
-Some authors, instead, developed inequalities for the CVRP directly
-in the SP formulation.
-Major contributions includes: the strong capacity inequalities in \textcite{baldacci2008},
-and the subset row inequalities in \textcite{jepsen2011}.
+One of the major breakthrough in column generation and VRP research
+was obtained in \textcite{fukasawa2006}, which were the
+first authors to propose a branch-and-cut-and-price (BCP) algorithm,
+embedding a powerful robust-cuts based cutting-plane approach
+typically found in BAC algorithms.
+\citeauthor{fukasawa2006} integrated the cutting-planes proposed in \cite{lysgaard2004},
+and the column generation considered only q-routes without $k$-cycles.
+\textcite{fukasawa2006} was able to solve all CVRP instances up to approximately 100 customers.
+Since the work of \citeauthor{fukasawa2006} until now, column generation
+and the label-setting algorithm have been the defacto procedures
+of modern and efficient VRP solvers.
+Later, \textcite{baldacci2008}, proposed a slightly different approach w.r.t. \citeauthor{fukasawa2006}.
+They employ a column generation considering elementary columns and some more inequalities.
+A bounding procedure is employed to quickly
+improve the dual bound while drastically reduce the number
+of pricing iterations and the columns that needs consideration,
+Instead of branching, they use full enumeration of the candidate
+routes and solve the problem at the root node by employing a MIP solver.
+\textcite{pessoa2008a} improves over the work of \citeauthor{fukasawa2006}.
+\textcite{baldacci2011} proposed the ng-routes, a very effective
+partial (soft) elementarity constraint
+to tradeoff the elementarity condition (i.e. good dual bound in pricing)
+for a simpler pricer problem.
+The ng-routes can be embedded inside the label-setting algorithm, and
+it is another core ingredient of modern VRP solver.
+\textcite{ropke2012} revisits the work \citeauthor{fukasawa2006} and applies
+the ng-routes relaxation.
+\textcite{contardo2014} proposes an effective enumeration schemes and employ the ng-routes effectively,
+and was able to solve CVRP instances made of 151 customers.
+Finally, a modern BCP was proposed in \textcite{pecin2017}, which
+proposed the non-robust limited memory subset row cuts \parencite{pecin2017a}.
+By using a bidirectional label setting algorithm, a modern dual smoothing and enumeration
+approach and the ng-routes relaxation, they were able to solve CVRP
+instances made of 200 customers.
+At the day of writing, \textcite{pessoa2020a} is the current state of the
+art BCP framework based on column generation with ng-routes relaxation
+for solving the CVRP problem.
+
+
 
 
 
