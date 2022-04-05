@@ -544,13 +544,25 @@ based on tree-search algorithm employing branch-and-bound schemes
 (see \textcite{christofides1969a, christofides1981, laporte1986}),
 sometimes employing Lagrangian duality relaxation (see \textcite{fisher1994a, miller1995}),
 or additive approaches (see \textcite{fischetti1994a, hadjiconstantinou1995}).
+\textcite{agarwal1989}, was on of the very few first attempt in applying the SP formulation
+through a column generation approach to the CVRP.
+Later, \textcite{desrochers1992} proposes the dynamic programming
+label setting algorithm, a major breakthrough in VRP research,
+still employed today in modern BPC schemes, to efficiently solve
+the pricing problem.
 
-One of the very first few attempts, in solving the CVRP, were based on branch-and-cut algorithms
-which at that time had historical prevalence.
-Some notable BAC contributions are provided in the works of
-\textcite{araqueg1994}, \textcite{augerat1995}, \textcite{blasum2000}, \textcite{achuthan2003}, \textcite{ralphs2003}, \textcite{lysgaard2004},
-These works showed that CVRP instances, even with small number of customers (less than 100) proved
-to be very challenging for the BAC approaches.
+From the 1980s to the first 2000s, some authors applied branch-and-cut
+algorithms to the VRP.
+\textcite{laporte1985}, proposes the two-index arc flow formulation
+and a branch-and-cut algorithm to solve it.
+Later \textcite{augerat1995a}, proposes a branch-and-cut schemes
+employing extra valid inequalities.
+Later, \textcite{lysgaard2004}, proposes a new and more modern separation procedures for
+the valid inequalities known at the time.
+Other notable branch-and-cut-price based contributions
+can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004}.
+These works based on branch-and-cut frameworks, showed that CVRP instances, even with small number of customers (less than 100) proved
+to be very challenging to solve exactly.
 
 Then, \textcite{fukasawa2006} solved all CVRP instances up to approximately 100 customers
 using a branch-cut-and-price approach.
