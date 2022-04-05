@@ -511,6 +511,17 @@ be separated in different families.
 Branching on a generic $\lambda_p$ of the SP formulation is a form of non-robust inequality,
 that will lead to a harder pricing problem.
 
+Therefore, by noting that it is possible to map variable $x_e$ of the two-index arc flow formulation
+to the SP formulation by noting that:
+
+\begin{equation}
+    x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p
+\end{equation}
+
+where $a_{er}$ is a binary coefficient and denotes the number of times edge $e$ is
+crossed by route $p$.
+Thus, it is possible in the SP formulation to branch on an edge $e$, which
+is a robust form of inequality.
 
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
