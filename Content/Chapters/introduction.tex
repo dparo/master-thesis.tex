@@ -473,6 +473,17 @@ Major contributions in the non-robust cuts domain are: the subset row inequaliti
 the strong capacity inequalities in \textcite{baldacci2008}.
 
 
+\begin{comment}
+    \cite{toth2014}
+Anyway, even if Ω only contains elementary routes, the bounds given by formulation
+VRP4 (gaps between 1% and 4% are typical in the instances from the literature) are not
+good enough to be the basis of efficient exact algorithms. For this purpose, VRP4 must be
+reinforced with additional cuts. In fact, all the recent methods mentioned in Section 3.2
+perform some kind of combined generation of both columns and cuts. Section 3.4 will
+present the main families of cuts used in those methods. Some of those
+\end{comment}
+
+
 \subsubsection{Families of Cuts}
 
 As is done in \textcite{toth2014}, families of valid inequalities for the CVRP can
@@ -495,6 +506,12 @@ be separated in different families.
     The related inequalities called generalized large multistar inequalities were proposed by \textcite{gouveia1995}.
 \end{itemize}
 
+
+\subsubsection{Branching}
+Branching on a generic $\lambda_p$ of the SP formulation is a form of non-robust inequality,
+that will lead to a harder pricing problem.
+
+
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
 
@@ -516,6 +533,17 @@ Notable contributions in relaxing the elementarity constraints include:
 (ii) a state-space relaxation procedure suggested in \textcite{christofides1981a},
 (iii) shortest path relaxation suggested in \textcite{desrosiers1984},
 (vi) generalizion to $k$-cycle elimination in \textcite{irnich2006}.
+
+The q-routes are routes not satisfying the elementarity condition which
+can therefore serve the same customer twice. For
+each visit of the same customer its demand will be counted again.
+The advantage of using the q-routes relaxation is that the pricing problem
+can be solved with a pseudo-polynomial time algorithm.
+
+The main idea behind partially relaxing the elementarity condition consists
+in making the pricing problem more tractable, while at the same time,
+keep bounds as close as possible to the elementary route bound.
+
 
 The first BCP algorithm, using full elementarity routes, by not relaxing the elementary
 condition, was done in \cite{chabrier2006},
