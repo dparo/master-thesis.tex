@@ -425,14 +425,41 @@ Branching occurs when either: (i) the optimal solution of the PP, $p^\star$, ach
 The subproblem can be seen as a variant of the elementary shortest path problem with resource constraints (ESPPRC).
 
 
-\subsection{Branching and Cut Generation within BAP frameworks}
+\subsection{Branching, Route Enumeration and Cut Generation within BAP frameworks}
 \label{sec:intro-branching-and-cut-generation-within-bap-frameworks}
 
 In order to satisfy the integrality constraints for the SP formulation, solving the RMP at the root node
 is almost always not enough.
+The column generation approach may finish with a non-zero duality gap.
 Therefore, a search-tree and a branching scheme is employed to seek for the optimal integral solution $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in P$.
 Although non strictly-necessary, modern BAP also use cut generation procedures to efficiently improve the dual bound and improve convergence speed.
 Modern BAP frameworks are in fact a hybridization between a BAP and a BAC framework, making them a Branch \& Cut \& Price (BCP) frameworks.
+
+Notable BCP approaches  applied to the VRP can be found \textcite{fukasawa2006, ropke2012}.
+It is important to note however that branching is not strictly required.
+Route enumeration is another technique that can be used in place of branching for obtaining integral solutions.
+In route enumeration, all elementary routes that may belong to the VRP optimal solution are enumerated,
+and a SP formulation with all those routes are solved through a MIP.
+The problem of this approach is the possibly huge number of routes that needs to be enumerated,
+and this quantity is highly linked to the tightness of the duality gap,
+and with the average length of a tour $N / K$.
+Route enumeration is an operation that takes exponential space complexity,
+but it can drastically improve the performance of the BPC on some instances.
+The major contributions employing route enumeration in place of branching can be found in
+\textcite{baldacci2008, baldacci2011, contardo2014}.
+
+Modern BPC frameworks instead take a hybrid approach by combinining branching and route enumeration
+(see \cite{pessoa2008a, pessoa2009, pecin2017, pessoa2020}).
+After the convergence of the column generation algorithm enumeration is tried.
+If the number of enumerated routes starts to exceed a maximum limit, enumeration
+is preemptively aborted and conventional branching is applied.
+Once the primal-dual bound gap reaches desirable levels, the route enumeration
+procedure will enumerate all routes under the maximum limit.
+At the point the associated RMP formulation can be solved efficiently through a MIP.
+
+
+
+
 
 \medskip
 
@@ -452,6 +479,8 @@ When a violated inequality in the two/three-index formulation is found, it is de
 
 In this thesis we will mostly concentrate on branching and cut generation schemes which make use of \textbf{robust} inequalities.
 Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
+
+Branching directly on the $\lambda_p$ variables of the SP formulation is a form of non-robust branching.
 
 Many branching schemes for the CVRP are mere extension of the one used for the TSP.
 Probably, the most simple and known branching scheme in the \textbf{branching on arcs} proposed in \textcite{christofides1969a},
@@ -599,6 +628,18 @@ setting algorithm:
 (iii) bidirectional search proposed in \textcite{righini2006},
 (iv) decremental state space relaxation in \textcite{boland2006, righini2008},
 (v) decremental state space relaxation extended to handle ng-sets \textcite{martinelli2014}.
+
+
+As, the average number of customers per route $N / K$ increases,
+the number of pricing iterations per column generation increases.
+Therefore, \textcite{dumerle1999, pessoa2013} propose a dual stabilization
+technique to improve the convergence speed of the column generation process.
+Another reasonable approach to speed-up the column generation process
+is the use of faster pricing heuristic algorithms. The exact
+pricing state is called only when the pricing heuristic fails
+at determining a valid reduced-cost route.
+\textcite{fukasawa2006} proposes a modification of the label-setting
+algorithm to use it as an heuristic pricer.
 
 
 
