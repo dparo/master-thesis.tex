@@ -560,7 +560,8 @@ Notable contributions in relaxing the elementarity constraints include:
 (i) the q-route relaxation suggested in \textcite{christofides1981},
 (ii) a state-space relaxation procedure suggested in \textcite{christofides1981a},
 (iii) shortest path relaxation suggested in \textcite{desrosiers1984},
-(vi) q-routes with $k$-cycle elimination in \textcite{irnich2006}.
+(iv) q-routes with $k$-cycle elimination in \textcite{irnich2006},
+(iv) ng-routes relaxation proposed in \textcite{baldacci2011}.
 
 The q-routes are routes not satisfying the elementarity condition which
 can therefore serve the same customer twice. For
@@ -575,14 +576,29 @@ If the label setting algorithm considers only elementary routes,
 its complexity becomes exponential in $O(2^N Q)$, proving that in
 either case, longer routes are more challenging to price
 for the label-setting algorithm \parencite{toth2014}.
+The q-routes with $k$-cycle elimination are a generalization of the q-routes
+in which multiple visits to a customer $i \in V_0$ are only allowed
+if at least $k$ other vertices are visited in between.
+Elementary routes are therefore a special case of q-routes with $N$-cycle elimination.
+Unfortunately, for practical cases as is point out in \textcite{fukasawa2006} the value
+of $k$ never exceeds 4 since this would complicate too much the cycle elimination logic
+and the pricing problem.
+ng-Routes are instead a partial elementarity constraint
+which is a simpler alternative to cycle-elimination.
+The idea is to forbid a subset $\hat{V_0} \subset V_0$ of customers from being revisited.
+The ng-routes are efficiently implementable in the label-setting algorithm.
 
 
-Some works instead were devoted in speeding up the performance of the label
+
+
+
+Some general works instead were devoted in speeding up the performance of the label
 setting algorithm:
 (i) stronger dominance rules and completion bounds,
 (ii) a state-space relaxation procedure suggested in \textcite{christofides1981a},
 (iii) bidirectional search proposed in \textcite{righini2006},
-(iv) decremental state space relaxation in \textcite{boland2006, righini2008}.
+(iv) decremental state space relaxation in \textcite{boland2006, righini2008},
+(v) decremental state space relaxation extended to handle ng-sets \textcite{martinelli2014}.
 
 
 
