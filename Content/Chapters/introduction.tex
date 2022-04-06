@@ -406,7 +406,7 @@ The Branch \& Price solver needs to smartly manage the set $\mcP \subseteq P$, w
 It is responsibility of the BAP framework to efficiently manage which routes to preserve or drop within the pool during the running time of the resolution process.
 
 The resolution method, or algorithm, used to solve the PP is usually called "oracle" or "pricer" in the literature.
-The oracle needs to solve the PP which, due to the definition of the set $P$, coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC) over a directed graph with weights $\bar{c_{ij}} = d_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$, where the source and sink vertex collapse at the depot node.
+The oracle needs to solve the pricing subproblem which, due to the definition of the set $P$, coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC) over a directed graph with weights $\bar{c_{ij}} = d_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$, where the source and sink vertex collapse at the depot node.
 
 The column generation is an iterative algorithm which alternates between two phases \parencite{desaulniers2018}:
 \begin{enumerate}
@@ -560,13 +560,31 @@ Notable contributions in relaxing the elementarity constraints include:
 (i) the q-route relaxation suggested in \textcite{christofides1981},
 (ii) a state-space relaxation procedure suggested in \textcite{christofides1981a},
 (iii) shortest path relaxation suggested in \textcite{desrosiers1984},
-(vi) generalizion to $k$-cycle elimination in \textcite{irnich2006}.
+(vi) q-routes with $k$-cycle elimination in \textcite{irnich2006}.
 
 The q-routes are routes not satisfying the elementarity condition which
 can therefore serve the same customer twice. For
 each visit of the same customer its demand will be counted again.
 The advantage of using the q-routes relaxation is that the pricing problem
-can be solved with a pseudo-polynomial time algorithm.
+can be solved with a pseudo-polynomial time algorithm in \textcite{N^2 Q}
+operations for the CVRP.
+Therefore, when the CVRP vehicle capacity is loose, the label-setting algorithm
+even when considering a very-relaxed form of elementarity, its running
+time get worse as the capacity bound $Q$ increases.
+If the label setting algorithm considers only elementary routes,
+its complexity becomes exponential in $O(2^N Q)$, proving that in
+either case, longer routes are more challenging to price
+for the label-setting algorithm \parencite{toth2014}.
+
+
+Some works instead were devoted in speeding up the performance of the label
+setting algorithm:
+(i) stronger dominance rules and completion bounds,
+(ii) a state-space relaxation procedure suggested in \textcite{christofides1981a},
+(iii) bidirectional search proposed in \textcite{righini2006},
+(iv) decremental state space relaxation in \textcite{boland2006, righini2008}.
+
+
 
 The main idea behind partially relaxing the elementarity condition consists
 in making the pricing problem more tractable, while at the same time,

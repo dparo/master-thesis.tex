@@ -11,6 +11,17 @@ a common algorithm present in the "toolbelt" of all operations research practici
 which computes shortest paths from a source vertex to all other vertices,
 by taking also in consideration additional path constraints.
 
+While there may be multiple resources in play with different semantics
+(time, capacity, gasoline, etc)
+in the ESPPRC problem,
+in this thesis we are mainly focused in ESPPRC subject to the single resource: the vehicle capacity.
+Sometimes the ESPPRC subject to only the capacity constraint is called the Elementary Shortest
+Path Problem with Capacity Constraints (ESPPCC).
+It is however important to acknowledge that in the general case the ESPPRC allows for modeling
+the pricing problems of many VRP variants such as the VRPTW, where also the "time resource"
+plays a critical role.
+
+
 \begin{comment}
 \cite{bettinelli2010mathematical} ---------------
 It is possible to address the pricing problem by optimizing its relaxation,
@@ -53,6 +64,7 @@ At each directed edge $\Tuple*{i, j} \in A^\prime$ we have an associated weight 
 \end{equation}
 
 where $\pi$ represent the dual variables associated to constraints \eqref{eq:mp-customers-visited-by-exactly-one-route}\eqref{eq:mp-K-routes},
+and to robust cutting-planes inequalities,
 as was already explained in Section \ref{sec:column-generation-and-pricing-problem}.
 
 Let $x_{ij} \in \Set*{0, 1} \quad \forall i, j \in V^\prime$ be a new set of binary variables
