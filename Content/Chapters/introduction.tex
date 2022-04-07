@@ -278,9 +278,9 @@ new feasible solutions can be obtained through symmetry by simply permuting the 
 \subsection{The Set Partitioning (SP) formulation}
 \label{sec:intro-set-partition-formulation}
 
-The Set Partitioning (SP) formulation, sometimes also called Path Flow formulation, is an extended formulation, which was originally presented in \textcite{balinski1964},
-works substantially differently from the two/three-index arc flow formulation or many other commonly encountered IP models.
-The SP formulation uses a very small number of constraints while offloading all the model complexity to an exponential number of binary variables.
+The Set Partitioning (SP) formulation, sometimes also called Path Flow formulation, is an extended formulation, which was originally presented in \textcite{balinski1964}.
+It works substantially differently from the two/three-index arc flow formulation or many other commonly encountered IP models.
+The SP formulation uses a very small number of constraints while offloading much of the search-space complexity to an exponential number of binary variables.
 
 
 The SP formulation can be viewed as a Dantzig-Wolfe decomposition \parencite{dantzig1960}
@@ -294,7 +294,8 @@ namely if vertex $i \in V$ is visited (or covered) by route $p$.
 
 We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$, which can be trivially computed in $O(N)$.
 The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included in the optimal solution.
-The SP is described through an Integer Programme (IP) formulation:
+
+The SP formulationis described through an Integer Programme (IP):
 
 
 \begin{align}
@@ -310,13 +311,13 @@ Constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes
 Finally, constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for binary variables $\lambda_p \ \forall p \in P$.
 
 As one may guess, due the exponential number of binary variables, the SP formulation cannot be instantiated nor directly solved.
-However, a variant of the SP formulation can be tackled efficiently by column generation approaches embedded inside a Branch \& Price framework.
-Branch \& Price frameworks and column generation have been shown to work remarkably well for solving routing problems.
+However, a variant of the SP formulation can be tackled efficiently by column generation approaches embedded inside a branch-and-price framework.
+Branch-and-price frameworks and column generation have been applied with high success to the vehicle routing problems.
 
 
 As, \textcite{toth2002} points out, if the distance matrix satisfies the triangle inequality,
 than it is possible to rewrite the SP formulation into a totally equivalent Set Covering (SC) formulation
-by substituting the equality constraints \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} in favor of the simpler inequlities:
+by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route} in favor of the simpler inequality:
 
 \begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
 	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0
@@ -324,17 +325,17 @@ by substituting the equality constraints \eqref{eq:set-partitioning-customers-vi
 
 Under the triangle inequality assumption, any feasible solution for the SP formulation is also feasible for the SC formulation.
 Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
-The SP has two main advantages.
+
+
+The SP formulation has two main advantages.
 First, its linear relaxation provides excellent lower bounds \parencite{bramel1997}.
-Second, it can handle many VRP variants even described
-through very complex constraints
+Second, it can handle many VRP variants,
+even described through very complex constraints,
 since their definitions are captured within the definition of the set $P$ itself.
-In fact, the SP formulation can be used to model a wide variaty of VRP classes,
-since the constraints that decides whether a route is feasible or not are handled
-by the pricer algorithm.
 
-
-In the next sections we will introduce the Branch \& Price framework and the column generation approach, key components employed in modern state-of-the-art CVRP solvers.
+In the next sections we will introduce
+the branch-and-price (BAP) framework and the column generation approach,
+key components employed in modern state-of-the-art CVRP solvers.
 
 
 
@@ -349,7 +350,7 @@ In the next sections we will introduce the Branch \& Price framework and the col
 \subsection{Branch and Price}
 \label{sec:intro-branch-and-price}
 
-Branch-and-price frameworks are in essence a branch-and-bound scheme, i.e. making use of a search tree, that originates when solving the SP formulation for vehicle routing problems.
+Branch-and-price (BAP) frameworks are in essence a branch-and-bound scheme, i.e. making use of a search tree, that originates when solving the SP formulation for vehicle routing problems.
 Compared to more traditional Branch \& Cut frameworks, their primary focus is the usage of a column generation technique for improving the dual bound, see \textcite{righini2008}.
 Branch and Price frameworks were first applied successfully in \textcite{gilmore1961} to the Cutting-Stock problem.
 A BPC is in essence a branch-and-bound algorithm where lower bounds are computed by column generation (CG) and cutting-planes are added to strengthen the linear relaxations.
