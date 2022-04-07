@@ -71,7 +71,7 @@ models.
 We present three total mathematical models:
 \begin{enumerate}
 	\item The two-index arc flow formulation \parencite{laporte1983, laporte1985, laporte1986}.
-	\item The three-index arc flow formulation \parencite{toth2002}.
+	\item The three-index arc flow formulation \parencite{golden1977}.
 	\item The Set Partitioning (SP) formulation \parencite{balinski1964}.
 \end{enumerate}
 
@@ -142,16 +142,14 @@ In the remainder of the section we introduce the two most common IP mathematical
 \subsection{The two-index arc flow formulation}
 \label{sec:intro-cvrp-two-index-flow-formulation}
 
-The two-index arc flow formulation was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
+The two-index arc flow formulation (2F) was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
 and later generalized to the undirected case in \cite{laporte1986}.
 
-The two-index arc flow formulation is tradiionally tackled with branch-and-cut frameworks.
+The two-index arc flow formulation is traditionally tackled with branch-and-cut frameworks.
 We define a set of integer variables $x_e \in \Set*{0, 1, 2}$ to indicate the number of times
 a vehicle traverses edge $e = \Set*{i, j} = \Set*{j, i} \in E$ in the optimal solution.
-There are $O(N^2)$ number of binary variables in the model.
-We finally give the two-index flow description as an Integer Programme (IP) model:
-
-
+There are $O(N^2)$ number of integer variables in the model.
+The two-index arc flow formulation can be described as an Integer Programme (IP):
 
 \begin{align}
 	\min_{x} \quad z_\mt{2F}(x) & = \sum_{e \in E} c_e x_e \label{eq:two-index-flow-obj-func}                                                                                        \\
@@ -162,17 +160,17 @@ We finally give the two-index flow description as an Integer Programme (IP) mode
 	                            & x_e                   \in \Set*{0, 1}                       & \quad \forall e \in E \setminus \delta(0) \label{eq:two-index-flow-x-mip-var-bounds}
 \end{align}
 
-where $z_\mt{2F}(x)$, as defined in \eqref{eq:two-index-flow-obj-func}, is the objective function that aims at minimizing the overall routing cost (travel time).
+where $z_\mt{2F}(x)$, as defined in \eqref{eq:two-index-flow-obj-func}, is the objective function meant to minimize the overall routing cost (travel time).
 Constraint \eqref{eq:two-index-flow-two-edges-incident-per-customer} is the degree constraint which imposes flow conservation: exactly two incident edges must be picked for each customer.
 Constraint \eqref{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}, is the degree constraint at the depot, it forces that exactly $2K$ incident edges at the depot are picked, thus forcing exactly $K$ routes to be constructed.
-Constraints \eqref{eq:two-index-flow-x-mip-var-bounds-depot}\eqref{eq:two-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
+Constraints \eqref{eq:two-index-flow-x-mip-var-bounds-depot} and \eqref{eq:two-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
 except for all edges incident at the depot.
-In fact, the edge case modeled in constraint \eqref{eq:two-index-flow-x-mip-var-bounds-depot} is necessary to allow single-customer routes.
-Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), also called Rounded Capacity Inequalities (RCI), they function both as:
-(i) Subtour Elimination Constraints (SECs), by imposing connectivity of the solution by avoiding the formation of spurious unconnected subtours,
-(ii) and as a capacity constraint, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
+The edge-case modeled in constraint \eqref{eq:two-index-flow-x-mip-var-bounds-depot} is necessary to allow single-customer routes.
+Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), also called Rounded Capacity Inequalities (RCI), they function both:
+(i) as a Subtour Elimination Constraints (SECs), by imposing connectivity of the solution by avoiding the formation of spurious unconnected subtours,
+and (ii) as a capacity constraint, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
 Recall that, $r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$,
-also, $r(S)$ always satisfies $r(S) \ge 1$ for non-trivial CVRP instances.
+also, $r(S)$ always satisfies $r(S) \ge 1$ for non-trivial CVRP instances: $q(S) > 0$.
 
 It was shown in \textcite{cornuejols1993}, that it is possible to replace $r(S)$ in constraint
 \eqref{eq:two-index-flow-ccc}, with the much simpler Bin Packing Problem lower bound $\ceil*{q(S) / Q}$
@@ -182,10 +180,10 @@ thus obtaining the following inequality:
 	\sum_{e \in \delta(S)} x_e \ge 2 \ceil*{\frac{q(S)}{Q}}   \quad \forall S \subseteq V_0, |S| \ge 1
 \end{equation}
 
-By setting $r(S) = \ceil*{q(S) / Q}$ in \cref{eq:two-index-flow-ccc-bpp-lb}
-is alone sufficient to solve to optimality the two-index arc flow formulation.
+The less tighter inequality of \cref{eq:two-index-flow-ccc-bpp-lb} is sufficient to optimally solve
+the two-index arc flow formulation.
 Although, a better lower bound for the Bin Packing Problem can improve the linear
-relaxation, thus reducing the number of branching events.
+relaxation, thus reducing the number of branching occurrences.
 
 Traditionally, the CCC constraints in \cref{eq:two-index-flow-ccc}, are usually transformed in the so called Generalized Subtour Elimination Constraints (GSEC),
 by means of the degree constraints \labelcref{eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
@@ -196,47 +194,51 @@ by means of the degree constraints \labelcref{eq:two-index-flow-two-edges-incide
 
 where, again, $r(S)$ may be replaced by the trivial Bin Packing Problem lower bound $\ceil*{q(S) / Q}$.
 
-The GSEC avoid the formation of spurious unconnected subtours, and impose that at least $r(S)$ edges leave set $S$.
+The GSEC avoid the formation of spurious unconnected subtours and impose that at least $r(S)$ edges leave set $S$.
 The number of GSEC (or CCC) inequalities appear in exponential number in the two-index formulation model,
-thus making a direct solution of the linear programming relaxation impracticle.
-To overcome this issue, it is possible to avoid adding the GSEC inequalities staticaly in the model.
-Instead, an appropriate cutting-plane algorithm and separation procedures may be employed to generate dynamically only the required
-GSEC constraints during the running time of the branch-and-cut algorithm.
+thus making a direct solution of the linear programming relaxation impractical.
+To overcome this issue, it is possible to avoid adding the GSEC inequalities statically in the model.
+Instead, an appropriate cutting-plane algorithm and separation procedure may be employed to generate dynamically,
+during the running time of the branch-and-cut algorithm,
+only the necessary (violated) GSEC constraints.
 
 Another approach is to avoid the usage of the exponential number of SECS entirely.
 This is the approach taken by the so-called compact models (see \cite{miller1960, christofides1979, desrochers1991}).
 These models make use of a polynomial number of constraints.
-Unfortunately these compact formulations are known to lead to significantly weaker linear relaxations.
-It has been known for quiet some time, that the SECs are very strong for the TSP polytope, so strong in fact, that are facet-defining.
-However, the presence of facet-defining inequalities hold only for the TSP, since due to the more complex structure of the CVRP,
-little satisfactory results have been obtained in studying the polyhedral characteristics for the standard CVRP, see \textcite{campos1991, cornuejols1993}.
-
+Unfortunately these compact formulations are known to produce significantly weaker linear relaxations.
+In fact, it has been mathematically proven,
+that the SECs are very strong for the TSP: they are facet-defining for the polytope;
+i.e. they uniquely characterize the convex-hull \parencite{grotschel1975}.
+However, similar mathematical proofs cannot be extended to the CVRP,
+since due to the more complex structure of this generalized problem,
+little satisfactory results have been obtained in studying the polyhedral characteristics
+for even the standard variation of the VRP, see \textcite{campos1991, cornuejols1993}.
 
 \subsection{The three-index arc flow formulation}
 \label{sec:intro-cvrp-three-index-flow-formulation}
 
 When modeling more "colorful" variations of the CVRP, the two-index arc flow model falls shorts in providing sufficient descriptive power.
-For example, the simple CVRP variant where the fleet of trucks is heterogenous and characterized by capacities $Q_1, \dots, Q_K$,
+For example, the simple CVRP variant where the fleet of trucks is heterogeneous and characterized by capacities $Q_1, \dots, Q_K$,
 cannot be described with the two-index arc flow formulation, since there's no clear one-to-one mapping on which truck crosses an edge $e \in E$.
-The three-index arc flow formulation fixes this issue.
-This formulation instead, compared to the two-index version, makes use $O(N^2 K + N K)$ binary variables.
-A set of binary variables $x_{ek} \in \Set*{0, 1}, e = \Set*{i, j} \in E, k \in \mcK$ is now used encode whether vehicle $k$ traverses edge $e$.
-Another set of binary variables $y_{ik} \in \Set*{0, 1}, i \in V, k \in \mcK$ is also employed to model whether truck $k$ serves customer $i$.
 
-It has to be noted however, that there's a downside in employing the three-index arc flow formulation to model standard homogenous truck CVRPs which the two-index version does not suffer.
-This new formulation may, in fact, lead to symmetric solutions which are simply obtained by any permutation of the identity $k \in \mcK$ of each truck.
+The three-index arc flow formulation (3F), first presented in \textcite{golden1977}, fixes this issue.
+The 3F formulation makes use $O(N^2 K + N K)$ integer variables.
+A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e = \Set*{i, j} \in E,\ k \in \mcK$ is now used to encode the number of times a truck $k$ traverses an $e \in E$.
+Another set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$ is used to model whether truck $k$ covers a node $i \in V$.
 
-In any case, we can give the IP model as:
+
+The three-index arc flow formulation can be described as an Integer Programme (IP):
 
 
 \begin{align}
-	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} c_{e} x_{ek} \label{eq:three-index-flow-obj-func}                                                                                                                          \\
-	                                  & \sum_{k \in \mcK} y_{ik} = 1                                                         & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited} \\
-	                                  & \sum_{k \in \mcK} y_{0k} = K                                                         & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                              \\
-	                                  & \sum_{e \in \delta(i)} x_{ek} = 2 y_{ik}                                             & \quad \forall i \in V,\ \forall k \in \mcK \label{eq:three-index-flow-force-visited-customer-if-flow}                  \\
-	                                  & \sum_{i \in V} q_i y_{ik} \le Q                                                      & \quad \forall k \in \mcK \label{eq:three-index-flow-force-resource-upper-bound}                                        \\
-	                                  & \sum_{e \in \delta(S)} x_{ek} \ge 2 y_{hk}                                           & \quad \forall h \in S,\ \forall S \subseteq V_0,\ |S| \ge 2,\ \forall k \in \mcK \label{eq:three-index-flow-secv1}     \\
-	                                  & x_{ek}                   \in \Set*{0, 1}                                             & \quad \forall e \in E,\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds}                    \\
+	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} c_{e} x_{ek} \label{eq:three-index-flow-obj-func}                                                                                                                           \\
+	                                  & \sum_{k \in \mcK} y_{ik} = 1                                                         & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited}  \\
+	                                  & \sum_{k \in \mcK} y_{0k} = K                                                         & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                               \\
+	                                  & \sum_{e \in \delta(i)} x_{ek} = 2 y_{ik}                                             & \quad \forall i \in V,\ \forall k \in \mcK \label{eq:three-index-flow-force-visited-customer-if-flow}                   \\
+	                                  & \sum_{i \in V} q_i y_{ik} \le Q                                                      & \quad \forall k \in \mcK \label{eq:three-index-flow-force-resource-upper-bound}                                         \\
+	                                  & \sum_{e \in \delta(S)} x_{ek} \ge 2 y_{hk}                                           & \quad \forall h \in S,\ \forall S \subseteq V_0,\ |S| \ge 2,\ \forall k \in \mcK \label{eq:three-index-flow-secv1}      \\
+	                                  & x_{ek}                   \in \Set*{0, 1, 2}                                          & \quad \forall e \in \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds-depot}       \\
+	                                  & x_{ek}                   \in \Set*{0, 1}                                             & \quad \forall e \in E \setminus \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds} \\
 	                                  & y_{ik}                    \in \Set*{0, 1}                                            & \quad \forall i \in V,\ \forall k \in \mcK  \label{eq:three-index-flow-y-mip-var-bounds}
 \end{align}
 
@@ -246,7 +248,10 @@ Constraint \eqref{eq:three-index-flow-tour-starts-and-ends-at-depot} forces all 
 Constraint \eqref{eq:three-index-flow-force-visited-customer-if-flow} binds the $y_{ik}$ variables to the corresponding $x_{ijk}$ variables, by ensuring that if a truck's route passes through a vertex, then the corresponding node is marked as visited.
 Constraint \eqref{eq:three-index-flow-force-resource-upper-bound} is the resource upper bound constraint and it ensures that the demand served by each truck does not exceed the truck capacity.
 Constraints \eqref{eq:three-index-flow-secv1} are the Generalized Subtour Elimination Constraints (GSECs), they impose the connectivity of the route and are used to avoid the formation of spurious unconnected subtours.
-Finally, Constraints \eqref{eq:three-index-flow-x-mip-var-bounds}, \eqref{eq:three-index-flow-y-mip-var-bounds} bound and force integrality for the IP variables.
+Constraints \eqref{eq:three-index-flow-x-mip-var-bounds-depot} and \eqref{eq:three-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
+except for all edges incident at the depot.
+The edge-case modeled in constraint \eqref{eq:three-index-flow-x-mip-var-bounds-depot} is necessary to allow single-customer routes.
+Finally, constraint \eqref{eq:three-index-flow-y-mip-var-bounds} bounds and forces integrality for the $y{ik}$ binary variables.
 
 Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent form with traditional (non generalized) TSP subtour elimination constraints (see \textcite{fisher1981}):
 
@@ -259,9 +264,14 @@ Since the number of (G)SECs is exponential in the number of nodes $N$, they are 
 The three-index arc flow model generalizes the two-index version.
 In fact, the two-index arc flow model may be viewed as a special case of the three-index by defining:
 
+
 \begin{equation}
 	x_e = \sum_{k \in \mcK} x_{ek} \quad \forall e \in E
 \end{equation}
+
+However, the three-index arc flow formulation suffers a downside, compared to the two-index version when modeling standard homogeneous CVRPs.
+This new formulation suffers from the multiplicity of the solution space.
+Since the all the vehicles share the same capacity, new symmetric solutions can be obtained by simply permuting the identity $k \in \mcK$ of each truck.
 
 
 
