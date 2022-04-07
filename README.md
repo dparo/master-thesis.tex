@@ -1,10 +1,10 @@
-# A Branch-and-CUt based Pricer algorithm for tackling the Capacitated Vehicle Routing Problem
+# A Branch-and-Cut based Pricer algorithm for tackling the Capacitated Vehicle Routing Problem
 
 This repository contains the LaTeX source code for the master degree thesis
 in Computer Engineering of Davide Paro, presented at the University of Padua
 in Year 2022.
 
-The C source code implementation can be found at this [Github repo](https://github.com/dparo/master-thesis) instead:
+The associated C source code implementation can be found at this [Github repo](https://github.com/dparo/master-thesis).
 
 # Cloning the repository
 
