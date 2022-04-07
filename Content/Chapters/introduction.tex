@@ -136,7 +136,7 @@ Therefore, all the relaxations and many results obtained for the TSP are valid, 
 \medskip
 
 Some variants of the basic version of the CVRP, not considered in this thesis, allows using only a subset of the total available vehicles,
-or consider a heterogenous fleet characterized by different capacities $Q_1, \dots, Q_k$.
+or consider a heterogeneous fleet characterized by different capacities $Q_1, \dots, Q_k$.
 In the remainder of the section we introduce the two most common IP mathematical formulations for the classical version of the CVRP.
 
 \subsection{The two-index arc flow formulation}
@@ -180,7 +180,7 @@ thus obtaining the following inequality:
 	\sum_{e \in \delta(S)} x_e \ge 2 \ceil*{\frac{q(S)}{Q}}   \quad \forall S \subseteq V_0, |S| \ge 1
 \end{equation}
 
-The less tighter inequality of \cref{eq:two-index-flow-ccc-bpp-lb} is sufficient to optimally solve
+The less tight inequality of \cref{eq:two-index-flow-ccc-bpp-lb} is sufficient to optimally solve
 the two-index arc flow formulation.
 Although, a better lower bound for the Bin Packing Problem can improve the linear
 relaxation, thus reducing the number of branching occurrences.
@@ -223,7 +223,7 @@ cannot be described with the two-index arc flow formulation, since there's no cl
 
 The three-index arc flow formulation (3F), first presented in \textcite{golden1977}, fixes this issue.
 The 3F formulation makes use $O(N^2 K + N K)$ integer variables.
-A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e = \Set*{i, j} \in E,\ k \in \mcK$ is now used to encode the number of times a truck $k$ traverses an $e \in E$.
+A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e = \Set*{i, j} \in E,\ k \in \mcK$ is used to encode the number of times a truck $k$ traverses an $e \in E$.
 Another set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$ is used to model whether truck $k$ covers a node $i \in V$.
 
 
@@ -251,7 +251,7 @@ Constraints \eqref{eq:three-index-flow-secv1} are the Generalized Subtour Elimin
 Constraints \eqref{eq:three-index-flow-x-mip-var-bounds-depot} and \eqref{eq:three-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
 except for all edges incident at the depot.
 The edge-case modeled in constraint \eqref{eq:three-index-flow-x-mip-var-bounds-depot} is necessary to allow single-customer routes.
-Finally, constraint \eqref{eq:three-index-flow-y-mip-var-bounds} bounds and forces integrality for the $y{ik}$ binary variables.
+Finally, constraint \eqref{eq:three-index-flow-y-mip-var-bounds} bounds and forces integrality for the $y_{ik}$ binary variables.
 
 Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent form with traditional (non generalized) TSP subtour elimination constraints (see \textcite{fisher1981}):
 
@@ -269,26 +269,11 @@ In fact, the two-index arc flow model may be viewed as a special case of the thr
 	x_e = \sum_{k \in \mcK} x_{ek} \quad \forall e \in E
 \end{equation}
 
-However, the three-index arc flow formulation suffers a downside, compared to the two-index version when modeling standard homogeneous CVRPs.
-This new formulation suffers from the multiplicity of the solution space.
-Since the all the vehicles share the same capacity, new symmetric solutions can be obtained by simply permuting the identity $k \in \mcK$ of each truck.
+However, the three-index arc flow formulation suffers a major downside compared to the two-index version.
+When modeling homogeneous fleets CVRPs the 3F model suffers from a multiplicity of the solution space.
+In fact, since all the vehicles share the same capacity,
+new feasible solutions can be obtained through symmetry by simply permuting the identity $k \in \mcK$ of each truck.
 
-
-
-\begin{comment}
-There's an important observation to be made on constraint \eqref{eq:three-index-flow-tour-starts-and-ends-at-depot}.
-By using the equality sign, we're forcing solutions to use all the available $K$ trucks, even though better solutions making use of less trucks may exist.
-In our case, we decided to fix the number of routes in the CVRP formulation since it seems that this is the most agreed contention in the literature.
-Some authors, instead, prefer a different CVRP formulation, by not fixing the number of routes, and by essentially using a less-than-sign in place of the equality.
-
-The three-index flow formulation is usually solved through the usage of a standard Branch \& Cut framework approach.
-Modern CVRP solvers, instead, rely on a different mathematical formulation and employ a  mostly Branch \& Price based-approach (although hybridization are also possible).
-The Set Partitioning (SP) formulation is the main starting point employed by Branch \& Price solvers.
-In this thesis we will mostly concentrate on Branch \& Price approaches for the CVRP.
-In the next subsection we will introduce the set partitioning formulation, and in the remainder of the section
-we will briefly introduce the key ingredients of modern Branch \& Price solvers.
-
-\end{comment}
 
 \subsection{The Set Partitioning (SP) formulation}
 \label{sec:intro-set-partition-formulation}
