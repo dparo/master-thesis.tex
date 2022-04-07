@@ -7,10 +7,11 @@
 The Capacitated Vehicle Routing Problem (\textbf{CVRP}), first presented in \textcite{dantzig1959},
 is one of the most studied combinatorial optimization routing problem.
 The CVRP is an NP-hard (in the strong sense) problem which can be considered a generalization
-of the well-known Travelling Salesman Problem (TSP),
-which is a very well-known problem that asks for the determination
-of a Hamiltonian circuit of minimum cost.
-The problem can be defined verbally as finding an optimal route for a transportation/distribution/delivery problem
+of the well-known Travelling Salesman Problem (TSP).
+The TSP is a ubiquitous combinatorial optimization problem
+in the operations research field
+that asks for the determination of a Hamiltonian circuit of minimum cost.
+The CVRP problem can be defined verbally as finding an optimal route for a transportation/distribution/delivery problem
 starting from a common point called the depot,
 where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
 need to serve customer demands of a single good (i.e. delivery of gasoline to gas stations).
@@ -464,7 +465,7 @@ At the point the associated RMP formulation can be solved efficiently through a 
 \medskip
 
 Unfortunately, branching and cut generation in BCP frameworks is more delicate compared to more traditional BAC frameworks due to the presence of the pricing problem.
-Depending on the branching and cut generation schemes employed, two classes of inequalities are possible: \textbf{robust} versus \textbf{non-robust} inequalities.
+Depending on the branching and cut generation schemes employed, two classes of inequalities are possible: \textbf{robust} versus \textbf{non-robust} inequalities \parencite{dearagao2003}.
 
 A \textbf{robust} inequality is an inequality which can be safely added to the RMP without altering the structure of the set of feasible paths $P$.
 That is, robust inequalities do not require explicit modeling in the PP formulation and instead manifest their contribution directly in the dual variables $\pi$.
