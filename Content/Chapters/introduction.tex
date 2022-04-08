@@ -461,6 +461,13 @@ which allow the usage of heuristic algorithms
 especially during the very first few pricing iterations,
 where finding good reduced cost columns is surprisingly easy.
 
+\medskip
+
+In the next section, and in almost all the remainder of this thesis,
+we will mostly analyze the CVRP problem under the SP formulation
+and assuming a branch-and-price scheme and column generation
+are employed solving such problem.
+
 \subsection{Branching, Route Enumeration and Cut Generation}
 \label{sec:intro-branching-and-cut-generation-within-bap-frameworks}
 
@@ -539,6 +546,10 @@ When a violated inequality in the two/three-index formulation is found, it is de
 \subsubsection{Branching}
 \label{sec:bap-branching}
 
+In this section we will introduce branching for the SP formulation,
+under the assumption that a branch-and-price scheme is employed
+for solving the CVRP.
+
 At first glance,
 it might seem reasonable to branch directly on the $\lambda_p$ variables of the SP formulation.
 Unfortunately, such form of branching is non-robust
@@ -581,24 +592,22 @@ a good portion of the solution space.
 \subsubsection{Families of Cuts}
 \label{sec:families-of-cuts}
 
-First attempts in proposing valid inequalities for the CVRP,
-with the aim to improve the linear relaxation,
-were obtained by generalizing constraints for the TSP, see \textcite{naddef1993}.
+In this section we will introduce the families of cuts and cut generation for the SP formulation,
+under the assumption that a branch-and-price scheme is employed
+for solving the CVRP.
 
-Some non-robust cuts were also deployed for the CVRP,
-showing that they can be effectively used if they are separated
-carefully, by taking into consideration the aggravation of the pricing problem.
-Major contributions in the non-robust cuts domain are: the subset row inequalities in \textcite{jepsen2008a},
-the strong capacity inequalities in \textcite{baldacci2008}.
+The very few first attempts in proposing valid inequalities
+to improve the linear relaxation for the CVRP were obtained by
+generalizing the constraints for the traditional TSP problem, see \textcite{naddef1993}.
+\citeauthor{naddef1993} showed that its is possible to re-adapt to the CVRP,
+by putting into a tight triangular form,
+every valid inequality obtained for the TSP.
 
-
-As is done in \textcite{toth2014}, families of valid inequalities for the CVRP can
+As is done in \textcite{toth2014}, families of valid robust inequalities for the CVRP can
 be separated in different families.
+We highlight two main families: the capacity constraints and the multistar inequalities.
 
 \begin{itemize}
-	\item \textbf{TSP-Related Valid inequalities}.
-	      \textcite{naddef1993} showed that it is possible to re-adapt (by putting into a tight triangular form)
-	      every valid constraint for the symmetric TSP to the CVRP.
 	\item \textbf{Capacity Constraints}
 	      The capacity constraints can be expressed in the form $\sum_{e in \delta(S)} x_e \ge 2 r(S) \quad \forall S \subseteq V_0, |S| \ge 2$.
 	      Depending on how $r(S)$ is computed, the set of constraints take different names.
@@ -608,9 +617,17 @@ be separated in different families.
 	\item \textbf{Multistar Inequalities}, proposed in \textcite{araque1990}.
 	      \textcite{letchford2002} propose extended version of inequalities for this family of cuts.
 	      The idea lies in first computing an upper bound on the value of $x(E(S))$, then
-	      for each value of $x(E(S))$ an upper boun on the $x(\delta(S) \cap \delta(T))$.
+	      for each value of $x(E(S))$ an upper bound on the $x(\delta(S) \cap \delta(T))$.
 	      The related inequalities called generalized large multistar inequalities were proposed by \textcite{gouveia1995}.
 \end{itemize}
+
+
+Some non-robust cuts were also deployed for the CVRP,
+showing that they can be effectively used if they are separated
+carefully, by taking into consideration the aggravation of the pricing problem.
+Major contributions in the non-robust cuts domain are: the subset row inequalities in \textcite{jepsen2008a},
+the strong capacity inequalities in \textcite{baldacci2008}.
+
 
 
 Other contributions can be classified in:
