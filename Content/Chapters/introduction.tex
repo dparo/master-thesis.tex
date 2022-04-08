@@ -619,24 +619,22 @@ If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity 
 If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Inequalities (RCI).
 
 
-The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990}
+The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990, gouveia1995}
+and later developed and extended in \textcite{letchford2002} for the CVRP.
+Given two disjoint sets of customers $A, B \subseteq V_0 \mid A \cap B = \emptyset$,
+and $\alpha, \beta, \gamma \in \R$,
+a multistar inequality is described in the 2F formulation through a
+template of the form:
 
-\begin{itemize}
-	\item \textbf{Capacity Constraints}
-	      The capacity constraints can be expressed in the form $\sum_{e in \delta(S)} x_e \ge 2 r(S) \quad \forall S \subseteq V_0, |S| \ge 2$.
-	      Depending on how $r(S)$ is computed, the set of constraints take different names.
-	      If $r(S) = \sum_{i \in S} q_i / Q$, we have the so-called fractional capacity inequality.
-	      If $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we have the so-called rounded capacity inequality.
-
-	\item \textbf{Multistar Inequalities}, proposed in \textcite{araque1990}.
-	      \textcite{letchford2002} propose extended version of inequalities for this family of cuts.
-	      The idea lies in first computing an upper bound on the value of $x(E(S))$, then
-	      for each value of $x(E(S))$ an upper bound on the $x(\delta(S) \cap \delta(T))$.
-	      The related inequalities called generalized large multistar inequalities were proposed by \textcite{gouveia1995}.
-\end{itemize}
+\begin{equation}
+    \alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma
+\end{equation}
 
 
-In the remainder of this section, we will continue with the introduction
+\medskip
+
+
+We will terminate the remainder of this section with the introduction
 of the families of inequalities which can be used for cut generation
 for the SP formulation, under the assumption that a branch-and-price scheme is employed
 for solving the CVRP.
