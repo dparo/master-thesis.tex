@@ -404,7 +404,12 @@ Any $p \in P$ which satisfies $\bar{c_p} < 0$ is a valid column which can enter 
 The BAP solver needs to smartly manage the set $\mcP \subseteq P$, which it stores it inside a pool.
 It is responsibility of the BAP framework to efficiently manage which routes
 to preserve or drop from $\mcP$ during the running time of the resolution process.
+Due to the high sparseness of the set $\mcP$, any $p \in \mcP \mid \lambda_p = 0$
+is a valid candidate that may be dropped from the pool.
+The size of the pool $\mcP$ is usually dynamic and may also reach high dimensions
+if no route $p \in \mcP$ may be dropped.
 
+\medskip
 
 The resolution method, or algorithm,
 used to solve the PP is usually called \textbf{oracle} or \textbf{pricer} in the literature.
@@ -534,19 +539,32 @@ When a violated inequality in the two/three-index formulation is found, it is de
 \subsubsection{Branching}
 \label{sec:bap-branching}
 
-Branching directly on the $\lambda_p$ variables of the SP formulation is a form of non-robust branching.
+At first glance,
+it might seem reasonable to branch directly on the $\lambda_p$ variables of the SP formulation.
+Unfortunately, such form of branching is non-robust
+and leads to a harder pricing problem.
 
-Many branching schemes for the CVRP are mere extension of the one used for the TSP.
-Probably, the most simple and known branching scheme in the \textbf{branching on arcs} proposed in \textcite{christofides1969a},
+Most of the branching approaches studied in the literature for the CVRP involve
+mere extension of branching schemes used traditionally for the TSP.
+In fact, one of the most simple branching scheme,
+yet one of the most effective,
+involves \textbf{branching on arcs}.
+The branching on arcs scheme was first proposed for the CVRP in \textcite{christofides1969a},
 and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
+The method works as follows.
+In the first place, there's a clear one-to-one correspondence between the integral variables $x_e$ of the
+two-index arc flow formulation and the variables $\lambda_p$ of the SP formulation.
+Such correspondence can be described with the following equation:
+
+\begin{equation}
+    x_e = \sum_{p \in P} \Expr*{a_{ep}} \lambda_p  \quad \forall e \in E
+\end{equation}
+
 Also, some reduction and dominance rules may be employed to remove some arcs
 which can be proved that they cannot belong to an optimal solution,
 thus it is possible to branch with a single descendant node to eliminate
 a good portion of the solution space.
 
-
-Branching on a generic $\lambda_p$ of the SP formulation is a form of non-robust inequality,
-that will lead to a harder pricing problem.
 
 Therefore, by noting that it is possible to map variable $x_e$ of the two-index arc flow formulation
 to the SP formulation by noting that:
