@@ -557,26 +557,25 @@ two-index arc flow formulation and the variables $\lambda_p$ of the SP formulati
 Such correspondence can be described with the following equation:
 
 \begin{equation}
-    x_e = \sum_{p \in P} \Expr*{a_{ep}} \lambda_p  \quad \forall e \in E
-\end{equation}
+    x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p  \quad \forall e \in E
+\end{equation}.
 
-Also, some reduction and dominance rules may be employed to remove some arcs
-which can be proved that they cannot belong to an optimal solution,
-thus it is possible to branch with a single descendant node to eliminate
-a good portion of the solution space.
-
-
-Therefore, by noting that it is possible to map variable $x_e$ of the two-index arc flow formulation
-to the SP formulation by noting that:
+Given the candidate fractional solution $\lambda^\star_p \quad \forall p \in \mcP$
+and after determining a valid edge $e$ to branch on, $e \mid x_e \notin \Set*{0, 1, 2}$,
+it is possible to generate two descendant nodes in the search tree
+to continue scanning for integral solutions:
 
 \begin{equation}
-	x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p
+    x_e \le \floor*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}, \quad
+    x_e > \ceil*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}
 \end{equation}
 
-where $a_{er}$ is a binary coefficient and denotes the number of times edge $e$ is
-crossed by route $p$.
-Thus, it is possible in the SP formulation to branch on an edge $e$, which
-is a robust form of inequality.
+
+Branching on arcs is an extremely simple and robust branching approach.
+Also, some reduction and dominance rules may be employed to remove some arcs
+which can be proved to not belong to an optimal solution.
+When such a situation occurs, it is possible to branch with a single descendant node to eliminate
+a good portion of the solution space.
 
 
 \subsubsection{Families of Cuts}
