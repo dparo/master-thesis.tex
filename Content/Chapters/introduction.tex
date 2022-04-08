@@ -592,20 +592,34 @@ a good portion of the solution space.
 \subsubsection{Families of Cuts}
 \label{sec:families-of-cuts}
 
-In this section we will introduce the families of cuts and cut generation for the SP formulation,
-under the assumption that a branch-and-price scheme is employed
-for solving the CVRP.
+In this section we will introduce the families of inequalities
+which can be used for cut generation for respectively
+the two-index vehicle flow formulation
+and the SP formulation.
 
+
+First, we start the presentation from the two-index arc flow formulation.
 The very few first attempts in proposing valid inequalities
-to improve the linear relaxation for the CVRP were obtained by
+to improve the linear relaxation for the 2F were obtained by
 generalizing the constraints for the traditional TSP problem, see \textcite{naddef1993}.
-\citeauthor{naddef1993} showed that its is possible to re-adapt to the CVRP,
+\citeauthor{naddef1993} showed that its is possible to re-adapt
+every valid inequality obtained for the TSP to the CVRP,
 by putting into a tight triangular form,
-every valid inequality obtained for the TSP.
+for example the comb inequalities \parencite{chvatal1973,grotschel1979,augerat1995a}.
 
-As is done in \textcite{toth2014}, families of valid robust inequalities for the CVRP can
-be separated in different families.
+As is done in \textcite{toth2014},
+families of valid robust inequalities for the 2F CVRP formulation
+can be separated in different families.
 We highlight two main families: the capacity constraints and the multistar inequalities.
+
+The \textbf{capacity constraints} are inequalities which can be expressed in the form
+$\sum_{e \in \delta(S)} x_e \ge 2 r(S) \quad \forall S \subseteq V_0, |S| \ge 2$.
+Depending on how $r(S)$ is computed, this set of constraints take different names.
+If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity Inequalities (FCI).
+If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Inequalities (RCI).
+
+
+The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990}
 
 \begin{itemize}
 	\item \textbf{Capacity Constraints}
@@ -622,12 +636,16 @@ We highlight two main families: the capacity constraints and the multistar inequ
 \end{itemize}
 
 
+In the remainder of this section, we will continue with the introduction
+of the families of inequalities which can be used for cut generation
+for the SP formulation, under the assumption that a branch-and-price scheme is employed
+for solving the CVRP.
+
 Some non-robust cuts were also deployed for the CVRP,
 showing that they can be effectively used if they are separated
 carefully, by taking into consideration the aggravation of the pricing problem.
 Major contributions in the non-robust cuts domain are: the subset row inequalities in \textcite{jepsen2008a},
 the strong capacity inequalities in \textcite{baldacci2008}.
-
 
 
 Other contributions can be classified in:
