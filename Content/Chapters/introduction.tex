@@ -32,7 +32,8 @@ important for the operational management of a cost-efficient planning processes.
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
 the Vehicle Routing Problem with Time Windows (VRPTW), and many others.
-In the VRPTW \parencite{schrage1981} each customer is associated with a time window slot in which it can be served,
+In the VRPTW \parencite{schrage1981} each customer is associated with a time window slot
+in which it can be served,
 and the vehicles are subject to capacity constraints.
 Nonetheless, CVRP is the simpler VRP variant to describe, which
 yet to this day, it remains the most central and studied routing problem.
@@ -109,7 +110,7 @@ For convenience, we fix a fictitious demand for the depot: $q_0 = 0$.
 Given a set $S \subseteq V$, we define $q(S) = \sum_{i \in S} q_i$ as the total demand of the set $S$.
 Let $c_{ij} \in \R, c_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 The loop arcs $\Set*{i, i} \notin E$ in CVRP are traditionally not allowed, thus we fix $c_{ii} = \infty$.
-We assume an Euclidian CVRP problem, i.e. the distance function is symmetric $c_e = c_{ij} = c_{ji}$ and satisfies the triangle inequality $c_{ij} \le c_{ih} + c_{hj}$.
+We assume a Euclidean CVRP problem, i.e. the distance function is symmetric $c_e = c_{ij} = c_{ji}$ and satisfies the triangle inequality $c_{ij} \le c_{ih} + c_{hj}$.
 We are also given the total number of identical trucks $K \in \N_+$ and an upper bound $Q \in \R_+$ representing the capacity of each truck.
 For convenience of notation, we also define $\mcK = \Set*{1, \dots, K}$ to denote the set of trucks.
 Given a set $S \subseteq V_0$, we denote by $r(S)$ as the minimum number of vehicles required to serve all customers $i \in S$.
@@ -433,11 +434,11 @@ The column generation procedure stops mainly under two scenarios:
 
 If after the column generation procedure
 the solution to the RMP $\lambda^*$ satisfies the integrality constraints,
-$\lambda_p \in \Set*{0, 1} \quad \forall p \in \mcP$,
+$\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in \mcP$,
 no branching or cutting planes are required,
 and the new solution $\lambda^*$ can be used to update the incumbent.
 If, instead,
-$\exists p \in \mcP \mid \lambda_p \notin \Set*{0, 1}$
+$\exists p \in \mcP \mid \lambda^\star_p \notin \Set*{0, 1}$
 then a branching strategy is usually necessary
 in order to seek for the best integral solution.
 When all the nodes of the branch-and-bound tree have been explored or pruned,
@@ -451,7 +452,7 @@ the BAP solver need not to solve the PP optimally at each iteration of the simpl
 To improve the dual bound,
 it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$,
 which allow the usage of heuristic algorithms
-especially during the very first few iterations,
+especially during the very first few pricing iterations,
 where finding good reduced cost columns is surprisingly easy.
 
 \subsection{Branching, Route Enumeration and Cut Generation}
