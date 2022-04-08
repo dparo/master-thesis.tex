@@ -399,6 +399,7 @@ In BAP frameworks, we seek to solve the so-called \textbf{Pricing Problem} (PP) 
 where $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
 and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$
 that leads to the best dual bound improvement.
+For convenience, we define $\bar{c_e} = c_{e} - \frac{\pi_i + \pi_j}{2}$ as the reduced cost of an edge $e \in E$.
 
 Any $p \in P$ which satisfies $\bar{c_p} < 0$ is a valid column which can enter the basis of the RMP.
 The BAP solver needs to smartly manage the set $\mcP \subseteq P$, which it stores it inside a pool.
@@ -419,7 +420,7 @@ over a \textbf{new directed symmetric} network with weights
 $\bar{c_{ij}} = c_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$.
 The ESPPRC problem asks for an elementary path (i.e. each vertex visited at most once) starting
 from a vertex, called a source vertex, and ending in another vertex, called the sink vertex.
-In the ESPPRC, the depot node is replaced by two vertices (one source, on sink)
+In the ESPPRC, the depot node is replaced by two vertices (one source, one sink)
 and the newly obtained network is characterized by $N + 1$ vertices.
 
 \medskip
@@ -568,7 +569,7 @@ two-index arc flow formulation and the variables $\lambda_p$ of the SP formulati
 Such correspondence can be described with the following equation:
 
 \begin{equation}
-    x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p  \quad \forall e \in E
+	x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p  \quad \forall e \in E
 \end{equation}.
 
 Given the candidate fractional solution $\lambda^\star_p \quad \forall p \in \mcP$
@@ -576,13 +577,24 @@ and after determining a valid edge $e$ to branch on, $e \mid x_e \notin \Set*{0,
 it is possible to generate two descendant nodes in the search tree
 to continue scanning for integral solutions:
 
-\begin{equation}
-    x_e \le \floor*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}, \quad
-    x_e > \ceil*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}
+\begin{equation}\label{eq:sp-branching-on-arcs}
+	x_e \le \floor*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}, \quad
+	x_e > \ceil*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}
 \end{equation}
 
 
 Branching on arcs is an extremely simple and robust branching approach.
+In fact, let $\omega_e \in \R$ represent the dual variable associated to
+edge $e \in E$ and to
+one of the branching polarity in \cref{eq:sp-branching-on-arcs}.
+Then the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
+
+\begin{equation}
+	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e
+\end{equation}
+
+where again $\pi \in \R^N$ represents the dual variables associated with constraints \eqref{eq:mp-K-routes}, \eqref{eq:mp-customers-visited-by-exactly-one-route}.
+
 Also, some reduction and dominance rules may be employed to remove some arcs
 which can be proved to not belong to an optimal solution.
 When such a situation occurs, it is possible to branch with a single descendant node to eliminate
@@ -598,7 +610,11 @@ the two-index vehicle flow formulation
 and the SP formulation.
 
 
-First, we start the presentation from the two-index arc flow formulation.
+While the 2F formulation is not the primary focus of this thesis,
+presenting and studying valid inequalities for such formulation
+will be important for the sub-problem induced in the column generation phase.
+In fact, many 2F valid inequalities, if properly generalized and reformulated
+can be applied to the ESPPRC.
 The very few first attempts in proposing valid inequalities
 to improve the linear relaxation for the 2F were obtained by
 generalizing the constraints for the traditional TSP problem, see \textcite{naddef1993}.
@@ -618,7 +634,7 @@ Depending on how $r(S)$ is computed, this set of constraints take different name
 If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity Inequalities (FCI).
 If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Inequalities (RCI).
 The capacity constraints can also be easily extended to the SP formulation
-thanks to $x_e$ mapping (see \textcite{baldacci2008}).
+thanks to $x_e$ mapping (see \textcite{baldacci2008})\inlinetodo{WTF???, strengthened capacity cuts are non robust...!}.
 
 
 The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990, gouveia1995}
@@ -629,7 +645,7 @@ a multistar inequality is described in the 2F formulation through a
 template of the form:
 
 \begin{equation}
-    \alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma
+	\alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma
 \end{equation}
 
 
