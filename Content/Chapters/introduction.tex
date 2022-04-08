@@ -443,7 +443,8 @@ then a branching strategy is usually necessary
 in order to seek for the best integral solution.
 When all the nodes of the branch-and-bound tree have been explored or pruned,
 then the CVRP problem is solved to optimality
-and the current incumbent solution becomes the optimal solution.
+and the current incumbent solution becomes the optimal solution
+$(p_1, \dots, p_K) \mid \lambda^\star_{p_i} = 1$.
 
 \medskip
 
@@ -458,18 +459,28 @@ where finding good reduced cost columns is surprisingly easy.
 \subsection{Branching, Route Enumeration and Cut Generation}
 \label{sec:intro-branching-and-cut-generation-within-bap-frameworks}
 
-In order to satisfy the integrality constraints for the SP formulation, solving the RMP at the root node
-is almost always not enough.
-The column generation approach may finish with a non-zero duality gap.
-Therefore, a search-tree and a branching scheme is employed to seek for the optimal integral solution $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in P$.
-Although non strictly-necessary, modern BAP also use cut generation procedures to efficiently improve the dual bound and improve convergence speed.
-Modern BAP frameworks are in fact a hybridization between a BAP and a BAC framework, making them a Branch \& Cut \& Price (BCP) frameworks.
+In order to satisfy the integrality constraints for the SP formulation,
+solving the RMP at the root node is almost always not enough.
+The CG algorithm may in fact terminate with a non-zero duality gap.
+Therefore,
+a search-tree and a branching scheme is employed
+to seek for the optimal integral solution $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in P$.
 
-Notable BCP approaches  applied to the VRP can be found \textcite{fukasawa2006, ropke2012}.
-It is important to note however that branching is not strictly required.
-Route enumeration is another technique that can be used in place of branching for obtaining integral solutions.
+Although non strictly-necessary, modern BAP also use
+cut generation procedures to efficiently improve the dual bound and improve the convergence speed.
+Modern BAP frameworks
+are in fact a hybridization between a BAP and a BAC framework,
+making them a branch-and-cut-and-price (BCP) frameworks.
+Some notable works integrating cutting-planes and proposing
+a BCP approach for the VRP can be found \textcite{fukasawa2006, ropke2012}.
+
+\medskip
+
+It is important to note however that branching is not a strictly required operation
+Route enumeration is another technique that can be used in place of branching
+for obtaining integral solutions.
 In route enumeration, all elementary routes that may belong to the VRP optimal solution are enumerated,
-and a SP formulation with all those routes are solved through a MIP.
+and an SP formulation containing all these enumerated routes are solved through a MIP.
 The problem of this approach is the possibly huge number of routes that needs to be enumerated,
 and this quantity is highly linked to the tightness of the duality gap,
 and with the average length of a tour $N / K$.
@@ -480,21 +491,26 @@ The major contributions employing route enumeration in place of branching can be
 
 Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration
 (see \cite{pessoa2008a, pessoa2009, pecin2017, pessoa2020}).
-After the convergence of the column generation algorithm enumeration is tried.
+After the convergence of the column generation algorithm route enumeration is attempted.
 If the number of enumerated routes starts to exceed a maximum limit, enumeration
 is preemptively aborted and conventional branching is applied.
 Once the primal-dual bound gap reaches desirable levels, the route enumeration
 procedure will enumerate all routes under the maximum limit.
 At the point the associated RMP formulation can be solved efficiently through a MIP.
 
-
-
-
+We will not concentrate much of our attention on route enumeration in this
+thesis, since their presence doesn't influence the pricing problem.
+Nonetheless, it's important to know about their existence and role within
+the branch-and-price frameworks.
 
 \medskip
 
-Unfortunately, branching and cut generation in BCP frameworks is more delicate compared to more traditional BAC frameworks due to the presence of the pricing problem.
-Depending on the branching and cut generation schemes employed, two classes of inequalities are possible: \textbf{robust} versus \textbf{non-robust} inequalities \parencite{dearagao2003}.
+Branching and cut generation in BCP frameworks are more delicate operations
+compared to more traditional BAC frameworks due to the presence of the pricing problem.
+As classified in \textcite{dearagao2003},
+depending on the branching and cut generation schemes employed,
+two classes of inequalities are possible:
+\textbf{robust} versus \textbf{non-robust} inequalities.
 
 A \textbf{robust} inequality is an inequality which can be safely added to the RMP without altering the structure of the set of feasible paths $P$.
 That is, robust inequalities do not require explicit modeling in the PP formulation and instead manifest their contribution directly in the dual variables $\pi$.
@@ -504,33 +520,16 @@ A \textbf{non-robust} inequality, instead, is much harder to handle since it cha
 Non-robust inequalities may in general be quite strong but, unfortunately, require explicit modeling and support within the oracle.
 These types of inequalities can drastically complicate the pricing problem, trading better dual improvements for increased column generation times.
 Therefore, their usage must be assessed on a case-by-case basis.
-
-When a violated inequality in the two/three-index formulation is found, it is decomposed at runtime and introduced in the master problem.
+Non-robust inequalities may present themselves both in the branching and cut-generation phases.
 
 In this thesis we will mostly concentrate on branching and cut generation schemes which make use of \textbf{robust} inequalities.
 Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
 
-Branching directly on the $\lambda_p$ variables of the SP formulation is a form of non-robust branching.
-
-Many branching schemes for the CVRP are mere extension of the one used for the TSP.
-Probably, the most simple and known branching scheme in the \textbf{branching on arcs} proposed in \textcite{christofides1969a},
-and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
-Also, some reduction and dominance rules may be employed to remove some arcs
-which can be proved that they cannot belong to an optimal solution,
-thus it is possible to branch with a single descendant node to eliminate
-a good portion of the solution space.
 
 
-First attempts in proposing valid inequalities for the CVRP,
-with the aim to improve the linear relaxation,
-were obtained by generalizing constraints for the TSP, see \textcite{naddef1993}.
-
-Some non-robust cuts were also deployed for the CVRP,
-showing that they can be effectively used if they are separated
-carefully, by taking into consideration the aggravation of the pricing problem.
-Major contributions in the non-robust cuts domain are: the subset row inequalities in \textcite{jepsen2008a},
-the strong capacity inequalities in \textcite{baldacci2008}.
-
+\begin{comment}
+When a violated inequality in the two/three-index formulation is found, it is decomposed at runtime and introduced in the master problem.
+\end{comment}
 
 \begin{comment}
 \cite{toth2014}
@@ -543,7 +542,49 @@ present the main families of cuts used in those methods. Some of those
 \end{comment}
 
 
+\subsubsection{Branching}
+\label{sec:bap-branching}
+
+Branching directly on the $\lambda_p$ variables of the SP formulation is a form of non-robust branching.
+
+Many branching schemes for the CVRP are mere extension of the one used for the TSP.
+Probably, the most simple and known branching scheme in the \textbf{branching on arcs} proposed in \textcite{christofides1969a},
+and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
+Also, some reduction and dominance rules may be employed to remove some arcs
+which can be proved that they cannot belong to an optimal solution,
+thus it is possible to branch with a single descendant node to eliminate
+a good portion of the solution space.
+
+
+Branching on a generic $\lambda_p$ of the SP formulation is a form of non-robust inequality,
+that will lead to a harder pricing problem.
+
+Therefore, by noting that it is possible to map variable $x_e$ of the two-index arc flow formulation
+to the SP formulation by noting that:
+
+\begin{equation}
+	x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p
+\end{equation}
+
+where $a_{er}$ is a binary coefficient and denotes the number of times edge $e$ is
+crossed by route $p$.
+Thus, it is possible in the SP formulation to branch on an edge $e$, which
+is a robust form of inequality.
+
+
 \subsubsection{Families of Cuts}
+\label{sec:families-of-cuts}
+
+First attempts in proposing valid inequalities for the CVRP,
+with the aim to improve the linear relaxation,
+were obtained by generalizing constraints for the TSP, see \textcite{naddef1993}.
+
+Some non-robust cuts were also deployed for the CVRP,
+showing that they can be effectively used if they are separated
+carefully, by taking into consideration the aggravation of the pricing problem.
+Major contributions in the non-robust cuts domain are: the subset row inequalities in \textcite{jepsen2008a},
+the strong capacity inequalities in \textcite{baldacci2008}.
+
 
 As is done in \textcite{toth2014}, families of valid inequalities for the CVRP can
 be separated in different families.
@@ -578,26 +619,6 @@ of the non-robust subset row cuts which mitigates the complexity impact on the p
 (v) extended capacity cuts proposed in \textcite{pessoa2008a, pessoa2009}, a
 generalization of the rounded capacity cuts.
 
-
-
-
-
-
-\subsubsection{Branching}
-Branching on a generic $\lambda_p$ of the SP formulation is a form of non-robust inequality,
-that will lead to a harder pricing problem.
-
-Therefore, by noting that it is possible to map variable $x_e$ of the two-index arc flow formulation
-to the SP formulation by noting that:
-
-\begin{equation}
-	x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p
-\end{equation}
-
-where $a_{er}$ is a binary coefficient and denotes the number of times edge $e$ is
-crossed by route $p$.
-Thus, it is possible in the SP formulation to branch on an edge $e$, which
-is a robust form of inequality.
 
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
