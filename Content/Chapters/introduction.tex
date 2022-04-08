@@ -288,14 +288,13 @@ and commodity aggregation \parencite{desaulniers1998}
 of the three-index arc flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes.
 Let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is selected.
-Let $a_{ip} \in \Set*{0, 1}$ be a "static encoding" (binary coefficient) for a route $p$,
-i.e. $a_{ip} = 1 \texttt{ if } i \in p = \Tuple*{0, i_1, i_2, \dots, i_s}$,
-namely if vertex $i \in V$ is visited (or covered) by route $p$.
+Let $a_{ip} \in \Set*{0, 1}$ $a_{ep} \in \Set*{0, 1}$ be "static encodings" (binary coefficients)
+for a route $p \in P$ for respectively covering a vertex $i \in V$ or an edge $e \in E$.
 
 We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$, which can be trivially computed in $O(N)$.
 The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included in the optimal solution.
 
-The SP formulationis described through an Integer Programme (IP):
+The SP formulationis is described through an Integer Programme (IP):
 
 
 \begin{align}
@@ -311,7 +310,7 @@ Constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes
 Finally, constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for binary variables $\lambda_p \ \forall p \in P$.
 
 As one may guess, due the exponential number of binary variables, the SP formulation cannot be instantiated nor directly solved.
-However, a variant of the SP formulation can be tackled efficiently by Column Generation (CG) approaches embedded inside a branch-and-price framework.
+However, a variant of the SP formulation can be tackled efficiently by Column Generation (CG) approaches embedded inside a branch-and-price (BAP) framework.
 Branch-and-price frameworks and column generation have been applied with high success to the vehicle routing problems.
 
 
@@ -354,7 +353,7 @@ is in essence a branch-and-bound (BAB) algorithm where dual bounds are obtained 
 and cutting-planes are added to strengthen the linear relaxations associated to each node of the search-tree.
 
 
-\subsubsection{Column generation and the Pricing Problem}
+\subsection{Column generation and the Pricing Problem}
 \label{sec:column-generation-and-pricing-problem}
 
 Consider the \textbf{Master Problem} (MP) defined
@@ -368,7 +367,9 @@ as the linear relaxation of the SP formulation obtained by relaxing the integral
 \end{align}
 
 
-When solving the MP, at each iteration of the simplex algorithm we seek for a non-basic variable (i.e. column) to price out and enter the basis.
+When solving the MP,
+at each iteration of the simplex algorithm we seek for a non-basic variable (i.e. column)
+to price out and enter the basis.
 This is achieved by evaluating the dual variables $\pi \in \R^{N}$
 associated with constraints \eqref{eq:mp-K-routes}, \eqref{eq:mp-customers-visited-by-exactly-one-route}.
 Due to the huge size of the set of routes $P$,
@@ -388,26 +389,43 @@ obtaining the following linear program:
 
 which takes the name of \textbf{Restricted Master Problem} (RMP).
 
-In BAP frameworks, we seek to solve the so-called Pricing Problem (PP) defined as:
+In BAP frameworks, we seek to solve the so-called \textbf{Pricing Problem} (PP) defined as:
 
 \begin{equation}
-	{c^\star_p} = \min_{p \in P} \Set*{ \bar{c_p} = \sum_{(i, j) \in E} \Expr*{c_{ij} - \frac{\pi_i + \pi_j}{2}} a_{ijp}  }
+	{c^\star_p} = \min_{p \in P} \Set*{ \bar{c_p} = \sum_{e = \Set*{i, j} \in E} \Expr*{c_{e} - \frac{\pi_i + \pi_j}{2}} a_{ep}  }
 \end{equation}
 
-where $\bar{c_p}$ denotes the reduced cost of a route $p \in P$, and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$ that leads to the best dual bound improvement.
+where $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
+and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$
+that leads to the best dual bound improvement.
+
 Any $p \in P$ which satisfies $\bar{c_p} < 0$ is a valid column which can enter the basis of the RMP.
-The Branch \& Price solver needs to smartly manage the set $\mcP \subseteq P$, which stores in a pool.
-It is responsibility of the BAP framework to efficiently manage which routes to preserve or drop within the pool during the running time of the resolution process.
+The BAP solver needs to smartly manage the set $\mcP \subseteq P$, which it stores it inside a pool.
+It is responsibility of the BAP framework to efficiently manage which routes
+to preserve or drop from $\mcP$ during the running time of the resolution process.
 
-The resolution method, or algorithm, used to solve the PP is usually called "oracle" or "pricer" in the literature.
-The oracle needs to solve the pricing subproblem which, due to the definition of the set $P$, coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC) over a directed graph with weights $\bar{c_{ij}} = c_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$, where the source and sink vertex collapse at the depot node.
+\medskip
 
-The column generation is an iterative algorithm which alternates between two phases \parencite{desaulniers2018}:
+The resolution method, or algorithm,
+used to solve the PP is usually called \textbf{oracle} or \textbf{pricer} in the literature.
+The oracle needs to solve the pricing sub-problem which, due to the definition of the set $P$,
+coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+over a \textbf{new directed symmetric} network with weights
+$\bar{c_{ij}} = c_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$.
+The ESPPRC problem asks for an elementary path (i.e. each vertex visited at most once) starting
+from a vertex, called a source vertex, and ending in another vertex, called the sink vertex.
+In the ESPPRC, the depot node is replaced by two vertices (one source, on sink)
+and the newly obtained network is characterized by $N + 1$ vertices.
+
+\medskip
+
+The column generation (CG) is an iterative algorithm which alternates between two phases \parencite{desaulniers2018}:
 \begin{enumerate}
 	\item The simplex algorithm for solving the RMP, which is characterized by one or more pivot operations.
 	\item One or several iterations of the Pricing Problem (PP) solved by invoking the pricer algorithm.
-	      The simplex algorithm invokes the pricer to verify whether other pivot operations are possible for improving the dual bound.
-	      The pricer algorithm is usually external, and lives in a separate module compared to the branch-and-price code.
+	      The simplex algorithm invokes the pricer to verify whether other pivot operations
+	      can be performed for improving the dual bound.
+	      The pricer algorithm usually lives in a separate external code module from the branch-and-price code.
 \end{enumerate}
 
 The column generation procedure stops when no more negative reduced cost routes exist.
