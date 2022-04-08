@@ -448,7 +448,7 @@ and the current incumbent solution becomes the optimal solution.
 \medskip
 
 It is important to also note that
-the BAP solver need not to solve the PP optimally at each iteration of the simplex algorithm.
+the CG doesn't need to solve the PP optimally at each iteration of the simplex algorithm.
 To improve the dual bound,
 it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$,
 which allow the usage of heuristic algorithms
@@ -478,7 +478,7 @@ but it can drastically improve the performance of the BPC on some instances.
 The major contributions employing route enumeration in place of branching can be found in
 \textcite{baldacci2008, baldacci2011, contardo2014}.
 
-Modern BPC frameworks instead take a hybrid approach by combinining branching and route enumeration
+Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration
 (see \cite{pessoa2008a, pessoa2009, pecin2017, pessoa2020}).
 After the convergence of the column generation algorithm enumeration is tried.
 If the number of enumerated routes starts to exceed a maximum limit, enumeration
