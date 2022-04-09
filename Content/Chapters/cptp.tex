@@ -166,21 +166,23 @@ It is now easy to see that the following result holds
 	\NNZGLM(S) \le \floor*{ \frac{\Expr*{N + 1}^2}{4}} \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 \end{equation}
 
-\subsection{Rounded Capacity Inequalities (RCI)}
-The Rounded Capacity Inequalities, RCI for short, were first presented in \cite{achuthan1998}.
+\subsection{Rounded Capacity Constraints (RCC)}
+The Rounded Capacity Inequalities, RCC for short, were first presented
+for the CVRP  in \cite{laporte1983, achuthan1998}.
+\inlinetodo{Check if this reference makes sense: achuthan1998. I don't believe they weren't the first to propose it since, RCC surely do appear in laporte1983}.
 
 Let $q(S) = \sum_{i \in S} q_i$ and $\ExprQrS = \fmod{q(S)}{Q}$ be respectively the total demand and remainder capacity associated to set $S \subseteq V_0$.
-The RCI inequalities can then be expressed as:
+The RCC inequalities can then be expressed as:
 
-\begin{equation}\label{eq:rci-inequality}
+\begin{equation}\label{eq:rcc-inequality}
 	\begin{split}
 		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQrS}}   \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{\ExprQrS} \right) \quad \forall S \subseteq V_0
 	\end{split}
 \end{equation}
 
-Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a RCI inequality as a function of the set $S$.
-The upper bound on $\NNZ_{\mt{RCI}}(S)$ follows the same reasoning of equation \eqref{eq:glm-nnz-ub}:
+Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a RCC inequality as a function of the set $S$.
+The upper bound on $\NNZ_{\mt{RCC}}(S)$ follows the same reasoning of equation \eqref{eq:glm-nnz-ub}:
 
 \begin{equation}\label{eq:rc-nnz-ub}
-	\NNZRCI(S) \le \floor*{\frac{\left( N + 1\right)^2}{4}} \quad \forall S \subseteq V_0
+	\NNZRCC(S) \le \floor*{\frac{\left( N + 1\right)^2}{4}} \quad \forall S \subseteq V_0
 \end{equation}

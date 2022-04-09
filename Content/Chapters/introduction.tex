@@ -167,7 +167,7 @@ Constraint \eqref{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}, is 
 Constraints \eqref{eq:two-index-flow-x-mip-var-bounds-depot} and \eqref{eq:two-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
 except for all edges incident at the depot.
 The edge-case modeled in constraint \eqref{eq:two-index-flow-x-mip-var-bounds-depot} is necessary to allow single-customer routes.
-Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), also called Rounded Capacity Inequalities (RCI), they function both:
+Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), also called Rounded Capacity Constraints (RCC), they function both:
 (i) as a Subtour Elimination Constraints (SECs), by imposing connectivity of the solution by avoiding the formation of spurious unconnected subtours,
 and (ii) as a capacity constraint, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
 Recall that, $r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$,
@@ -399,7 +399,7 @@ In BAP frameworks, we seek to solve the so-called \textbf{Pricing Problem} (PP) 
 where $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
 and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$
 that leads to the best dual bound improvement.
-For convenience, we define $\bar{c_e} = c_{e} - \frac{\pi_i + \pi_j}{2}$ as the reduced cost of an edge $e \in E$.
+For convenience, we define $\bar{c_{ij}} = c_{e} - \frac{\pi_i + \pi_j}{2}$ as the reduced cost of an edge $e \in E$.
 
 Any $p \in P$ which satisfies $\bar{c_p} < 0$ is a valid column which can enter the basis of the RMP.
 The BAP solver needs to smartly manage the set $\mcP \subseteq P$, which it stores it inside a pool.
@@ -631,8 +631,9 @@ We highlight two main families: the capacity constraints and the multistar inequ
 The \textbf{capacity constraints} are inequalities which can be expressed in the form
 $\sum_{e \in \delta(S)} x_e \ge 2 r(S) \quad \forall S \subseteq V_0, |S| \ge 2$.
 Depending on how $r(S)$ is computed, this set of constraints take different names.
-If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity Inequalities (FCI).
-If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Inequalities (RCI).
+If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity Constraints (FCC).
+If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Constraints (RCC).
+The RCC were first presented in \textcite{laporte1983} for the CVRP 2F formulation.
 The capacity constraints can also be easily extended to the SP formulation
 thanks to $x_e$ mapping (see \textcite{baldacci2008})\inlinetodo{WTF???, strengthened capacity cuts are non robust...!}.
 
@@ -657,6 +658,17 @@ of the families of inequalities which can be used for cut generation
 for the SP formulation, under the assumption that a branch-and-price scheme is employed
 for solving the CVRP.
 
+Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
+they can trivially be extended to a robust inequelity for the SP formulation:
+
+\begin{equation}
+    \sum_{p \in P} \Expr*{\sum_{e \in \delta(S)} a_{ep}} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
+\end{equation}
+
+
+where $\sum_{e \in \delta(S)} a_{ep}$ counts the number of times a route $p \in P$
+enters or leaves a set $S$.
+
 Some non-robust cuts were also deployed for the CVRP,
 showing that they can be effectively used if they are separated
 carefully, by taking into consideration the aggravation of the pricing problem.
@@ -665,7 +677,7 @@ the strong capacity inequalities in \textcite{baldacci2008}.
 
 
 Other contributions can be classified in:
-(i) strengthened capacity cuts proposed in \textcite{baldacci2008}, which can be considered a
+(i) Strengthened Capacity Constraints (SCC) proposed in \textcite{baldacci2008}, which can be considered a
 non-robust tighter version of the CCC (rounded capacity cuts),
 (ii) subset row cuts proposed in \textcite{jepsen2008a}, a non-robust
 inequality similar to a less general clique cuts that leads to less impact in the pricing problem,

@@ -134,7 +134,7 @@ Integral inequality separation is concerned in determining violated inequalities
 Integral inequalities separation is usually much easier to perform, and can be seen as a procedure to dynamically generate necessary constraints that would otherwise be impossible to insert statically in a MIP model.
 Fractional inequality separation, instead is usually harder to perform, and it is concerned in finding (strong) violated inequalities for fractional solutions originated from the linear relaxation.
 
-In this thesis we are treating a CPTP problem, and more precisely, we are concerned in separating the GSEC, GLM, RCI inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
+In this thesis we are treating a CPTP problem, and more precisely, we are concerned in separating the GSEC, GLM, RCC inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
 This is achieved by finding sets $S \subseteq V_0$, through the usage of appropriate algorithms, that violate any valid inequality.
 
 All the cuts that we implemented, are backed by the same shared separation procedure for both integral solutions and for fractional solutions.
@@ -419,44 +419,44 @@ The complete pseudocode for both the integral and fractional separation can be f
 
 
 
-\subsection{RCI separation}\label{sec:rci-separation}
-In this section we describe the separation of the RCI inequalities, as they were defined in Equation \eqref{eq:rci-inequality}.
+\subsection{RCC separation}\label{sec:rcc-separation}
+In this section we describe the separation of the RCC inequalities, as they were defined in Equation \eqref{eq:rcc-inequality}.
 In our work we implemented both the integral and the fractional separation for this family of inequalities.
 However, we will omit the detail of the integral separation in this section, since they follow naturally from ideas explained in previous sections.
 
-The fractional separation of RCI inequalities is not any different from the separation of the GLM fractional inequalities presented in Section \ref{sec:glm-separation}.
+The fractional separation of RCC inequalities is not any different from the separation of the GLM fractional inequalities presented in Section \ref{sec:glm-separation}.
 The only difference is that the set $S \subseteq V_0$, does not need to satisfy $\SetSize*{S} \ge 2$.
 
-Therefore, a set $\SetSize*{S} \subseteq V_0$ can separate a single RCI cut if the following inequality
+Therefore, a set $\SetSize*{S} \subseteq V_0$ can separate a single RCC cut if the following inequality
 
 \begin{equation}
 	\begin{split}
-		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQrS}}    \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{Q_{\mathrm{R}}(S)} \right) - \varepsilon_{\mt{RCI}}
+		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQrS}}    \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{Q_{\mathrm{R}}(S)} \right) - \varepsilon_{\mt{RCC}}
 	\end{split}
 \end{equation}
 
 is violated.
-The $\varepsilon_{\mt{RCI}}$ is a constant which denotes the violation tolerance for the RCI fractional separation.
-In our implementation we picked $\varepsilon_{\mt{RCI}} = 0.05$.
-We can separate $O(N^2)$ RCI cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
+The $\varepsilon_{\mt{RCC}}$ is a constant which denotes the violation tolerance for the RCC fractional separation.
+In our implementation we picked $\varepsilon_{\mt{RCC}} = 0.05$.
+We can separate $O(N^2)$ RCC cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
 
-The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:rci-integral-sep}, \ref{algo:rci-frac-sep} respectively.
+The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:rcc-integral-sep}, \ref{algo:rcc-frac-sep} respectively.
 
 
 \begin{algorithm}
-	\caption{An algorithm for separating RCI integral inequalities for the CPTP}
-	\label{algo:rci-integral-sep}
+	\caption{An algorithm for separating RCC integral inequalities for the CPTP}
+	\label{algo:rcc-integral-sep}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
 	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
-	\input{Content/Chapters/Snippets/rci-integral-sep-pseudoalgo.tex}
+	\input{Content/Chapters/Snippets/rcc-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
 
 \begin{algorithm}
-	\caption{An algorithm for separating RCI fractional inequalities for the CPTP}
-	\label{algo:rci-frac-sep}
+	\caption{An algorithm for separating RCC fractional inequalities for the CPTP}
+	\label{algo:rcc-frac-sep}
 	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
 	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
-	\input{Content/Chapters/Snippets/rci-frac-sep-pseudoalgo.tex}
+	\input{Content/Chapters/Snippets/rcc-frac-sep-pseudoalgo.tex}
 \end{algorithm}
