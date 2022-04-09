@@ -498,7 +498,7 @@ a BCP approach for the VRP can be found \textcite{fukasawa2006, ropke2012}.
 
 It is important to note however that branching is not a strictly required operation
 Route enumeration is another technique that can be used in place of branching
-for obtaining integral solutions.
+for obtaining integral solutions, and it was first proposed for the CVRP in \textcite{baldacci2008}.
 In route enumeration, all elementary routes that may belong to the VRP optimal solution are enumerated,
 and an SP formulation containing all these enumerated routes are solved through a MIP.
 The problem of this approach is the possibly huge number of routes that needs to be enumerated,
@@ -549,6 +549,21 @@ Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BA
 \begin{comment}
 When a violated inequality in the two/three-index formulation is found, it is decomposed at runtime and introduced in the master problem.
 \end{comment}
+
+\begin{comment}
+\cite{jepsen2011}
+The other method is enumeration which has proven to be very successful
+for both cvrp[1] and vrptw[3]. In enumeration an upper bound U B and
+a lower bound LB are used. From reduced cost fixing of a binary variable
+it is know that any non basic column with a reduced cost strictly greater
+than the gap ub − lb can not be part of an integer solution which is an
+improvement of the current solution. This complete set of columns can be
+found by solving an espprc using the dominance rule in proposition 5 and
+bounding functions. Once we have added the columns with reduced cost less
+than or equal to the gap the resulting problem can be solved as an integer
+optimization problem.
+\end{comment}
+
 
 
 \subsubsection{Branching}
@@ -739,7 +754,7 @@ It was first presented for the non-elementarity SPPRC in \textcite{desrosiers198
 and later extended to handle the elementarity condition (ESPPRC) in \textcite{feillet2004}.
 The label-setting algorithm
 is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
-a common algorithm present in the "toolbelt" of all operations research practitioners.
+a common algorithm present in the "tool belt" of all operations research practitioners.
 The dominance rules in the label-setting algorithm allows the oracle
 to efficiently prune the search space by ignoring dominated labels, thus speeding
 up the resolution process tremendously.
@@ -840,26 +855,6 @@ the elementary property is handled through the usage of an additional resource
 bound to each node.
 \textcite{righini2006} proposes a bi-directional dynamic programming algorithm to solve the ESPPRC.
 
-
-\subsection{Obtaining Integer Solutions}
-
-Through: traditional branch and bound where branching is done on an arc or a hyperplane in the original space, or by using enumeration.
-The enumeration approach was proposed by \textcite{baldacci2008} in where they prove it to be very successful when applied to the CVRP.
-
-
-\begin{comment}
-\cite{jepsen2011}
-The other method is enumeration which has proven to be very successful
-for both cvrp[1] and vrptw[3]. In enumeration an upper bound U B and
-a lower bound LB are used. From reduced cost fixing of a binary variable
-it is know that any non basic column with a reduced cost strictly greater
-than the gap ub − lb can not be part of an integer solution which is an
-improvement of the current solution. This complete set of columns can be
-found by solving an espprc using the dominance rule in proposition 5 and
-bounding functions. Once we have added the columns with reduced cost less
-than or equal to the gap the resulting problem can be solved as an integer
-optimization problem.
-\end{comment}
 
 \section{Literature Review}
 \label{sec:intro-literature-review}
