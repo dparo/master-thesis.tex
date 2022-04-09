@@ -634,9 +634,6 @@ Depending on how $r(S)$ is computed, this set of constraints take different name
 If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity Constraints (FCC).
 If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Constraints (RCC).
 The RCC were first presented in \textcite{laporte1983} for the CVRP 2F formulation.
-The capacity constraints can also be easily extended to the SP formulation
-thanks to $x_e$ mapping (see \textcite{baldacci2008})\inlinetodo{WTF???, strengthened capacity cuts are non robust...!}.
-
 
 The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990, gouveia1995}
 and later developed and extended in \textcite{letchford2002} for the CVRP.
@@ -659,7 +656,7 @@ for the SP formulation, under the assumption that a branch-and-price scheme is e
 for solving the CVRP.
 
 Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
-they can trivially be extended to a robust inequelity for the SP formulation:
+they can trivially be extended to a robust inequality for the SP formulation:
 
 \begin{equation}
     \sum_{p \in P} \Expr*{\sum_{e \in \delta(S)} a_{ep}} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
