@@ -503,7 +503,7 @@ The major contributions employing route enumeration in place of branching can be
 \textcite{baldacci2008, baldacci2011, contardo2014}.
 
 Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration
-(see \cite{pessoa2008a, pessoa2009, pecin2017, pessoa2020}).
+(see \cite{pessoa2008, pessoa2009, pecin2017, pessoa2020}).
 After the convergence of the column generation algorithm route enumeration is attempted.
 If the number of enumerated routes starts to exceed a maximum limit, enumeration
 is preemptively aborted and conventional branching is applied.
@@ -666,24 +666,39 @@ they can trivially be extended to a robust inequality for the SP formulation:
 where $\sum_{e \in \delta(S)} a_{ep}$ counts the number of times a route $p \in P$
 enters or leaves a set $S$.
 
-Some non-robust cuts were also deployed for the CVRP,
-showing that they can be effectively used if they are separated
-carefully, by taking into consideration the aggravation of the pricing problem.
-Major contributions in the non-robust cuts domain are: the subset row inequalities in \textcite{jepsen2008a},
-the strong capacity inequalities in \textcite{baldacci2008}.
 
+\medskip
 
-Other contributions can be classified in:
-(i) Strengthened Capacity Constraints (SCC) proposed in \textcite{baldacci2008}, which can be considered a
-non-robust tighter version of the CCC (rounded capacity cuts),
-(ii) subset row cuts proposed in \textcite{jepsen2008a}, a non-robust
-inequality similar to a less general clique cuts that leads to less impact in the pricing problem,
-(iii) strong degree cuts proposed in \textcite{contardo2011}, a specialized version
-of the strengthened capacity cuts,
-(iv) limited memory subset row cuts proposed in \textcite{pecin2017}, a generalization
-of the non-robust subset row cuts which mitigates the complexity impact on the pricing problem,
-(v) extended capacity cuts proposed in \textcite{pessoa2008a, pessoa2009}, a
-generalization of the rounded capacity cuts.
+Some non-robust cuts were applied successfully to the CVRP.
+While in this thesis we will avoid this form of inequalities,
+it is nonetheless important to acknowledge them and understand
+them, at least from a high level, their contributions.
+
+In order to use them effectively, their separation must be carefully
+planned out, by taking into account the aggravation of the pricing problem.
+Major contributions in the non-robust cutting planes domain, are:
+
+\begin{enumerate}
+    \item \textbf{Strengthened Capacity Constraints (SCCs)} proposed in \textcite{baldacci2008},
+        which can be considered a non-robust tighter version of the RCCs.
+    \item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008a, pessoa2009}, a
+        generalization of the RCCs.
+    \item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008a}, a non-robust
+        inequality similar to a less general clique cuts that leads to less impact in the pricing problem.
+    \item \textbf{Chv\'atal-Gomory Rank-1 cuts (R1Cs)} \parencite{chvatal1973}, applied to the CVRP SP formulation
+        in \textcite{petersen2008}, are a further generalization of the SRCs.
+    \item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011}, they can be considered
+        a specialized version of the SCCs.
+    \item \textbf{$k$-Cycle Elimination Cuts ($k$-CECs)}, proposed in \textcite{contardo2014},
+        are a weakened version of the SDCs (and thus easier for the PP), which forbids
+        routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
+    \item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
+         a dynamically controlled weakening of the SRCs that leads far less impact to
+         the PP than traditional
+         SRCs while still being as effective as improving the dual bounds as the traditional SRCs.
+    \item \textbf{Limited Memory Rank-1 Cuts (lm-R1Cs)} proposed in \textcite{pecin2017a},
+        is a dynamically controlled weakening of the R1Cs that leads to less impact to the PP.
+\end{enumerate}
 
 
 \subsection{Solving the Pricing Problem}
@@ -877,7 +892,7 @@ improve the dual bound while drastically reduce the number
 of pricing iterations and the columns that needs consideration,
 Instead of branching, they use full enumeration of the candidate
 routes and solve the problem at the root node by employing a MIP solver.
-\textcite{pessoa2008a} improves over the work of \citeauthor{fukasawa2006}.
+\textcite{pessoa2008} improves over the work of \citeauthor{fukasawa2006}.
 \textcite{baldacci2011} proposed the ng-routes, a very effective
 partial (soft) elementarity constraint
 to tradeoff the elementarity condition (i.e. good dual bound in pricing)

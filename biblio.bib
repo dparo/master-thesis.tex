@@ -407,6 +407,18 @@
   abstract = {In this chapter we present several set-covering-based approaches for solving the Capacitated VRP (CVRP) and provide an analysis of the effectiveness of the approach. Throughout the chapter we consider the symmetric case, the CVRP, although the presented methods may be applied to the ACVRP as well. For this purpose, let the index set of the n customers be denoted V = \{1, 2,. .. , n\}. We let 0 denote the depot and V 0 = V {$\cup$} \{0\} the node set of the corresponding complete graph. Associated with customer i {$\in$} V is the demand d i {$>$} 0, which represents the load that must be picked up at customer i's location. We let C denote the vehicle capacity, and we assume there are K vehicles available to perform the delivery. Clearly, feasibility requires that d i {$\leq$} C for each i {$\in$} V. Let t ij denote the length of edge (i, j) with i, j {$\in$} V 0. It is assumed that the distances t ij satisfy the triangle inequality; otherwise, one can add a large constant cost to all nodes (or to all edges). A classical method, first suggested by Balinski and Quandt [3], for solving the CVRP is based on formulating the problem as a set-covering problem. The idea is as follows. Enumerate all feasible routes, where a feasible route is one that starts and ends at the depot and picks up a total load not exceeding C. Let the index set of all feasible routes be R = \{1, 2,. .. , R\}. Let c r be the cost (e.g., length) of route r, and let S r {$\subseteq$} V denote those customers appearing in route r for all r {$\in$} R. Define {$\alpha$} ir = 1 if customer i is served in route r, 0 otherwise for each customer i {$\in$} V and each route r {$\in$} R. Also, for every r {$\in$} R, let y r = 1 if route r is in the optimal solution, 0 otherwise.}
 }
 
+@article{bulhoes2018,
+  title = {On the Complete Set Packing and Set Partitioning Polytopes: {{Properties}} and Rank 1 Facets},
+  author = {Bulhoes, Teobaldo and Pessoa, Artur and Protti, F\'abio and Uchoa, Eduardo},
+  date = {2018},
+  journaltitle = {Operations Research Letters},
+  volume = {46},
+  number = {4},
+  pages = {389--392},
+  publisher = {{Elsevier}},
+  file = {/home/dparo/Zotero/storage/ED4JAMVP/Bulhoes et al. - 2018 - On the complete set packing and set partitioning p.pdf}
+}
+
 @article{butt1994,
   title = {A Heuristic for the Multiple Tour Maximum Collection Problem},
   author = {Butt, Steven E and Cavalier, Tom M},
@@ -1808,6 +1820,18 @@
   file = {/home/dparo/Zotero/storage/9MHIBDTE/Pecin et al. - 2017 - Limited memory rank-1 cuts for vehicle routing pro.pdf}
 }
 
+@article{pecin2019,
+  title = {Comparative Analysis of Capacitated Arc Routing Formulations for Designing a New Branch-Cut-and-Price Algorithm},
+  author = {Pecin, Diego and Uchoa, Eduardo},
+  date = {2019},
+  journaltitle = {Transportation Science},
+  volume = {53},
+  number = {6},
+  pages = {1673--1694},
+  publisher = {{INFORMS}},
+  file = {/home/dparo/Zotero/storage/3BZZX444/Pecin and Uchoa - 2019 - Comparative analysis of capacitated arc routing fo.pdf}
+}
+
 @incollection{pessoa2008,
   title = {Robust Branch-Cut-and-Price Algorithms for Vehicle Routing Problems},
   booktitle = {The Vehicle Routing Problem: {{Latest}} Advances and New Challenges},
@@ -1816,15 +1840,6 @@
   pages = {297--325},
   publisher = {{Springer}},
   file = {/home/dparo/Zotero/storage/EVYWARSG/Pessoa et al. - 2008 - Robust branch-cut-and-price algorithms for vehicle.pdf}
-}
-
-@incollection{pessoa2008a,
-  title = {Robust Branch-Cut-and-Price Algorithms for Vehicle Routing Problems},
-  booktitle = {The Vehicle Routing Problem: {{Latest}} Advances and New Challenges},
-  author = {Pessoa, Artur and De Aragao, Marcus Poggi and Uchoa, Eduardo},
-  date = {2008},
-  pages = {297--325},
-  publisher = {{Springer}}
 }
 
 @article{pessoa2009,
@@ -1909,6 +1924,16 @@
   abstract = {Major advances were recently obtained in the exact solution of vehicle routing problems (VRPs). Sophisticated branch-cut-and-price (BCP) algorithms for some of the most classical VRP variants now solve many instances with up to a few hundreds of customers. However, adapting and reimplementing those successful algorithms for other variants can be a very demanding task. This work proposes a BCP solver for a generic model that encompasses a wide class of VRPs. It incorporates the key elements found in the best existing VRP algorithms: ng-path relaxation, rank-1 cuts with limited memory, path enumeration, and rounded capacity cuts; all generalized through the new concepts of ``packing set'' and ``elementarity set''. The concepts are also used to derive a branching rule based on accumulated resource consumption and to generalize the Ryan and Foster branching rule. Extensive experiments on several variants show that the generic solver has an excellent overall performance, in many problems being better than the best specific algorithms. Even some non-VRPs, like bin packing, vector packing and generalized assignment, can be modeled and effectively solved.},
   keywords = {★,Column generation,Integer programming,Routing},
   file = {/home/dparo/Zotero/storage/ZEQZWQ6C/Pessoa et al. - 2020 - A generic exact solver for vehicle routing and rel.pdf}
+}
+
+@incollection{petersen2008,
+  title = {Chv\'atal-{{Gomory}} Rank-1 Cuts Used in a {{Dantzig-Wolfe}} Decomposition of the Vehicle Routing Problem with Time Windows},
+  booktitle = {The Vehicle Routing Problem: Latest Advances and New Challenges},
+  author = {Petersen, Bj\o rn and Pisinger, David and Spoorendonk, Simon},
+  date = {2008},
+  pages = {397--419},
+  publisher = {{Springer}},
+  file = {/home/dparo/Zotero/storage/9XGYMJXD/Petersen et al. - 2008 - Chvátal-Gomory rank-1 cuts used in a Dantzig-Wolfe.pdf}
 }
 
 @article{pferschy2017,
