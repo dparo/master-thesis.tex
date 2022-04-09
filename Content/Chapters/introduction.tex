@@ -719,11 +719,33 @@ Major contributions in the non-robust cutting planes domain, are:
 
 \mytodo{Write this section or merge it}
 
-The label-setting algorithm work by label construction and propagation from node to node.
+As we've already mentioned in the previous sections, the PP
+asks for the determination of the elementary shortest path,
+subject to resource constraints,
+over a directed network formulation where the cost of each edge
+is dualized.
+In the ESPPRC problem, the elementarity constraint imposes
+that the optimal route may not visit the same vertex twice or more.
+As claimed in \textcite{dror1994},
+since the underlying network may in the general case contain negative cost cycles,
+the ESPPRC is an NP-hard problem.
+
+\medskip
+
+The label-setting algorithm is a dynamic programming
+algorithm which works by label construction and propagation
+from node to node.
+It was first presented for the non-elementarity SPPRC in \textcite{desrosiers1983, desrochers1992}
+and later extended to handle the elementarity condition (ESPPRC) in \textcite{feillet2004}.
+The label-setting algorithm
+is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
+a common algorithm present in the "toolbelt" of all operations research practitioners.
 The dominance rules in the label-setting algorithm allows the oracle
 to efficiently prune the search space by ignoring dominated labels, thus speeding
 up the resolution process tremendously.
 The dominance criteria was introduced in \cite{feillet2004}.
+
+\medskip
 
 In order to simplify the pricing problem further,
 some authors started to propose to relax the elementarity condition
@@ -741,7 +763,7 @@ The q-routes are routes not satisfying the elementarity condition which
 can therefore serve the same customer twice. For
 each visit of the same customer its demand will be counted again.
 The advantage of using the q-routes relaxation is that the pricing problem
-can be solved with a pseudo-polynomial time algorithm in \textcite{N^2 Q}
+can be solved with a pseudo-polynomial time algorithm in $O(N^2 Q)$
 operations for the CVRP.
 Therefore, when the CVRP vehicle capacity is loose, the label-setting algorithm
 even when considering a very-relaxed form of elementarity, its running
