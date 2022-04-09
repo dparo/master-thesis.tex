@@ -70,7 +70,11 @@ In this section we present the CVRP through some very well known mathematical fo
 These mathematical formulation are expressed through (Mixed) Integer Programming (MIP, IP)
 models.
 We present three total mathematical models:
+
 \begin{enumerate}
+    \setlength{\itemsep}{0pt}
+    \setlength{\parskip}{0pt}
+
 	\item The two-index arc flow formulation \parencite{laporte1983, laporte1985, laporte1986}.
 	\item The three-index arc flow formulation \parencite{golden1977}.
 	\item The Set Partitioning (SP) formulation \parencite{balinski1964}.
@@ -427,6 +431,9 @@ and the newly obtained network is characterized by $N + 1$ vertices.
 
 The column generation (CG) is an iterative algorithm which alternates between two phases \parencite{desaulniers2018}:
 \begin{enumerate}
+    \setlength{\itemsep}{0pt}
+    \setlength{\parskip}{0pt}
+
 	\item The simplex algorithm for solving the RMP, which is characterized by one or more pivot operations.
 	\item One or several iterations of the Pricing Problem (PP) solved by invoking the pricer algorithm.
 	      The simplex algorithm invokes the pricer to verify whether other pivot operations
