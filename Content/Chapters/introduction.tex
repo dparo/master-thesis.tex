@@ -680,18 +680,21 @@ Major contributions in the non-robust cutting planes domain, are:
 
 \begin{enumerate}
     \setlength{\itemsep}{0pt}
+    \setlength{\parskip}{0pt}
 
     \item \textbf{Strengthened Capacity Constraints (SCCs)} proposed in \textcite{baldacci2008},
         which can be considered a non-robust tighter version of the RCCs.
-    \item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008a, pessoa2009}, a
+    \item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009}, a
         generalization of the RCCs.
     \item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008a}, a non-robust
-        inequality similar to a less general clique cuts that leads to less impact in the pricing problem.
-    \item \textbf{Chv\'atal-Gomory Rank-1 cuts (R1Cs)} \parencite{chvatal1973}, applied to the CVRP SP formulation
+        inequality similar to a form of less general clique cuts,
+        that leads to less impact in the pricing problem.
+    \item \textbf{Chv\'atal-Gomory Rank-1 cuts (R1Cs)} \parencite{chvatal1973},
+        applied to the CVRP SP formulation
         in \textcite{petersen2008}, are a further generalization of the SRCs.
     \item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011}, they can be considered
         a specialized version of the SCCs.
-    \item \textbf{$k$-Cycle Elimination Cuts ($k$-CECs)}, proposed in \textcite{contardo2014},
+    \item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
         are a weakened version of the SDCs (and thus easier for the PP), which forbids
         routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
     \item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
