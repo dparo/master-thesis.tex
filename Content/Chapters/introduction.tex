@@ -880,8 +880,8 @@ bound to each node.
 \section{Literature Review}
 \label{sec:intro-literature-review}
 
-\textcite{dantzig1959} propose for the first time ever
-the CVRP problems.
+\textcite{dantzig1959} introduce for the first time
+the CVRP problem to the operations research community.
 \citeauthor{dantzig1959} were the pioneers of the
 combinatorial optimization routing problem
 which led to a whole new branch of scientific research.
@@ -894,10 +894,10 @@ mathematical models, and algorithms, both exact and (meta-)heuristic,
 for solving the VRP.
 
 Up to the late 1980s, the exact approaches for tackling the CVRP was
-based on tree-search algorithm employing branch-and-bound schemes
+based on tree-search algorithms employing branch-and-bound schemes
 (see \textcite{christofides1969a, christofides1981, laporte1986}),
 sometimes employing Lagrangian duality relaxation (see \textcite{fisher1994a, miller1995}),
-or additive approaches (see \textcite{fischetti1994a, hadjiconstantinou1995}).
+or additive bounding procedures (see \textcite{fischetti1994a, hadjiconstantinou1995}).
 
 From the 1980s to the first 2000s, some authors applied branch-and-cut
 algorithms to the VRP.
@@ -906,10 +906,11 @@ and a branch-and-cut algorithm to solve it.
 Later \textcite{augerat1995a}, proposed a branch-and-cut scheme
 integrating additional valid inequalities.
 Later, \textcite{lysgaard2004},
-proposed a set of improved separation procedures for
-the additional inequalities that were known at the time.
+proposed a branch-and-cut framework and
+a set of improved separation procedures for
+the valid inequalities that were known at the time.
 Other notable branch-and-cut-price based contributions
-can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004}.
+can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004, lysgaard2004}.
 These works based on branch-and-cut frameworks, showed that CVRP instances,
 even with small number of customers (less than 100) proved
 to be very challenging to solve exactly.
