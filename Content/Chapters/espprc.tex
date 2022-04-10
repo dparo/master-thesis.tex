@@ -103,10 +103,10 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
 		\centering
 
-		\node[main] (0) at (0.1\textwidth,-20bp) {0};
+		\node[main, ultra thick] (0) at (0.1\textwidth,-20bp) {0};
 		\node[main] (1) at (0.25\textwidth,0bp){1};
 		\node[main] (6) at (0.4\textwidth,+10bp){6};
-		\node[main] (7) at (0.55\textwidth,+30bp) {7};
+		\node[main, ultra thick] (7) at (0.55\textwidth,+30bp) {7};
 
 		\node[main] (2) at (0.7\textwidth, +20bp){2};
 		\node[main] (3) at (0.8\textwidth, -0bp) {3};
@@ -126,7 +126,7 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	\centering
 	\caption{An example of an ESPRRC solution containing spurious subtours.
 		$V^\prime = \Set*{0, \dots, 7}$, ($0$ is the source vertex, $7$ the sink vertex).
-		SEC inequalities, presented in Equation \eqref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
+		SEC inequalities, presented in \cref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
 	}
 	\label{fig:espprc-example-with-spurious-subtours}
 \end{figure}
@@ -135,14 +135,14 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
 		\centering
 
-		\node[main] (0) at (0.1\textwidth,0bp) {0};
+		\node[main, ultra thick] (0) at (0.1\textwidth,0bp) {0};
 		\node[main] (1) at (0.3\textwidth,0bp){1};
 		\node[main] (2) at (0.5\textwidth,0bp){2};
 		\node[main] (3) at (0.6\textwidth,-30bp) {3};
 		\node[main] (4) at (0.5\textwidth,-60bp) {4};
 		\node[main] (5) at (0.4\textwidth,-30bp) {5};
 		\node[main] (6) at (0.7\textwidth,0bp){6};
-		\node[main] (7) at (0.9\textwidth,0bp) {7};
+		\node[main, ultra thick] (7) at (0.9\textwidth,0bp) {7};
 
 		\draw [->,thick] (0) -- (1);
 		\draw [->,thick] (1) -- (2);
@@ -157,7 +157,7 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	\centering
 	\caption{An example of an ESPRRC non-elementary solution.
 		$V^\prime = \Set*{0, \dots, 7}$, ($0$ is the source vertex, $7$ the sink vertex).
-		SEC inequalities, presented in Equation \eqref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
+		SEC inequalities, presented in \cref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
 	}
 	\label{fig:espprc-example-non-elementary-solution}
 \end{figure}
