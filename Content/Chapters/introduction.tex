@@ -73,8 +73,8 @@ models.
 We present three total mathematical models:
 
 \begin{enumerate}
-    \setlength{\itemsep}{0pt}
-    \setlength{\parskip}{0pt}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
 
 	\item The two-index arc flow formulation \parencite{laporte1983, laporte1985, laporte1986}.
 	\item The three-index arc flow formulation \parencite{golden1977}.
@@ -434,8 +434,8 @@ and the newly obtained network is characterized by $N + 1$ vertices.
 
 The column generation (CG) is an iterative algorithm which alternates between two phases \parencite{desaulniers2018}:
 \begin{enumerate}
-    \setlength{\itemsep}{0pt}
-    \setlength{\parskip}{0pt}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
 
 	\item The simplex algorithm for solving the RMP, which is characterized by one or more pivot operations.
 	\item One or several iterations of the Pricing Problem (PP) solved by invoking the pricer algorithm.
@@ -612,7 +612,7 @@ Such correspondence can be described with the following equation:
 
 \begin{equation}
 	x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p  \quad \forall e \in E
-\end{equation}.
+\end{equation}
 
 Given the candidate fractional solution $\lambda^\star_p \quad \forall p \in \mcP$
 and after determining a valid edge $e$ to branch on, $e \mid x_e \notin \Set*{0, 1, 2}$,
@@ -623,13 +623,11 @@ to continue scanning for integral solutions:
 	x_e \le \floor*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}, \quad
 	x_e > \ceil*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}
 \end{equation}
-
-
 Branching on arcs is an approach which is both: extremely simple and robust.
-In fact, let $\omega_e \in \R$ represent the dual variable associated to
+Let $\omega_e \in \R$ represent the dual variable associated to
 edge $e \in E$ and to
-one of the branching polarity in \cref{eq:sp-branching-on-arcs}.
-Then the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
+one of the branching polarity in \cref{eq:sp-branching-on-arcs},
+then the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
 
 \begin{equation}
 	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e
@@ -637,9 +635,10 @@ Then the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
 
 where again $\pi \in \R^N$ represents the dual variables associated with constraints \eqref{eq:mp-K-routes}, \eqref{eq:mp-customers-visited-by-exactly-one-route}.
 
-Also, some reduction and dominance rules may be employed to remove some arcs
+Reduction and dominance rules may be employed to remove some arcs
 which can be proved to not belong to an optimal solution.
-When such a situation occurs, it is possible to branch with a single descendant node to eliminate
+Reduction and dominance rules may be viewed as a special case of branching
+with a single descendant node, which allows to eliminate the evaluation
 a good portion of the solution space.
 
 
@@ -701,7 +700,7 @@ Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \s
 they can trivially be extended to a robust inequality for the SP formulation:
 
 \begin{equation}
-    \sum_{p \in P} \Expr*{\sum_{e \in \delta(S)} a_{ep}} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
+	\sum_{p \in P} \Expr*{\sum_{e \in \delta(S)} a_{ep}} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
 \end{equation}
 
 
@@ -721,30 +720,30 @@ planned out, by taking into account the aggravation of the pricing problem.
 Major contributions in the non-robust cutting planes domain, are:
 
 \begin{enumerate}
-    \setlength{\itemsep}{0pt}
-    \setlength{\parskip}{0pt}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
 
-    \item \textbf{Strengthened Capacity Constraints (SCCs)} proposed in \textcite{baldacci2008},
-        which can be considered a non-robust tighter version of the RCCs.
-    \item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009}, a
-        generalization of the RCCs.
-    \item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008a}, a non-robust
-        inequality similar to a form of less general clique cuts,
-        that leads to less impact in the pricing problem.
-    \item \textbf{Chv\'atal-Gomory Rank-1 cuts (R1Cs)} \parencite{chvatal1973},
-        applied to the CVRP SP formulation
-        in \textcite{petersen2008}, are a further generalization of the SRCs.
-    \item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011}, they can be considered
-        a specialized version of the SCCs.
-    \item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
-        are a weakened version of the SDCs (and thus easier for the PP), which forbids
-        routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
-    \item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
-         a dynamically controlled weakening of the SRCs that leads far less impact to
-         the PP than traditional
-         SRCs while still being as effective as improving the dual bounds as the traditional SRCs.
-    \item \textbf{Limited Memory Rank-1 Cuts (lm-R1Cs)} proposed in \textcite{pecin2017a},
-        is a dynamically controlled weakening of the R1Cs that leads to less impact to the PP.
+	\item \textbf{Strengthened Capacity Constraints (SCCs)} proposed in \textcite{baldacci2008},
+	      which can be considered a non-robust tighter version of the RCCs.
+	\item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009}, a
+	      generalization of the RCCs.
+	\item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008a}, a non-robust
+	      inequality similar to a form of less general clique cuts,
+	      that leads to less impact in the pricing problem.
+	\item \textbf{Chv\'atal-Gomory Rank-1 cuts (R1Cs)} \parencite{chvatal1973},
+	      applied to the CVRP SP formulation
+	      in \textcite{petersen2008}, are a further generalization of the SRCs.
+	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011}, they can be considered
+	      a specialized version of the SCCs.
+	\item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
+	      are a weakened version of the SDCs (and thus easier for the PP), which forbids
+	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
+	\item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
+	      a dynamically controlled weakening of the SRCs that leads far less impact to
+	      the PP than traditional
+	      SRCs while still being as effective as improving the dual bounds as the traditional SRCs.
+	\item \textbf{Limited Memory Rank-1 Cuts (lm-R1Cs)} proposed in \textcite{pecin2017a},
+	      is a dynamically controlled weakening of the R1Cs that leads to less impact to the PP.
 \end{enumerate}
 
 
