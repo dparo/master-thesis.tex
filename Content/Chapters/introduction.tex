@@ -413,8 +413,8 @@ It is responsibility of the BAP framework to efficiently manage which routes
 to preserve or drop from $\mcP$ during the running time of the resolution process.
 Due to the high sparseness of the set $\mcP$, any $p \in \mcP \mid \lambda_p = 0$
 is a valid candidate that may be dropped from the pool.
-The size of the pool $\mcP$ is usually dynamic and may also reach high dimensions
-if no route $p \in \mcP$ may be dropped.
+A BAP framework must be engineered correctly as to maintain
+the size of the pool $\mcP \subseteq P$ manageable.
 
 \medskip
 
@@ -444,8 +444,12 @@ The column generation (CG) is an iterative algorithm which alternates between tw
 \end{enumerate}
 
 The column generation procedure stops mainly under two scenarios:
-(i) when no more negative reduced cost routes exist, i.e. the PP outputs a $p^\star$ achieving $c^\star_p \ge 0$,
-(ii) the CG procedure tails off, i.e. the gained dual bound improvements compared to the running time to generate a column become suboptimal (optional).
+(i) when no more negative reduced cost routes exist,
+i.e. the PP outputs a $p^\star$ achieving $c^\star_p \ge 0$,
+(ii) the CG procedure tails off,
+i.e. the gained dual bound improvements
+compared to the running time to generate a column
+become suboptimal (optional).
 
 If after the column generation procedure
 the solution to the RMP $\lambda^*$ satisfies the integrality constraints,
@@ -534,17 +538,28 @@ depending on the branching and cut generation schemes employed,
 two classes of inequalities are possible:
 \textbf{robust} versus \textbf{non-robust} inequalities.
 
-A \textbf{robust} inequality is an inequality which can be safely added to the RMP without altering the structure of the set of feasible paths $P$.
-That is, robust inequalities do not require explicit modeling in the PP formulation and instead manifest their contribution directly in the dual variables $\pi$.
-An oracle, therefore, after the introduction of a robust inequality in the RMP, needs to solve the same ESPPRC problem but with slightly different weights associated on each edge.
+A \textbf{robust} inequality is an inequality
+which can be safely added to the RMP
+without altering the structure of the set of feasible paths $P$.
+That is,
+robust inequalities do not require explicit modeling in the PP formulation
+and instead manifest their contribution directly in the dual variables $\pi$.
+An oracle, therefore,
+after the introduction of a robust inequality in the RMP,
+needs to solve the same ESPPRC problem but with slightly different weights associated on each edge.
 
-A \textbf{non-robust} inequality, instead, is much harder to handle since it changes the structure of the set of feasible paths $P$.
-Non-robust inequalities may in general be quite strong but, unfortunately, require explicit modeling and support within the oracle.
-These types of inequalities can drastically complicate the pricing problem, trading better dual improvements for increased column generation times.
+A \textbf{non-robust} inequality, instead,
+is much harder to handle since it changes the structure of the set of feasible paths $P$.
+Non-robust inequalities may in general be quite strong but,
+unfortunately, require explicit modeling and support within the oracle.
+These types of inequalities can drastically complicate the pricing problem,
+trading better dual bound improvements for increased column generation times.
 Therefore, their usage must be assessed on a case-by-case basis.
 Non-robust inequalities may present themselves both in the branching and cut-generation phases.
 
-In this thesis we will mostly concentrate on branching and cut generation schemes which make use of \textbf{robust} inequalities.
+In this thesis
+we will mostly concentrate on branching and cut generation schemes
+which make use of \textbf{robust} inequalities.
 Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
 
 
@@ -588,8 +603,10 @@ involves \textbf{branching on arcs}.
 The branching on arcs scheme was first proposed for the CVRP in \textcite{christofides1969a},
 and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
 The method works as follows.
-In the first place, there's a clear one-to-one correspondence between the integral variables $x_e$ of the
-two-index arc flow formulation and the variables $\lambda_p$ of the SP formulation.
+In the first place,
+there's a clear one-to-one correspondence
+between the integral variables $x_e$ of the two-index arc flow formulation
+and the variables $\lambda_p$ of the SP formulation.
 Such correspondence can be described with the following equation:
 
 \begin{equation}
