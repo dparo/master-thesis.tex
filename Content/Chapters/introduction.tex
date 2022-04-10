@@ -751,7 +751,7 @@ Major contributions in the non-robust cutting planes domain, are:
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
 
-\mytodo{Write this section or merge it}
+\mytodo{UNDER DEVELOPMENT}
 
 As we've already mentioned in the previous sections, the Pricing Problem (PP)
 asks for the determination of the elementary shortest path,
@@ -883,13 +883,19 @@ bound to each node.
 \mytodo{Write this section, by integrating the literature as I read it}
 
 
-\textcite{dantzig1959} propose for the first time the CVRP problem,
-followed a few years later from \textcite{clarke1964} proposing
-an effective greedy heuristic algorithm.
+\textcite{dantzig1959} propose for the first time ever
+the CVRP problems.
+\citeauthor{dantzig1959} were the pioneers of the
+combinatorial optimization routing problem
+which led to a whole new branch of scientific research.
+A few years later, \textcite{clarke1964} proposes
+an effective greedy heuristic algorithm for tackling the CVRP.
+
 In the last 60 years, a huge number of contributors in
 the operations research community have studied and proposed many
-mathematical models, and algorithms (both exact and (meta-)heuristic)
+mathematical models, and algorithms, both exact and (meta-)heuristic,
 for solving the VRP.
+
 Up to the late 1980s, the exact approaches for tackling the CVRP was
 based on tree-search algorithm employing branch-and-bound schemes
 (see \textcite{christofides1969a, christofides1981, laporte1986}),
@@ -900,22 +906,24 @@ From the 1980s to the first 2000s, some authors applied branch-and-cut
 algorithms to the VRP.
 \textcite{laporte1985}, proposes the two-index arc flow formulation
 and a branch-and-cut algorithm to solve it.
-Later \textcite{augerat1995a}, proposes a branch-and-cut schemes
-employing extra valid inequalities.
-Later, \textcite{lysgaard2004}, proposes a new and more modern separation procedures for
-the valid inequalities known at the time.
+Later \textcite{augerat1995a}, proposed a branch-and-cut scheme
+integrating additional valid inequalities.
+Later, \textcite{lysgaard2004},
+proposed a set of improved separation procedures for
+the additional inequalities that were known at the time.
 Other notable branch-and-cut-price based contributions
 can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004}.
-These works based on branch-and-cut frameworks, showed that CVRP instances, even with small number of customers (less than 100) proved
+These works based on branch-and-cut frameworks, showed that CVRP instances,
+even with small number of customers (less than 100) proved
 to be very challenging to solve exactly.
 
 
-One of the very few first attempts of applying
+One of the very few first attempts at applying
 the SP formulation and a column generation scheme can
-be attributed to\textcite{desrosiers1984, agarwal1989}.
+be attributed to \textcite{desrosiers1984, agarwal1989}.
 These authors, showed that the column generation scheme proved
 very satisfactory to solve the VRPTW under tight constraints,
-but did not achieve satisfactory results for the CVRP.
+but, at that time, did not achieve satisfactory results for the CVRP.
 Therefore, until the first 2000s, the branch-and-cut approaches were
 deemed to be the best approach for solving the CVRP.
 In \citeyear{desrochers1992}, \citeauthor{desrochers1992} proposed the dynamic programming
