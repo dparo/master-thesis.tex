@@ -472,7 +472,7 @@ It is important to also note that
 the CG doesn't need to solve the PP optimally at each iteration of the simplex algorithm.
 To improve the dual bound,
 it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$,
-which allow the usage of heuristic algorithms
+which it allows for the usage of heuristic algorithms
 especially during the very first few pricing iterations,
 where finding good reduced cost columns is surprisingly easy.
 
@@ -503,7 +503,7 @@ a BCP approach for the VRP can be found \textcite{fukasawa2006, ropke2012}.
 
 \medskip
 
-It is important to note however that branching is not a strictly required operation
+It is important to note however that branching is not a strictly required operation.
 Route enumeration is another technique that can be used in place of branching
 for obtaining integral solutions, and it was first proposed for the CVRP in \textcite{baldacci2008}.
 In route enumeration, all elementary routes that may belong to the VRP optimal solution are enumerated,
@@ -527,7 +527,7 @@ At the point the associated RMP formulation can be solved efficiently through a 
 
 We will not concentrate much of our attention on route enumeration in this
 thesis, since their presence doesn't influence the pricing problem.
-Nonetheless, it's important to know about their existence and role within
+Nonetheless, it's important to know about its existence and role within
 the branch-and-price frameworks.
 
 \medskip
@@ -625,7 +625,7 @@ to continue scanning for integral solutions:
 \end{equation}
 
 
-Branching on arcs is an extremely simple and robust branching approach.
+Branching on arcs is an approach which is both: extremely simple and robust.
 In fact, let $\omega_e \in \R$ represent the dual variable associated to
 edge $e \in E$ and to
 one of the branching polarity in \cref{eq:sp-branching-on-arcs}.
