@@ -924,49 +924,56 @@ be attributed to \textcite{desrosiers1984, agarwal1989}.
 These authors, showed that the column generation scheme proved
 very satisfactory to solve the VRPTW under tight constraints,
 but, at that time, did not achieve satisfactory results for the CVRP.
-Therefore, until the first 2000s, the branch-and-cut approaches were
-deemed to be the best approach for solving the CVRP.
-In \citeyear{desrochers1992}, \citeauthor{desrochers1992} proposed the dynamic programming
-based label setting algorithm.
-This algorithm still constites the major core component
+Therefore, until the first 2000s, the branch-and-cut approaches
+were deemed to be the best approach for solving the CVRP.
+
+In \citeyear{desrochers1992}, \citeauthor{desrochers1992}
+proposed the dynamic programming based label setting algorithm for the SPPRC.
+This algorithm still constitutes the major core component
 in modern BPC schemes to efficiently solve the pricing problem.
 \textcite{kohl1999}, later generalized in \cite{desaulniers2008}, introduce the
-2-paths inequalities, and were one of the first attemps to integrate
+2-paths inequalities, and were one of the first attempts to integrate
 cutting-planes within the BAP framework for solving the CVRP.
+
 One of the major breakthrough in column generation and VRP research
 was obtained in \textcite{fukasawa2006}, which were the
 first authors to propose a branch-and-cut-and-price (BCP) algorithm,
 embedding a powerful robust-cuts based cutting-plane approach
 typically found in BAC algorithms.
 \citeauthor{fukasawa2006} integrated the cutting-planes proposed in \cite{lysgaard2004},
-and the column generation considered only q-routes without $k$-cycles.
+and the column generation considered only q-routes with $k$-cycles elimination.
 \textcite{fukasawa2006} was able to solve all CVRP instances up to approximately 100 customers.
 Since the work of \citeauthor{fukasawa2006} until now, column generation
 and the label-setting algorithm have been the defacto procedures
 of modern and efficient VRP solvers.
+
 Later, \textcite{baldacci2008}, proposed a slightly different approach w.r.t. \citeauthor{fukasawa2006}.
-They employ a column generation considering elementary columns and some more inequalities.
-A bounding procedure is employed to quickly
-improve the dual bound while drastically reduce the number
-of pricing iterations and the columns that needs consideration,
-Instead of branching, they use full enumeration of the candidate
-routes and solve the problem at the root node by employing a MIP solver.
+They employ a column generation considering elementary routes and additional inequalities.
+\citeauthor{baldacci2008} employed a bounding procedure to quickly
+improve the dual bound while also reducing the number
+of pricing iterations and the number of columns to take into consideration.
+Instead of branching, they employed full enumeration of the candidate
+routes and use a MIP package to solve the associated problem at the root node.
 \textcite{pessoa2008} improves over the work of \citeauthor{fukasawa2006}.
+
 \textcite{baldacci2011} proposed the ng-routes, a very effective
 partial (soft) elementarity constraint
-to tradeoff the elementarity condition (i.e. good dual bound in pricing)
+that tradeoffs the elementarity condition (i.e. good dual bound in pricing)
 for a simpler pricer problem.
-The ng-routes can be embedded inside the label-setting algorithm, and
-it is another core ingredient of modern VRP solver.
+The ng-routes,
+which are another core ingredient employed in modern VRP solvers (see \cite{pessoa2020a}),
+can be implemented nicely inside the label-setting algorithm.
 \textcite{ropke2012} revisits the work \citeauthor{fukasawa2006} and applies
 the ng-routes relaxation.
-\textcite{contardo2014} proposes an effective enumeration schemes and employ the ng-routes effectively,
-and was able to solve CVRP instances made of 151 customers.
+\textcite{contardo2014} proposed an effective enumeration schemes and employed the ng-routes effectively.
+They were able to solve CVRP instances made of 151 customers.
+
 Finally, a modern BCP was proposed in \textcite{pecin2017}, which
 proposed the non-robust limited memory subset row cuts \parencite{pecin2017a}.
 By using a bidirectional label setting algorithm, a modern dual smoothing and enumeration
 approach and the ng-routes relaxation, they were able to solve CVRP
 instances made of 200 customers.
+
 At the day of writing, \textcite{pessoa2020a} is the current state of the
 art BCP framework based on column generation with ng-routes relaxation
 for solving the CVRP problem.
