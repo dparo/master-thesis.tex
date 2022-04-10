@@ -373,7 +373,7 @@ as the linear relaxation of the SP formulation obtained by relaxing the integral
 
 
 When solving the MP,
-at each iteration of the simplex algorithm we seek for a non-basic variable (i.e. column)
+at each iteration of the simplex algorithm \parencite{dantzig1955} we seek for a non-basic variable (i.e. column)
 to price out and enter the basis.
 This is achieved by evaluating the dual variables $\pi \in \R^{N}$
 associated with constraints \eqref{eq:mp-K-routes}, \eqref{eq:mp-customers-visited-by-exactly-one-route}.
@@ -403,7 +403,9 @@ In BAP frameworks, we seek to solve the so-called \textbf{Pricing Problem} (PP) 
 where $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
 and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$
 that leads to the best dual bound improvement.
-For convenience, we define $\bar{c_{ij}} = c_{e} - \frac{\pi_i + \pi_j}{2}$ as the reduced cost of an edge $e \in E$.
+For convenience,
+we define $\bar{c_{e}} = c_{e} - \frac{\pi_i + \pi_j}{2}$
+as the reduced cost of an edge $e\in E$.
 
 Any $p \in P$ which satisfies $\bar{c_p} < 0$ is a valid column which can enter the basis of the RMP.
 The BAP solver needs to smartly manage the set $\mcP \subseteq P$, which it stores it inside a pool.
@@ -734,15 +736,17 @@ Major contributions in the non-robust cutting planes domain, are:
 
 \mytodo{Write this section or merge it}
 
-As we've already mentioned in the previous sections, the PP
+As we've already mentioned in the previous sections, the Pricing Problem (PP)
 asks for the determination of the elementary shortest path,
 subject to resource constraints,
 over a directed network formulation where the cost of each edge
 is dualized.
-In the ESPPRC problem, the elementarity constraint imposes
-that the optimal route may not visit the same vertex twice or more.
-As claimed in \textcite{dror1994},
-since the underlying network may in the general case contain negative cost cycles,
+In the ESPPRC problem, the elementarity condition imposes
+that the optimal route may not visit the same vertex at most once.
+As it was claimed in \textcite{dror1994},
+since the underlying network may,
+in the general case,
+contain negative cost cycles,
 the ESPPRC is an NP-hard problem.
 
 \medskip
