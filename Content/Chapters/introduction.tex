@@ -802,10 +802,11 @@ the ESPPRC is an NP-hard problem.
 \medskip
 
 The label-setting algorithm is a dynamic programming
-algorithm which works by label construction and propagation
-from node to node.
+algorithm which works by label construction, propagation and correction
+from node to node, and dominance rules are used prune
+the prolieration of labels.
 It was first presented for the non-elementarity SPPRC generating q-routes
-in \textcite{desrosiers1983, desrochers1992}
+in \textcite{desrosiers1983, desrochers1992} for the VRPTW.
 The label-setting algorithm
 is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
 a common algorithm present in the "tool belt" of all operations research practitioners.
@@ -814,9 +815,46 @@ to efficiently prune the search space by ignoring dominated labels, thus speedin
 up the resolution process tremendously.
 
 The label setting algorithm, was later extended in \textcite{feillet2004}
-to handle the full-elementarity condition of the ESPPRC problem.
+to handle the full-elementarity condition of the ESPPRC problem for the VRPTW.
 
 The dominance criteria was introduced in \cite{feillet2004} \inlinetodo{is it true??}.
+
+
+\begin{comment}
+\texcite{feillet2004}
+[Feillet 2004 :: Abstract]
+In this article, we propose a solution procedure for the
+Elementary Shortest Path Problem with Resource Con-
+straints (ESPPRC). A relaxed version of this problem in
+which the path does not have to be elementary has been
+the backbone of a number of solution procedures based
+on column generation for several important problems,
+such as vehicle routing and crew pairing. In many cases
+relaxing the restriction of an elementary path resulted in
+optimal solutions in a reasonable computation time.
+However, for a number of other problems, the elemen-
+tary path restriction has too much impact on the solution
+to be relaxed or might even be necessary.
+Many of the most efficient solution algorithms for vehi-
+cle routing problems are based on a decomposition scheme
+and rely on the solution of SPPRC instances as subprob-
+lems.
+The approach of Desrochers et al. [10] is computation-
+ally very attractive because the SPPRC can be solved effi-
+ciently with dynamic programming. However, this method
+has a significant disadvantage, which is a weakening of the
+lower bound,
+
+\textcite{feillet2004}
+[Feillet talks about the advantages that It has to consider elementary routes in ESPPRC versus standard SPPRC]
+In this context, it has two main
+advantages. First, it reduces the duality gap, compared to the
+usual approaches that are based on the SPPRC bound.
+Second, it enables the use of a column generation solution
+methodology for some special problems or with some spe-
+cial branching schemes that cannot rely on SPPRC solu-
+tions.
+\end{comment}
 
 \medskip
 
@@ -977,8 +1015,9 @@ Therefore, until the first 2000s, the branch-and-cut approaches
 were deemed to be the best approach for solving the CVRP.
 
 In \citeyear{desrochers1992}, \citeauthor{desrochers1992}
-proposed the dynamic programming based label setting algorithm for the SPPRC.
-This algorithm still constitutes the major core component
+proposed the dynamic programming based label setting algorithm for the SPPRC,
+and used it inside a branch-and-price scheme to tackle the VRPTW.
+This algorithm still constitutes the major core ingredient
 in modern BPC schemes to efficiently solve the pricing problem.
 \textcite{kohl1999}, later generalized in \cite{desaulniers2008}, introduce the
 2-paths inequalities, and were one of the first attempts to integrate
