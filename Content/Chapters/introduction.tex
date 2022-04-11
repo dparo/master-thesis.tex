@@ -767,6 +767,25 @@ Major contributions in the non-robust cutting planes domain, are:
 
 \mytodo{UNDER DEVELOPMENT}
 
+
+\begin{comment}
+\textcite{fiellet2004}
+The standard approach to solve the SPPRC in practice is
+based on dynamic programming and has a pseudopolyno-
+mial complexity. Briefly, the principle is to associate with
+each possible partial path a label indicating the consumption
+of resources and to eliminate labels with the help of dom-
+inance rules. In label correcting approaches, nodes are re-
+peatedly treated and their labels extended. This approach is
+an extension of the Ford-Bellman algorithm. It was pro-
+posed by Desrochers [9] in the SPPRC context. Within this
+approach, two strategies can be employed. In reaching al-
+gorithms, labels on a node are extended to its successors. In
+pulling algorithms, labels from its predecessors are pulled to
+the node currently treated. Besides the label correcting
+approach, the label setting a
+\end{comment}
+
 As we've already mentioned in the previous sections, the Pricing Problem (PP)
 asks for the determination of the elementary shortest path,
 subject to resource constraints,
@@ -785,15 +804,26 @@ the ESPPRC is an NP-hard problem.
 The label-setting algorithm is a dynamic programming
 algorithm which works by label construction and propagation
 from node to node.
-It was first presented for the non-elementarity SPPRC in \textcite{desrosiers1983, desrochers1992}
-and later extended to handle the elementarity condition (ESPPRC) in \textcite{feillet2004}.
+It was first presented for the non-elementarity SPPRC generating q-routes
+in \textcite{desrosiers1983, desrochers1992}
 The label-setting algorithm
 is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
 a common algorithm present in the "tool belt" of all operations research practitioners.
 The dominance rules in the label-setting algorithm allows the oracle
 to efficiently prune the search space by ignoring dominated labels, thus speeding
 up the resolution process tremendously.
-The dominance criteria was introduced in \cite{feillet2004}.
+
+The label setting algorithm, was later extended in \textcite{feillet2004}
+to handle the full-elementarity condition of the ESPPRC problem.
+
+The dominance criteria was introduced in \cite{feillet2004} \inlinetodo{is it true??}.
+
+\medskip
+
+Other approaches for tackling the SPPRC use a
+a tree-search scheme and a Lagrangian relaxation based
+technique by employing standard unconstrained shortest path
+algorithms, such as the Dijkstra algorithm \parencite{beasley1989}.
 
 \medskip
 
@@ -809,8 +839,11 @@ Notable contributions in relaxing the elementarity constraints include:
 (iv) q-routes with $k$-cycle elimination in \textcite{irnich2006},
 (iv) ng-routes relaxation proposed in \textcite{baldacci2011}.
 
-The q-routes are routes not satisfying the elementarity condition which
-can therefore serve the same customer twice. For
+The q-routes are routes that respect the vehicle
+capacity but do not satisfy the elementarity condition,
+and thus may contain cycles.
+The q-routes were first presented for the CVRP in \textcite{christofides1981}.
+In q-routes,
 each visit of the same customer its demand will be counted again.
 The advantage of using the q-routes relaxation is that the pricing problem
 can be solved with a pseudo-polynomial time algorithm in $O(N^2 Q)$
