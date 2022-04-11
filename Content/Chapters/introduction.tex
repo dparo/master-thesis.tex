@@ -91,6 +91,9 @@ but uses an exponential number of variables.
 Despite the SP formulation being older, in later years thanks to algorithmic advances
 and the development of efficient branch-and-price (\textbf{BAP}) frameworks, it has become the de facto
 state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020}).
+Another, less common formulation, based on a two-commodity flow description
+can be found in \textcite{baldacci2004}.
+
 
 Before presenting each formulation we first need to define some basic notation
 and mathematical quantities that will be used throughout the remainder of the thesis.
@@ -193,7 +196,7 @@ the two-index arc flow formulation.
 Although, a better lower bound for the Bin Packing Problem can improve the linear
 relaxation, thus reducing the number of branching occurrences.
 
-Traditionally, the CCC constraints in \cref{eq:two-index-flow-ccc}, are usually transformed in the so called Generalized Subtour Elimination Constraints (GSEC),
+The CCC constraints in \cref{eq:two-index-flow-ccc}, may be transformed in the so called Generalized Subtour Elimination Constraints (GSEC) \parencite{laporte1985},
 by means of the degree constraints \labelcref{eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
 
 \begin{equation}\label{eq:cvrp-2flow-gsec}
@@ -221,6 +224,12 @@ However, similar mathematical proofs cannot be extended to the CVRP,
 since due to the more complex structure of this generalized problem,
 little satisfactory results have been obtained in studying the polyhedral characteristics
 for even the standard variation of the VRP, see \textcite{campos1991, cornuejols1993}.
+
+Unfortunately, as it was proven in \textcite{augerat1995} the separation problem
+for the capacity cut constraints is NP-complete, thus limiting the applicability
+of this formulation for solving the CVRP.
+For this reason, some authors \parencite{augerat1995, augerat1998, ralphs2003} designed
+several separation heuristics for the CCC.
 
 \subsection{The three-index arc flow formulation}
 \label{sec:intro-cvrp-three-index-flow-formulation}
@@ -270,7 +279,8 @@ Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent fo
 Since the number of (G)SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
 
 The three-index arc flow model generalizes the two-index version.
-In fact, the two-index arc flow model may be viewed as a special case of the three-index by defining:
+In fact, the two-index arc flow model may be viewed as a special case of the three-index by aggregating
+all $x_{ek}$ into a single variable $x_e$:
 
 
 \begin{equation}
@@ -679,8 +689,8 @@ If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ce
 The RCC were first presented in \textcite{laporte1983} for the CVRP 2F formulation.
 
 The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990} for the CVRP with unit demands
-extended to the generic CVRP in \textcite{fisher1995, gouveia1995, achutan1998},
-and later developed and generalized in \textcite{letchford2002} for the CVRP.
+extended to the generic CVRP in \textcite{gouveia1995, achuthan1998},
+and later generalized in the so called Generalized Large Multistart (GLM) \textcite{letchford2002} for the CVRP.
 Given two disjoint sets of customers $A, B \subseteq V_0 \mid A \cap B = \emptyset$,
 and $\alpha, \beta, \gamma \in \R$,
 a multistar inequality is described in the 2F formulation through a
@@ -690,7 +700,7 @@ template of the form:
 	\alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma
 \end{equation}
 
-The multistar inequality were then applied successfully within i a branch-and-cut framework
+The multistar inequality were first applied successfully within a branch-and-cut framework
 in \textcite{araqueg1994}.
 
 \medskip
