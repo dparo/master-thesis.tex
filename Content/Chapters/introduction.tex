@@ -4,7 +4,8 @@
 \section{The Capacitated Vehicle Routing Problem}
 \label{sec:intro-cvrp-problem}
 
-The Capacitated Vehicle Routing Problem (\textbf{CVRP}), first presented in \textcite{dantzig1959},
+The Capacitated Vehicle Routing Problem (\textbf{CVRP}), first presented in \textcite{dantzig1959}
+under the name of "truck dispatching problem",
 is one of the most studied combinatorial optimization routing problem.
 The CVRP is an NP-hard (in the strong sense) problem which can be considered a generalization
 of the well-known Travelling Salesman Problem (TSP).
@@ -22,7 +23,7 @@ of minimal overall travel distance starting and ending at the depot.
 The set of routes need to serve all the customers in the road network exactly once and no more.
 
 Studying effective solutions methods for the CVRP may lead to tremendous real-world economic
-savings for the management of the provision of goods in distribution systems.
+savings for the management of the provision of goods or services in a distribution system.
 Optimal delivery planning can reduce the overall transportation and good costs while
 also reducing the waiting time experienced by the customers.
 Therefore, studying optimal efficient algorithms and mathematical models for
@@ -58,7 +59,8 @@ in laying out this introductory chapter.
 
 
 CVRP is usually defined more rigorously through an Integer Programming (IP) formulation.
-The IP formulation is a mathematical tool which can describe combinatorial optimization problems
+The IP formulation is a mathematical optimization tool
+which can describe combinatorial optimization problems
 through the usage of constraints, usually defined through linear inequalities.
 In the next section we will provide a more rigorous mathematical
 description of the CVRP, and we will present its most commonly employed IP formulations.
@@ -687,6 +689,8 @@ template of the form:
 	\alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma
 \end{equation}
 
+The multistar inequality were then applied successfully within i a branch-and-cut framework
+in \textcite{araqueg1994}.
 
 \medskip
 
@@ -880,13 +884,13 @@ bound to each node.
 \section{Literature Review}
 \label{sec:intro-literature-review}
 
-\textcite{dantzig1959} propose for the first time ever
-the CVRP problems.
-\citeauthor{dantzig1959} were the pioneers of the
-combinatorial optimization routing problem
-which led to a whole new branch of scientific research.
+\textcite{dantzig1959},
+the pioneers of the combinatorial vehicle routing problem,
+introduce the CVRP problem.
 A few years later, \textcite{clarke1964} proposes
 an effective greedy heuristic algorithm for tackling the CVRP.
+The introduction of this new problem led to a whole new branch
+of scientific research within the operations research community.
 
 In the last 60 years, a huge number of contributors in
 the operations research community have studied and proposed many
@@ -894,10 +898,10 @@ mathematical models, and algorithms, both exact and (meta-)heuristic,
 for solving the VRP.
 
 Up to the late 1980s, the exact approaches for tackling the CVRP was
-based on tree-search algorithm employing branch-and-bound schemes
-(see \textcite{christofides1969a, christofides1981, laporte1986}),
+based on tree-search algorithms employing branch-and-bound schemes
+(see \textcite{pierce1969, christofides1969a, christofides1981, laporte1986}),
 sometimes employing Lagrangian duality relaxation (see \textcite{fisher1994a, miller1995}),
-or additive approaches (see \textcite{fischetti1994a, hadjiconstantinou1995}).
+or additive bounding procedures (see \textcite{fischetti1994a, hadjiconstantinou1995}).
 
 From the 1980s to the first 2000s, some authors applied branch-and-cut
 algorithms to the VRP.
@@ -906,12 +910,14 @@ and a branch-and-cut algorithm to solve it.
 Later \textcite{augerat1995a}, proposed a branch-and-cut scheme
 integrating additional valid inequalities.
 Later, \textcite{lysgaard2004},
-proposed a set of improved separation procedures for
-the additional inequalities that were known at the time.
+proposed a branch-and-cut framework and
+a set of improved separation procedures for
+the valid inequalities that were known at the time.
 Other notable branch-and-cut-price based contributions
 can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004}.
-These works based on branch-and-cut frameworks, showed that CVRP instances,
-even with small number of customers (less than 100) proved
+
+These new works based on branch-and-cut frameworks, showed that CVRP instances
+with small number of customers (less than 100) proved
 to be very challenging to solve exactly.
 
 
@@ -920,7 +926,7 @@ the SP formulation and a column generation scheme can
 be attributed to \textcite{desrosiers1984, agarwal1989}.
 These authors, showed that the column generation scheme proved
 very satisfactory to solve the VRPTW under tight constraints,
-but, at that time, did not achieve satisfactory results for the CVRP.
+but at that time, did not achieve satisfactory results for the CVRP.
 Therefore, until the first 2000s, the branch-and-cut approaches
 were deemed to be the best approach for solving the CVRP.
 
@@ -930,7 +936,7 @@ This algorithm still constitutes the major core component
 in modern BPC schemes to efficiently solve the pricing problem.
 \textcite{kohl1999}, later generalized in \cite{desaulniers2008}, introduce the
 2-paths inequalities, and were one of the first attempts to integrate
-cutting-planes within the BAP framework for solving the CVRP.
+cutting-planes within a BAP framework for solving the CVRP.
 
 One of the major breakthrough in column generation and VRP research
 was obtained in \textcite{fukasawa2006}, which were the
@@ -963,8 +969,8 @@ can be implemented nicely inside the label-setting algorithm.
 \textcite{ropke2012} revisits the work \citeauthor{fukasawa2006} and applies
 the ng-routes relaxation.
 
-\textcite{contardo2014} proposed an effective enumeration schemes and employed the ng-routes effectively.
-They were able to solve CVRP instances made of 151 customers.
+\textcite{contardo2014} proposed an effective enumeration scheme and employed the ng-routes effectively.
+With this approach they were able to solve CVRP instances made of 151 customers.
 
 Finally, a modern BCP was proposed in \textcite{pecin2017}, which
 proposed the non-robust limited memory subset row cuts \parencite{pecin2017a}.
