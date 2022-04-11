@@ -135,7 +135,8 @@ $\Set*{i_1, \dots, i_s} \subseteq V_0$ customers are visited.
 The route $p$ has a travel cost of $c_p = c(p) = \sum_{j=0}^s c_{i_j,i_{j+1}}$.
 A feasible solution to the CVRP problem consists of \textbf{exactly} $K$ routes (or circuits)
 associated with each vehicle starting and ending at the depot node.
-In classic CVRP, each customer is visited exactly once, and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $Q$.
+In classic CVRP, each customer is visited exactly once (elementarity condition),
+and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $Q$.
 An optimal solution to the CVRP is a feasible solution which minimizes the sum of the overall edge weights across all the tours.
 
 \medskip
@@ -339,6 +340,7 @@ by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route
 	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0
 \end{equation}
 
+The set of feasible paths $p \in P$ in the SC formulation become all non-elementary routes that respect the vehicle capacity.
 Under the triangle inequality assumption, any feasible solution for the SP formulation is also feasible for the SC formulation.
 Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
 
@@ -806,7 +808,7 @@ algorithm which works by label construction, propagation and correction
 from node to node, and dominance rules are used prune
 the prolieration of labels.
 It was first presented for the non-elementarity SPPRC generating q-routes
-in \textcite{desrosiers1983, desrochers1992} for the VRPTW.
+in \textcite{desrochers1992} for the VRPTW under a Set Covering (SC) formulation.
 The label-setting algorithm
 is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
 a common algorithm present in the "tool belt" of all operations research practitioners.
