@@ -4,6 +4,22 @@
 The advantage of branch-and-cut software packages is that
 they allow for heavy use of parallelization basically for free,
 while current label-setting algorithms are single-threaded.
+The branch-and-cut frameworks can also be easily extended
+to become a heuristic pricer by employing
+solutions such as hard-fixing.
+Hard fixing is a form of randomized diving,
+where given any feasible solution,
+we fix randomly some variables and we repeat the resolution
+process.
+Soft-fixing, base on local branching). is another method
+to extend a MIP formulation and solver to provide
+heuristic solutions.
+In local-branching a infeasible extra-constraints is added
+which imposes that a new optimal solution
+is not far a part from a provided feasible solution.
+This heavily prunes the search space, but still
+allows the MIP solver to decide which variables
+to fix as to provide the best outcome possible.
 
 \subsection{Future work}
 \mytodo{Extend the CPTP model to consider VRPTW, and re-evaluate the empirical results}
