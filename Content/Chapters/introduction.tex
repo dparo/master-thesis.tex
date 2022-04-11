@@ -4,7 +4,8 @@
 \section{The Capacitated Vehicle Routing Problem}
 \label{sec:intro-cvrp-problem}
 
-The Capacitated Vehicle Routing Problem (\textbf{CVRP}), first presented in \textcite{dantzig1959},
+The Capacitated Vehicle Routing Problem (\textbf{CVRP}), first presented in \textcite{dantzig1959}
+under the name of "truck dispatching problem",
 is one of the most studied combinatorial optimization routing problem.
 The CVRP is an NP-hard (in the strong sense) problem which can be considered a generalization
 of the well-known Travelling Salesman Problem (TSP).
@@ -22,7 +23,7 @@ of minimal overall travel distance starting and ending at the depot.
 The set of routes need to serve all the customers in the road network exactly once and no more.
 
 Studying effective solutions methods for the CVRP may lead to tremendous real-world economic
-savings for the management of the provision of goods in distribution systems.
+savings for the management of the provision of goods or services in a distribution system.
 Optimal delivery planning can reduce the overall transportation and good costs while
 also reducing the waiting time experienced by the customers.
 Therefore, studying optimal efficient algorithms and mathematical models for
@@ -58,7 +59,8 @@ in laying out this introductory chapter.
 
 
 CVRP is usually defined more rigorously through an Integer Programming (IP) formulation.
-The IP formulation is a mathematical tool which can describe combinatorial optimization problems
+The IP formulation is a mathematical optimization tool
+which can describe combinatorial optimization problems
 through the usage of constraints, usually defined through linear inequalities.
 In the next section we will provide a more rigorous mathematical
 description of the CVRP, and we will present its most commonly employed IP formulations.
@@ -687,6 +689,8 @@ template of the form:
 	\alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma
 \end{equation}
 
+The multistar inequality were then applied successfully within i a branch-and-cut framework
+in \textcite{araqueg1994}.
 
 \medskip
 
@@ -895,7 +899,7 @@ for solving the VRP.
 
 Up to the late 1980s, the exact approaches for tackling the CVRP was
 based on tree-search algorithms employing branch-and-bound schemes
-(see \textcite{christofides1969a, christofides1981, laporte1986}),
+(see \textcite{pierce1969, christofides1969a, christofides1981, laporte1986}),
 sometimes employing Lagrangian duality relaxation (see \textcite{fisher1994a, miller1995}),
 or additive bounding procedures (see \textcite{fischetti1994a, hadjiconstantinou1995}).
 
