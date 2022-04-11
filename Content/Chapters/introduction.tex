@@ -453,10 +453,10 @@ compared to the running time to generate a column
 become suboptimal (optional).
 
 If after the column generation procedure
-the solution to the RMP $\lambda^*$ satisfies the integrality constraints,
+the candidate solution to the RMP $\lambda^*$ satisfies the integrality constraints,
 $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in \mcP$,
 no branching or cutting planes are required,
-and the new solution $\lambda^*$ can be used to update the incumbent.
+and the candidate solution $\lambda^*$ can be used to update the incumbent.
 If, instead,
 $\exists p \in \mcP \mid \lambda^\star_p \notin \Set*{0, 1}$
 then a branching strategy is usually necessary
