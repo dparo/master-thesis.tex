@@ -27,6 +27,19 @@ faster separation techniques.
 Study more effecitve bounding procedures and cutting off values
 prior to starting the resolution process through the MIP.
 
+
+Use min-cut heuristic procedures to improve
+the running time of the fractional separation
+such as is done \textcite{kernighan1970}.
+Such heuristic procedure may overestimate the max-flow
+value thus the fractional separation procedure may
+become blind to certain violated inequalities that were
+there, but couldn't be computed due to the heuristic procedure.
+Since the heuristic is faster than the exact push-relabel
+algorithm ($O(n^2.2)$), it may be run on each fractional
+separation.
+
+
 \subsection{Future work}
 \mytodo{Extend the CPTP model to consider VRPTW, and re-evaluate the empirical results}
 

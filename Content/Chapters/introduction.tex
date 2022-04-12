@@ -557,7 +557,7 @@ which can be safely added to the RMP
 without altering the structure of the set of feasible paths $P$.
 That is,
 robust inequalities do not require explicit modeling in the PP formulation
-and instead manifest their contribution directly in the dual variables $\pi$.
+and instead manifest their contribution directly in the reduced cost edges $\bar{c_e}$.
 An oracle, therefore,
 after the introduction of a robust inequality in the RMP,
 needs to solve the same ESPPRC problem but with slightly different weights associated on each edge.
@@ -617,10 +617,9 @@ involves \textbf{branching on arcs}.
 The branching on arcs scheme was first proposed for the CVRP in \textcite{christofides1969a},
 and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
 The method works as follows.
-In the first place,
-there's a clear one-to-one correspondence
+There exist a clear one-to-one correspondence
 between the integral variables $x_e$ of the two-index arc flow formulation
-and the variables $\lambda_p$ of the SP formulation.
+and the variables $\lambda_p$ of the SP formulation that can be exploited.
 Such correspondence can be described with the following equation:
 
 \begin{equation}
@@ -689,7 +688,7 @@ If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity 
 If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Constraints (RCC).
 The RCC were first presented in \textcite{laporte1983} for the CVRP 2F formulation.
 
-The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990} for the CVRP with unit demands
+The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990} for the CVRP with unit demands,
 extended to the generic CVRP in \textcite{gouveia1995, achuthan1998},
 and later generalized in the so called Generalized Large Multistart (GLM) \textcite{letchford2002} for the CVRP.
 Given two disjoint sets of customers $A, B \subseteq V_0 \mid A \cap B = \emptyset$,
@@ -728,8 +727,7 @@ enters or leaves a set $S$.
 
 Some non-robust cuts were applied successfully to the CVRP.
 While in this thesis we will avoid this form of inequalities,
-it is nonetheless important to acknowledge them and understand
-them, at least from a high level, their contributions.
+it is nonetheless important to acknowledge and understand their contributions.
 
 In order to use them effectively, their separation must be carefully
 planned out, by taking into account the aggravation of the pricing problem.
