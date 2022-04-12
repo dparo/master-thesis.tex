@@ -866,6 +866,11 @@ approach where elementarity is iteratively increased on demand.
 In this approach the label-correcting algorithms
 is first asked to generate q-routes, then for each vertex that is visited
 twice or more, elementarity is forced, and the procedure is repeated.
+The first BCP algorithm, using full elementarity routes
+was proposed in \cite{chabrier2006}, but unfortunately,
+applying general k-cycle elimination to the pricing problem,
+have since not been studied in more depth.
+
 
 Later, \textcite{fukasawa2006} proposes a modification of the label-correcting
 algorithm to employ it as a heuristic pricer.
@@ -875,42 +880,10 @@ algorithm to employ it as a heuristic pricer.
 One idea is to impose some controlled amount of partial elementarity on
 the routes, in order to obtain bounds as close as possible to the elementary route bound,
 while still keeping the associated pricing problem tractable.
+The main idea behind partially relaxing the elementarity condition consists
+in making the pricing problem more tractable, while at the same time,
+keep bounds as close as possible to the elementary route bound.
 
-\begin{comment}
-\texcite{feillet2004}
-[Feillet 2004 :: Abstract]
-In this article, we propose a solution procedure for the
-Elementary Shortest Path Problem with Resource Con-
-straints (ESPPRC). A relaxed version of this problem in
-which the path does not have to be elementary has been
-the backbone of a number of solution procedures based
-on column generation for several important problems,
-such as vehicle routing and crew pairing. In many cases
-relaxing the restriction of an elementary path resulted in
-optimal solutions in a reasonable computation time.
-However, for a number of other problems, the elemen-
-tary path restriction has too much impact on the solution
-to be relaxed or might even be necessary.
-Many of the most efficient solution algorithms for vehi-
-cle routing problems are based on a decomposition scheme
-and rely on the solution of SPPRC instances as subprob-
-lems.
-The approach of Desrochers et al. [10] is computation-
-ally very attractive because the SPPRC can be solved effi-
-ciently with dynamic programming. However, this method
-has a significant disadvantage, which is a weakening of the
-lower bound,
-
-\textcite{feillet2004}
-[Feillet talks about the advantages that It has to consider elementary routes in ESPPRC versus standard SPPRC]
-In this context, it has two main
-advantages. First, it reduces the duality gap, compared to the
-usual approaches that are based on the SPPRC bound.
-Second, it enables the use of a column generation solution
-methodology for some special problems or with some spe-
-cial branching schemes that cannot rely on SPPRC solu-
-tions.
-\end{comment}
 
 
 \medskip
@@ -927,9 +900,8 @@ Notable contributions in relaxing the elementarity constraints include:
 (iv) q-routes with $k$-cycle elimination in \textcite{irnich2006},
 (iv) ng-routes relaxation proposed in \textcite{baldacci2011}.
 
-The q-routes are routes with total resource consumption
-$q$ that respect the vehicle capacity but do not satisfy the elementarity condition,
-and thus may contain cycles.
+The q-routes are non-elementary routes with total resource consumption
+$q < Q$ respecting the vehicle which may contain cycles.
 The q-routes were first presented for the CVRP in \textcite{christofides1981},
 where the authors defined them as excluding loops with two vertices.
 In q-routes,
@@ -975,15 +947,7 @@ at determining a valid reduced-cost route.
 
 
 
-The main idea behind partially relaxing the elementarity condition consists
-in making the pricing problem more tractable, while at the same time,
-keep bounds as close as possible to the elementary route bound.
 
-
-The first BCP algorithm, using full elementarity routes, by not relaxing the elementary
-condition, was done in \cite{chabrier2006},
-but, general k-cycle elimination algorithms for the pricing problem, have since not been studied
-in great details.
 
 \subsection{Shortest Path Problem with Resource Constraints}
 If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\bar{c_{ij}} \ge 0$,
