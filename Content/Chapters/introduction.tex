@@ -91,11 +91,13 @@ but uses an exponential number of variables.
 Despite the SP formulation being older, in later years thanks to algorithmic advances
 and the development of efficient branch-and-price (\textbf{BAP}) frameworks, it has become the de facto
 state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020}).
+Another, less common formulation, based on a two-commodity flow description
+can be found in \textcite{baldacci2004}.
 
-Before presenting each formulation we first need to define some basic notation
-and mathematical quantities that will be used throughout the remainder of the thesis.
 
 \medskip
+Before presenting each formulation we first need to define some basic notation
+and mathematical quantities that will be used throughout the remainder of the thesis.
 
 The CVRP is traditionally described as a node routing problem modeled through a symmetric and complete graph theoretical problem,
 where: (i) the vertices of the network represent the customers and the depot,
@@ -133,7 +135,8 @@ $\Set*{i_1, \dots, i_s} \subseteq V_0$ customers are visited.
 The route $p$ has a travel cost of $c_p = c(p) = \sum_{j=0}^s c_{i_j,i_{j+1}}$.
 A feasible solution to the CVRP problem consists of \textbf{exactly} $K$ routes (or circuits)
 associated with each vehicle starting and ending at the depot node.
-In classic CVRP, each customer is visited exactly once, and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $Q$.
+In classic CVRP, each customer is visited exactly once (elementarity condition),
+and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $Q$.
 An optimal solution to the CVRP is a feasible solution which minimizes the sum of the overall edge weights across all the tours.
 
 \medskip
@@ -193,7 +196,7 @@ the two-index arc flow formulation.
 Although, a better lower bound for the Bin Packing Problem can improve the linear
 relaxation, thus reducing the number of branching occurrences.
 
-Traditionally, the CCC constraints in \cref{eq:two-index-flow-ccc}, are usually transformed in the so called Generalized Subtour Elimination Constraints (GSEC),
+The CCC constraints in \cref{eq:two-index-flow-ccc}, may be transformed in the so called Generalized Subtour Elimination Constraints (GSEC) \parencite{laporte1985},
 by means of the degree constraints \labelcref{eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
 
 \begin{equation}\label{eq:cvrp-2flow-gsec}
@@ -221,6 +224,12 @@ However, similar mathematical proofs cannot be extended to the CVRP,
 since due to the more complex structure of this generalized problem,
 little satisfactory results have been obtained in studying the polyhedral characteristics
 for even the standard variation of the VRP, see \textcite{campos1991, cornuejols1993}.
+
+Unfortunately, as it was proven in \textcite{augerat1995} the separation problem
+for the capacity cut constraints is NP-complete, thus limiting the applicability
+of this formulation for solving the CVRP.
+For this reason, some authors \parencite{augerat1995, augerat1998, ralphs2003} designed
+several separation heuristics for the CCC.
 
 \subsection{The three-index arc flow formulation}
 \label{sec:intro-cvrp-three-index-flow-formulation}
@@ -270,7 +279,8 @@ Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent fo
 Since the number of (G)SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
 
 The three-index arc flow model generalizes the two-index version.
-In fact, the two-index arc flow model may be viewed as a special case of the three-index by defining:
+In fact, the two-index arc flow model may be viewed as a special case of the three-index by aggregating
+all $x_{ek}$ into a single variable $x_e$:
 
 
 \begin{equation}
@@ -330,6 +340,7 @@ by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route
 	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0
 \end{equation}
 
+The set of feasible paths $p \in P$ in the SC formulation become all non-elementary routes that respect the vehicle capacity.
 Under the triangle inequality assumption, any feasible solution for the SP formulation is also feasible for the SC formulation.
 Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
 
@@ -679,8 +690,8 @@ If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ce
 The RCC were first presented in \textcite{laporte1983} for the CVRP 2F formulation.
 
 The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990} for the CVRP with unit demands
-extended to the generic CVRP in \textcite{fisher1995, gouveia1995, achutan1998},
-and later developed and generalized in \textcite{letchford2002} for the CVRP.
+extended to the generic CVRP in \textcite{gouveia1995, achuthan1998},
+and later generalized in the so called Generalized Large Multistart (GLM) \textcite{letchford2002} for the CVRP.
 Given two disjoint sets of customers $A, B \subseteq V_0 \mid A \cap B = \emptyset$,
 and $\alpha, \beta, \gamma \in \R$,
 a multistar inequality is described in the 2F formulation through a
@@ -690,7 +701,7 @@ template of the form:
 	\alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma
 \end{equation}
 
-The multistar inequality were then applied successfully within i a branch-and-cut framework
+The multistar inequality were first applied successfully within a branch-and-cut framework
 in \textcite{araqueg1994}.
 
 \medskip
@@ -758,6 +769,25 @@ Major contributions in the non-robust cutting planes domain, are:
 
 \mytodo{UNDER DEVELOPMENT}
 
+
+\begin{comment}
+\textcite{fiellet2004}
+The standard approach to solve the SPPRC in practice is
+based on dynamic programming and has a pseudopolyno-
+mial complexity. Briefly, the principle is to associate with
+each possible partial path a label indicating the consumption
+of resources and to eliminate labels with the help of dom-
+inance rules. In label correcting approaches, nodes are re-
+peatedly treated and their labels extended. This approach is
+an extension of the Ford-Bellman algorithm. It was pro-
+posed by Desrochers [9] in the SPPRC context. Within this
+approach, two strategies can be employed. In reaching al-
+gorithms, labels on a node are extended to its successors. In
+pulling algorithms, labels from its predecessors are pulled to
+the node currently treated. Besides the label correcting
+approach, the label setting a
+\end{comment}
+
 As we've already mentioned in the previous sections, the Pricing Problem (PP)
 asks for the determination of the elementary shortest path,
 subject to resource constraints,
@@ -774,17 +804,66 @@ the ESPPRC is an NP-hard problem.
 \medskip
 
 The label-setting algorithm is a dynamic programming
-algorithm which works by label construction and propagation
-from node to node.
-It was first presented for the non-elementarity SPPRC in \textcite{desrosiers1983, desrochers1992}
-and later extended to handle the elementarity condition (ESPPRC) in \textcite{feillet2004}.
+algorithm which works by label construction, propagation and correction
+from node to node, and dominance rules are used prune
+the prolieration of labels.
+It was first presented for the non-elementarity SPPRC generating q-routes
+in \textcite{desrochers1992} for the VRPTW under a Set Covering (SC) formulation.
 The label-setting algorithm
 is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
 a common algorithm present in the "tool belt" of all operations research practitioners.
 The dominance rules in the label-setting algorithm allows the oracle
 to efficiently prune the search space by ignoring dominated labels, thus speeding
 up the resolution process tremendously.
-The dominance criteria was introduced in \cite{feillet2004}.
+
+The label setting algorithm, was later extended in \textcite{feillet2004}
+to handle the full-elementarity condition of the ESPPRC problem for the VRPTW.
+
+The dominance criteria was introduced in \cite{feillet2004} \inlinetodo{is it true??}.
+
+
+\begin{comment}
+\texcite{feillet2004}
+[Feillet 2004 :: Abstract]
+In this article, we propose a solution procedure for the
+Elementary Shortest Path Problem with Resource Con-
+straints (ESPPRC). A relaxed version of this problem in
+which the path does not have to be elementary has been
+the backbone of a number of solution procedures based
+on column generation for several important problems,
+such as vehicle routing and crew pairing. In many cases
+relaxing the restriction of an elementary path resulted in
+optimal solutions in a reasonable computation time.
+However, for a number of other problems, the elemen-
+tary path restriction has too much impact on the solution
+to be relaxed or might even be necessary.
+Many of the most efficient solution algorithms for vehi-
+cle routing problems are based on a decomposition scheme
+and rely on the solution of SPPRC instances as subprob-
+lems.
+The approach of Desrochers et al. [10] is computation-
+ally very attractive because the SPPRC can be solved effi-
+ciently with dynamic programming. However, this method
+has a significant disadvantage, which is a weakening of the
+lower bound,
+
+\textcite{feillet2004}
+[Feillet talks about the advantages that It has to consider elementary routes in ESPPRC versus standard SPPRC]
+In this context, it has two main
+advantages. First, it reduces the duality gap, compared to the
+usual approaches that are based on the SPPRC bound.
+Second, it enables the use of a column generation solution
+methodology for some special problems or with some spe-
+cial branching schemes that cannot rely on SPPRC solu-
+tions.
+\end{comment}
+
+\medskip
+
+Other approaches for tackling the SPPRC use a
+a tree-search scheme and a Lagrangian relaxation based
+technique by employing standard unconstrained shortest path
+algorithms, such as the Dijkstra algorithm \parencite{beasley1989}.
 
 \medskip
 
@@ -800,8 +879,11 @@ Notable contributions in relaxing the elementarity constraints include:
 (iv) q-routes with $k$-cycle elimination in \textcite{irnich2006},
 (iv) ng-routes relaxation proposed in \textcite{baldacci2011}.
 
-The q-routes are routes not satisfying the elementarity condition which
-can therefore serve the same customer twice. For
+The q-routes are routes that respect the vehicle
+capacity but do not satisfy the elementarity condition,
+and thus may contain cycles.
+The q-routes were first presented for the CVRP in \textcite{christofides1981}.
+In q-routes,
 each visit of the same customer its demand will be counted again.
 The advantage of using the q-routes relaxation is that the pricing problem
 can be solved with a pseudo-polynomial time algorithm in $O(N^2 Q)$
@@ -916,9 +998,12 @@ a set of improved separation procedures for
 the valid inequalities that were known at the time.
 Other notable branch-and-cut-price based contributions
 can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004}.
+\citeauthor{baldacci2004} was able to solve a
+135 customers-sized problem from the F family of routing instances \textcite{fisher1994}
+for the first time.
 
-These new works based on branch-and-cut frameworks, showed that CVRP instances
-with small number of customers (less than 100) proved
+Regardless, these new works based on branch-and-cut frameworks, showed that CVRP instances
+with small number of customers (less than 100) proved in general
 to be very challenging to solve exactly.
 
 
@@ -932,8 +1017,9 @@ Therefore, until the first 2000s, the branch-and-cut approaches
 were deemed to be the best approach for solving the CVRP.
 
 In \citeyear{desrochers1992}, \citeauthor{desrochers1992}
-proposed the dynamic programming based label setting algorithm for the SPPRC.
-This algorithm still constitutes the major core component
+proposed the dynamic programming based label setting algorithm for the SPPRC,
+and used it inside a branch-and-price scheme to tackle the VRPTW.
+This algorithm still constitutes the major core ingredient
 in modern BPC schemes to efficiently solve the pricing problem.
 \textcite{kohl1999}, later generalized in \cite{desaulniers2008}, introduce the
 2-paths inequalities, and were one of the first attempts to integrate

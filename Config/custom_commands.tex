@@ -36,10 +36,28 @@
 
 \newcommand{\EqStackTwo}[2]{\substack{#1 \\ #2}}
 
-% Abs function
+
+
+
+\newcommand{\ctext}[3][RGB]{%
+	\begingroup
+	\definecolor{hlcolor}{#1}{#2}\sethlcolor{hlcolor}%
+	\hl{#3}%
+	\endgroup
+}
+
 
 \newcommand{\mytodo}[1]{\todo[inline]{TODO: #1}}
-\newcommand{\inlinetodo}[1]{\colorbox{BurntOrange}{[TODO: #1]}}
+
+% \newcommand{\inlinetodo}[1]{
+% 	\colorbox{BurntOrange}{\parbox{\textwidth}{TODO: #1}}
+% }
+
+\newcommand{\inlinetodo}[1]{
+	\ctext[RGB]{255,128,0}{TODO: #1}
+}
+
+
 
 \newcommand{\lorem}{\lipsum[1]}
 

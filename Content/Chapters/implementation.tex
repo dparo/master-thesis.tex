@@ -64,10 +64,12 @@ In the remainder of this section we explain the implemented warm start procedure
 
 \subsection{Insertion heuristic}
 \cite{rosenkrantz1977} do a fantastic job describing the insertion heuristic algorithm for the TSP and various facets in which it can be implemented.
-The insertion heuristic algorithm can construct a new feasible primal solutions in $\Theta(N^2)$ time.
-
+The insertion heuristic algorithm can construct a new feasible primal solution in $\Theta(N^2)$ time.
 In this section, we will focus on adapting the insertion heuristic for the TSP so that it can be applied to CPTP problems.
-Start by selecting two distinct nodes $s, t \in V,\ q_s + q_t \le Q$ and use these two nodes to form a tour back-to-back.
+
+\medskip
+
+Start by selecting two distinct nodes $s, t \in V,\ q_s + q_t \le Q$ to form an initial tour back-to-back.
 
 The insertion heuristic algorithm works iteratively where, at each step of the iteration, we have an almost feasible CPTP tour (since the depot node might not yet be covered).
 At the end of the whole algorithm, the final obtained tour will be CPTP feasible (if any exist).
@@ -130,16 +132,16 @@ In our implementation we scan for vertices $a, b$ achieving the cheapest exchang
 \section{Separation techniques}
 
 \begin{comment}
-    \cite{ralphs2003}
-    The most important and challenging aspect of any branch and cut algorithm is designing
-    subroutines that effectively separate a given fractional point from the convex hull of
-    integer solutions. This has been, and still remains, a very challenging aspect of applying
-    branch and cut techniques to the VRP.
+\cite{ralphs2003}
+The most important and challenging aspect of any branch and cut algorithm is designing
+subroutines that effectively separate a given fractional point from the convex hull of
+integer solutions. This has been, and still remains, a very challenging aspect of applying
+branch and cut techniques to the VRP.
 \end{comment}
 
 Inequality separation is a problem which consists in finding (strong) violated inequalities so that they can be embedded inside a Branch\&Cut framework.
 Integral inequality separation is concerned in determining violated inequalities for the original IP model.
-Integral inequalities separation is usually much easier to perform, and can be seen as a procedure to dynamically generate necessary constraints that would otherwise be impossible to insert statically in a MIP model.
+Integral inequalities' separation is usually much easier to perform, and can be seen as a procedure to dynamically generate necessary constraints that would otherwise be impossible to insert statically in a MIP model.
 Fractional inequality separation, instead is usually harder to perform, and it is concerned in finding (strong) violated inequalities for fractional solutions originated from the linear relaxation.
 
 In this thesis we are treating a CPTP problem, and more precisely, we are concerned in separating the GSEC, GLM, RCC inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
