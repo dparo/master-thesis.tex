@@ -749,6 +749,8 @@ Major contributions in the non-robust cutting planes domain, are:
 	      in \textcite{petersen2008}, are a further generalization of the SRCs.
 	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011}, they can be considered
 	      a specialized version of the SCCs.
+          They can enforce partial route elementarity and are redundant
+          when the pricer always outputs elementary paths.
 	\item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
 	      are a weakened version of the SDCs (and thus easier for the PP), which forbids
 	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
@@ -768,24 +770,6 @@ Major contributions in the non-robust cutting planes domain, are:
 \mytodo{UNDER DEVELOPMENT}
 
 
-\begin{comment}
-\textcite{fiellet2004}
-The standard approach to solve the SPPRC in practice is
-based on dynamic programming and has a pseudopolyno-
-mial complexity. Briefly, the principle is to associate with
-each possible partial path a label indicating the consumption
-of resources and to eliminate labels with the help of dom-
-inance rules. In label correcting approaches, nodes are re-
-peatedly treated and their labels extended. This approach is
-an extension of the Ford-Bellman algorithm. It was pro-
-posed by Desrochers [9] in the SPPRC context. Within this
-approach, two strategies can be employed. In reaching al-
-gorithms, labels on a node are extended to its successors. In
-pulling algorithms, labels from its predecessors are pulled to
-the node currently treated. Besides the label correcting
-approach, the label setting a
-\end{comment}
-
 As we've already mentioned in the previous sections, the Pricing Problem (PP)
 asks for the determination of the elementary shortest path,
 subject to resource constraints,
@@ -801,24 +785,88 @@ the ESPPRC is an NP-hard problem.
 
 \medskip
 
-The label-setting algorithm is a dynamic programming
-algorithm which works by label construction, propagation and correction
-from node to node, and dominance rules are used prune
-the prolieration of labels.
-It was first presented for the non-elementarity SPPRC generating q-routes
-in \textcite{desrochers1992} for the VRPTW under a Set Covering (SC) formulation.
-The label-setting algorithm
-is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
-a common algorithm present in the "tool belt" of all operations research practitioners.
-The dominance rules in the label-setting algorithm allows the oracle
+In the case where the reduced cost network of the ESPPRC does not contain negative cost cycles
+the elementarity condition does not need explicit modeling
+and the resulting problem may be solved efficiently.
+Some authors have proposed branch-and-bound
+schemes applying the Lagrangian relaxation to the resource constraints
+and by solving the associated shortest path
+problem, through standard algorithms \parencite{beasley1989, carlyle2008}.
+
+Other approaches for tackling the SPPRC use a
+a tree-search scheme and a Lagrangian relaxation based
+technique by employing standard unconstrained shortest path
+algorithms, such as the Dijkstra algorithm \parencite{beasley1989}.
+
+
+\medskip
+
+
+The q-routes \parencite{christofides1981}
+are routes with total resource consumption $q$ that
+respect the vehicle capacity, but that do not necessarily
+satisfy the elementarity condition and thus may contain cycles.
+In q-routes we exclude cycles of two vertices
+and each additional visit to each customer
+still counts to the total consumption of the resource.
+
+It was observed that extending the set of feasible paths $P$ in
+the SP formulation to include also the q-routes could lead to a
+more tractable pricing problem, by making it weakly NP-hard
+and thus solvable through a pseudo-polynomial algorithm.
+This enlargement while still valid, it has unfortunately the downside
+of obtaining significantly worse dual bounds for the linear relaxations.
+Therefore, the choice for the set $P$ plays an important
+role in trading off efficiency at the pricing stage with
+overall quality of the dual bound.
+Therefore, the pricing problem in column generation techniques
+has been modeled by many authors as an SPPRC, i.e.
+relaxing the elementarity condition.
+
+
+The label-correcting algorithm was first proposed in \textcite{desrochers1992}
+for the VRPTW for solving the SPPRC to tackle the pricing problem
+under a Set Covering (SC) formulation.
+The label-correcting algorithm, which at the time was able to generate only q-routes,
+is a dynamic programming algorithm
+which works by label construction, propagation and correction from node to node.
+The principle of this algorithm is to associate with each possible partial
+path a label indicating the current resource consumption over the path.
+The dominance rules in the label-correcting algorithm allows
 to efficiently prune the search space by ignoring dominated labels, thus speeding
 up the resolution process tremendously.
+The label-correcting algorithm
+is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
+a common algorithm present in the "tool belt" of all operations research practitioners.
+Its running time complexity for pricing q-routes is $O(N^2 Q)$ operations,
+and thus its performance scales with the vehicle capacity $Q$, and cannot be
+competitive when $Q$ is very large.
 
-The label setting algorithm, was later extended in \textcite{feillet2004}
-to handle the full-elementarity condition of the ESPPRC problem for the VRPTW.
+The label-correcting algorithm, was later extended to handle
+the ESPPRC in \textcite{feillet2004},
+where they propose using an additional resource bound to each
+node to handle the elementarity condition.
+As \citeauthor{feillet2004} points out,
+The running time complexity of the new extended algorithm for pricing elementary routes is $O(2^N Q)$ operations,
+thus making it impractical in many cases.
+Although some contributions have been made to improve its overall running time.
+Some major ones can be attributed to:
+(i) bidirectional search proposed in \textcite{righini2006},
+(ii) decremental state space relaxation proposed independently in
+\textcite{boland2006, righini2008} under different names.
+The decremental state space relaxation is an iterative
+approach where elementarity is iteratively added for each violated node.
+In this approach the label-correcting algorithms
+is first asked to generate q-routes, then for each vertex that is visited
+twice or more, elementarity is forced, and the procedure is repeated.
 
-The dominance criteria was introduced in \cite{feillet2004} \inlinetodo{is it true??}.
+Later, \textcite{fukasawa2006} proposes a modification of the label-correcting
+algorithm employ it as an heuristic pricer.
 
+
+One idea is to impose some controlled amount of partial elementarity on
+the routes, in order to obtain bounds as close as possible to the elementary route bound,
+while still keeping the associated pricing problem tractable.
 
 \begin{comment}
 \texcite{feillet2004}
@@ -856,12 +904,6 @@ cial branching schemes that cannot rely on SPPRC solu-
 tions.
 \end{comment}
 
-\medskip
-
-Other approaches for tackling the SPPRC use a
-a tree-search scheme and a Lagrangian relaxation based
-technique by employing standard unconstrained shortest path
-algorithms, such as the Dijkstra algorithm \parencite{beasley1989}.
 
 \medskip
 
@@ -902,7 +944,7 @@ Unfortunately, for practical cases as is point out in \textcite{fukasawa2006} th
 of $k$ never exceeds 4 since this would complicate too much the cycle elimination logic
 and the pricing problem.
 ng-Routes are instead a partial elementarity constraint
-which is a simpler alternative to cycle-elimination.
+which is more effective than q-routes with $k$ cycle-elimination.
 The idea is to forbid a subset $\hat{V_0} \subset V_0$ of customers from being revisited.
 The ng-routes are efficiently implementable in the label-setting algorithm.
 
@@ -910,13 +952,7 @@ The ng-routes are efficiently implementable in the label-setting algorithm.
 
 
 
-Some general works instead were devoted in speeding up the performance of the label
-setting algorithm:
-(i) stronger dominance rules and completion bounds,
-(ii) a state-space relaxation procedure suggested in \textcite{christofides1981a},
-(iii) bidirectional search proposed in \textcite{righini2006},
-(iv) decremental state space relaxation in \textcite{boland2006, righini2008},
-(v) decremental state space relaxation extended to handle ng-sets,
+Decremental state space relaxation extended to handle ng-sets,
 where the size of the ng-sets are increased dynamically \textcite{martinelli2014}.
 
 
@@ -928,8 +964,6 @@ Another reasonable approach to speed-up the column generation process
 is the use of faster pricing heuristic algorithms. The exact
 pricing state is called only when the pricing heuristic fails
 at determining a valid reduced-cost route.
-\textcite{fukasawa2006} proposes a modification of the label-setting
-algorithm to use it as an heuristic pricer.
 
 
 
@@ -955,7 +989,7 @@ and use lagrangian relaxation to relax the capacity constraints.
 
 \subsection{Elementary Shortest Path Problem with Resource Constraints}
 In the case where the network may be contain negative cost cycles, the
-elementarity condition must be explicitely modeled, or relaxed, in order
+elementarity condition must be explicitly modeled, or relaxed, in order
 to obtain reasonable dual bound solutions for the CVRP.
 \textcite{feillet2004} proposes a dynamic programming algorithm where
 the elementary property is handled through the usage of an additional resource
@@ -1043,7 +1077,9 @@ improve the dual bound while also reducing the number
 of pricing iterations and the number of columns to take into consideration.
 Instead of branching, they employed full enumeration of the candidate
 routes and use a MIP package to solve the associated problem at the root node.
-\textcite{pessoa2008} improves over the work of \citeauthor{fukasawa2006}.
+\textcite{pessoa2008} improves over the work of \citeauthor{fukasawa2006}
+by integrates the work of \citeauthor{baldacci2008}
+through an hybridization between traditional branching and enumeration.
 
 \textcite{baldacci2011} proposed the ng-routes, a very effective
 partial (soft) elementarity constraint
@@ -1051,14 +1087,15 @@ that tradeoffs the elementarity condition (i.e. good dual bound in pricing)
 for a simpler pricer problem.
 The ng-routes,
 which are another core ingredient employed in modern VRP solvers (see \cite{pessoa2020a}),
-can be implemented nicely inside the label-setting algorithm.
+can be implemented inside the label-setting algorithm.
 \textcite{ropke2012} revisits the work \citeauthor{fukasawa2006} and applies
-the ng-routes relaxation.
+the ng-routes relaxation and strong branching schemes.
 
-\textcite{contardo2014} proposed an effective enumeration scheme and employed the ng-routes effectively.
+\textcite{contardo2014} proposed an effective enumeration scheme and employed
+the ng-routes and the decremental state space relaxation technique effectively.
 With this approach they were able to solve CVRP instances made of 151 customers.
 
-Finally, a modern BCP was proposed in \textcite{pecin2017}, which
+Finally, a modern BCP was proposed in \textcite{pecin2017}, which also
 proposed the non-robust limited memory subset row cuts \parencite{pecin2017a}.
 By using a bidirectional label setting algorithm, a modern dual smoothing and enumeration
 approach and the ng-routes relaxation, they were able to solve CVRP
