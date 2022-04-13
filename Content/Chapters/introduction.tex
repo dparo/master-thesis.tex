@@ -916,7 +916,8 @@ In their aproach the size of the ng-sets are increased dynamically
 in order to seek for more effective dual bounds.
 
 
-As, the average number of customers per route $N / K$ increases,
+It has been seen empirically that
+as the average number of customers per route $N / K$ increases,
 the number of pricing iterations per column generation increases.
 Therefore, \textcite{dumerle1999, pessoa2013} propose a dual stabilization
 technique to improve the convergence speed of the column generation process.
@@ -925,24 +926,6 @@ technique to improve the convergence speed of the column generation process.
 
 
 
-\subsection{Shortest Path Problem with Resource Constraints}
-If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\bar{c_{ij}} \ge 0$,
-the ESPPRC problem is solvable in polynomial time, since the elementarity conditions are guaranteed
-to be satisfied in this case.
-In this particular case, some authors have proposed efficient methods to tackle this case:
-\cite{beasley1989}, \cite{carlyle2008}, \cite{dumitrescu2003}, \cite{muhandiramge2009}.
-These proposed approaches work under the assumption that no negative cost cycle is present,
-and use lagrangian relaxation to relax the capacity constraints.
-
-
-\subsection{Elementary Shortest Path Problem with Resource Constraints}
-In the case where the network may be contain negative cost cycles, the
-elementarity condition must be explicitly modeled, or relaxed, in order
-to obtain reasonable dual bound solutions for the CVRP.
-\textcite{feillet2004} proposes a dynamic programming algorithm where
-the elementary property is handled through the usage of an additional resource
-bound to each node.
-\textcite{righini2006} proposes a bi-directional dynamic programming algorithm to solve the ESPPRC.
 
 
 \section{Literature Review}

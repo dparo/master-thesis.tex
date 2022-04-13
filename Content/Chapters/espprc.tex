@@ -54,6 +54,28 @@ Desrochers et al. [29] to solve the vehicle routing problem with time windows
 (VRPTW) through column generation.
 \end{comment}
 
+\begin{comment}
+
+[MY OWN STUFF]
+\subsection{Shortest Path Problem with Resource Constraints}
+If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\bar{c_{ij}} \ge 0$,
+the ESPPRC problem is solvable in polynomial time, since the elementarity conditions are guaranteed
+to be satisfied in this case.
+In this particular case, some authors have proposed efficient methods to tackle this case:
+\cite{beasley1989}, \cite{carlyle2008}, \cite{dumitrescu2003}, \cite{muhandiramge2009}.
+These proposed approaches work under the assumption that no negative cost cycle is present,
+and use lagrangian relaxation to relax the capacity constraints.
+
+\subsection{Elementary Shortest Path Problem with Resource Constraints}
+In the case where the network may be contain negative cost cycles, the
+elementarity condition must be explicitly modeled, or relaxed, in order
+to obtain reasonable dual bound solutions for the CVRP.
+\textcite{feillet2004} proposes a dynamic programming algorithm where
+the elementary property is handled through the usage of an additional resource
+bound to each node.
+\textcite{righini2006} proposes a bi-directional dynamic programming algorithm to solve the ESPPRC.
+\end{comment}
+
 \section{ESPPRC: IP formulation}
 Contrary to CVRP, the ESPPRC is usually defined over a directed network $G^\prime = (V^\prime, A^\prime)$ composed
 of $N + 1$ nodes where the original depot node is essentially split in two nodes: a source and a sink vertex.
