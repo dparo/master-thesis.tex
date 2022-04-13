@@ -767,35 +767,27 @@ Major contributions in the non-robust cutting planes domain, are:
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
 
-\mytodo{UNDER DEVELOPMENT}
-
-
-As we've already mentioned in the previous sections, the Pricing Problem (PP)
-asks for the determination of the elementary shortest path,
+The Pricing Problem (PP) asks for the determination of the elementary shortest path,
 subject to resource constraints,
 over a directed network formulation where the cost of each edge
 is dualized.
 In the ESPPRC problem, the elementarity condition imposes
-that the optimal route may not visit the same vertex at most once.
+that the optimal route may visit the same vertex at most once.
 As it was claimed in \textcite{dror1994},
-since the underlying network may,
-in the general case,
-contain negative cost cycles,
+since the underlying network may contain negative cost cycles,
 the ESPPRC is an NP-hard problem.
 
 \medskip
 
 The $q$-routes \parencite{christofides1981}
-are routes with total resource consumption $q$ that
-respect the vehicle capacity, but that do not necessarily
-satisfy the elementarity condition and thus may contain cycles.
+are routes with total resource consumption $q < Q$
+that do not necessarily satisfy the elementarity condition and may thus contain cycles.
 In $q$-routes each additional visit to already covered customers
 stills counts to the total consumption of the resource.
-In the original definition of $q$-routes, as provided
-from \parencite{christofides1981}, cycles of two vertices
-are prohibited.
-In $q$-routes with $k$-cycle elimination, instead,
-multiple visits to the same vertex are allowed only
+In the original definition of $q$-routes cycles of two vertices are prohibited.
+The $q$-routes with $k$-cycle elimination
+are a natural extension of the $q$-routes
+in which multiple visits to the same vertex are allowed only
 if at least $k$ other vertices are covered in between.
 
 
@@ -806,7 +798,7 @@ and thus solvable through a pseudo-polynomial algorithm \parencite{desrochers198
 Many of the most efficient algorithms for the VRP
 rely on the solution of subproblems which
 make use of q-routes and the pricing
-problem has been modeled by many authors as an SPPRC \parencite{contardo2011, contardo2014}.
+problem has been modeled by many authors as an SPPRC \parencite{feillet2004, contardo2011}.
 This enlargement of the set of feasible paths $P$,
 while still valid,
 it has unfortunately the downside
@@ -916,7 +908,7 @@ In their aproach the size of the ng-sets are increased dynamically
 in order to seek for more effective dual bounds.
 
 
-It has been seen empirically that
+It has been empirically seen that
 as the average number of customers per route $N / K$ increases,
 the number of pricing iterations per column generation increases.
 Therefore, \textcite{dumerle1999, pessoa2013} propose a dual stabilization
