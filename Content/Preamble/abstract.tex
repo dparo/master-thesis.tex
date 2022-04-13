@@ -11,7 +11,9 @@ The pricer, an important component in column generation, needs to solve
 the so-called Pricing Problem (PP) which asks for an
 Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
 in a reduced cost network.
-The ESPPRC has been traditionally relaxed and solved through dynamic programming
+Little scientific efforts have been dedicated in studying
+branch-and-cut based approaches for tackling the PP.
+In fact, the ESPPRC has been traditionally relaxed and solved through dynamic programming
 algorithms which are known to degrade in performance as
 the length of the produced routes increases.
 A set of historical test instances are usually employed to access
@@ -20,8 +22,6 @@ These historical artificial instances are characterized by small routes
 and they do not capture the main properties of modern real-world distribution
 problems,
 which are instead characterized by much longer routes.
-Little effort has been dedicated in studying branch-and-cut
-based pricers for solving the PP.
 
 \noindent In this thesis we develop
 a branch-and-cut based scheme for solving the pricing problem
