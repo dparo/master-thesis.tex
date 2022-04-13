@@ -375,6 +375,12 @@ An extension of the BAP framework, the so-called branch-price-and-cut (BPC) fram
 is in essence a branch-and-bound (BAB) algorithm where dual bounds are obtained through column generation (CG)
 and cutting-planes are added to strengthen the linear relaxations associated to each node of the search-tree.
 
+In the next section we will illustrate the column generation algorithm
+and the pricing problem, two vital pieces in branch-and-price frameworks.
+We refer the reader to \textcite{feillet2010}, which contains a nice
+tutorial over these topics.
+
+
 
 \subsection{Column generation and the Pricing Problem}
 \label{sec:column-generation-and-pricing-problem}
@@ -412,13 +418,14 @@ obtaining the following linear program:
 
 which takes the name of \textbf{Restricted Master Problem} (RMP).
 
-In BAP frameworks, we seek to solve the so-called \textbf{Pricing Problem} (PP) defined as:
+In BAP frameworks, we seek to solve the following sub-problem:
 
-\begin{equation}
+\begin{equation}\label{eq:pp-problem}
 	{c^\star_p} = \min_{p \in P} \Set*{ \bar{c_p} = \sum_{e = \Set*{i, j} \in E} \Expr*{c_{e} - \frac{\pi_i + \pi_j}{2}} a_{ep}  }
 \end{equation}
 
-where $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
+which takes the famous name of \textbf{Pricing Problem} (PP).
+In \cref{eq::pp-problem}, $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
 and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$
 that leads to the best dual bound improvement.
 For convenience,
