@@ -37,8 +37,8 @@ the Vehicle Routing Problem with Time Windows (VRPTW), and many others.
 In the VRPTW \parencite{schrage1981} each customer is associated with a time window slot
 in which it can be served,
 and the vehicles are subject to capacity constraints.
-Nonetheless, CVRP is the simpler VRP variant to describe, which
-yet to this day, it remains the most central and studied routing problem.
+Nonetheless, CVRP is the simpler VRP variant to describe,
+and yet to this day, it remains the most central and studied routing problem.
 
 While effective (meta-)heuristic algorithms have been proposed and applied
 successfully to many VRP variants to obtain good-enough solutions
@@ -178,7 +178,7 @@ Constraints \eqref{eq:two-index-flow-x-mip-var-bounds-depot} and \eqref{eq:two-i
 except for all edges incident at the depot.
 The edge-case modeled in constraint \eqref{eq:two-index-flow-x-mip-var-bounds-depot} is necessary to allow single-customer routes.
 Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), also called Rounded Capacity Constraints (RCC), they function both:
-(i) as a Subtour Elimination Constraints (SECs), by imposing connectivity of the solution by avoiding the formation of spurious unconnected subtours,
+(i) as Subtour Elimination Constraints (SECs), by imposing connectivity of the solution by avoiding the formation of spurious unconnected subtours,
 and (ii) as a capacity constraint, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
 Recall that, $r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$,
 also, $r(S)$ always satisfies $r(S) \ge 1$ for non-trivial CVRP instances: $q(S) > 0$.
@@ -191,7 +191,7 @@ thus obtaining the following inequality:
 	\sum_{e \in \delta(S)} x_e \ge 2 \ceil*{\frac{q(S)}{Q}}   \quad \forall S \subseteq V_0, |S| \ge 1
 \end{equation}
 
-The less tight inequality of \cref{eq:two-index-flow-ccc-bpp-lb} is sufficient to optimally solve
+The looser inequality of \cref{eq:two-index-flow-ccc-bpp-lb} is sufficient to optimally solve
 the two-index arc flow formulation.
 Although, a better lower bound for the Bin Packing Problem can improve the linear
 relaxation, thus reducing the number of branching occurrences.
@@ -358,7 +358,7 @@ since their definitions are captured within the definition of the set $P$ itself
 
 In the next sections we will introduce
 the branch-and-price (BAP) framework and the Column Generation (CG) approach,
-key components employed in modern state-of-the-art CVRP solvers.
+key components employed in contemporary CVRP solvers.
 
 
 \section{Branch and Price}
@@ -1132,10 +1132,10 @@ are currently the best overall performing algorithms.
 \section{Thesis Contributions}
 \label{sec:intro-thesis-contributions}
 
-One of the major problems of current state-of-the-art CVRP solvers
+One of the major problems of contemporary CVRP solvers
 is that they are usually developed and tuned through the use of historical
 benchmark instances.
-The major historical test instances are classified in different sets (or families), and
+Some of the major historical test instances are classified in different sets (or families), and
 they are usually referred in the literature through a single upper case letter.
 We here summarize the core sets proposed by the operations research community for the CVRP problem:
 (i) set E is proposed in \textcite{christofides1969} and contains no description about how the instances were generate,
