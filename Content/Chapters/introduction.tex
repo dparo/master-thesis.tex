@@ -879,13 +879,26 @@ of a controlled \textbf{partial elementarity} condition.
 The idea of partial elementarity consists in obtaining
 dual bounds as close as possible to the elementary route bound,
 while still keeping the pricing problem manageable \parencite{contardo2014}.
+
 Initial efforts, have studied the usage of $q$-routes with
-$k$-cycle elimination with $k \ge 2$ within the labeling algorithm \parencite{christofides1981a, irnich2006}.
+$k$-cycle elimination with $k \ge 2$ within the labeling algorithm \parencite{irnich2006}.
 Unfortunately, \textcite{fukasawa2006} analyze the $q$-routes with $4$-cycle elimination
-and they shows that already at this point the pricing becomes too slow
+and they show that already at this point the pricing becomes too slow
 and the obtained dual bounds are still not satisfactory close to the elementary bounds.
 
-
+One of the breakthrough in the efficiency of contemporary pricers
+can be attributed to the ng-routes relaxation developed in \textcite{baldacci2011}.
+\citeauthor{baldacci2011}, noticed that, when pricing $q$-routes,
+in most of the cases cycles appeared to use only edges of small costs
+and were confied into relatively small clusters of the graph.
+They define the concept of ng-set $N_i$ for a vertex $i$
+which encodes the $|N_i|$ closest neighborhood of the vertex $i$.
+The quantity $|N_i|$ is pre-determined and can be raised on demand.
+The ng-routes allows cycles over a vertex $i \in V$ only if the route
+passes through a vertex $j \in V \mid i \notin N_j$.
+The ng-routes relaxation, which can be easily embedded inside the labeling algorithm,
+may be seen as a softer, versatile, and more dynamic form of $q$-routes
+with $k$-cycle elimination.
 
 
 
