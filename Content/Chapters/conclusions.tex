@@ -39,6 +39,17 @@ Since the heuristic is faster than the exact push-relabel
 algorithm ($O(n^2.2)$), it may be run on each fractional
 separation.
 
+Other improvements: improve the initial dual bound of the branch-and-cut
+algorithm by pricing an initial q-route using the labeling algorithm,
+or by using the branch-and-cut itself.
+
+Another possible solution could be to emulate the decremental state space
+relaxation, but by employing the branch-and-cut frameworks itself.
+The branch-and-cut algorithm is asked to first generate $q$-routes by
+relaxing the bounds on the $y_i$ mip variables,
+and then for each vertex visited twice of more, the associated bound
+on the $y_i$ is strengthened.
+
 
 \subsection{Future work}
 \mytodo{Extend the CPTP model to consider VRPTW, and re-evaluate the empirical results}

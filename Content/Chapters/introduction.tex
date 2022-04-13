@@ -749,8 +749,8 @@ Major contributions in the non-robust cutting planes domain, are:
 	      in \textcite{petersen2008}, are a further generalization of the SRCs.
 	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011}, they can be considered
 	      a specialized version of the SCCs.
-          They can enforce partial route elementarity and are redundant
-          when the pricer always outputs elementary paths.
+	      They can enforce partial route elementarity and are redundant
+	      when the pricer always outputs elementary paths.
 	\item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
 	      are a weakened version of the SDCs (and thus easier for the PP), which forbids
 	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
@@ -840,11 +840,13 @@ where they propose using an additional resource bound to each
 node to handle the elementarity condition
 by extending the original idea drafted in \textcite{beasley1989}.
 As \citeauthor{feillet2004} points out, this approach has a two-fold effect.
-First, the duality gap obtained at the linear relaxation is substantially better compared to considering just the q-routes.
+First, the duality gap obtained at the linear relaxation is substantially better
+compared to considering just the q-routes.
 Second, it might enable certain classes of problems where relying
 on column generation schemes based on q-routes is simply not an option.
-The running time complexity of the new extended algorithm for pricing elementary routes is $O(2^N Q)$ operations,
-thus making it impractical in many cases.
+The running time complexity of the new extended algorithm for pricing elementary routes
+is $O(2^N Q)$ operations,
+thus making limiting its applicability on bigger problems.
 Nonetheless, some contributions have been made to improve its overall running time.
 Some major ones can be attributed to:
 (i) bidirectional search proposed in \textcite{righini2006},
@@ -854,7 +856,7 @@ The decremental state space relaxation is an iterative
 approach where elementarity is iteratively increased on demand.
 In this approach the label-correcting algorithms
 is first asked to generate q-routes, then for each vertex that is visited
-twice or more, elementarity is forced, and the procedure is repeated.
+twice or more, elementarity is enforced and the procedure is repeated.
 The first BCP algorithm, using full elementarity routes
 was proposed in \cite{chabrier2006}, but unfortunately,
 applying arbitrary $k$-cycle elimination to the pricing problem,
@@ -866,7 +868,7 @@ algorithm to employ it as a heuristic pricer.
 \medskip
 
 Despite arbitrary $k$-cycle elimination can also
-be enforced through the usage of cuts,
+be enforced through the usage of non-robust cuts,
 \citeauthor{feillet2004} showed that their elimination
 within the column generation procedure supplied
 substantially better dual bounds at the cost
@@ -877,6 +879,13 @@ of a controlled \textbf{partial elementarity} condition.
 The idea of partial elementarity consists in obtaining
 dual bounds as close as possible to the elementary route bound,
 while still keeping the pricing problem manageable \parencite{contardo2014}.
+Initial efforts, have studied the usage of $q$-routes with
+$k$-cycle elimination with $k \ge 2$ within the labeling algorithm \parencite{christofides1981a, irnich2006}.
+Unfortunately, \textcite{fukasawa2006} analyze the $q$-routes with $4$-cycle elimination
+and they shows that already at this point the pricing becomes too slow
+and the obtained dual bounds are still not satisfactory close to the elementary bounds.
+
+
 
 
 
