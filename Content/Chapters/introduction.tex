@@ -39,6 +39,7 @@ in which it can be served,
 and the vehicles are subject to capacity constraints.
 Nonetheless, CVRP is the simpler VRP variant to describe,
 and yet to this day, it remains the most central and studied routing problem.
+For a more complete taxonomy on the many VRP variants refer to \textcite{braekers2016}.
 
 While effective (meta-)heuristic algorithms have been proposed and applied
 successfully to many VRP variants to obtain good-enough solutions
@@ -369,7 +370,7 @@ key components employed in contemporary CVRP solvers.
 Branch-and-price (BAP) frameworks are in essence a branch-and-bound (BAB) scheme, i.e. making use of a search tree, that originates when solving the SP formulation for vehicle routing problems.
 Compared to more traditional branch-and-cut (BAC) frameworks, their primary focus is the usage of a Column Generation (CG) technique for improving the dual bound, see \textcite{righini2008}.
 BAP frameworks were first applied successfully in \textcite{gilmore1961} to the Cutting-Stock problem.
-An extension of the BAP framework, the so-called branch-and-cut-and-price (BPC) framework,
+An extension of the BAP framework, the so-called branch-price-and-cut (BPC) framework,
 is in essence a branch-and-bound (BAB) algorithm where dual bounds are obtained through column generation (CG)
 and cutting-planes are added to strengthen the linear relaxations associated to each node of the search-tree.
 
@@ -512,7 +513,7 @@ Although non strictly-necessary, modern BAP also use
 cut generation procedures to efficiently improve the dual bound and improve the convergence speed.
 Modern BAP frameworks
 are in fact a hybridization between a BAP and a BAC framework,
-making them a branch-and-cut-and-price (BCP) frameworks.
+making them a branch-price-and-cut (BPC) frameworks.
 Some notable works integrating cutting-planes and proposing
 a BCP approach for the VRP can be found \textcite{fukasawa2006, ropke2012}.
 
@@ -987,7 +988,7 @@ cutting-planes within a BAP framework for solving the CVRP.
 
 One of the major breakthrough in column generation and VRP research
 was obtained in \textcite{fukasawa2006}, which were the
-first authors to propose a branch-and-cut-and-price (BCP) algorithm,
+first authors to propose a branch-price-and-cut (BPC) algorithm,
 embedding a powerful robust-cuts based cutting-plane approach
 typically found in BAC algorithms.
 \citeauthor{fukasawa2006} integrated the cutting-planes proposed in \cite{lysgaard2004},
@@ -1013,7 +1014,7 @@ k-CECs cuts are used to enforce elementarity.
 
 \textcite{baldacci2011} proposed the ng-routes, a very effective
 partial (soft) elementarity constraint
-that tradeoffs the elementarity condition (i.e. good dual bound in pricing)
+that trade-offs the elementarity condition (i.e. good dual bound in pricing)
 for a simpler pricer problem.
 The ng-routes,
 which are another core ingredient employed in modern VRP solvers (see \cite{pessoa2020a}),
