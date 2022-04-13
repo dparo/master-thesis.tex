@@ -785,23 +785,6 @@ the ESPPRC is an NP-hard problem.
 
 \medskip
 
-In the case where the reduced cost network of the ESPPRC does not contain negative cost cycles
-the elementarity condition does not need explicit modeling
-and the resulting problem may be solved efficiently.
-Some authors have proposed branch-and-bound
-schemes applying the Lagrangian relaxation to the resource constraints
-and by solving the associated shortest path
-problem, through standard algorithms \parencite{beasley1989, carlyle2008}.
-
-Other approaches for tackling the SPPRC use a
-a tree-search scheme and a Lagrangian relaxation based
-technique by employing standard unconstrained shortest path
-algorithms, such as the Dijkstra algorithm \parencite{beasley1989}.
-
-
-\medskip
-
-
 The $q$-routes \parencite{christofides1981}
 are routes with total resource consumption $q$ that
 respect the vehicle capacity, but that do not necessarily
@@ -811,7 +794,7 @@ stills counts to the total consumption of the resource.
 In the original definition of $q$-routes, as provided
 from \parencite{christofides1981}, cycles of two vertices
 are prohibited.
-The $q$-routes with $k$-cycle elimination, instead,
+In $q$-routes with $k$-cycle elimination, instead,
 multiple visits to the same vertex are allowed only
 if at least $k$ other vertices are covered in between.
 
@@ -823,7 +806,7 @@ and thus solvable through a pseudo-polynomial algorithm.
 Many of the most efficient algorithms for the VRP
 rely on the solution of subproblems which
 make use of q-routes and the pricing
-problem has been modeled by many authors as an SPPRC
+problem has been modeled by many authors as an SPPRC \parencite{contardo2011, contardo2014}.
 This enlargement of the set of feasible paths $P$,
 while still valid,
 it has unfortunately the downside
@@ -882,8 +865,20 @@ algorithm to employ it as a heuristic pricer.
 
 \medskip
 
+Despite arbitrary $k$-cycle elimination can also
+be enforced through the usage of cuts,
+\citeauthor{feillet2004} showed that their elimination
+within the column generation procedure supplied
+substantially better dual bounds at the cost
+of increasing the running time of the pricing problem.
+Inspired from these works, given the complexity
+of the ESPPRC, many authors have investigated the usage
+of a controlled \textbf{partial elementarity} condition.
+The idea of partial elementarity consists in obtaining
+dual bounds as close as possible to the elementary route bound,
+while still keeping the pricing problem manageable \parencite{contardo2014}.
 
-It becomes evident that there's a clear substantial tradeoff
+
 
 Given the complexity
 of the ESPPRC, many authors have designed BPC
@@ -916,6 +911,8 @@ in making the pricing problem more tractable, while at the same time,
 keep bounds as close as possible to the elementary route bound.
 
 
+\textcite{fukasawa2006} tests propose a column generation scheme
+where columns are associated with $q$-routes with $k$-cycle elimination.
 
 \medskip
 

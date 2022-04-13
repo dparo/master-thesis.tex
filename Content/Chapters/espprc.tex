@@ -26,6 +26,23 @@ induced from the SP formulation coincides with an ESPPRC.
 If non-robust cuts are employed, the sub-problem becomes
 a slight variation of the EPSRRC which is characterized by additional constraints.
 
+\medskip
+
+In the case where the reduced cost network of the ESPPRC does not contain negative cost cycles
+the elementarity condition does not need explicit modeling
+and the resulting problem may be solved efficiently.
+Some authors have proposed branch-and-bound
+schemes applying the Lagrangian relaxation to the resource constraints
+and by solving the associated shortest path
+problem, through standard algorithms \parencite{beasley1989, carlyle2008}.
+
+Other approaches for tackling the SPPRC use a
+a tree-search scheme and a Lagrangian relaxation based
+technique by employing standard unconstrained shortest path
+algorithms, such as the Dijkstra algorithm \parencite{beasley1989}.
+
+\medskip
+
 \begin{comment}
 \cite{bettinelli2010mathematical} ---------------
 It is possible to address the pricing problem by optimizing its relaxation,
