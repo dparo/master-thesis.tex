@@ -13,15 +13,17 @@ Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
 in a reduced cost network.
 Little scientific efforts have been dedicated in studying
 branch-and-cut based approaches for tackling the PP.
-In fact, the ESPPRC has been traditionally relaxed and solved through dynamic programming
-algorithms which are known to degrade in performance as
-the length of the produced routes increases.
-A set of historical test instances are usually employed to access
-the performance of the scientific contributions.
-These historical artificial instances are characterized by small routes
-and they do not capture the main properties of modern real-world distribution
-problems,
-which are instead characterized by much longer routes.
+The ESPPRC has been traditionally relaxed and solved through dynamic programming
+algorithms. This approach, however, has two main downsides.
+First, it leads to a worsening of the obtained dual bounds.
+Second, the running time deteriorates as
+the length of the generated routes increases.
+The operations research community have traditionally employed
+a set of historical and artificial test instances to evaluate
+the performance of their contributions.
+Unfortunately, these instances, which are characterized by small routes,
+do not capture the main properties of modern real-world distribution
+problems, in which the routes are longer by nature.
 
 \noindent In this thesis we develop
 a branch-and-cut based scheme for solving the pricing problem
