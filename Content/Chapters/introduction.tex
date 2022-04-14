@@ -506,8 +506,11 @@ $(p_1, \dots, p_K) \mid \lambda^\star_{p_i} = 1$.
 It is important to also note that
 the CG doesn't need to solve the PP optimally at each iteration of the simplex algorithm.
 To improve the dual bound,
-it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$,
-which it allows for the usage of heuristic algorithms
+it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$.
+There is no need to solve the pricing problem exactly,
+except to prove optimality at the last column generation iteration.
+Therefore, fast and efficient heuristic algorithms may be employed
+to tackle the pricing problem,
 especially during the very first few pricing iterations,
 where finding good reduced cost columns is surprisingly easy.
 
@@ -878,7 +881,7 @@ Some major ones can be attributed to:
 (ii) decremental state space relaxation proposed independently in
 \textcite{boland2006, righini2008} under different names.
 The decremental state space relaxation is an iterative
-approach where elementarity is iteratively increased on demand.
+approach where elementarity iteratively inserted on demand.
 In this approach the label-correcting algorithms
 is first asked to generate q-routes, then for each vertex that is visited
 twice or more, elementarity is enforced and the procedure is repeated.
@@ -975,11 +978,6 @@ algorithm to employ it as a faster pricing heuristic.
 This can substantially improve the speed of the column generation process
 as the exact pricing stage is called only when the pricing heuristic
 fails at determining a valid reduced cost route.
-
-\textcite{martinelli2014} extends the decremental state space relaxation
-to handle ng-sets.
-In their approach the size of the ng-sets are increased dynamically
-in order to seek for more effective dual bounds.
 
 
 It has been empirically seen that
@@ -1097,6 +1095,12 @@ q-routes with 2-cycle elimination, ng-routes with ng-set size 8,
 non-robust k-CECs cuts to avoid larger cycles
 and the decremental state space relaxation technique.
 With this approach they were able to solve CVRP instances made of 151 customers.
+
+\textcite{martinelli2014} extends the decremental state space relaxation
+to handle ng-sets.
+In their approach the size of the ng-sets size
+is enlarged dynamically in order to seek for more effective dual bounds.
+
 
 Finally, a modern BCP was proposed in \textcite{pecin2017}, which also
 proposed the non-robust limited memory subset row cuts \parencite{pecin2017a}.
