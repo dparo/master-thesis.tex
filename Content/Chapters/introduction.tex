@@ -926,15 +926,43 @@ The quantity $|N_i|$ may be raised on demand to achieve better dual bounds.
 The ng-routes allows cycles over a vertex $i \in V$ only if the route
 passes through a vertex $j \in V \mid i \notin N_j$.
 In the ng-routes relaxation,
-feasibility is verified through the usage of a limited-memory set,
+dominance is verified through the usage of a limited-memory set,
 which it changes as the route gets extended.
 The limited-memory "forgets" about older covered vertices
-which then may be subsequent revisited as the path's length increases.
+which then may be subsequent revisited as the paths get longer.
 The ng-routes relaxation, which can be easily embedded inside the labeling algorithm,
-may be seen as a softer, more versatile, and more dynamic form of $q$-routes
-with $k$-cycle elimination.
+may be seen as more versatile, and more dynamic form of $q$-routes
+with $k$-cycle elimination, since cycles are measured in terms of distances \parencite{contardo2014}.
 This novel relaxation achieves a bound very close to the elementary bound while
 not being detrimental for the pricing problem.
+
+\begin{comment}
+    \parencite{condardo2014}
+    Irnich and Villeneuve [15] used this observation to develop the so-called SPPRC
+    with k-cycle elimination (k-cyc-SPPRC), in which short cycles (in terms of the number of customers visited between two
+    consecutive appearances of a given node) are forbidden whereas long cycles (in terms of the same number) are still allowed.
+    The advantage of the ng-SPPRC with respect to k-cyc-SPPRC is how the length of a cycle is defined. Indeed, the number of
+    customers between two appearances of a node may not be the right criterion, the length of the cycle in terms of distance
+    being a better measure of the impact of a cycle in the linear relaxation lower bound. The ng-SPPRC thus forbids cycles that
+    are short with respect to the time consumption regardless of the number of nodes between two appearences of a given
+    customer.
+
+    \parencite{costa2019}
+    Given that long cycles in terms of distance
+    have not much chance to appear in an MP optimal
+    solution, the ng-SPPRC represents a powerful relaxa-
+    tion.
+    An important parameter in the ng-SPPRC is Δ, the
+    size of the neighborhoods, which is normally de-
+    ﬁned a priori and interferes on the labeling algorithm
+    complexity. On the one hand, the larger the value of Δ,
+    the closer to the ESPPRC the ng-SPPRC becomes. On
+    the other hand, the algorithm complexity increases ex-
+    ponentially with the value of Δ. Baldacci, Mingozzi, and
+    Roberti (2011) show that Δ  8 represents a good
+    trade-off between lower bound quality and computing
+    time for the VRPTW.
+\end{comment}
 
 
 \medskip
