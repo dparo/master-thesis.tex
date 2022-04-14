@@ -904,10 +904,16 @@ dual bounds as close as possible to the elementary route bound,
 while still keeping the pricing problem manageable \parencite{contardo2015}.
 
 Initial efforts, have studied the usage of $q$-routes with
-$k$-cycle elimination with $k \ge 3$ within the labeling algorithm \parencite{irnich2006}.
-Unfortunately, \textcite{fukasawa2006} analyze the $q$-routes with $4$-cycle elimination
-and they show that already at this point the pricing becomes too slow
-and the obtained dual bounds are still not satisfactory close to the elementary bounds.
+$k$-cycle elimination with $k \ge 3$ within the labeling algorithm \parencite{irnich2006, fukasawa2006}.
+Unfortunately, \textcite{fukasawa2006}
+test the $q$-routes with $4$-cycle elimination
+and they show such approach leads
+to a too slow pricing problem
+while at the same not reaching dual bounds
+satisfactory close to the elementary bound.
+A different relaxation was provided in \textcite{desaulniers2008},
+where they introduce a concept of partial elementarity achieved
+by enforcing the elementarity condition only to a small subset of the customers.
 
 One of the breakthrough in the efficiency of contemporary pricers
 can be attributed to the ng-routes relaxation developed in \textcite{baldacci2011}.
