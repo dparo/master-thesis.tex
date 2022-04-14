@@ -351,7 +351,8 @@ Transforming the SP to the SC formulation vastly shrinks (halves) the size of th
 
 
 The SP formulation has two main advantages.
-First, its linear relaxation provides excellent lower bounds \parencite{bramel1997}.
+First, its linear relaxation provides excellent lower bounds \parencite{bramel1997},
+compared to the two or three arc flow formulation.
 Second, it can handle many VRP variants,
 even described through very complex constraints,
 since their definitions are captured within the definition of the set $P$ itself.
@@ -367,8 +368,12 @@ key components employed in contemporary CVRP solvers.
 \section{Branch and Price}
 \label{sec:intro-branch-and-price}
 
-Branch-and-price (BAP) frameworks are in essence a branch-and-bound (BAB) scheme, i.e. making use of a search tree, that originates when solving the SP formulation for vehicle routing problems.
-Compared to more traditional branch-and-cut (BAC) frameworks, their primary focus is the usage of a Column Generation (CG) technique for improving the dual bound, see \textcite{righini2008}.
+Branch-and-price (BAP) frameworks are in essence a branch-and-bound (BAB) scheme,
+i.e. making use of a search tree,
+that originates when solving the SP formulation for vehicle routing problems.
+Compared to more traditional branch-and-cut (BAC) frameworks,
+their primary focus is the usage of a Column Generation (CG) technique for improving the dual bound,
+see \textcite{righini2008}.
 BAP frameworks were first applied successfully in \textcite{gilmore1961} to the Cutting-Stock problem.
 For a primer introduction to branch-and-price schemes refer to the work of \textcite{barnhart1998}.
 An extension of the BAP framework, the so-called branch-price-and-cut (BPC) framework,
