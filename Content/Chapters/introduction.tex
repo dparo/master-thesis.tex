@@ -630,7 +630,7 @@ for solving the CVRP.
 At first glance,
 it might seem reasonable to branch directly on the $\lambda_p$ variables of the SP formulation.
 Unfortunately, such form of branching is non-robust
-and leads to a harder pricing problem.
+and leads to a harder pricing problem: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
 
 Most of the branching approaches studied in the literature for the CVRP involve
 mere extension of branching schemes used traditionally for the TSP.
@@ -639,7 +639,7 @@ yet one of the most effective,
 involves \textbf{branching on arcs}.
 The branching on arcs scheme was first proposed for the CVRP in \textcite{christofides1969a},
 and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
-The arc flows can be easily computed from the master problem:
+The arc flows can be easily computed from the master problem as:
 
 \begin{equation}
 	x_e = \sum_{p \in P} a_{ep} \lambda_p  \quad \forall e \in E
@@ -673,7 +673,8 @@ where again $\pi \in \R^N$ represents the dual variables associated with \cref{e
 Reduction and dominance rules may be employed to remove some arcs
 which can be proved to not belong to an optimal solution.
 Reduction and dominance rules may be viewed as a special case of branching
-with a single descendant node, which allows to eliminate the evaluation
+with a single descendant node.
+These rules allow to eliminate the evaluation
 a good portion of the solution space.
 
 
