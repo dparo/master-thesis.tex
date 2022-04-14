@@ -917,7 +917,7 @@ by enforcing the elementarity condition only to a small subset of the customers.
 
 One of the breakthrough in the efficiency of contemporary pricers
 can be attributed to the ng-routes relaxation developed in \textcite{baldacci2011}.
-\citeauthor{baldacci2011}, noticed that, when pricing $q$-routes,
+\citeauthor{baldacci2011} noticed that, when pricing $q$-routes,
 in most of the cases cycles appeared to use only edges of small costs
 and were confined into relatively small clusters of the graph.
 They define the concept of ng-set $N_i$ for a vertex $i$
@@ -925,6 +925,11 @@ which encodes the $|N_i|$ closest neighbors of the vertex $i$.
 The quantity $|N_i|$ may be raised on demand to achieve better dual bounds.
 The ng-routes allows cycles over a vertex $i \in V$ only if the route
 passes through a vertex $j \in V \mid i \notin N_j$.
+In the ng-routes relaxation,
+feasibility is verified through the usage of a limited-memory set,
+which it changes as the route gets extended.
+The limited-memory "forgets" about older covered vertices
+which then may be subsequent revisited as the path's length increases.
 The ng-routes relaxation, which can be easily embedded inside the labeling algorithm,
 may be seen as a softer, more versatile, and more dynamic form of $q$-routes
 with $k$-cycle elimination.
