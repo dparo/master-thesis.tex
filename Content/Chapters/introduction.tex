@@ -401,11 +401,13 @@ as the linear relaxation of the SP formulation obtained by relaxing the integral
 \end{align}
 
 
+An optimal solution to the MP provides a valid dual bound at the root node of the search tree.
+The master problem can be modified by adding cuts or branching constraints to improve the obtained dual bound.
 When solving the MP,
 at each iteration of the simplex algorithm \parencite{dantzig1955} we seek for a non-basic variable (i.e. column)
 to price out and enter the basis.
-This is achieved by evaluating the dual variables $\pi \in \R^{N}$
-associated with constraints \eqref{eq:mp-K-routes}, \eqref{eq:mp-customers-visited-by-exactly-one-route}.
+This is achieved by evaluating the dual variables $\pi_0 \in \R$, $\pi_{i} \in \R \ \forall i \in V_0$
+associated respectively with \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
 Due to the huge size of the set of routes $P$,
 it is computationally intractable to evaluate numerically the dual variables $\pi \in \R^{N}$.
 
@@ -430,7 +432,7 @@ In BAP frameworks, we seek to solve the following sub-problem:
 \end{equation}
 
 which takes the famous name of \textbf{Pricing Problem} (PP).
-In \cref{eq::pp-problem}, $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
+In \cref{eq:pp-problem}, $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
 and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$
 that leads to the best dual bound improvement.
 For convenience,
