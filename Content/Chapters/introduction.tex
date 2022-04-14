@@ -266,7 +266,7 @@ where $z_\mt{3F}(x, y)$, as defined in \eqref{eq:three-index-flow-obj-func}, is 
 Constraint \eqref{eq:three-index-flow-all-customers-visited} forces all customers to be served exactly once.
 Constraint \eqref{eq:three-index-flow-tour-starts-and-ends-at-depot} forces all the truck tours to start at the depot and end at the same spot.
 Constraint \eqref{eq:three-index-flow-force-visited-customer-if-flow} binds the $y_{ik}$ variables to the corresponding $x_{ijk}$ variables, by ensuring that if a truck's route passes through a vertex, then the corresponding node is marked as visited.
-Constraint \eqref{eq:three-index-flow-force-resource-upper-bound} is the resource upper bound constraint and it ensures that the demand served by each truck does not exceed the truck capacity.
+Constraint \eqref{eq:three-index-flow-force-resource-upper-bound} is the capacity upper bound constraint and it ensures that the demand served by each truck does not exceed the truck capacity.
 Constraints \eqref{eq:three-index-flow-secv1} are the Generalized Subtour Elimination Constraints (GSECs), they impose the connectivity of the route and are used to avoid the formation of spurious unconnected subtours.
 Constraints \eqref{eq:three-index-flow-x-mip-var-bounds-depot} and \eqref{eq:three-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
 except for all edges incident at the depot.
@@ -460,6 +460,10 @@ The ESPPRC problem asks for an elementary path (i.e. each vertex visited at most
 from a vertex, called a source vertex, and ending in another vertex, called the sink vertex.
 In the ESPPRC, the depot node is replaced by two vertices (one source, one sink)
 and the newly obtained network is characterized by $N + 1$ vertices.
+Resources are non-decreasing quantities,
+such as capacity or time,
+which are used to evaluate
+the feasibility of a route.
 
 \medskip
 
@@ -840,12 +844,12 @@ up the resolution process tremendously.
 The label-correcting algorithm
 is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
 a common algorithm present in the "tool belt" of all operations research practitioners.
-Its running time complexity for pricing q-routes is $O(N^2 Q)$ operations,
-and thus its performance scales with the vehicle capacity $Q$, and cannot be
-competitive when $Q$ is very large.
+Its running time complexity for pricing q-routes is $O(N^2 Q)$ operations.
+Notice that its performance scales with the vehicle capacity $Q$, and therefore
+may not be sufficiently competitive when the vehicle capacity $Q$ is very large.
 
 The label-correcting algorithm, was later extended to handle
-the ESPPRC in \textcite{feillet2004},
+the elementary paths in \textcite{feillet2004},
 where they propose using an additional resource bound to each
 node to handle the elementarity condition
 by extending the original idea drafted in \textcite{beasley1989}.
@@ -898,17 +902,17 @@ One of the breakthrough in the efficiency of contemporary pricers
 can be attributed to the ng-routes relaxation developed in \textcite{baldacci2011}.
 \citeauthor{baldacci2011}, noticed that, when pricing $q$-routes,
 in most of the cases cycles appeared to use only edges of small costs
-and were confied into relatively small clusters of the graph.
+and were confined into relatively small clusters of the graph.
 They define the concept of ng-set $N_i$ for a vertex $i$
-which encodes the $|N_i|$ closest neighborhood of the vertex $i$.
-The quantity $|N_i|$ is pre-determined and can be raised on demand.
+which encodes the $|N_i|$ closest neighbors of the vertex $i$.
+The quantity $|N_i|$ may be raised on demand to achieve better dual bounds.
 The ng-routes allows cycles over a vertex $i \in V$ only if the route
 passes through a vertex $j \in V \mid i \notin N_j$.
 The ng-routes relaxation, which can be easily embedded inside the labeling algorithm,
-may be seen as a softer, versatile, and more dynamic form of $q$-routes
+may be seen as a softer, more versatile, and more dynamic form of $q$-routes
 with $k$-cycle elimination.
-They achieve a bound very close to the elementary bound while
-no being detrimental for the pricing problem.
+This novel relaxation achieves a bound very close to the elementary bound while
+not being detrimental for the pricing problem.
 
 
 \medskip
