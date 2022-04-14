@@ -981,6 +981,16 @@ fails at determining a valid reduced cost route.
 \textcite{desaulniers2008} and \textcite{archetti2011} use a tabu search
 meta-heuristic to generate routes with negative reduced costs.
 
+\textcite{lozano2013} proposes the so called pulse algorithm
+to solve the SPPRC, and in \textcite{lozano2016} is extended to handle
+the elementarity condition.
+
+\textcite{desaulniers2019} propose a new paradigm called "selective pricing",
+where they propose an early abortion of the column generation procedure,
+when there's proof that no reduced-cost elementary routes,
+even if the relaxed ESPRCC still admits reduced-cost relaxed routes.
+Thus, this paradigm selectively discards some non-elementary routes even
+if they are not dominated.
 
 It has been empirically seen that
 as the average number of customers per route $N / K$ increases,
