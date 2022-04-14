@@ -309,8 +309,8 @@ and commodity aggregation \parencite{desaulniers1998}
 of the three-index arc flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes.
 Let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is selected.
-Let $a_{ip} \in \Set*{0, 1}, a_{ep} \in \Set*{0, 1}$ be "static encodings" (binary coefficients)
-for a route $p \in P$ for respectively covering a vertex $i \in V$ or an edge $e \in E$.
+Let $a_{ip}, a_{ep} \in \Z$ be "static encodings" (integer coefficients)
+for a route $p \in P$ that respectively count the number of times vertex $i \in V$ or an edge $e \in E$ is covered.
 
 We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$, which can be trivially computed in $O(N)$.
 The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included in the optimal solution.
@@ -586,11 +586,12 @@ needs to solve the same ESPPRC problem but with slightly different weights assoc
 
 A \textbf{non-robust} inequality, instead,
 is much harder to handle since it changes the structure of the set of feasible paths $P$.
-Non-robust inequalities may in general be quite strong but,
-unfortunately, require explicit modeling and support within the oracle.
+Non-robust inequalities may in general have great potential at reducing the integrality gap
+but,
+unfortunately, require explicit modeling and support from the oracle.
 These types of inequalities can drastically complicate the pricing problem,
 trading better dual bound improvements for increased column generation times.
-Therefore, their usage must be assessed on a case-by-case basis.
+Therefore, their usage must be assessed on a case-by-case basis \parencite{desaulniers2011}.
 Non-robust inequalities may present themselves both in the branching and cut-generation phases.
 
 In this thesis
@@ -638,18 +639,16 @@ yet one of the most effective,
 involves \textbf{branching on arcs}.
 The branching on arcs scheme was first proposed for the CVRP in \textcite{christofides1969a},
 and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
-The method works as follows.
-There exist a clear one-to-one correspondence
-between the integral variables $x_e$ of the two-index arc flow formulation
-and the variables $\lambda_p$ of the SP formulation that can be exploited.
-Such correspondence can be described with the following equation:
+The arc flows can be easily computed from the master problem:
 
 \begin{equation}
 	x_e = \sum_{p \in P} a_{ep} \lambda_p  \quad \forall e \in E
 \end{equation}
 
-Given the candidate fractional solution $\lambda^\star_p \quad \forall p \in \mcP$
-and after determining a valid edge $e$ to branch on, $e \mid x_e \notin \Set*{0, 1, 2}$,
+where $a_{ep}$ represents the number of times route $p \in P$ crossed edge $e \in E$.
+
+Given a candidate fractional solution $\lambda^\star_p \quad \forall p \in \mcP$
+and a valid edge $e$ to branch on, $e \mid x_e \notin \Set*{0, 1, 2}$,
 it is possible to generate two descendant nodes in the search tree
 to continue scanning for integral solutions:
 
@@ -657,17 +656,19 @@ to continue scanning for integral solutions:
 	x_e \le \floor*{\sum_{p \in \mcP} a_{ep} \lambda^\star_p}, \quad
 	x_e > \ceil*{\sum_{p \in \mcP} a_{ep} \lambda^\star_p}
 \end{equation}
+
 Branching on arcs is an approach which is both: extremely simple and robust.
 Let $\omega_e \in \R$ represent the dual variable associated to
 edge $e \in E$ and to
 one of the branching polarity in \cref{eq:sp-branching-on-arcs},
-then the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
+then, after branching,
+the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
 
 \begin{equation}
-	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e
+	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e a_ep
 \end{equation}
 
-where again $\pi \in \R^N$ represents the dual variables associated with constraints \eqref{eq:mp-K-routes}, \eqref{eq:mp-customers-visited-by-exactly-one-route}.
+where again $\pi \in \R^N$ represents the dual variables associated with \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
 
 Reduction and dominance rules may be employed to remove some arcs
 which can be proved to not belong to an optimal solution.
@@ -730,14 +731,18 @@ in \textcite{araqueg1994}.
 
 We will terminate the remainder of this section with the introduction
 of the families of inequalities which can be used for cut generation
-for the SP formulation, under the assumption that a branch-and-price scheme is employed
-for solving the CVRP.
+for the SP formulation.
+Despite the fact that the SP formulation provides better dual bounds
+compared to the two or three index arc flow formulation,
+these bounds might still be too weak in order to achieve an efficient algorithm.
+Thus, it is common practice to introduce cutting-plane approaches
+in modern BPC VRP solvers.
 
 Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
 they can trivially be extended to a robust inequality for the SP formulation:
 
 \begin{equation}
-	\sum_{p \in P} \Expr*{\sum_{e \in \delta(S)} a_{ep}} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
+    \sum_{p \in P} \sum_{e \in \delta(S)}  a_{ep} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
 \end{equation}
 
 
@@ -785,6 +790,9 @@ Major contributions in the non-robust cutting planes domain, are:
 \end{enumerate}
 
 
+For more details about cutting-planes in BPC frameworks,
+refer to \textcite{desaulniers2011}.
+
 
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
@@ -816,7 +824,9 @@ if at least $k$ other vertices are covered in between.
 It was observed that extending the set of feasible paths $P$ in
 the SP formulation to include also the q-routes could lead to a
 more tractable pricing problem, by making it weakly NP-hard
-and thus solvable through a pseudo-polynomial algorithm \parencite{desrochers1988, irnich2005}.
+and thus solvable through a pseudo-polynomial algorithm \parencite{desrochers1992, irnich2005}.
+Notice that the q-routes violates the SP constraint of \cref{eq:set-partitioning-customers-visited-by-exactly-one-route},
+thus, they won't be part of any optimal solution of the CVRP.
 Many of the most efficient algorithms for the VRP
 rely on the solution of subproblems which
 make use of q-routes and the pricing
@@ -998,9 +1008,9 @@ were deemed to be the best approach for solving the CVRP.
 
 In \citeyear{desrochers1992}, \citeauthor{desrochers1992}
 proposed the dynamic programming based label setting algorithm for the SPPRC,
-and used it inside a branch-and-price scheme to tackle the VRPTW.
-This algorithm still constitutes the major core ingredient
-in modern BPC schemes to efficiently solve the pricing problem.
+and devised it inside a branch-and-price scheme to tackle the VRPTW.
+This labeling algorithm still constitutes the major core ingredient
+of modern BPC schemes to efficiently solve the pricing problem.
 \textcite{kohl1999}, later generalized in \cite{desaulniers2008}, introduce the
 2-paths inequalities, and were one of the first attempts to integrate
 cutting-planes within a BAP framework for solving the CVRP.
