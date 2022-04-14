@@ -641,7 +641,7 @@ and the variables $\lambda_p$ of the SP formulation that can be exploited.
 Such correspondence can be described with the following equation:
 
 \begin{equation}
-	x_e = \sum_{p \in P} \Expr*{\sum_{e \in E} a_{ep}} \lambda_p  \quad \forall e \in E
+	x_e = \sum_{p \in P} a_{ep} \lambda_p  \quad \forall e \in E
 \end{equation}
 
 Given the candidate fractional solution $\lambda^\star_p \quad \forall p \in \mcP$
@@ -650,8 +650,8 @@ it is possible to generate two descendant nodes in the search tree
 to continue scanning for integral solutions:
 
 \begin{equation}\label{eq:sp-branching-on-arcs}
-	x_e \le \floor*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}, \quad
-	x_e > \ceil*{\sum_{p \in \mcP} \Expr*{\sum_{e \in E} a_{ep}} \lambda^\star_p}
+	x_e \le \floor*{\sum_{p \in \mcP} a_{ep} \lambda^\star_p}, \quad
+	x_e > \ceil*{\sum_{p \in \mcP} a_{ep} \lambda^\star_p}
 \end{equation}
 Branching on arcs is an approach which is both: extremely simple and robust.
 Let $\omega_e \in \R$ represent the dual variable associated to
