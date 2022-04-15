@@ -779,6 +779,7 @@ Major contributions in the non-robust cutting-planes domain, are:
 
 	\item \textbf{Strengthened Capacity Cuts (SCCs)} proposed in \textcite{baldacci2008},
 	      which can be considered a non-robust tighter version of the RCCs.
+	      Compared to RCCs, they are not affected by routes entering set $S$ more than once.
 	\item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009},
 	      another generalization of the RCCs.
 	\item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008a}, a non-robust
@@ -789,6 +790,10 @@ Major contributions in the non-robust cutting-planes domain, are:
 	      $|C| \le 5$.
 	      The SRCs were later generalized to a more general Chv\'atal-Gomory Rank-1 cuts (R1Cs) in \textcite{petersen2008}.
 	      \textcite{baldacci2001} proposes a weakened version of 3-SRCs.
+	\item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
+	      a dynamically controlled weakening of the SRCs that leads far less impact to
+	      the PP.
+	      Later, \textcite{pecin2017a} extends this concept to the Limited Memory Rank-1 Cuts (lm-R1Cs).
 	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011, contardo2014}, they can be considered
 	      a specialized version of the SCCs.
 	      They can enforce partial route elementarity and are redundant
@@ -797,12 +802,7 @@ Major contributions in the non-robust cutting-planes domain, are:
 	\item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
 	      are a weakened version of the SDCs (and thus easier for the PP), which forbids
 	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
-	\item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
-	      a dynamically controlled weakening of the SRCs that leads far less impact to
-	      the PP than traditional
 	      SRCs while still being as effective as improving the dual bounds as the traditional SRCs.
-	\item \textbf{Limited Memory Rank-1 Cuts (lm-R1Cs)} proposed in \textcite{pecin2017a},
-	      is a dynamically controlled weakening of the R1Cs that leads to less impact to the PP.
 \end{enumerate}
 
 
