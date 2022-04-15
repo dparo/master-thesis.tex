@@ -685,6 +685,18 @@ an arbitrary set $S \subseteq V_0$ with two descendant nodes:
 \end{equation}
 \textcite{pecin2017} apply a similar branching approach.
 
+
+\textit{Strong branching}, a commonly employed branching technique,
+evaluates each possible branching candidates
+by measuring their impact based on some scoring function.
+The idea is to select either the branching candidate that
+would heuristically lead to the best dual bound improvement
+or that it is heuristically known to lead to a more balanced search-tree.
+Strong branching can reduce the size of the search-tree
+at the expense of a slower branching candidate evaluation.
+\textcite{fukasawa2006, pecin2017a, pecin2017b} applied strong branching
+to the vehicle routing problems.
+
 \medskip
 
 Reduction and dominance rules may be employed to remove some arcs
