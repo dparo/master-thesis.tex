@@ -546,20 +546,21 @@ Route enumeration is another technique that can be used in place of branching
 for obtaining integral solutions, and it was first proposed for the CVRP in \textcite{baldacci2008}.
 In route enumeration, all elementary routes that may belong to the VRP optimal solution are enumerated,
 and an SP formulation containing all these enumerated routes are solved through a MIP.
+Route enumeration is obtained through a labeling algorithm similar to the one employed in the pricing problems.
 The problem of this approach is the possibly huge number of routes that needs to be enumerated,
 and this quantity is highly linked to the tightness of the duality gap,
 and with the average length of a tour $N / K$.
 Route enumeration is an operation that takes exponential space complexity,
 but it can drastically improve the performance of the BPC on some instances.
 The major contributions employing route enumeration in place of branching can be found in
-\textcite{baldacci2008, baldacci2011, contardo2014}.
+\textcite{baldacci2008,baldacci2011}.
 
 Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration
-(see \cite{pessoa2008, pessoa2009, pecin2017, pessoa2020}).
+(see \cite{pessoa2008, pessoa2009,contardo2014,pecin2017,pecin2017b,pessoa2020}).
 After the convergence of the column generation algorithm route enumeration is attempted.
 If the number of enumerated routes starts to exceed a maximum limit, enumeration
 is preemptively aborted and conventional branching is applied.
-Once the primal-dual bound gap reaches desirable levels, the route enumeration
+Once the primal-dual bound gap $\bar{z} - \ubar{z}$ reaches desirable levels, the route enumeration
 procedure will enumerate all routes under the maximum limit.
 At the point the associated RMP formulation can be solved efficiently through a MIP.
 
