@@ -579,7 +579,7 @@ two classes of inequalities are possible:
 
 A \textbf{robust} inequality is an inequality
 which can be safely added to the RMP
-without altering the structure of the set of feasible paths $P$.
+without altering the structure of the set of feasible paths $P$ \parencite{fukasawa2006}.
 That is,
 robust inequalities do not require explicit modeling in the PP formulation
 and instead manifest their contribution directly in the reduced cost edges $\bar{c_e}$.
@@ -729,6 +729,8 @@ template of the form:
 
 The multistar inequality were first applied successfully within a branch-and-cut framework
 in \textcite{araqueg1994}.
+\textcite{letchford2006} proves that the GLM inequalities are implied by the SP model,
+even if the set of feasible paths $P$ is relaxed to contain non-elementary routes.
 
 \medskip
 
@@ -742,11 +744,15 @@ these bounds might still be too weak in order to achieve an efficient algorithm.
 Thus, it is common practice to introduce cutting-plane approaches
 in modern BPC VRP solvers.
 
+Cutting-planes define directly in terms of arc-flow variables are by nature
+robust.
+Robust cuts are quite effective at closing the integrality gap, but alone may not
+be sufficient for some harder VRP instances.
 Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
 they can trivially be extended to a robust inequality for the SP formulation:
 
 \begin{equation}
-    \sum_{p \in P} \sum_{e \in \delta(S)}  a_{ep} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
+	\sum_{p \in P} \sum_{e \in \delta(S)}  a_{ep} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
 \end{equation}
 
 
@@ -796,6 +802,8 @@ Major contributions in the non-robust cutting planes domain, are:
 
 For more details about cutting-planes in BPC frameworks,
 refer to \textcite{desaulniers2011}.
+For a more complete survey on the various proposed non-robust cutting-planes
+refer to \textcite{costa2019}.
 
 
 \subsection{Solving the Pricing Problem}
@@ -940,31 +948,31 @@ This novel relaxation achieves a bound very close to the elementary bound while
 not being detrimental for the pricing problem.
 
 \begin{comment}
-    \parencite{condardo2014}
-    Irnich and Villeneuve [15] used this observation to develop the so-called SPPRC
-    with k-cycle elimination (k-cyc-SPPRC), in which short cycles (in terms of the number of customers visited between two
-    consecutive appearances of a given node) are forbidden whereas long cycles (in terms of the same number) are still allowed.
-    The advantage of the ng-SPPRC with respect to k-cyc-SPPRC is how the length of a cycle is defined. Indeed, the number of
-    customers between two appearances of a node may not be the right criterion, the length of the cycle in terms of distance
-    being a better measure of the impact of a cycle in the linear relaxation lower bound. The ng-SPPRC thus forbids cycles that
-    are short with respect to the time consumption regardless of the number of nodes between two appearences of a given
-    customer.
+\parencite{condardo2014}
+Irnich and Villeneuve [15] used this observation to develop the so-called SPPRC
+with k-cycle elimination (k-cyc-SPPRC), in which short cycles (in terms of the number of customers visited between two
+consecutive appearances of a given node) are forbidden whereas long cycles (in terms of the same number) are still allowed.
+The advantage of the ng-SPPRC with respect to k-cyc-SPPRC is how the length of a cycle is defined. Indeed, the number of
+customers between two appearances of a node may not be the right criterion, the length of the cycle in terms of distance
+being a better measure of the impact of a cycle in the linear relaxation lower bound. The ng-SPPRC thus forbids cycles that
+are short with respect to the time consumption regardless of the number of nodes between two appearences of a given
+customer.
 
-    \parencite{costa2019}
-    Given that long cycles in terms of distance
-    have not much chance to appear in an MP optimal
-    solution, the ng-SPPRC represents a powerful relaxa-
-    tion.
-    An important parameter in the ng-SPPRC is Δ, the
-    size of the neighborhoods, which is normally de-
-    ﬁned a priori and interferes on the labeling algorithm
-    complexity. On the one hand, the larger the value of Δ,
-    the closer to the ESPPRC the ng-SPPRC becomes. On
-    the other hand, the algorithm complexity increases ex-
-    ponentially with the value of Δ. Baldacci, Mingozzi, and
-    Roberti (2011) show that Δ  8 represents a good
-    trade-off between lower bound quality and computing
-    time for the VRPTW.
+\parencite{costa2019}
+Given that long cycles in terms of distance
+have not much chance to appear in an MP optimal
+solution, the ng-SPPRC represents a powerful relaxa-
+tion.
+An important parameter in the ng-SPPRC is Δ, the
+size of the neighborhoods, which is normally de-
+ﬁned a priori and interferes on the labeling algorithm
+complexity. On the one hand, the larger the value of Δ,
+the closer to the ESPPRC the ng-SPPRC becomes. On
+the other hand, the algorithm complexity increases ex-
+ponentially with the value of Δ. Baldacci, Mingozzi, and
+Roberti (2011) show that Δ  8 represents a good
+trade-off between lower bound quality and computing
+time for the VRPTW.
 \end{comment}
 
 
