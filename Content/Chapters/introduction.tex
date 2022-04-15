@@ -639,8 +639,8 @@ Most of the branching approaches studied in the literature for the CVRP involve
 mere extension of branching schemes used traditionally for the TSP.
 In fact, one of the most simple branching scheme,
 yet one of the most effective,
-involves \textbf{branching on arcs}.
-The branching on arcs scheme was first proposed for the CVRP in \textcite{christofides1969a},
+involves \textbf{branching on edges}.
+The branching on edges scheme was first proposed for the CVRP in \textcite{christofides1969a},
 and later re-adapted in different forms in \textcite{fisher1994a, miller1995}.
 The arc flows can be easily computed from the master problem as:
 
@@ -668,10 +668,24 @@ then, after branching,
 the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
 
 \begin{equation}
-	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e a_ep
+	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e a_{ep}
 \end{equation}
 
 where again $\pi \in \R^N$ represents the dual variables associated with \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
+
+Branching on edges has the disadvantage of achieving only local changes
+to the fractional solution.
+For this reason, \textcite{augerat1998} propose an
+approach to obtain larger perturbations.
+They achieve this by branching on Rounded Capacity Constraints (RCCs) defined over
+an arbitrary set $S \subseteq V_0$ with two descendant nodes:
+\begin{equation}\label{eq:sp-branching-on-cutsets}
+	\sum_{e \in \delta(S)}x_e \le 2 r(S), \quad
+	\sum_{e \in \delta(S)}x_e \ge 2 r(S) + 2
+\end{equation}
+\textcite{pecin2017} apply a similar branching approach.
+
+\medskip
 
 Reduction and dominance rules may be employed to remove some arcs
 which can be proved to not belong to an optimal solution.
@@ -679,6 +693,8 @@ Reduction and dominance rules may be viewed as a special case of branching
 with a single descendant node.
 These rules allow to eliminate the evaluation
 a good portion of the solution space.
+
+
 
 
 \subsubsection{Families of Cuts}
