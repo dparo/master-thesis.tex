@@ -752,23 +752,24 @@ Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \s
 they can trivially be extended to a robust inequality for the SP formulation:
 
 \begin{equation}
-	\sum_{p \in P} \sum_{e \in \delta(S)}  a_{ep} \lambda_p \ge \ceil*{\sum_{i \in S} q_i / Q}
+	\sum_{p \in P} \sum_{e \in \delta(S)}  a_{ep} \lambda_p \ge r(S)
 \end{equation}
 
 
 where $\sum_{e \in \delta(S)} a_{ep}$ counts the number of times a route $p \in P$
-enters or leaves a set $S$.
+enters or leaves a set $S$ and $r(S)$ represents the number of truck needed
+to serve each customer $i \in S$.
 
 
 \medskip
 
 Some non-robust cuts were applied successfully to the CVRP.
-While in this thesis we will avoid this form of inequalities,
+While in this thesis we will mostly avoid this type of inequalities,
 it is nonetheless important to acknowledge and understand their contributions.
 
 In order to use them effectively, their separation must be carefully
 planned out, by taking into account the aggravation of the pricing problem.
-Major contributions in the non-robust cutting planes domain, are:
+Major contributions in the non-robust cutting-planes domain, are:
 
 \begin{enumerate}
 	\setlength{\itemsep}{0pt}
