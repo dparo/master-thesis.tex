@@ -766,6 +766,8 @@ to serve each customer $i \in S$.
 Some non-robust cuts were applied successfully to the CVRP.
 While in this thesis we will mostly avoid this type of inequalities,
 it is nonetheless important to acknowledge and understand their contributions.
+Non-robust cuts are usually handled by extending the dynamic programming based pricer
+through additional fictions resources and modifications to the dominance rules.
 
 In order to use them effectively, their separation must be carefully
 planned out, by taking into account the aggravation of the pricing problem.
@@ -775,20 +777,23 @@ Major contributions in the non-robust cutting-planes domain, are:
 	\setlength{\itemsep}{0pt}
 	\setlength{\parskip}{0pt}
 
-	\item \textbf{Strengthened Capacity Constraints (SCCs)} proposed in \textcite{baldacci2008},
+	\item \textbf{Strengthened Capacity Cuts (SCCs)} proposed in \textcite{baldacci2008},
 	      which can be considered a non-robust tighter version of the RCCs.
-	\item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009}, a
-	      generalization of the RCCs.
+	\item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009},
+	      another generalization of the RCCs.
 	\item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008a}, a non-robust
-	      inequality similar to a form of less general clique cuts,
-	      that leads to less impact in the pricing problem.
-	\item \textbf{Chv\'atal-Gomory Rank-1 cuts (R1Cs)} \parencite{chvatal1973},
-	      applied to the CVRP SP formulation
-	      in \textcite{petersen2008}, are a further generalization of the SRCs.
-	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011}, they can be considered
+	      inequality obtained as a subset of the  Chv\'atal-Gomory rank-1 cuts \parencite{chvatal1973}
+	      applied to a subset $C \subseteq V_0$ of customers, where usually.
+	      Since their separation is NP-hard.
+	      Typically the subset $C$ is separated through enumeration and for computational tractability
+	      $|C| \le 5$.
+	      The SRCs were later generalized to a more general Chv\'atal-Gomory Rank-1 cuts (R1Cs) in \textcite{petersen2008}.
+	      \textcite{baldacci2001} proposes a weakened version of 3-SRCs.
+	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011, contardo2014}, they can be considered
 	      a specialized version of the SCCs.
 	      They can enforce partial route elementarity and are redundant
 	      when the pricer always outputs elementary paths.
+	      Special version of the SRCs with $|C| = 1$.
 	\item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
 	      are a weakened version of the SDCs (and thus easier for the PP), which forbids
 	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
