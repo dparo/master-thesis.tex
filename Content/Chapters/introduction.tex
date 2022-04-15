@@ -1038,10 +1038,12 @@ if they are not dominated.
 
 It has been empirically seen that
 as the average number of customers per route $N / K$ increases,
-the number of pricing iterations per column generation increases.
-Therefore, \textcite{dumerle1999, pessoa2013} propose a dual stabilization
-technique to improve the convergence speed of the column generation process.
-
+the dual variables $\pi \in R^N$ tend to oscillate from one iteration to another
+and the number of pricing iterations per column generation increases \parencite{toth2014}.
+Therefore, some dual variables stabilization techniques
+have been proposed to fix this problem and
+to improve the convergence speed
+of the column generation algorithm (see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018}).
 
 
 
@@ -1168,9 +1170,10 @@ At the day of writing, \textcite{pessoa2020a} is the current state of the
 art BCP framework based on column generation with ng-routes relaxation
 for solving the CVRP problem.
 
-
-
-
+Thanks to the major advancements on the past decades
+on exact BPC algorithms
+have led to exact solutions of CVPR problems composed of
+more than 300 customers \parencite{costa2019}.
 
 
 \begin{comment}

@@ -8,8 +8,9 @@ The Capacitated Profitable Tour Problem, abbreviated as CPTP,
 belongs to the group of the so-called travelling salesman
 problems with profits (see \cite{feillet2005}),
 and therefore presents many similarities with other very well known
-problems such as: (i) the Orienteering Problem (OP) \parencite{golden1987, laporte1990},
-(ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995}.
+problems such as:
+(i) the Orienteering Problem (OP) \parencite{golden1987, laporte1990}
+and (ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995}.
 The CPTP is an NP-hard combinatorial optimization problem representing
 a distribution problem, in which,
 given as input a set of customers
@@ -141,7 +142,6 @@ The GLM inequalities can be expressed as:
 The general idea behind multistar inequalities is the following.
 The vehicle visiting the customers in $S$ and crossing edge $(i, j), i \in S, j \notin S$,
 must have sufficient capacity to serve customer $j$.
-
 
 It is important to recall that we defined $q_0 = 0$.
 Therefore, $\sum_{i \in S} \sum_{j \in V_0 \setminus S} q_j  x_{ij}$ becomes
