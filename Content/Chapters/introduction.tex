@@ -722,31 +722,31 @@ and the SP formulation.
 While the 2F formulation is not the primary focus of this thesis,
 presenting and studying valid inequalities for such formulation
 will be important for the sub-problem induced in the column generation phase.
-In fact, many 2F valid inequalities, if properly generalized and reformulated
+In fact, many 2F valid inequalities, if properly reformulated
 can be applied to the ESPPRC.
 The very few first attempts in proposing valid inequalities
 to improve the linear relaxation for the 2F were obtained by
 generalizing the constraints for the traditional TSP problem, see \textcite{naddef1993}.
 \citeauthor{naddef1993} showed that its is possible to re-adapt
 every valid inequality obtained for the TSP to the CVRP,
-by putting into a tight triangular form,
-for example the comb inequalities \parencite{chvatal1973,grotschel1979,augerat1995a}.
+by putting them into a proper tight triangular form.
+As an example,
+the comb inequalities were re-adapted from the TSP to the CVRP \parencite{chvatal1973,grotschel1979,augerat1995a}.
 
-As is done in \textcite{toth2014},
-families of valid robust inequalities for the 2F CVRP formulation
-can be separated in different families.
+Families of valid inequalities for the 2F CVRP formulation
+can be separated in different families \parencite{toth2014}.
 We highlight two main families: the capacity constraints and the multistar inequalities.
 
 The \textbf{capacity constraints} are inequalities which can be expressed in the form
 $\sum_{e \in \delta(S)} x_e \ge 2 r(S) \quad \forall S \subseteq V_0, |S| \ge 2$.
 Depending on how $r(S)$ is computed, this set of constraints take different names.
 If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity Constraints (FCC).
-If instead we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Constraints (RCC).
+Instead, if we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Constraints (RCC).
 The RCC were first presented in \textcite{laporte1983} for the CVRP 2F formulation.
 
 The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990} for the CVRP with unit demands,
 extended to the generic CVRP in \textcite{gouveia1995, achuthan1998},
-and later generalized in the so called Generalized Large Multistart (GLM) \textcite{letchford2002} for the CVRP.
+and later generalized in the so called Generalized Large Multistart (GLM) for the CVRP in \textcite{letchford2002} .
 Given two disjoint sets of customers $A, B \subseteq V_0 \mid A \cap B = \emptyset$,
 and $\alpha, \beta, \gamma \in \R$,
 a multistar inequality is described in the 2F formulation through a
@@ -758,7 +758,7 @@ template of the form:
 
 The multistar inequality were first applied successfully within a branch-and-cut framework
 in \textcite{araqueg1994}.
-\textcite{letchford2006} proves that the GLM inequalities are implied by the SP model,
+\textcite{letchford2006} proves that GLMs are implied by the SP model,
 even if the set of feasible paths $P$ is relaxed to contain non-elementary routes.
 
 \medskip
