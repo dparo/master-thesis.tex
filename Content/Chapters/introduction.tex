@@ -914,24 +914,26 @@ The label-correcting algorithm, was later extended to handle
 elementary paths in \textcite{feillet2004},
 where they propose using an additional resource for each node
 to handle the elementarity condition.
-As the authors point out, this new algorithm, has a two-fold benefit.
+As the authors point out, this new algorithm has a two-fold benefit.
 First, the duality gap obtained at the linear relaxation is substantially better
 compared to considering just the q-routes.
 Second, it might enable certain classes of problems where relying
 on column generation schemes based on q-routes is simply not an option.
 The running time complexity of the new extended algorithm for pricing elementary routes
 is $O(2^N Q)$ operations,
-thus making limiting its applicability on bigger problems.
+thus limiting its applicability on bigger problems.
+
 Nonetheless, some contributions have been made to improve its overall running time.
 Some major ones can be attributed to:
 (i) bidirectional search proposed in \textcite{righini2006},
 (ii) decremental state space relaxation proposed independently in
 \textcite{boland2006, righini2008} under different names.
 The decremental state space relaxation is an iterative
-approach where elementarity iteratively inserted on demand.
+approach where elementarity is iteratively inserted on demand.
 In this approach the label-correcting algorithms
 is first asked to generate q-routes, then for each vertex that is visited
-twice or more, elementarity is enforced and the procedure is repeated.
+twice or more, elementarity is enforced at the pricer stage
+and the procedure is repeated.
 The first BCP algorithm, using full elementarity routes
 was proposed in \cite{chabrier2006}, but unfortunately,
 applying arbitrary $k$-cycle elimination to the pricing problem,
@@ -955,15 +957,14 @@ while still keeping the pricing problem manageable \parencite{contardo2015}.
 
 Initial efforts, have studied the usage of $q$-routes with
 $k$-cycle elimination with $k \ge 3$ within the labeling algorithm \parencite{irnich2006, fukasawa2006}.
-Unfortunately, \textcite{fukasawa2006}
-test the $q$-routes with $4$-cycle elimination
-and they show such approach leads
-to a too slow pricing problem
-while at the same not reaching dual bounds
-satisfactory close to the elementary bound.
-A different relaxation was provided in \textcite{desaulniers2008},
-where they introduce a concept of partial elementarity achieved
-by enforcing the elementarity condition only to a small subset of the customers.
+\textcite{fukasawa2006} test the $q$-routes with $4$-cycle elimination
+and they show that such an approach leads
+to a very slow pricing problem while
+producing dual bounds very far from the elementary bound.
+\textcite{desaulniers2008}, instead, take a different approach.
+They introduce a custom concept of "partial elementarity"
+which is achieved by enforcing the elementarity condition
+only to a small predetermined subset of the customers.
 
 One of the breakthrough in the efficiency of contemporary pricers
 can be attributed to the ng-routes relaxation developed in \textcite{baldacci2011}.
@@ -971,7 +972,7 @@ can be attributed to the ng-routes relaxation developed in \textcite{baldacci201
 in most of the cases cycles appeared to use only edges of small costs
 and were confined into relatively small clusters of the graph.
 They define the concept of ng-set $N_i$ for a vertex $i$
-which encodes the $|N_i|$ closest neighbors of the vertex $i$.
+which encodes the $|N_i|$ closest neighbors of the vertex $i \in V$.
 The quantity $|N_i|$ may be raised on demand to achieve better dual bounds.
 The ng-routes allows cycles over a vertex $i \in V$ only if the route
 passes through a vertex $j \in V \mid i \notin N_j$.
