@@ -668,7 +668,7 @@ then, after branching,
 the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
 
 \begin{equation}
-	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e a_{ep}
+	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e
 \end{equation}
 
 where again $\pi \in \R^N$ represents the dual variables associated with \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
@@ -706,8 +706,7 @@ the usage of a dual bound $\bar{z}$ and primal bound $\ubar{z}$ to eliminate som
 arcs $e \in E \mid \hat{c_e} \ge \bar{z} - \ubar{z}$ \parencite{hadjar2006, irnich2010}.
 Reduction rules may be viewed as a special case of branching
 with a single descendant node.
-These rules may filter a good portion of the search-space.
-
+Reducing the set of edges to consider may filter a good portion of the search-space.
 
 
 
