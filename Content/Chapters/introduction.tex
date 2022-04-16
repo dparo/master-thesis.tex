@@ -235,14 +235,22 @@ several separation heuristics for the CCC.
 \subsection{The three-index arc flow formulation}
 \label{sec:intro-cvrp-three-index-flow-formulation}
 
-When modeling more "colorful" variations of the CVRP, the two-index arc flow model falls shorts in providing sufficient descriptive power.
-For example, the simple CVRP variant where the fleet of trucks is heterogeneous and characterized by capacities $Q_1, \dots, Q_K$,
-cannot be described with the two-index arc flow formulation, since there's no clear one-to-one mapping on which truck crosses an edge $e \in E$.
+When modeling more "colorful" variations of the CVRP,
+the two-index arc flow model falls short in providing sufficient descriptive power.
+For example,
+the simple CVRP variant where the fleet of trucks is heterogeneous
+and characterized by capacities $Q_1, \dots, Q_K$,
+cannot be described with the two-index arc flow formulation,
+since there's no clear one-to-one mapping on which truck crosses an edge $e \in E$.
 
-The three-index arc flow formulation (3F), first presented in \textcite{golden1977}, fixes this issue.
+The three-index arc flow formulation (3F),
+first presented in \textcite{golden1977},
+fixes this issue.
 The 3F formulation makes use $O(N^2 K + N K)$ integer variables.
-A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e = \Set*{i, j} \in E,\ k \in \mcK$ is used to encode the number of times a truck $k$ traverses an edge $e \in E$.
-Another set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$ is used to model whether truck $k$ covers a node $i \in V$.
+A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e = \Set*{i, j} \in E,\ k \in \mcK$
+is used to encode the number of times a truck $k$ traverses an edge $e \in E$.
+Another set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$
+is used to model whether truck $k$ covers a node $i \in V$.
 
 
 The three-index arc flow formulation can be described as an Integer Programme (IP):
@@ -268,10 +276,13 @@ Constraint \eqref{eq:three-index-flow-force-resource-upper-bound} is the capacit
 Constraints \eqref{eq:three-index-flow-secv1} are the Generalized Subtour Elimination Constraints (GSECs), they impose the connectivity of the route and are used to avoid the formation of spurious unconnected subtours.
 Constraints \eqref{eq:three-index-flow-x-mip-var-bounds-depot} and \eqref{eq:three-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
 except for all edges incident at the depot.
-The edge-case modeled in constraint \eqref{eq:three-index-flow-x-mip-var-bounds-depot} is necessary to allow single-customer routes.
-Finally, constraint \eqref{eq:three-index-flow-y-mip-var-bounds} bounds and forces integrality for the $y_{ik}$ binary variables.
+The edge-case modeled in constraint \eqref{eq:three-index-flow-x-mip-var-bounds-depot}
+is necessary to allow single-customer routes.
+Finally, constraint \eqref{eq:three-index-flow-y-mip-var-bounds}
+bounds and forces integrality for the $y_{ik}$ binary variables.
 
-Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent form with traditional (non generalized) TSP subtour elimination constraints (see \textcite{fisher1981}):
+Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent form
+with traditional (non generalized) TSP subtour elimination constraints (see \textcite{fisher1981}):
 
 \begin{equation}\label{eq:three-index-flow-secv2}
 	\sum_{e \in E(S)} x_{ek} \le |S| - 1 \quad \forall S \subseteq V_0, |S| \ge 2,\ \forall k \in \mcK
@@ -297,9 +308,13 @@ new feasible solutions can be obtained through symmetry by simply permuting the 
 \subsection{The Set Partitioning (SP) formulation}
 \label{sec:intro-set-partition-formulation}
 
-The Set Partitioning (SP) formulation, sometimes also called Path Flow formulation, is an extended formulation, which was originally presented in \textcite{balinski1964}.
-It works substantially differently from the two/three-index arc flow formulation or many other commonly encountered IP models.
-The SP formulation uses a very small number of constraints while offloading much of the search-space complexity to an exponential number of binary variables.
+The Set Partitioning (SP) formulation,
+sometimes also called Path Flow formulation,
+is an extended formulation, which was originally presented in \textcite{balinski1964}.
+It works substantially differently from the two/three-index arc flow formulation
+or many other commonly encountered IP models.
+The SP formulation uses a very small number of constraints
+while offloading much of the search-space complexity to an exponential number of binary variables.
 
 
 The SP formulation can be viewed as a Dantzig-Wolfe decomposition \parencite{dantzig1960}
