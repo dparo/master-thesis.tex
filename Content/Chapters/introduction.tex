@@ -323,12 +323,14 @@ of the three-index arc flow formulation.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes.
 Let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is selected.
 Let $a_{ip}, a_{ep} \in \Z$ be "static encodings" (integer coefficients)
-for a route $p \in P$ that respectively count the number of times vertex $i \in V$ or an edge $e \in E$ is covered.
+for a route $p \in P$ that respectively count
+the number of times vertex $i \in V$ or an edge $e \in E$ is covered.
 
-We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$, which can be trivially computed in $O(N)$.
+We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$,
+which can be trivially computed in $O(N)$.
 The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included in the optimal solution.
 
-The SP formulationis is described through an Integer Programme (IP):
+The SP formulation is described through an Integer Programme (IP):
 
 
 \begin{align}
@@ -343,9 +345,14 @@ Constraint \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} fo
 Constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are selected.
 Finally, constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for binary variables $\lambda_p \ \forall p \in P$.
 
-As one may guess, due the exponential number of binary variables, the SP formulation cannot be instantiated nor directly solved.
-However, a variant of the SP formulation can be tackled efficiently by Column Generation (CG) approaches embedded inside a branch-and-price (BAP) framework.
-Branch-and-price frameworks and column generation have been applied with high success to the vehicle routing problems.
+As one may guess,
+due the exponential number of binary variables,
+the SP formulation cannot be instantiated nor directly solved.
+However,
+a variant of the SP formulation can be tackled efficiently by Column Generation (CG) approaches
+embedded inside a branch-and-price (BAP) framework.
+Branch-and-price frameworks and column generation have been applied
+with high success to the vehicle routing problems.
 
 
 As, \textcite{toth2002} points out, if the distance matrix satisfies the triangle inequality,
@@ -356,8 +363,10 @@ by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route
 	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0
 \end{equation}
 
-The set of feasible paths $p \in P$ in the SC formulation become all non-elementary routes that respect the vehicle capacity.
-Under the triangle inequality assumption, any feasible solution for the SP formulation is also feasible for the SC formulation.
+The set of feasible paths $p \in P$ in the SC formulation
+become all non-elementary routes that respect the vehicle capacity.
+Under the triangle inequality assumption,
+any feasible solution for the SP formulation is also feasible for the SC formulation.
 Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
 
 \medskip
@@ -1057,6 +1066,8 @@ Therefore, some dual variables stabilization techniques
 have been proposed to fix this problem and
 to improve the convergence speed
 of the column generation algorithm (see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018}).
+Also employing the SC formulation in place of the SP formulation,
+the dual variables have been shown to be typically more stable \parencite{rousseau2007, feillet2010}.
 
 
 
