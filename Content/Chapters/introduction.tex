@@ -22,21 +22,20 @@ the problem consists in determining a set of routes, one for each vehicle,
 of minimal overall travel distance starting and ending at the depot.
 The set of routes need to serve all the customers in the road network exactly once and no more.
 
-Studying effective solutions methods for the CVRP may lead to tremendous real-world economic
+Studying effective solution methods for the CVRP may lead to tremendous real-world economic
 savings for the management of the provision of goods or services in a distribution system.
 Optimal delivery planning can reduce the overall transportation and good costs while
 also reducing the waiting time experienced by the customers.
 Therefore, studying optimal efficient algorithms and mathematical models for
 solving and describing real-world distribution problems,
 becomes of vital importance
-for the operational management of a cost-efficient planning processes.
+for the operational management of a cost-efficient planning process.
 
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
 the Vehicle Routing Problem with Time Windows (VRPTW), and many others.
-In the VRPTW \parencite{schrage1981} each customer is associated with a time window slot
-in which it can be served,
-and the vehicles are subject to capacity constraints.
+In the VRPTW \parencite{schrage1981} the vehicles are subject to capacity constraints and
+each customer is associated with a time window slot in which it can be served,
 Nonetheless, CVRP is the simpler VRP variant to describe,
 and yet to this day, it remains the most central and studied routing problem.
 For a more complete taxonomy on the many VRP variants refer to \textcite{braekers2016}.
@@ -55,8 +54,7 @@ For a fairly complete survey regarding the entire VRP class, we highly suggest
 the fairly complete book \citetitle{toth2014} of \textcite{toth2014}.
 This book served as a good reference and played a central role
 in laying out this introductory chapter.
-A more contemporary survey on the contemporary approaches applied
-to the VRP can be found in the works of \textcite{baldacci2012, costa2019}.
+Other surveys on the matter can be found in the works of \textcite{baldacci2012, costa2019}.
 
 \medskip
 
@@ -73,7 +71,7 @@ description of the CVRP, and we will present its most commonly employed IP formu
 \label{sec:intro-cvrp-mathematical-formulations}
 
 In this section we present the CVRP through some very well known mathematical formulations.
-These mathematical formulation are expressed through (Mixed) Integer Programming (MIP, IP)
+These mathematical formulations are expressed through (Mixed) Integer Programming (MIP, IP)
 models.
 We present three total mathematical models:
 
@@ -113,7 +111,7 @@ The edge set $E$ has size $|E|$, which can be computed through combinatorial enu
 For convenience, we define $V_0 = V \setminus \Set*{0}$ to express the set of customers,
 and $N_0 = N - 1$ to denote the total number of customers.
 Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
-More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ \Set*{i, j} \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
+More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ e = \Set*{i, j} = \Set*{j, i} \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
 For brevity, we also define $\delta(i) = \delta(\Set*{i})$ to denote the set of edges incident to node $i \in V$.
 We also define $E(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in E \mid i, j \in S}$ to denote the set of edges having both end points in set $S \subseteq V$.
 
@@ -200,7 +198,7 @@ Although, a better lower bound for the Bin Packing Problem can improve the linea
 relaxation, thus reducing the number of branching occurrences.
 
 The CCC constraints in \cref{eq:two-index-flow-ccc}, may be transformed in the so called Generalized Subtour Elimination Constraints (GSEC) \parencite{laporte1985},
-by means of the degree constraints \labelcref{eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
+by means of the degree constraints of \cref{eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
 
 \begin{equation}\label{eq:cvrp-2flow-gsec}
 	\sum_{e \in E(S)} x_{ij} \le |S| - r(S) \quad \forall S \subseteq V_0,\ |S| \ge 1
@@ -210,11 +208,11 @@ where, again, $r(S)$ may be replaced by the trivial Bin Packing Problem lower bo
 
 The GSEC avoid the formation of spurious unconnected subtours and impose that at least $r(S)$ edges leave set $S$.
 The number of GSEC (or CCC) inequalities appear in exponential number in the two-index formulation model,
-thus making a direct solution of the linear programming relaxation impractical.
+thus making a direct solution of the linear relaxation impractical.
 To overcome this issue, it is possible to avoid adding the GSEC inequalities statically in the model.
-Instead, an appropriate cutting-plane algorithm and separation procedure may be employed to generate dynamically,
+Instead, an appropriate cutting-plane algorithm and separation procedure may be employed to generate dynamically
+only the necessary (violated) GSECs constraints
 during the running time of the branch-and-cut algorithm,
-only the necessary (violated) GSEC constraints.
 
 Another approach is to avoid the usage of the exponential number of SECS entirely.
 This is the approach taken by the so-called compact models (see \cite{miller1960, christofides1979, desrochers1991}).
