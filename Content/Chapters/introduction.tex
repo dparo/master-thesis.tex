@@ -850,7 +850,7 @@ proposed over the years for the CVRP refer to \textcite{costa2019}.
 \subsection{Solving the Pricing Problem}
 \label{sec:intro-solving-the-pricing-problem}
 
-The Pricing Problem (PP) asks for the determination of the elementary shortest path,
+The Pricing Problem (PP) asks for the determination of an elementary shortest path,
 subject to resource constraints,
 over a directed network formulation where the cost of each edge
 is dualized.
@@ -879,23 +879,22 @@ the SP formulation to include also the q-routes could lead to a
 more tractable pricing problem, by making it weakly NP-hard
 and thus solvable through a pseudo-polynomial algorithm \parencite{desrochers1988, irnich2005}.
 Notice that the q-routes violates the SP constraint of \cref{eq:set-partitioning-customers-visited-by-exactly-one-route},
-thus, they won't be part of any optimal solution of the CVRP.
-Many of the most efficient algorithms for the VRP
-rely on the solution of subproblems which
-make use of q-routes and the pricing
-problem has been modeled by many authors as an SPPRC \parencite{desrochers1992, feillet2004, fukasawa2006,contardo2011}.
+thus, they won't be part of a CVRP optimal solution.
+Many efficient algorithms for the VRP
+rely on the solution of SPPRC subproblems which
+make use of q-routes  \parencite{desrochers1992, feillet2004, fukasawa2006,contardo2011}.
 This enlargement of the set of feasible paths $P$,
 while still valid,
-it has unfortunately the downside
+it has the unfortunate downside
 of obtaining significantly worse dual bounds for the linear relaxations \parencite{feillet2004}.
-Therefore, the choice for the set $P$ plays an important
+Therefore, the choice for the set of feasible paths $P$ plays an important
 role in trading off efficiency at the pricing stage with
-overall quality of the dual bound.
+overall quality of the dual bounds.
 
 
 The label-correcting algorithm was first proposed in \textcite{desrochers1992}
-for the VRPTW for solving the SPPRC to tackle the pricing problem
-under a Set Covering (SC) formulation.
+for the VRPTW Set Covering (SC) formulation
+to tackle the pricing problem modeled through a SPPRC.
 The label-correcting algorithm, which at the time was able to generate only q-routes,
 is a dynamic programming algorithm
 which works by label construction, propagation and correction from node to node.
@@ -909,14 +908,13 @@ is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, for
 a common algorithm present in the "tool belt" of all operations research practitioners.
 Its running time complexity for pricing q-routes is $O(N^2 Q)$ operations.
 Notice that its performance scales with the vehicle capacity $Q$, and therefore
-may not be sufficiently competitive when the vehicle capacity $Q$ is very large.
+may be less competitive when $Q$ increases.
 
 The label-correcting algorithm, was later extended to handle
-the elementary paths in \textcite{feillet2004},
-where they propose using an additional resource bound to each
-node to handle the elementarity condition
-by extending the original idea drafted in \textcite{beasley1989}.
-As \citeauthor{feillet2004} points out, this approach has a two-fold effect.
+elementary paths in \textcite{feillet2004},
+where they propose using an additional resource for each node
+to handle the elementarity condition.
+As the authors point out, this new algorithm, has a two-fold benefit.
 First, the duality gap obtained at the linear relaxation is substantially better
 compared to considering just the q-routes.
 Second, it might enable certain classes of problems where relying
