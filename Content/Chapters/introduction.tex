@@ -966,32 +966,37 @@ They introduce a custom concept of "partial elementarity"
 which is achieved by enforcing the elementarity condition
 only to a small predetermined subset of the customers.
 
-One of the breakthrough in the efficiency of contemporary pricers
+One of the major innovations in the contemporary pricing efficiency
 can be attributed to the ng-routes relaxation developed in \textcite{baldacci2011}.
-\citeauthor{baldacci2011} noticed that, when pricing $q$-routes,
-in most of the cases cycles appeared to use only edges of small costs
+\citeauthor{baldacci2011} noticed that in most of the cases,
+$q$-routes cycles appeared to use only edges of small costs
 and were confined into relatively small clusters of the graph.
 They define the concept of ng-set $N_i$ for a vertex $i$
 which encodes the $|N_i|$ closest neighbors of the vertex $i \in V$.
-The quantity $|N_i|$ may be raised on demand to achieve better dual bounds,
+The quantities $|N_i|$ may be raised on demand to achieve better dual bounds,
 but it has to be noted that raising them lead to an exponential increase in complexity
 in the pricing.
 The ng-routes allows cycles over a vertex $i \in V$ only if the route
 passes through a vertex $j \in V \mid i \notin N_j$.
 In the ng-routes relaxation,
-dominance is verified through the usage of a limited-memory set,
-which it changes as the route gets extended.
-The limited-memory "forgets" about older covered vertices
-which then may be subsequent revisited as the paths get longer.
-The ng-routes relaxation, which can be easily embedded inside the labeling algorithm,
-may be seen as more versatile, and more dynamic form of $q$-routes
+dominance is verified through the usage of a limited-memory set
+that changes as the route gets extended.
+The Limited memory, by its nature,
+"forgets" old covered vertices,
+which may then be subsequently revisited
+as the generated path lengthens.
+This new novel relaxation can be easily incorporated within the
+dynamic programming labeling algorithm.
+The ng-routes relaxation may be seen
+as a more versatile, and more dynamic form of $q$-routes
 with $k$-cycle elimination.
-The ng-routes may be considered more efficient
-due to their different definition of the cycles' length
-which provive a better measure of a cycle's impact.
+They employ a different definition of the cycles' length.
+This definition provides a better measure of a cycle's impact,
+and may be regarded as the main culprit of the efficiency of
+this relaxation.
 In ng-routes cycles's length are measured in terms of distances,
 whereas in the $k$-cycle elimination they're measured
-in terms of customers which not may be a right criterion \parencite{contardo2014}.
+in terms of customers \parencite{contardo2014}.
 This novel relaxation achieves a bound very close to the elementary bound while
 not being detrimental for the pricing problem.
 On top of that, one can control
@@ -1019,20 +1024,20 @@ the number of nodes between two appearences of a given customer.
 
 \medskip
 
-We conclude the section by mentioning other contributions
+We conclude this section by mentioning other contributions
 which are linked with the pricing problem.
 
-\textcite{fukasawa2006} proposes a modification of the label-correcting
-algorithm to employ it as a faster pricing heuristic.
-This can substantially improve the speed of the column generation process
+\textcite{fukasawa2006} modify the label-correcting
+algorithm to employ it as a fast pricing heuristic.
+Heuristics can substantially improve the speed of the column generation process
 as the exact pricing stage is called only when the pricing heuristic
 fails at determining a valid reduced cost route.
-\textcite{desaulniers2008} and \textcite{archetti2011} use a tabu search
-meta-heuristic to generate routes with negative reduced costs.
+\textcite{desaulniers2008} and \textcite{archetti2011} propose a tabu search
+meta-heuristic approach to generate routes with negative reduced costs.
 
-\textcite{lozano2013} proposes the so called pulse algorithm
-to solve the SPPRC, and in \textcite{lozano2016} is extended to handle
-the elementarity condition.
+\textcite{lozano2013} proposes the so-called pulse algorithm
+to solve the SPPRC, and in \textcite{lozano2016} the pulse algorithm
+is extended to handle elementary paths.
 
 \textcite{desaulniers2019} propose a new paradigm called "selective pricing",
 where they propose an early abortion of the column generation procedure,
