@@ -478,14 +478,14 @@ The oracle needs to solve the pricing sub-problem which, due to the definition o
 coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
 over a \textbf{new directed symmetric} network with weights
 $\bar{c_{ij}} = c_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$.
-The ESPPRC problem asks for an elementary path (i.e. each vertex visited at most once) starting
-from a vertex, called a source vertex, and ending in another vertex, called the sink vertex.
-In the ESPPRC, the depot node is replaced by two vertices (one source, one sink)
-and the newly obtained network is characterized by $N + 1$ vertices.
 Resources are non-decreasing quantities,
 such as capacity or time,
 which are used to evaluate
 the feasibility of a route.
+The ESPPRC problem asks for an elementary path (i.e. each vertex visited at most once) starting
+from a vertex, called a source vertex, and ending in another vertex, called the sink vertex.
+In the ESPPRC, the depot node is replaced by two vertices (one source, one sink)
+and the newly obtained network is characterized by $N + 1$ vertices.
 
 \medskip
 
@@ -525,12 +525,12 @@ $(p_1, \dots, p_K) \mid \lambda^\star_{p_i} = 1$.
 
 \medskip
 
-It is important to also note that
-the CG doesn't need to solve the PP optimally at each iteration of the simplex algorithm.
+It is also important to note,
+that the CG doesn't need to solve the PP optimally at each iteration of the simplex algorithm.
 To improve the dual bound,
 it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$.
 There is no need to solve the pricing problem exactly,
-except to prove optimality at the last column generation iteration.
+except to prove the optimality at the last column generation iteration.
 Therefore, fast and efficient heuristic algorithms may be employed
 to tackle the pricing problem,
 especially during the very first few pricing iterations,
@@ -538,10 +538,7 @@ where finding good reduced cost columns is surprisingly easy.
 
 \medskip
 
-In the next section, and in almost all the remainder of this thesis,
-we will mostly analyze the CVRP problem under the SP formulation
-and assuming a branch-and-price scheme and column generation
-are employed solving such problem.
+In this thesis, we will mostly analyze the CVRP problem under the SP formulation.
 
 \subsection{Branching, Route Enumeration and Cut Generation}
 \label{sec:intro-branching-and-cut-generation-within-bap-frameworks}
@@ -554,7 +551,7 @@ a search-tree and a branching scheme is employed
 to seek for the optimal integral solution $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in P$.
 
 Although non strictly-necessary, modern BAP also use
-cut generation procedures to efficiently improve the dual bound and improve the convergence speed.
+cut generation procedures to efficiently improve the dual bound and the convergence speed.
 Modern BAP frameworks
 are in fact a hybridization between a BAP and a BAC framework,
 making them a branch-price-and-cut (BPC) frameworks.
@@ -565,7 +562,7 @@ a BCP approach for the VRP can be found \textcite{fukasawa2006, ropke2012}.
 
 It is important to note however that branching is not a strictly required operation.
 Route enumeration is another technique that can be used in place of branching
-for obtaining integral solutions, and it was first proposed for the CVRP in \textcite{baldacci2008}.
+for obtaining integral solutions which was first proposed for the CVRP in \textcite{baldacci2008}.
 In route enumeration, all elementary routes that may belong to the VRP optimal solution are enumerated,
 and an SP formulation containing all these enumerated routes are solved through a MIP.
 Route enumeration is obtained through a labeling algorithm similar to the one employed in the pricing problems.
@@ -579,7 +576,7 @@ The major contributions employing route enumeration in place of branching can be
 
 Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration
 (see \cite{pessoa2008, pessoa2009,contardo2014,pecin2017,pecin2017b,pessoa2020}).
-After the convergence of the column generation algorithm route enumeration is attempted.
+After the convergence of the column generation, route enumeration is attempted.
 If the number of enumerated routes starts to exceed a maximum limit, enumeration
 is preemptively aborted and conventional branching is applied.
 Once the primal-dual bound gap $\bar{z} - \ubar{z}$ reaches desirable levels, the route enumeration
@@ -624,26 +621,6 @@ In this thesis
 we will mostly concentrate on branching and cut generation schemes
 which make use of \textbf{robust} inequalities.
 Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
-
-
-\begin{comment}
-When a violated inequality in the two/three-index formulation is found, it is decomposed at runtime and introduced in the master problem.
-\end{comment}
-
-\begin{comment}
-\cite{jepsen2011}
-The other method is enumeration which has proven to be very successful
-for both cvrp[1] and vrptw[3]. In enumeration an upper bound U B and
-a lower bound LB are used. From reduced cost fixing of a binary variable
-it is know that any non basic column with a reduced cost strictly greater
-than the gap ub − lb can not be part of an integer solution which is an
-improvement of the current solution. This complete set of columns can be
-found by solving an espprc using the dominance rule in proposition 5 and
-bounding functions. Once we have added the columns with reduced cost less
-than or equal to the gap the resulting problem can be solved as an integer
-optimization problem.
-\end{comment}
-
 
 
 \subsubsection{Branching}
