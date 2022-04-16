@@ -1039,25 +1039,23 @@ meta-heuristic approach to generate routes with negative reduced costs.
 to solve the SPPRC, and in \textcite{lozano2016} the pulse algorithm
 is extended to handle elementary paths.
 
-\textcite{desaulniers2019} propose a new paradigm called "selective pricing",
+\textcite{desaulniers2019} propose a new paradigm called \textit{selective pricing},
 where they propose an early abortion of the column generation procedure,
 when there's proof that no reduced-cost elementary routes,
 even if the relaxed ESPRCC still admits reduced-cost relaxed routes.
-Thus, this paradigm selectively discards some non-elementary routes even
-if they are not dominated.
+This approach allows to discard some non-elementary routes
+in the labeling algorithm even if they are not dominated.
 
 It has been empirically seen that
 as the average number of customers per route $N / K$ increases,
-the dual variables $\pi \in R^N$ tend to oscillate from one iteration to another
-and the number of pricing iterations per column generation increases \parencite{toth2014}.
+the dual variables $\pi \in R^N$ tend to oscillate from one iteration to another,
+hurting the convergence speed of the column generation algorithm \parencite{toth2014}.
 Therefore, some dual variables stabilization techniques
 have been proposed to fix this problem and
-to improve the convergence speed
-of the column generation algorithm (see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018}).
+to reduce the number of pricing iterations required
+by the column generation algorithm (see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018}).
 Also employing the SC formulation in place of the SP formulation,
 the dual variables have been shown to be typically more stable \parencite{rousseau2007, feillet2010}.
-
-
 
 
 
