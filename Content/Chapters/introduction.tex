@@ -801,7 +801,9 @@ Non-robust cuts have been traditionally handled by extending the
 dynamic programming labeling algorithm
 through the addition of fictitious resources and through modifications to the dominance rules.
 
-Major contributions in the non-robust cutting-planes domain, are:
+\medskip
+
+Major contributions in the non-robust cutting-planes domain are:
 
 \begin{enumerate}
 	\setlength{\itemsep}{0pt}
@@ -809,29 +811,33 @@ Major contributions in the non-robust cutting-planes domain, are:
 
 	\item \textbf{Strengthened Capacity Cuts (SCCs)} proposed in \textcite{baldacci2008},
 	      which can be considered a non-robust tighter version of the RCCs.
-	      Compared to RCCs, they are not affected by routes entering set $S$ more than once.
+	      Compared to RCCs, they are not affected by routes entering set $S \subseteq V_0$ more than once.
 	\item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009}
-	      are another generalization of the RCCs.
+	      are another proposed generalization of the RCCs.
 	\item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008a}, a non-robust
 	      inequality obtained as a subset of the  Chv\'atal-Gomory rank-1 cuts \parencite{chvatal1973}
-	      applied to a subset $C \subseteq V_0$ of customers, where usually.
-	      Since their separation is NP-hard.
-	      Typically, the subset $C$ is separated through enumeration and for computational tractability
-	      $|C| \le 5$.
+	      applied to a subset $C \subseteq V_0$ of customers.
+	      Their separation is NP-hard.
+	      Therefore, Typically the subset $C$ is separated through enumeration
+	      and for computational tractability and restricting the evaluation $\forall C \subseteq V_0 \mid |C| \le 5$.
+	      3-SRCs, namely SRCs where $|C| = 3$, were applied successfully in many works \parencite{desaulniers2008, jepsen2008, baldacci2011, contardo2014, pecin2017}.
 	      The SRCs were later generalized to a more general Chv\'atal-Gomory Rank-1 cuts (R1Cs) in \textcite{petersen2008}.
-	      \textcite{baldacci2001} proposes a weakened version of 3-SRCs.
+	      \textcite{baldacci2011} proposes a weakened variant of the 3-SRCs inequalities.
 	\item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
-	      a dynamically controlled weakening of the SRCs that leads far less impact to
+	      are a dynamically controlled weakening of the SRCs that leads far less impact to
 	      the PP.
 	      Later, \textcite{pecin2017a} extends this concept to the Limited Memory Rank-1 Cuts (lm-R1Cs).
 	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011, contardo2014}, they can be considered
 	      a specialized version of the SCCs.
-	      They can enforce partial route elementarity and are redundant
-	      when the pricer always outputs elementary paths.
+	      They can enforce partial route elementarity in the RMP formulation
+	      and are redundant when the pricer always outputs elementary paths.
+	      SDCs can be used to achieve the elementarity bound in the case
+	      the pricer produces 1non-elementary routes \parencite{contardo2014}.
 	\item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
 	      are a weakened form of the SDCs, which forbids
 	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
-	      SRCs while still being as effective as improving the dual bounds as the traditional SRCs.
+	      SDCs may be viewed as a special case of k-CECs where $k = \infty$.
+	      The k-CECs have less impact in the pricing problem compared to SDCs.
 \end{enumerate}
 
 
