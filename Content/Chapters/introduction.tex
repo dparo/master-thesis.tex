@@ -1203,26 +1203,29 @@ are currently the best overall performing algorithms.
 \label{sec:intro-thesis-contributions}
 
 One of the major problems of contemporary CVRP solvers
-is that they are usually developed and tuned through the use of historical
-benchmark instances.
-Some of the major historical test instances are classified in different sets (or families), and
-they are usually referred in the literature through a single upper case letter.
+is that they are usually developed and tuned through the usage
+of historical benchmark instances which
+have little or no similarities with real-world distribution problems.
+The major historical test instances,
+employed to assess the performance of the scientific contributions,
+have been classified in different sets, or families.
+Each family is identified through a single upper case letter.
 We here summarize the core sets proposed by the operations research community for the CVRP problem:
-(i) set E is proposed in \textcite{christofides1969} and contains no description about how the instances were generate,
-(ii) set M is proposed in \textcite{christofides1979} and it is obtained by merging together some instances from the E set,
-(iii) set F is proposed in \textcite{fisher1994} and it obtained from an actual distribution problem of groceries in the city of Ontario,
+(i) set E is proposed in \textcite{christofides1969} but the authors don't provide any
+description about how the instances were generated,
+(ii) set M is proposed in \textcite{christofides1979} and
+it's obtained by aggregating together instances from the E set,
+(iii) set F is proposed in \textcite{fisher1994} and it's obtained from an actual distribution problem of groceries in the city of Ontario,
 finally (iv) sets A, B, P are proposed in \textcite{augerat1995} and are generated artificially: A is random, B is clustered, P generated from A,B,E by changing capacities.
-Another popular test set is the one proposed in \textcite{golden1998},
+Another less common test set is the one proposed in \textcite{golden1998},
 which contains large scale instances ranging from 200 to 480 customers,
 generated programmatically following concentric geometric figures.
 
-These benchmark instances suffer from being either too homogeneous, or too artificial,
-while not covering the main characteristics found in current real-world application problems.
-In the work of \textcite{uchoa2017}, for example, they propose
-a new more modern and diverse set of benchmark instances (called set X, ranging from 100 to 1000 customers)
-to replace the historical used ones, since those have become "rather easy" for modern algorithms.
-Despite this recent effort in proposing new instances for the CVRP, the scientific community
-has yet to fully agree on a common denominator for new more-modern benchmark set, and therefore,
+These benchmark instances have become quite easy for modern algorithms.
+They suffer from being either too homogeneous or too artificial,
+while not covering the main characteristics found in current real-world distribution problems.
+Despite some efforts in proposing a complete, diverse and more contemporary common denominator
+of set instances for the CVRP (set X, proposed in \textcite{uchoa2017}),
 the common and historical instances played (and still remains) the main central test-bed for comparing
 and assessing the performance of CVRP contributions.
 
