@@ -767,16 +767,14 @@ even if the set of feasible paths $P$ is relaxed to contain non-elementary route
 We will terminate the remainder of this section with the introduction
 of the families of inequalities which can be used for cut generation
 for the SP formulation.
-Despite the fact that the SP formulation provides better dual bounds
-compared to the two or three index arc flow formulation,
-these bounds might still be too weak in order to achieve an efficient algorithm.
+Despite the SP formulation generally provides better dual bounds
+compared to other CVRP formulations,
+these bounds may still be too weak to obtain an efficient algorithm.
 Thus, it is common practice to introduce cutting-plane approaches
-in modern BPC VRP solvers.
+in modern branch-and-price based VRP solvers.
 
-Cutting-planes define directly in terms of arc-flow variables are by nature
+Cutting-planes involving arc-flow variables only, are by nature
 robust.
-Robust cuts are quite effective at closing the integrality gap, but alone may not
-be sufficient for some harder VRP instances.
 Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
 they can trivially be extended to a robust inequality for the SP formulation:
 
@@ -792,14 +790,17 @@ to serve each customer $i \in S$.
 
 \medskip
 
-Some non-robust cuts were applied successfully to the CVRP.
-While in this thesis we will mostly avoid this type of inequalities,
-it is nonetheless important to acknowledge and understand their contributions.
-Non-robust cuts are usually handled by extending the dynamic programming based pricer
-through additional fictions resources and modifications to the dominance rules.
-
+Robust cuts are quite effective at closing the integrality gap, but alone may not
+be sufficient for some harder VRP instances,
+therefore some researchers tried to apply non-robust cuts to the CVRP with good success.
 In order to use them effectively, their separation must be carefully
 planned out, by taking into account the aggravation of the pricing problem.
+While in this thesis we will mostly avoid this type of inequalities,
+it is nonetheless important to acknowledge and understand their contributions.
+Non-robust cuts have been traditionally handled by extending the
+dynamic programming labeling algorithm
+through the addition of fictitious resources and through modifications to the dominance rules.
+
 Major contributions in the non-robust cutting-planes domain, are:
 
 \begin{enumerate}
