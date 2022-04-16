@@ -1,1 +1,29 @@
-\mytodo{Scrivere il sommario in ITALIANO}
+\nodeindent Il Capacitated Vehicle Routing Problem, abbreivato come CVRP,
+è un problema di instradamento di otimizzazione combinatoria  nel quale,
+un insieme geograficamente distribuito di clienti con richieste associate note,
+devono essere seriviti da una flotta di veicoli stazionati in una struttura centrale.
+Nelle ultime due decadi,
+tecniche di column generations incorporate all'interno di frameworks branch-price-and-cut
+hanno dominato lo stato dell'arte come approccio dominante
+per costruire algoritmi esatti per il CVRP.
+Il pricer, un imporante componente nella column generation, deve risolvere
+il cosidetto Pricing Problem (PP) che richiede la risoluzione di un
+Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+in una rete di costo ridotto.
+Pochi sforzi scientifici sono stati dedicati allo studi di approacci
+branch-and-cut cut per affrontare il PP.
+L'ESPRC è stato tradizionalmente rilassato e risolto attraverso algoritmi di programmazione dinamica
+Questo approccio, tuttavia, ha due principali svantaggi.
+In primo luogo, porta a un peggioramento dei dual bounds ottenuti.
+In secondo luogo, il tempo di esecuzione deteriora all'aumentare della lunghezza dei percorsi generati.
+La comunità di ricerca operativa ha tradizionalmente impiegato
+un insieme di istanze di test storiche e artificiali per valutare
+l'esecuzione dei propri contributi.
+Purtroppo queste istanze, che sono caratterizzate da piccoli percorsi,
+non catturano le proprietà principali dei problemi reali di distribuzione moderna,
+in cui i percorsi sono per natura più lunghi.
+
+\noindent In questa tesi sviluppiamo
+uno schema basato su un approaccio branch-and-cut per risolvere il pricing problem.
+Studiamo il comportamento e l'efficacia dell'approccio proposto in produrre percorsi più lunghi
+comparandolo con le soluzioni all'avanguardia che si basano su algoritmi di dinamica.
