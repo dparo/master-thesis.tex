@@ -1064,16 +1064,15 @@ the dual variables have been shown to be typically more stable \parencite{rousse
 \label{sec:intro-literature-review}
 
 \textcite{dantzig1959},
-the pioneers of the combinatorial vehicle routing problem,
-introduce the CVRP problem.
+the pioneers of the contemporary vehicle routing problem,
+introduce for the first the CVRP problem to the masses.
 A few years later, \textcite{clarke1964} proposes
 an effective greedy heuristic algorithm for tackling the CVRP.
-The introduction of this new problem led to a whole new branch
+The presentation of this new problem led to a whole new branch
 of scientific research within the operations research community.
-
 In the last 60 years, a huge number of contributors in
 the operations research community have studied and proposed many
-mathematical models, and algorithms, both exact and (meta-)heuristic,
+mathematical models and algorithms, both exact and (meta-)heuristic,
 for solving the VRP.
 
 Up to the late 1980s, the exact approaches for tackling the CVRP was
@@ -1099,7 +1098,7 @@ can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ra
 for the first time.
 
 Regardless, these new works based on branch-and-cut frameworks, showed that CVRP instances
-with small number of customers (less than 100) proved in general
+with even a few customers (less than 100) proved
 to be very challenging to solve exactly.
 
 
@@ -1113,7 +1112,7 @@ Therefore, until the first 2000s, the branch-and-cut approaches
 were deemed to be the best approach for solving the CVRP.
 
 In \citeyear{desrochers1992}, \citeauthor{desrochers1992}
-proposed the dynamic programming based label setting algorithm for the SPPRC,
+proposed the dynamic programming based label correcting algorithm for the SPPRC,
 and devised it inside a branch-and-price scheme to tackle the VRPTW.
 This labeling algorithm still constitutes the major core ingredient
 of modern BPC schemes to efficiently solve the pricing problem.
@@ -1130,18 +1129,18 @@ typically found in BAC algorithms.
 and the column generation considered only q-routes with $k$-cycles elimination.
 \textcite{fukasawa2006} was able to solve all CVRP instances up to approximately 100 customers.
 Since the work of \citeauthor{fukasawa2006} until now, column generation
-and the label-setting algorithm have been the defacto procedures
+and the label-setting algorithm have been the de-facto procedures
 of modern and efficient VRP solvers.
 
-Later, \textcite{baldacci2008}, proposed a slightly different approach w.r.t. \citeauthor{fukasawa2006}.
+Later, \textcite{baldacci2008}, proposed a slightly different approach w.r.t. \textcite{fukasawa2006}.
 They employ a column generation considering elementary routes and additional inequalities.
 \citeauthor{baldacci2008} employed a bounding procedure to quickly
 improve the dual bound while also reducing the number
 of pricing iterations and the number of columns to take into consideration.
 Instead of branching, they employed full enumeration of the candidate
 routes and use a MIP package to solve the associated problem at the root node.
-\textcite{pessoa2008} improves over the work of \citeauthor{fukasawa2006}
-by integrates the work of \citeauthor{baldacci2008}
+\textcite{pessoa2008} improves over the work of \textcite{fukasawa2006}
+by integrating the work of \textcite{baldacci2008}
 through an hybridization between traditional branching and enumeration.
 \textcite{contardo2011} instead it takes a different approach.
 It considers q-routes with 2-cycle eliminations, and non-robust
