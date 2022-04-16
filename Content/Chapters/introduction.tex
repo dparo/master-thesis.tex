@@ -1146,13 +1146,10 @@ through an hybridization between traditional branching and enumeration.
 It considers q-routes with 2-cycle eliminations, and non-robust
 k-CECs cuts are used to enforce elementarity.
 
-\textcite{baldacci2011} proposed the ng-routes, a very effective
-partial (soft) elementarity constraint
+\textcite{baldacci2011} propose the ng-routes, a very effective
+partial (soft) elementarity constraint employed in modern VRP solvers,
 that trade-offs the elementarity condition (i.e. good dual bound in pricing)
 for a simpler pricer problem.
-The ng-routes,
-which are another core ingredient employed in modern VRP solvers (see \cite{pessoa2020a}),
-can be implemented inside the label-setting algorithm.
 \textcite{ropke2012} revisits the work \citeauthor{fukasawa2006} and applies
 the ng-routes relaxation and strong branching schemes.
 
@@ -1169,19 +1166,17 @@ In their approach the size of the ng-sets size
 is enlarged dynamically in order to seek for more effective dual bounds.
 
 
-Finally, a modern BCP was proposed in \textcite{pecin2017}, which also
-proposed the non-robust limited memory subset row cuts \parencite{pecin2017a}.
-By using a bidirectional label setting algorithm, a modern dual smoothing and enumeration
-approach and the ng-routes relaxation, they were able to solve CVRP
-instances made of 200 customers.
-
-At the day of writing, \textcite{pessoa2020a} is the current state of the
-art BCP framework based on column generation with ng-routes relaxation
+Another modern BCP algorithm was proposed in \textcite{pecin2017}.
+By using a bidirectional label setting algorithm,
+lm-SRCs cuts, modern dual smoothing and enumeration approaches
+and the ng-routes relaxation, they were able to solve CVRP instances made of 200 customers.
+At the day of writing, \textcite{pessoa2020a} is the current state-of-the-art
+BCP framework based on column generation with ng-routes relaxation
 for solving the CVRP problem.
 
 Thanks to the major advancements on the past decades
 on exact BPC algorithms
-have led to exact solutions of CVPR problems composed of
+have led to exact solutions of CVRP problems composed of
 more than 300 customers \parencite{costa2019}.
 
 
