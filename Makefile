@@ -42,7 +42,7 @@ svg2pdf: $(SVGS_AS_PDFS)
 croppdfs: $(PDFS_CROPPED)
 
 %.out.pdf: %.svg
-	inkscape --export-overwrite --export-type=pdf --export-filename="$@" "$<"
+	inkscape --export-area-drawing --export-dpi=600 --export-overwrite --export-type=pdf --export-filename="$@" "$<"
 
 %.cropped.pdf: %.pdf
 	pdfcrop "$<" "$@"
