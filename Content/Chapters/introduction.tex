@@ -131,7 +131,7 @@ As we will see later, it is often simpler to link $r(S)$ to the trivial lower bo
 	r(S) \ge \ceil*{\frac{q(S)}{Q}}
 \end{equation}
 
-A route $p$ is a loop-back sequence $p = \Tuple*{i_0, i_1, \dots, i_s}$, with $i_0 = 0$ in which
+A route $p$ is a loop-back sequence $p = \Tuple*{i_0, i_1, \dots, i_s, i_{s + 1}}$, with $i_0 = i_{s + 1} = 0$ in which
 $\Set*{i_1, \dots, i_s} \subseteq V_0$ customers are visited.
 The route $p$ has a travel cost of $c_p = c(p) = \sum_{j=0}^s c_{i_j,i_{j+1}}$.
 A feasible solution to the CVRP problem consists of \textbf{exactly} $K$ routes (or circuits)
