@@ -9,9 +9,10 @@ under the name of "truck dispatching problem",
 is one of the most studied combinatorial optimization routing problem.
 The CVRP is an NP-hard (in the strong sense) problem which can be considered a generalization
 of the well-known Travelling Salesman Problem (TSP).
-The TSP is a ubiquitous combinatorial optimization problem
-in the operations research field,
-that asks for the determination of a Hamiltonian circuit of minimum cost.
+The TSP \parencite{flood1956}
+is a ubiquitous combinatorial optimization problem in the operations research field,
+that asks for the determination of a Hamiltonian circuit of minimum cost
+\parencite{croes1958, laporte1992,johnson1997,applegate2006,gutin2006,hoffman2013}.
 The CVRP can be defined verbally as finding an optimal route for a transportation/distribution/delivery problem
 starting from a common point called the depot,
 where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
@@ -21,6 +22,22 @@ the customer demands and the vehicle capacity,
 the problem consists in determining a set of routes, one for each vehicle,
 of minimal overall travel distance starting and ending at the depot.
 The set of routes need to serve all the customers in the road network exactly once and no more.
+A diagram showing an example of a CVRP problem along with one of its feasible solution
+is provided in \Cref{fig:cvrp-optimal-solution-example}.
+
+\begin{figure}[ht]
+	\centering
+    \includegraphics[width=12cm]{Imgs/P-n40-k5-solution.out.cropped.pdf}
+	\caption{An example of an feasible solution to a CVRP problem (instance named P-n40-k5).
+        There are 39 customers to be served and 5 available trucks with capacity $140$ each. Each color
+        represents a different route taken by each truck and the colored dots
+        represents the customers served on each route.
+        The larger black dot represents the central facility (the depot).
+        Credits: \url{http://vrp.galgos.inf.puc-rio.br/index.php/en/plotted-instances?data=P-n40-k5}.
+    }
+	\label{fig:cvrp-optimal-solution-example}
+\end{figure}
+
 
 Studying effective solution methods for the CVRP may lead to tremendous real-world economic
 savings for the management of the provision of goods or services in a distribution system.
