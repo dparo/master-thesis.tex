@@ -56,7 +56,7 @@ In the VRPTW \parencite{schrage1981} the vehicles are subject to capacity constr
 each customer is associated with a time window slot in which it can be served,
 Nonetheless, CVRP is the simpler VRP variant to describe,
 and yet to this day, it remains the most central and studied routing problem.
-For a more complete taxonomy on the many VRP variants refer to \textcite{braekers2016}.
+For a more complete taxonomy on the many VRP variants refer to \textcite{eksioglu2009, braekers2016}.
 
 While effective (meta)heuristic algorithms have been proposed and applied
 successfully to many VRP variants to obtain good-enough solutions
@@ -435,9 +435,9 @@ and cutting-planes are added to strengthen the linear relaxations associated to 
 
 In the next section we will illustrate the column generation algorithm
 and the pricing problem, two vital pieces in branch-and-price frameworks.
-We refer the reader to \textcite{feillet2010}, which contains a nice
-tutorial over these topics.
-
+We refer the reader to \textcite{feillet2010}, which contains a tutorial
+on column generation and branch-and-price algorithms.
+For a more generl problem-independent introduction in branch-price-and-cut frameworks refer to \textcite{desrosiers2011}.
 
 
 \subsection{Column generation and the Pricing Problem}
@@ -1264,10 +1264,11 @@ These historical instances are usually characterized with stringent vehicle capa
 which consequently give rise to optimal solutions characterized by small routes, each visiting few customers.
 In practice, the vehicle capacity is rarely the bottleneck and
 real-world modern distribution problems are instead characterized by much longer routes.
-When solving the Pricing Problem (PP), it has been shown that the performance of the dynamic labeling algorithm
-tends to drop as the length of the routes increases,
-while at the same time,
-the performance of branch-and-cut algorithms seem to improve in this domain \inlinetodo{Correct? Citation needed}.
+The dynamic programming labeling algorithm
+\parencite{desrochers1992,feillet2004}
+is the commonly employed method to tackle the Pricing Problem (PP) \parencite{gutierrez-jarpa2010, archetti2011, bettinelli2011, contardo2014, contardo2015, pecin2017b, pecin2017, pessoa2020a}.
+It has been shown that the computational performance of such algorithm
+tends to deteriorate as the length of the generated routes increases.
 
 The goal of the thesis lies in studying the feasibility and competitiveness of a
 branch-and-cut algorithm, implemented through a commercial MIP software package,
