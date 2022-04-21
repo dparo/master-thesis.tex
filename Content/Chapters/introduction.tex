@@ -454,8 +454,23 @@ as the linear relaxation of the SP formulation obtained by relaxing the integral
 \end{align}
 
 
+The constraint $\lambda_p \le 1$ in \cref{eq:mp-lambda-mip-var-bounds} is implied from \cref{eq:mp-customers-visited-by-exactly-one-route} and can thus be removed.
 An optimal solution to the MP provides a valid dual bound at the root node of the search tree.
 The master problem can be modified by adding cuts or branching constraints to improve the obtained dual bound.
+
+The dual problem associated with \labelcref{eq:mp-obj-func,eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes,eq:mp-lambda-mip-var-bounds}
+is:
+
+\begin{align}
+	\min_{\lambda} \quad z_\mt{MP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:mp-obj-func}                                                                                                                             \\
+	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1                   & \quad \forall i \in V_0                                              \label{eq:mp-customers-visited-by-exactly-one-route} \\
+	                                        & \sum_{p \in P} \lambda_{p} = K\label{eq:mp-K-routes}                                                                                                                               \\
+	                                        & 0 \le \lambda_p \le 1                                  & \quad \forall p \in P \label{eq:mp-lambda-mip-var-bounds}
+\end{align}
+
+
+
+
 When solving the MP,
 at each iteration of the simplex algorithm \parencite{dantzig1955} we seek for a non-basic variable (i.e. column)
 to price out and enter the basis.
@@ -473,7 +488,7 @@ obtaining the following linear program:
 	\min_{\lambda} \quad z_\mt{RMP}(\lambda) & = \sum_{p \in \mcP}  c_p \lambda_p \label{eq:rmp-obj-func}                                                                                                                              \\
 	                                         & \sum_{p \in \mcP}  a_{ip} \lambda_p = 1                    & \quad \forall i \in V_0                                              \label{eq:rmp-customers-visited-by-exactly-one-route} \\
 	                                         & \sum_{p \in \mcP} \lambda_{p} = K\label{eq:rmp-K-routes}                                                                                                                                \\
-	                                         & 0 \le \lambda_p \le 1                                      & \quad \forall p \in \mcP \label{eq:rmp-lambda-mip-var-bounds}
+	                                         & \lambda_p \ge 0                                      & \quad \forall p \in \mcP \label{eq:rmp-lambda-mip-var-bounds}
 \end{align}
 
 which takes the name of \textbf{Restricted Master Problem} (RMP).
