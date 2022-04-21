@@ -27,14 +27,14 @@ is provided in \Cref{fig:cvrp-optimal-solution-example}.
 
 \begin{figure}[ht]
 	\centering
-    \includegraphics[width=12cm]{Imgs/P-n40-k5-solution.out.cropped.pdf}
+	\includegraphics[width=12cm]{Imgs/P-n40-k5-solution.out.cropped.pdf}
 	\caption{An example of an feasible solution to a CVRP problem (instance named P-n40-k5).
-        There are 39 customers to be served and 5 available trucks with capacity $140$ each. Each color
-        represents a different route taken by each truck and the colored dots
-        represents the customers served on each route.
-        The larger black dot represents the central facility (the depot).
-        Credits: \url{http://vrp.galgos.inf.puc-rio.br/index.php/en/plotted-instances?data=P-n40-k5}.
-    }
+		There are 39 customers to be served and 5 available trucks with capacity $140$ each. Each color
+		represents a different route taken by each truck and the colored dots
+		represents the customers served on each route.
+		The larger black dot represents the central facility (the depot).
+		Credits: \url{http://vrp.galgos.inf.puc-rio.br/index.php/en/plotted-instances?data=P-n40-k5}.
+	}
 	\label{fig:cvrp-optimal-solution-example}
 \end{figure}
 
@@ -46,7 +46,7 @@ also reducing the waiting time experienced by the customers.
 Therefore, studying optimal efficient algorithms and mathematical models for
 solving and describing real-world distribution problems,
 becomes of vital importance
-for the operational management of a cost-efficient planning process.
+for the operational management of a cost-efficient planning process \parencite{toth2002,toth2014}.
 
 The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
 There are many variations of VRPs proposed in the literature such as
@@ -57,10 +57,16 @@ Nonetheless, CVRP is the simpler VRP variant to describe,
 and yet to this day, it remains the most central and studied routing problem.
 For a more complete taxonomy on the many VRP variants refer to \textcite{braekers2016}.
 
-While effective (meta-)heuristic algorithms have been proposed and applied
+While effective (meta)heuristic algorithms have been proposed and applied
 successfully to many VRP variants to obtain good-enough solutions
 in reduced computation time, in this thesis we are mainly concerned
 with exact algorithms for solving the CVRP.
+Major contributions employing heuristics for the VRP can be found, among others, in
+\textcite{clarke1964scheduling, desrochers1989matching, paessens1988savings, foster1976integer}.
+Metaheuristics approaches for the VRP can be found, among others, in
+\textcite{gendreau1994tabu, cordeau2012parallel, toth2003granular, li2005very, pisinger2007, kytojoki2007efficient, nagata2009,vidal2012, subramanian2013}.
+For a more complete survey on (meta)heuristics for the VRP refer to
+\textcite{golden1998impact,gendreau2002metaheuristics,gendreau2008,laporte2014chapter,elshaer2020taxonomic}.
 Exact algorithms are usually slower than (meta-)heuristics, but given
 enough computation time, they can produce a proven optimal solution.
 This is achieved by closing the primal-dual bound gap of the objective function.
