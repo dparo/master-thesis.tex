@@ -158,8 +158,11 @@ As we will see later, it is often simpler to link $r(S)$ to the trivial lower bo
 A route $p$ is a loop-back sequence $p = \Tuple*{i_0, i_1, \dots, i_s, i_{s + 1}}$, with $i_0 = i_{s + 1} = 0$ in which
 $\Set*{i_1, \dots, i_s} \subseteq V_0$ customers are visited.
 The route $p$ has a travel cost of $c_p = c(p) = \sum_{j=0}^s c_{i_j,i_{j+1}}$.
-A feasible solution to the CVRP problem consists of \textbf{exactly} $K$ routes (or circuits)
+A feasible solution to a CVRP problem consists of \textbf{exactly} $K$ routes (or circuits)
 associated with each vehicle starting and ending at the depot node.
+The traditional definition of CVRP requires full use of the total number of available vehicles $K$,
+however,
+this requirement can lead to suboptimal solutions with respect to using fewer vehicles for some cases.
 In classic CVRP, each customer is visited exactly once (elementarity condition),
 and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $Q$.
 An optimal solution to the CVRP is a feasible solution which minimizes the sum of the overall edge weights across all the tours.
