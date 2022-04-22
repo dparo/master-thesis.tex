@@ -78,7 +78,7 @@ For a fairly complete survey regarding the entire VRP class, we highly suggest
 the fairly complete book \citetitle{toth2014} of \textcite{toth2014}.
 This book served as a good reference and played a central role
 in laying out this introductory chapter.
-Other surveys on the matter can be found in the works of \textcite{baldacci2012, costa2019}.
+Other surveys on the matter can be found in the works of \textcite{baldacci2012, caceres-cruz2015, costa2019}.
 
 \medskip
 
@@ -463,11 +463,15 @@ is:
 
 \begin{align}
 	\max_{\pi} \quad z_\mt{DMP}(\pi) & =  K \pi_0 + \sum_{i \in V_0} \pi_i \label{eq:dmp-obj-func}                                                    \\
-	                                 & \pi_0 + \sum_{i \in V_0} a_{ip} \pi_i \le c_p               & \quad \forall p \in P \label{eq:dmp-constraint1}
+	                                 & \pi_0 + \sum_{i \in V_0} a_{ip} \pi_i \le c_p               & \quad \forall p \in P \label{eq:dmp-constraint1} \\
+	                                 & \pi_0 \in \R &  \label{eq:dmp-constraint2} \\
+	                                 & \pi_i \in \R &  \quad \forall i \in V_0 \label{eq:dmp-constraint3}
 \end{align}
 
 where $\pi_0 \in \R, \pi_i \in \R \quad \forall i \in V_0$ represents the dual variables
 associated respectively with constraints \labelcref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
+In case the Set Covering formulation is used \cref{eq:dmp-constraint3} can be replaced in favor of $\pi_i \ge 0 \quad \forall i \in V_0$,
+thus reducing the dual solution space.
 When solving the MP,
 at each iteration of the simplex algorithm \parencite{dantzig1955} we seek for a non-basic variable (i.e. column)
 to price out and enter the basis.
