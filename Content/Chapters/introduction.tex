@@ -87,6 +87,8 @@ CVRP is usually defined more rigorously through an Integer Programming (IP) form
 The IP formulation is a mathematical optimization tool
 which can describe combinatorial optimization problems
 through the usage of constraints, usually defined through linear inequalities.
+The constraints limit the solution space of the optimization problem.
+IP formulations also list a set of decision variables and a linear objective function to be optimized.
 In the next section we will provide a more rigorous mathematical
 description of the CVRP, and we will present its most commonly employed IP formulations.
 
@@ -970,6 +972,8 @@ on column generation schemes based on q-routes is simply not an option.
 The running time complexity of the new extended algorithm for pricing elementary routes
 is $O(2^N Q)$ operations,
 thus limiting its applicability on bigger problems.
+Later, \textcite{righini2006} improves the dynamic programming
+algorithm for pricing elementary routes.
 
 Nonetheless, some contributions have been made to improve its overall running time.
 Some major ones can be attributed to:

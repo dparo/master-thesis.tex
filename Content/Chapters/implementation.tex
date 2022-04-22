@@ -3,8 +3,67 @@
 \mytodo{Introduce the project, say it is written in C, point to the github repo url, etc...}
 
 \section{Introduction to CPLEX}
+\urlref{https://www.ibm.com/analytics/cplex-optimizer}{IBM ILOG CPLEX Optimizer}
+is an optimization software package for solving problems expressed as either:
+linear programs, mixed-integer programs, quadratic programs, or quadratic constrained programs.
+ILOG CPLEX was bought from IBM in 2009 and is currently maintained by IBM.
+CPLEX comes in different flavors as either an independent executable or as a callable library.
+The executable can solve problems defined interactively or defined inside a custom file format.
+The CPLEX Callable library is a C dynamic library linkable with custom user code.
+CPLEX also comes with bindings for different languages such as C++, Java, Python, and more.
+CPLEX uses the simplex algorithm (both primal and dual) and an advanced proprietary algorithm based on a branch-and-cut technique called \textit{Dynamic Search}.
+CPEX applies pre-processing at the root to improve the formulation and reduce the problem size.
+It also features a probing technique to analyze logical implications by fixing binary variables to either $0$ or $1$.
+It applies several heuristics at each node: Diving heuristic, Local Branching \parencite{fischetti2003}, Feasibility pump \parencite{fischetti2005}, Relaxation Induced Neighborhood \parencite{danna2005}, Evolutionary genetic algorithms for polishing the solutions \parencite{rothberg2007}, and more.
+Moreover, the node-selection and branching decision strategies in CPLEX are top notch.
+The node-selection and branching decision startegie
+are the most delicate component of a branch-and-cut algorithm
+because they can substantially alter the whole running time of the procedure \parencite{lodi2013a}.
+They received many years of development and tuning to make them top-notch.
+For more details about CPLEX refer to \textcite{lima2010, lodi2013}.
 
-\mytodo{Explain what is CPLEX, academic license, url where it can be downloaded etc}
+
+MIP solvers are quite general and can be employed to solve a variety of problems from different fields.
+MIP models are, in spirit, a way to mathematically program a solver to achieve the desired solution.
+A MIP solver can solve a mixed integer linear programming formulation expressed as:
+
+\begin{align}
+    & \max_{x, y}         & c^T x + d^T y \\
+    & \text{s.t.}  & A x + B y \le b \\
+    &                     & x \in \R^n \\
+    &                     & y \in \Z_{+}^k
+\end{align}
+
+where $A \in \R^{m \times n}, B \in \R^{m \times k}$ are matrices and
+$c \in \R^n, d \in R^k, b \in \R^m$ are vector coefficients.
+
+
+MIP solvers have are exact by nature: given enough running time, they can compute a proven \textbf{optimal} solution by exhibiting both a lower bound and an upper bound to the objective function.
+They tend to be less effective than an ad-hoc heuristic algorithm since they work with a generic abstract mathematical model and cannot foresee all the nuances that the model itself represents.
+As \textcite{bixby1999} says, MIP modeling is a powerful and convenient technique but wasn't very applicable 40 or so years ago due to limited hardware and less efficient implementations.
+Thanks to advances in processor speed, the development of faster and smarter algorithms, embedded heuristics, preprocessing, postprocessing, and polishing techniques, MIP models are nowadays quite manageable and solvable in a reasonable time on consumer hardware.
+
+
+Unfortunately, MIP solvers are usually quite complicated.
+Lots of research and development is spent on creating an efficient MIP solver.
+Unlike a simple heuristic which implementation spans a few lines of code, a MIP solver cannot be developed in "house" using limited resources within a reasonable time.
+Most efficient MIP solvers on the market have licenses costing in the range of tens of thousands of dollars.
+
+
+Fortunately, CPLEX is available freely through an academic license at this \urlref{https://www.ibm.com/support/knowledgecenter/SSSA5P\_12.5.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/preface/preface\_synopsis.html}{URL}.
+
+
+In this thesis, we used the latest \texttt{CPLEX 20.1} C callable library to develop our pricer.
+It is clear that using a modern and well developed MIP solver, such as CPLEX, can provide
+two benefits compared to custom algorithms which are mainly tailored only at a single problem.
+First, using a MIP solver efficient parallel usage of the machine' multiple cores comes for free.
+Second, it is possible to re-use all the enginnering effort that went in creating a MIP solver
+and apply it to the problem at hand.
+
+
+
+
+
 
 
 \section{Full static model}
