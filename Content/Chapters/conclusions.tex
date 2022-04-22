@@ -5,7 +5,9 @@ The advantage of branch-and-cut software packages is that
 they allow for heavy use of parallelization basically for free,
 while current label-setting algorithms are single-threaded.
 The branch-and-cut frameworks can also be easily extended
-to become a heuristic pricer by employing
+to become a heuristic pricer
+(see mathheuristics: adding an invalid constraint to speed up the convergence of the MIP solver)
+by employing
 solutions such as hard-fixing.
 Hard fixing is a form of randomized diving,
 where given any feasible solution,
@@ -26,7 +28,6 @@ Study more effective cutting planes and
 faster separation techniques.
 Study more effecitve bounding procedures and cutting off values
 prior to starting the resolution process through the MIP.
-
 
 Use min-cut heuristic procedures to improve
 the running time of the fractional separation
@@ -49,7 +50,6 @@ The branch-and-cut algorithm is asked to first generate $q$-routes by
 relaxing the bounds on the $y_i$ mip variables,
 and then for each vertex visited twice of more, the associated bound
 on the $y_i$ is strengthened.
-
 
 \subsection{Future work}
 \mytodo{Extend the CPTP model to consider VRPTW, and re-evaluate the empirical results}
