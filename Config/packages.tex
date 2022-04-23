@@ -20,11 +20,12 @@
 % biblatex is better than default bibtex
 \usepackage[
 	backend=biber,
-	natbib,       % natbib comptability: Create natbib aliases commands that map to biblatex core commands
+	natbib,       % natbib compatibility: Create natbib aliases commands that map to biblatex core commands
 	style=authoryear,
 	bibstyle=numeric,
-	mincitenames=2,
-	maxcitenames=2,
+	mincitenames=1,
+	maxcitenames=1,
+	maxbibnames=99,
 	sorting=none,              % none = sort based on citation appearance order in the document.
 	sortcites=false,           % Whether or not to sort citations if multiple entry keys are passed to a citation command.
 	% Fix citation uniqueness. Biblatex is (by default) allowed to override maxcitenames if it deems this to provide a more unique authorlist.
