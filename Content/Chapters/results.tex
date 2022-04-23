@@ -24,6 +24,31 @@ instances (and all the previous CVRP instances described in Section 2) are avail
 
 \mytodo{Put all the instances used in tables as is done in \cite{uchoa2017}}
 
+\section{\bapcod}
+\label{sec:results-bapcod}
+
+\textit{\bapcod}\ \parencite{sadykov2021} is a software package,
+developed in France at the Bordeaux University and Bordeaux Research Center ,
+which implements a branch-cut-and-price algorithm
+and a column generation procedure.
+\bapcod takes as input a mixed integer programming model, and solves it by applying
+a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
+The branch-and-price framework is generic and may be used standalone.
+In fact, it supports user developed extensions,
+which can provide custom cutting-planes, branching-decisions
+or user-defined pricers
+The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
+a \bapcod\ extension distributed by the same authors.
+This extension implements an RCSP pricer, some cutting-planes
+and branching decisions to efficiently solve routing-like problems,
+such as the CVRP, VRPTW, but also other problems that exhibit similar
+structures (see \cite{pessoa2020a}).
+For more detail about \bapcod and its VRPSolver extension refer to
+\textcite{sadykov2021}.
+
+\bapcod\ along with its VRPsolver are currently the leading state-of-the-art
+technology for solving vehicle routing problems \parencite{pessoa2020a}.
+
 \section{Evaluation Method}
 \label{sec:results-evaluation-method}
 
