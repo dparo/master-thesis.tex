@@ -1,4 +1,5 @@
-\chapter{BapCod model and parametrization}
+\chapter{\bapcod}
+\label{sec:bapcod-appendix}
 
 \mytodo{Introduce what is BapCod, specify the version, point to the website, academic license, RCSP lib solver, etc...}
 
@@ -10,12 +11,16 @@
 %
 % \mytodo{Note that specific ESPPRC type of non-robust branching\&cuts are disabled in the BapCod model}
 
-\section{Parametrization}
+\section{Dual values extraction}
+
+\mytodo{Talk about how we extract the dual values from the BapCod model reduced cost variables}
+
+\section{Employed \bapcod\ Parametrization}
+\label{sec:employed-bapcod-parametrization}
 
 This section introduces the parameters used in BapCod.
 These parameters were used by BapCod to solve the CVRP instances through a B\&C\&P procedure.
 At each pricing iteration we time the RCSP labeling algorithm pricer, and produce the CPTP instances that will be used to compare the running times.
-
 
 Most of the parameters are documented in the technical report in \cite{sadykov2021}, where they also introduce the user level API to use their code.
 The technical report alone is not enough to understand all the nuances of each parameter, therefore it is important to follow along using also their original scientific document original work in \cite{pessoa2020}.
@@ -46,7 +51,6 @@ These parameters are used to control the main behaviour of BapCod.
 		            In our case it is disabled.
 		      \item \texttt{CheckOracleOptimality = false} similar to \texttt{CheckSpOracleFeasibility} but also verifies the optimality of the solution.
 	      \end{itemize}
-
 
 	\item Controlling the column generation procedure:
 	      \begin{itemize}
@@ -98,8 +102,3 @@ These parameters are used to control the main behaviour of BapCod.
 		            Since we are not interested in cut generation, and we want BapCod to always prefer augmenting the ng-sets, we disable the tailing off condition.
 	      \end{itemize}
 \end{itemize}
-
-
-\section{Dual values extraction}
-
-\mytodo{Talk about how we extract the dual values from the BapCod model reduced cost variables}
