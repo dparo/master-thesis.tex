@@ -8,12 +8,15 @@
 developed in France at the Bordeaux University and Bordeaux Research Center ,
 which implements a modern generic branch-price-and-cut (BPC) algorithm
 and a column generation procedure.
-\bapcod\ takes as input a mixed integer programming model, and solves it by applying
-a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
+\bapcod\ takes as input a compact mixed integer programming model,
+and solves it by applying a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
+The reformulation is automatically applied by the solver
+and a default generic pricer relying on
+the usage of a MIP solver is employed in the column generation procedure.
 \bapcod, being generic in nature,
 supports user developed extensions.
-These extension can supply the BPC framework with either
-custom defined cutting-planes, custom branching decisions,
+These extensions can supply the BPC framework with either
+custom defined cutting-planes (robust or non), custom branching decisions (robust or non),
 or even ad-hoc pricer implementations.
 
 The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
@@ -27,6 +30,11 @@ For more detail about \bapcod\ and its VRPSolver extension refer to
 
 \bapcod\ along with its VRPSolver are currently the leading state-of-the-art
 technology for solving vehicle routing problems \parencite{pessoa2020a}.
+The \bapcod\ source code can be downloaded for free, for academic purposes only,
+by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
+The VRPSolver extension, instead, is available only in compiled form, and
+must be explicitly requested by email by contacting one of the
+original authors: \url{mailto:ruslan.sadykov@inria.fr}.
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
