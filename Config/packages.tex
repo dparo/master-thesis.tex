@@ -21,11 +21,14 @@
 \usepackage[
 	backend=biber,
 	natbib,       % natbib comptability: Create natbib aliases commands that map to biblatex core commands
-	style=authoryear,
-	maxnames=1,
-	maxcitenames=1,
-	autocite=plain,
-	sortcites=true,
+	style=authoryear-comp,
+	bibstyle=numeric,
+	minnames=2,
+	maxnames=2,
+	mincitenames=2,
+	maxcitenames=2,
+	sorting=none,              % none = sort based on citation appearance order in the document.
+	sortcites=false,           % Whether or not to sort citations if multiple entry keys are passed to a citation command.
 ]{biblatex}
 
 %%
