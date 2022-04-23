@@ -1,6 +1,34 @@
 \chapter{Results}
 \label{sec:results}
 
+\section{\bapcod}
+\label{sec:results-bapcod}
+
+\textit{\bapcod}\ \parencite{sadykov2021} is a software package
+developed in France at the Bordeaux University and Bordeaux Research Center ,
+which implements a modern branch-cut-and-price algorithm
+and a column generation procedure.
+\bapcod\ takes as input a mixed integer programming model, and solves it by applying
+a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
+The branch-and-price framework is generic and may be used standalone.
+In fact, it supports user developed extensions,
+which can provide custom cutting-planes, branching-decisions
+or user-defined pricers.
+The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
+a \bapcod\ extension distributed by the same authors.
+This extension implements an RCSP pricer, some cutting-planes
+and branching decisions to efficiently solve routing-like problems,
+such as the CVRP, VRPTW, but also other problems that exhibit similar
+structures (see \cite{pessoa2020a}).
+For more detail about \bapcod and its VRPSolver extension refer to
+\textcite{sadykov2021}.
+
+\bapcod\ along with its VRPSolver are currently the leading state-of-the-art
+technology for solving vehicle routing problems \parencite{pessoa2020a}.
+
+
+
+
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
 
@@ -24,38 +52,39 @@ instances (and all the previous CVRP instances described in Section 2) are avail
 
 \mytodo{Put all the instances used in tables as is done in \cite{uchoa2017}}
 
-\section{\bapcod}
-\label{sec:results-bapcod}
-
-\textit{\bapcod}\ \parencite{sadykov2021} is a software package,
-developed in France at the Bordeaux University and Bordeaux Research Center ,
-which implements a branch-cut-and-price algorithm
-and a column generation procedure.
-\bapcod takes as input a mixed integer programming model, and solves it by applying
-a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
-The branch-and-price framework is generic and may be used standalone.
-In fact, it supports user developed extensions,
-which can provide custom cutting-planes, branching-decisions
-or user-defined pricers.
-The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
-a \bapcod\ extension distributed by the same authors.
-This extension implements an RCSP pricer, some cutting-planes
-and branching decisions to efficiently solve routing-like problems,
-such as the CVRP, VRPTW, but also other problems that exhibit similar
-structures (see \cite{pessoa2020a}).
-For more detail about \bapcod and its VRPSolver extension refer to
-\textcite{sadykov2021}.
-
-\bapcod\ along with its VRPsolver are currently the leading state-of-the-art
-technology for solving vehicle routing problems \parencite{pessoa2020a}.
 
 \section{Evaluation Method}
 \label{sec:results-evaluation-method}
 
+
+
 \section{Performance profiles}
 \label{sec:results-performance-profiles}
 
-\mytodo{Explain what are performance profiles and how to interpret them}
+\textit{Performance profiles} are a plot representation used to benchmark optimization software,
+first presented in \textcite{dolan2002}.
+Performance profiles are simple to interpret and less subject to personal interpretation.
+In short, performance profiles plot the cumulative distribution function with respect to a performance metric.
+We test $H$ algorithms by running them on $M$ problem instances.
+In the X-axis, we plot the performance metric ratio with respect to a baseline.
+The baseline is computed as the best performance achieved by all the algorithms under analysis.
+The Y-axis instead shows the probability of being within an X ratio from the baseline.
+
+\
+
+We've extensively employed performance profiles to compare the competitiveness of
+our proposed branch-and-cut based pricer
+against the RCSP dynamic programming algorithm used by \bapcod\ \parencite{pessoa2020a}.
+
+In this thesis, we will use performance profiles extensively to measure each solver by exploiting two performance metrics: \textbf{Time metric}, \textbf{Cost metric}.
+
+A \textbf{Time performance profile} will tell us which resolution method is the fastest in terms of runtime.
+A \textbf{Cost performance profile}, instead, will show us the cost ratio of the best upper bound obtained from each resolution method.
+The ground truth optimal, as extracted from the dataset, is used instead as the cost baseline.
+
+
+
+
 
 \section{Empirical Results}
 \label{sec:results-empirical-results}
