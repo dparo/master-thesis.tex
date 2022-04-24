@@ -32,8 +32,8 @@ For more detail about \bapcod\ and its VRPSolver extension refer to
 technology for solving vehicle routing problems \parencite{pessoa2020a}.
 The \bapcod\ source code can be downloaded for free, for academic purposes only,
 by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
-The VRPSolver extension, instead, is available only in compiled form, and
-must be explicitly requested by email by contacting one of the
+The VRPSolver extension, instead, is available for academic use only in compiled form,
+and must be explicitly requested by email by contacting one of the
 original authors: \url{mailto:ruslan.sadykov@inria.fr}.
 
 \section{CVRP Benchmark Instances}
@@ -61,6 +61,28 @@ instances (and all the previous CVRP instances described in Section 2) are avail
 
 \section{Evaluation Method}
 \label{sec:results-evaluation-method}
+
+\bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
+containing the VRPSolver extension implementation were used.
+
+
+By following the \bapcod\ API, extensively documented in \textcite{sadykov2021},
+and by re-adapting one of the VRPTW example distributed with \bapcod\ itself,
+we've implemented the CVRP two-index arc flow formulation
+of \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
+but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}.
+
+
+To keep things as simple as possible, we've decided to implement our
+pricer in a standalone separate program instead of developing it as a \bapcod\ extension.
+While this approach was convenient, it has to be noted that the performance comparison is not
+completely fair, since by running it in a separate process, better dual bound improvements
+don't lead to less pricing iterations.
+The performance comparison is performed on a per pricing iteration.
+Our pricer, since it works with elementary paths, may require less number of iterations
+to prove no-more reduced cost routes exist, while a relaxed-elementarity SPPRC solver
+might require more iterations.
+
 
 \section{Performance profiles}
 \label{sec:results-performance-profiles}
