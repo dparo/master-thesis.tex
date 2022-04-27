@@ -69,11 +69,11 @@ These parameters are used to control the general behavior of \bapcod.
 		            i.e. a column not respecting the sub-problem variable bounds.
 		            In our case we set this parameter to false, because from our experiments it didn't seem to coope correctly with the VRPSolver pricing functor.
 		      \item \texttt{MaxNbOfStagesInColGenProcedure = 3}.
-		            Sets the number of stages the VRPSolver pricing functor can use.
-		            When the stage iteration is greater than 1, the RCSP pricer is allowed to use
+		            Sets the number of stages the pricer is allowed to use.
+		            When the stage iteration is greater than 1, the pricer is allowed to use
 		            progressively faster (but less exhaustive) heuristics for determining columns.
-		            When the stage iteration reaches stage 0, the RCSP pricer solves the pricing problem exactly.
-		            \bapcod\ switches to a lower stage, when the previous stage converges (i.e. fails to find any reduced cost column).
+		            When the stage iteration reaches stage 0, the pricing problem should be solved exactly.
+		            \bapcod\ automatically switches to a lower stage when the previous stage converges (i.e. fails to find any reduced cost column).
 		      \item \texttt{ReducedCostFixingThreshold = 0.0}.
 		            Tells \bapcod\ to not apply reduced cost fixing.
 	      \end{itemize}
@@ -82,19 +82,23 @@ These parameters are used to control the general behavior of \bapcod.
 	      \begin{itemize}
 		      \item \texttt{MasterCuttingPlanesDepthLimit = -1}.
 		            When this parameter is set to $-1$, it disables cut generation of core cuts
-		            (i.e. the for generic cuts supported within the BPC framework).
-		            Cut generation for user-defined extensions, if any, is not effected by this parameter,
-		            and it must therefore be disabled manually.
+		            (i.e. the cuts natively supported within the BPC framework).
+		            The cut generation of user-defined cuts
+		            is not effected by this parameter, and therefore it must be disabled manually.
 		      \item \texttt{MaxNbOfCutGeneratedAtEachIter = 0}.
 		            Sets the maximum number of core cuts added per cut round to $0$,
-		            effectively further enforcing the deactivation of the core cut generation.
+		            effectively further enforcing the deactivation of the core cuts generation.
 	      \end{itemize}
 
 	\item Controlling the branching procedure:
 	      \begin{itemize}
-		      \item \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour} controls parameters determining how strong branching is performed for each of the phases.
-		            When set to empty strings, e.g. \texttt{StrongBranchingPhaseOne=""}, disables branching for the corresponding phase.
-		      \item \texttt{SimplifiedStrongBranchingParameterisation = false} if set to true, allows BapCod to perform strong branching by populating parameters \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour} to sane defaults.
+		      \item \texttt{StrongBranchingPhaseOne=""}, \texttt{StrongBranchingPhaseTwo=""}, \texttt{StrongBranchingPhaseThree=""}, \texttt{StrongBranchingPhaseFour=""}
+		            These parameters control the multiple phases of strong branching employed in \bapcod.
+		            By setting each parameter to the empty string, we effectively disable strong branching for each phase.
+		      \item \texttt{SimplifiedStrongBranchingParameterisation = false}.
+		            When this parameter is set to true, \bapcod populates the parameters \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour}
+		            with simple default values.
+		            Since populating these parameters would effectively re-enable branching, we set \texttt{SimplifiedStrongBranchingParameterisation} to false.
 	      \end{itemize}
 
 	\item Controlling the RCSP dynamic programming labeling pricer:
@@ -124,3 +128,16 @@ These parameters are used to control the general behavior of \bapcod.
 		            Since we are not interested in cut generation, and we want BapCod to always prefer augmenting the ng-sets, we disable the tailing off condition.
 	      \end{itemize}
 \end{itemize}
+
+\begin{comment}
+[Abount what is reduced cost fixing]
+[ Bucket arc elimination procedure = Reduced cost fixing procedure]
+\textcite{sadykov2021}
+VRPSolver extension includes an implementation of the pricing functor which
+allows the user to define the subproblems as resource constrained shortest path
+problems in graphs. The functor implements the bucket-graph based labeling
+algorithm from paper [16] for solving the pricing problem, as well as the corre-
+sponding bucket arc elimination procedure (i.e. reduced cost fixing procedure),
+and the elementary route enumeration procedure [1]. VRPSolver extension also
+implements cut separation functors for rounded cap
+\end{comment}

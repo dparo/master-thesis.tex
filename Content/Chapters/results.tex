@@ -24,16 +24,16 @@ or even ad-hoc pricer implementations.
 
 The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
 a \bapcod\ extension distributed by the same authors.
-
-This extension implements a dynamic programming based RCSP pricer,
-some cutting-planes
-and branching decisions to efficiently solve routing-like problems
-(or even other problems that exhibit similar structures)
+This extension includes an
+an advance implementation of a bidrectional dynamic programming labeling algorithm
+\parencite{sadykov2021a} for solving the pricing problem.
+The VRPSolver extension also implements
+some cutting cutting-planes and branching decisions
+tailored at efficiently solving routing-like problems
+(or problems that exhibit similar structures)
 such as the CVRP, VRPTW and also others (see \cite{pessoa2020a}).
 The VRPSolver extension was also successfully applied
 to solve Bin Packing Problems in \textcite{pessoa2020}.
-For more technical details about \bapcod\ and its VRPSolver extension refer to
-the technical report presented in \textcite{sadykov2021}.
 
 \bapcod\ along with its VRPSolver are currently the leading state-of-the-art
 technology for solving vehicle routing problems \parencite{pessoa2020a}.
@@ -42,8 +42,8 @@ by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
 The VRPSolver extension, instead, is available for academic use only in compiled form,
 and must be explicitly requested by email by contacting one of the
 original authors: \url{mailto:ruslan.sadykov@inria.fr}.
-Instructions to build, setup and create new \bapcod\ applications
-can be found in the technical report.
+Instructions to build, setup and employ \bapcod\ and its VRPSolver extension
+can be found in the official technical report presented in \textcite{sadykov2021}.
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
