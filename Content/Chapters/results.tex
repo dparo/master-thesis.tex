@@ -15,7 +15,7 @@ The reformulation is automatically applied by the solver
 and a default generic pricer relying on
 the usage of a MIP solver is employed in the column generation procedure.
 An automatic dual price smoothing stabilization, discussed in \textcite{pessoa2018automation},
-is applied by \bapcod\ to improve the converge speed of the column generation.
+is applied by \bapcod\ to improve the convergence speed of the column generation.
 \bapcod, being generic in nature,
 supports user developed extensions.
 These extensions can supply the BPC framework with either
@@ -30,7 +30,7 @@ some cutting-planes
 and branching decisions to efficiently solve routing-like problems
 (or even other problems that exhibit similar structures)
 such as the CVRP, VRPTW and also others (see \cite{pessoa2020a}).
-The VRPSolver extension was also successfullyapplied
+The VRPSolver extension was also successfully applied
 to solve Bin Packing Problems in \textcite{pessoa2020}.
 For more technical details about \bapcod\ and its VRPSolver extension refer to
 the technical report presented in \textcite{sadykov2021}.
@@ -71,28 +71,23 @@ instances (and all the previous CVRP instances described in Section 2) are avail
 \section{Evaluation Method}
 \label{sec:results-evaluation-method}
 
-<<<<<<< HEAD
-\bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
-containing the VRPSolver extension implementation were used.
+When faced with the option of developing our branch-and-cut pricer,
+we had to choose between two main choices:
+(i) developing our pricer in tight integration with the BPC framework,
+by coding it as a \bapcod\ plugin,
+or (ii) developing the pricer in a standalone executable,
+separate from the BPC framework.
 
-By following the \bapcod\ API, extensively documented in \textcite{sadykov2021},
-and by re-adapting one of the VRPTW example distributed with \bapcod\ itself,
-we've implemented the CVRP two-index arc flow formulation
-of \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
-but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}.
+To keep things as simple as possible we opted for the latter choice.
+This choice allowed us to gain more freedom in the implementation
+such as: choosing any language that we liked (C),
+achieving isolated testing,
+and allowing us to use any external libraries
+that we wished without risking in linker conflicts.
 
-||||||| bbd2cac
-\bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
-containing the VRPSolver extension implementation were used.
+Despite in our decision, we have valued simplicity above all,
+it has to be noted that our choice leads a very big downside that has to be acknowledged.
 
-By following the \bapcod\ API, extensively documented in \textcite{sadykov2021},
-and by re-adapting one of the VRPTW example distributed with \bapcod\ itself,
-we've implemented the CVRP two-index arc flow formulation
-of \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
-but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}.
-
-=======
->>>>>>> b3cf3b8d93d55f5097023e2f22e498bf2b10e282
 To keep things as simple as possible, we've decided to implement our
 pricer in a standalone separate program instead of developing it as a \bapcod\ extension.
 While this approach was convenient, it has to be noted that the performance comparison is not
@@ -103,10 +98,6 @@ Our pricer, since it works with elementary paths, may require less number of ite
 to prove no-more reduced cost routes exist, while a relaxed-elementarity SPPRC solver
 might require more iterations.
 
-<<<<<<< HEAD
-||||||| bbd2cac
-
-=======
 \bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
 containing the VRPSolver extension implementation were used.
 
@@ -119,9 +110,15 @@ but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}
 We've setup \bapcod\ in a such a way that the resolution process stops at the root
 node of the branch-and-bound tree.
 Therefore, cutting-planes and branching were disabled in our experiments.
+Although, notice that branching on arcs and RCC inequalities may be
+enabled without affecting our branch-and-cut pricer, but non-robust
+inequalities are not supported by our pricer.
 In order to obtain a more fair comparison, we've setup \bapcod\ as to prioritize
-the ng-sets augmeentation whenever possible as to achieve a dual bound as close
-as possible to the elementarity bound.
+the ng-sets augmentation whenever possible as to achieve a dual bound as close
+as possible to the elementarity bound, and on top of that,
+we've setup the VRPSolver extension pricer to produce a single column
+per column generation iterations, since our pricer is not able to achieve
+such a condition.
 We've implemented a custom functor (i.e. a glorified callback) to solve the pricing problem.
 Our functor does the following.
 First for each exact pricing iteration it dumps the problem and the corresponding dual variables
@@ -131,7 +128,6 @@ implemented in the VRPSolver pricing functor.
 At each invocation of the labeling algorithm, our functor extracts timing informations
 which it reportedly dumps so that timing comparisons against our pricer can be achieved later.
 
->>>>>>> b3cf3b8d93d55f5097023e2f22e498bf2b10e282
 \section{Performance profiles}
 \label{sec:results-performance-profiles}
 
