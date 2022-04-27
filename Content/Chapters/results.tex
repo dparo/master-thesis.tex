@@ -5,7 +5,7 @@
 \label{sec:results-bapcod}
 
 \textit{\bapcod}\ \parencite{sadykov2021} is a software package
-developed in France at the Bordeaux University and Bordeaux Research Center ,
+developed in France at the Bordeaux University and Bordeaux Research Center,
 which implements a modern generic branch-price-and-cut (BPC) algorithm
 and a column generation procedure.
 \bapcod\ takes as input a compact mixed integer programming model,
@@ -21,12 +21,15 @@ or even ad-hoc pricer implementations.
 
 The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
 a \bapcod\ extension distributed by the same authors.
-This extension implements an RCSP pricer, some cutting-planes
-and branching decisions to efficiently solve routing-like problems,
-such as the CVRP, VRPTW, but also other problems that exhibit similar
-structures (see \cite{pessoa2020a}).
-For more detail about \bapcod\ and its VRPSolver extension refer to
-\textcite{sadykov2021}.
+This extension implements a Resource Constrained Shortest Path (RCSP) pricer,
+some cutting-planes
+and branching decisions to efficiently solve routing-like problems
+(or even other problems that exhibit similar structures)
+such as the CVRP, VRPTW and also others (see \cite{pessoa2020a}).
+The VRPSolver extension was also successfullyapplied
+to solve Bin Packing Problems in \textcite{pessoa2020}.
+For more technical details about \bapcod\ and its VRPSolver extension refer to
+the technical report presented in \textcite{sadykov2021}.
 
 \bapcod\ along with its VRPSolver are currently the leading state-of-the-art
 technology for solving vehicle routing problems \parencite{pessoa2020a}.
@@ -35,6 +38,7 @@ by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
 The VRPSolver extension, instead, is available for academic use only in compiled form,
 and must be explicitly requested by email by contacting one of the
 original authors: \url{mailto:ruslan.sadykov@inria.fr}.
+Instructions to build and setup \bapcod\ can also be found in the technical report.
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
@@ -96,17 +100,20 @@ In the X-axis, we plot the performance metric ratio with respect to a baseline.
 The baseline is computed as the best performance achieved by all the algorithms under analysis.
 The Y-axis instead shows the probability of being within an X ratio from the baseline.
 
-\
+\medskip
 
 We've extensively employed performance profiles to compare the competitiveness of
 our proposed branch-and-cut based pricer
 against the RCSP dynamic programming algorithm used by \bapcod\ \parencite{pessoa2020a}.
 
+
+\begin{comment}
 In this thesis, we will use performance profiles extensively to measure each solver by exploiting two performance metrics: \textbf{Time metric}, \textbf{Cost metric}.
 
 A \textbf{Time performance profile} will tell us which resolution method is the fastest in terms of runtime.
 A \textbf{Cost performance profile}, instead, will show us the cost ratio of the best upper bound obtained from each resolution method.
 The ground truth optimal, as extracted from the dataset, is used instead as the cost baseline.
+\end{comment}
 
 \section{Empirical Results}
 \label{sec:results-empirical-results}
