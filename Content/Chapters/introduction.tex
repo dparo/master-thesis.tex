@@ -683,8 +683,9 @@ for solving the CVRP.
 
 At first glance,
 it might seem reasonable to branch directly on the $\lambda_p$ variables of the SP formulation.
-Unfortunately, such form of branching is non-robust
-and leads to a harder pricing problem: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
+Unfortunately, such form of branching has two main problems.
+First, it is non-robust and leads to a harder pricing problem: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
+Second, it produces a highly unbalanced tree \parencite{sadykov2019b}.
 
 Most of the branching approaches studied in the literature for the CVRP involve
 mere extension of branching schemes used traditionally for the TSP.

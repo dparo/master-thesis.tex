@@ -8,6 +8,7 @@
 developed in France at the Bordeaux University and Bordeaux Research Center,
 which implements a modern generic branch-price-and-cut (BPC) algorithm
 and a column generation procedure.
+Refer to \textcite{sadykov2019b}, for a complete discussion to modern BPC frameworks.
 \bapcod\ takes as input a compact mixed integer programming model,
 and solves it by applying a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
 The reformulation is automatically applied by the solver
@@ -94,7 +95,7 @@ Therefore, cutting-planes and branching were disabled in our experiments.
 In order to obtain a more fair comparison, we've setup \bapcod\ as to prioritize
 the ng-sets augmeentation whenever possible as to achieve a dual bound as close
 as possible to the elementarity bound.
-We've implemented a custom stubbed functor (i.e. a glorified callback) to solve the pricing problem.
+We've implemented a custom functor (i.e. a glorified callback) to solve the pricing problem.
 Our functor does the following.
 First for each exact pricing iteration it dumps the problem and the corresponding dual variables
 in a separate file for each iteration.
