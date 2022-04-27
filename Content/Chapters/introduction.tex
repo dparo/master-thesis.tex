@@ -550,6 +550,8 @@ The column generation (CG) is an iterative algorithm which alternates between tw
 	      The pricer algorithm usually lives in a separate external code module from the branch-and-price code.
 \end{enumerate}
 
+The column generation may also be interpreted as a cutting-plane strategy
+for the dual problem.
 The column generation procedure stops mainly under two scenarios:
 (i) when no more negative reduced cost routes exist,
 i.e. the PP outputs a $p^\star$ achieving $c^\star_p \ge 0$,
@@ -681,8 +683,9 @@ for solving the CVRP.
 
 At first glance,
 it might seem reasonable to branch directly on the $\lambda_p$ variables of the SP formulation.
-Unfortunately, such form of branching is non-robust
-and leads to a harder pricing problem: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
+Unfortunately, such form of branching has two main problems.
+First, it is non-robust and leads to a harder pricing problem: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
+Second, it produces a highly unbalanced tree \parencite{sadykov2019b}.
 
 Most of the branching approaches studied in the literature for the CVRP involve
 mere extension of branching schemes used traditionally for the TSP.

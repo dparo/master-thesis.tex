@@ -51,6 +51,25 @@ relaxing the bounds on the $y_i$ mip variables,
 and then for each vertex visited twice of more, the associated bound
 on the $y_i$ is strengthened.
 
+
+
+\begin{comment}
+\textcite{sadykov2019b}
+Moder nMIP solvers implementing the branch-and-cut approach have been progressing at a
+fast pace for the last 30 years, and now they have found a widespread use around
+the globe. The branch-and-cut approach however has its limits. It is not efficient
+(i.e. does not scale well) for problems for which all known linear relaxations are not
+sufficiently tight, even after adding cutting planes. These are problems with complex
+combinatorial structure appearing for example in routing, scheduling, packing
+and other similar applications.
+A radical way to improve the quality of linear relaxations is to substantially
+increase the number of variables. For such formulations however it is not possible
+to apply directly the standard branch-and-cut approach as variables should then be
+generated dynamically. An extension of branch-and-cut to this case is called branch-
+cut-and-price, in which the linear relaxation of the problem is solved by the column
+generation approach.
+\end{comment}
+
 \subsection{Future work}
 \mytodo{Extend the CPTP model to consider VRPTW, and re-evaluate the empirical results}
 

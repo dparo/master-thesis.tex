@@ -5,14 +5,17 @@
 \label{sec:results-bapcod}
 
 \textit{\bapcod}\ \parencite{sadykov2021} is a software package
-developed in France at the Bordeaux University and Bordeaux Research Center ,
+developed in France at the Bordeaux University and Bordeaux Research Center,
 which implements a modern generic branch-price-and-cut (BPC) algorithm
 and a column generation procedure.
+Refer to \textcite{sadykov2019b}, for a complete discussion to modern BPC frameworks.
 \bapcod\ takes as input a compact mixed integer programming model,
 and solves it by applying a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
 The reformulation is automatically applied by the solver
 and a default generic pricer relying on
 the usage of a MIP solver is employed in the column generation procedure.
+An automatic dual price smoothing stabilization, discussed in \textcite{pessoa2018automation},
+is applied by \bapcod\ to improve the converge speed of the column generation.
 \bapcod, being generic in nature,
 supports user developed extensions.
 These extensions can supply the BPC framework with either
@@ -21,13 +24,16 @@ or even ad-hoc pricer implementations.
 
 The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
 a \bapcod\ extension distributed by the same authors.
+
 This extension implements a dynamic programming based RCSP pricer,
 some cutting-planes
-and branching decisions to efficiently solve routing-like problems,
-such as the CVRP, VRPTW, but also other problems that exhibit similar
-structures (see \cite{pessoa2020a}).
-For more detail about \bapcod\ and its VRPSolver extension refer to
-\textcite{sadykov2021}.
+and branching decisions to efficiently solve routing-like problems
+(or even other problems that exhibit similar structures)
+such as the CVRP, VRPTW and also others (see \cite{pessoa2020a}).
+The VRPSolver extension was also successfullyapplied
+to solve Bin Packing Problems in \textcite{pessoa2020}.
+For more technical details about \bapcod\ and its VRPSolver extension refer to
+the technical report presented in \textcite{sadykov2021}.
 
 \bapcod\ along with its VRPSolver are currently the leading state-of-the-art
 technology for solving vehicle routing problems \parencite{pessoa2020a}.
@@ -36,6 +42,8 @@ by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
 The VRPSolver extension, instead, is available for academic use only in compiled form,
 and must be explicitly requested by email by contacting one of the
 original authors: \url{mailto:ruslan.sadykov@inria.fr}.
+Instructions to build, setup and create new \bapcod\ applications
+can be found in the technical report.
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
@@ -63,6 +71,7 @@ instances (and all the previous CVRP instances described in Section 2) are avail
 \section{Evaluation Method}
 \label{sec:results-evaluation-method}
 
+<<<<<<< HEAD
 \bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
 containing the VRPSolver extension implementation were used.
 
@@ -72,6 +81,18 @@ we've implemented the CVRP two-index arc flow formulation
 of \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
 but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}.
 
+||||||| bbd2cac
+\bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
+containing the VRPSolver extension implementation were used.
+
+By following the \bapcod\ API, extensively documented in \textcite{sadykov2021},
+and by re-adapting one of the VRPTW example distributed with \bapcod\ itself,
+we've implemented the CVRP two-index arc flow formulation
+of \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
+but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}.
+
+=======
+>>>>>>> b3cf3b8d93d55f5097023e2f22e498bf2b10e282
 To keep things as simple as possible, we've decided to implement our
 pricer in a standalone separate program instead of developing it as a \bapcod\ extension.
 While this approach was convenient, it has to be noted that the performance comparison is not
@@ -82,6 +103,35 @@ Our pricer, since it works with elementary paths, may require less number of ite
 to prove no-more reduced cost routes exist, while a relaxed-elementarity SPPRC solver
 might require more iterations.
 
+<<<<<<< HEAD
+||||||| bbd2cac
+
+=======
+\bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
+containing the VRPSolver extension implementation were used.
+
+By following the \bapcod\ API, extensively documented in \textcite{sadykov2021},
+and by re-adapting one of the VRPTW example distributed with \bapcod\ itself,
+we've implemented the CVRP two-index arc flow model
+of \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
+but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}.
+
+We've setup \bapcod\ in a such a way that the resolution process stops at the root
+node of the branch-and-bound tree.
+Therefore, cutting-planes and branching were disabled in our experiments.
+In order to obtain a more fair comparison, we've setup \bapcod\ as to prioritize
+the ng-sets augmeentation whenever possible as to achieve a dual bound as close
+as possible to the elementarity bound.
+We've implemented a custom functor (i.e. a glorified callback) to solve the pricing problem.
+Our functor does the following.
+First for each exact pricing iteration it dumps the problem and the corresponding dual variables
+in a separate file for each iteration.
+It forwards the pricing problem to the dynamic programming labeling algorithm
+implemented in the VRPSolver pricing functor.
+At each invocation of the labeling algorithm, our functor extracts timing informations
+which it reportedly dumps so that timing comparisons against our pricer can be achieved later.
+
+>>>>>>> b3cf3b8d93d55f5097023e2f22e498bf2b10e282
 \section{Performance profiles}
 \label{sec:results-performance-profiles}
 
@@ -94,17 +144,19 @@ In the X-axis, we plot the performance metric ratio with respect to a baseline.
 The baseline is computed as the best performance achieved by all the algorithms under analysis.
 The Y-axis instead shows the probability of being within an X ratio from the baseline.
 
-\
+\medskip
 
 We've extensively employed performance profiles to compare the competitiveness of
 our proposed branch-and-cut based pricer
 against the RCSP dynamic programming algorithm used by \bapcod\ \parencite{pessoa2020a}.
 
+\begin{comment}
 In this thesis, we will use performance profiles extensively to measure each solver by exploiting two performance metrics: \textbf{Time metric}, \textbf{Cost metric}.
 
 A \textbf{Time performance profile} will tell us which resolution method is the fastest in terms of runtime.
 A \textbf{Cost performance profile}, instead, will show us the cost ratio of the best upper bound obtained from each resolution method.
 The ground truth optimal, as extracted from the dataset, is used instead as the cost baseline.
+\end{comment}
 
 \section{Empirical Results}
 \label{sec:results-empirical-results}
