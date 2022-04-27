@@ -21,7 +21,8 @@ or even ad-hoc pricer implementations.
 
 The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
 a \bapcod\ extension distributed by the same authors.
-This extension implements an RCSP pricer, some cutting-planes
+This extension implements a dynamic programming based RCSP pricer,
+some cutting-planes
 and branching decisions to efficiently solve routing-like problems,
 such as the CVRP, VRPTW, but also other problems that exhibit similar
 structures (see \cite{pessoa2020a}).
@@ -65,13 +66,11 @@ instances (and all the previous CVRP instances described in Section 2) are avail
 \bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
 containing the VRPSolver extension implementation were used.
 
-
 By following the \bapcod\ API, extensively documented in \textcite{sadykov2021},
 and by re-adapting one of the VRPTW example distributed with \bapcod\ itself,
 we've implemented the CVRP two-index arc flow formulation
 of \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
 but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}.
-
 
 To keep things as simple as possible, we've decided to implement our
 pricer in a standalone separate program instead of developing it as a \bapcod\ extension.
@@ -82,7 +81,6 @@ The performance comparison is performed on a per pricing iteration.
 Our pricer, since it works with elementary paths, may require less number of iterations
 to prove no-more reduced cost routes exist, while a relaxed-elementarity SPPRC solver
 might require more iterations.
-
 
 \section{Performance profiles}
 \label{sec:results-performance-profiles}
@@ -114,7 +112,6 @@ The ground truth optimal, as extracted from the dataset, is used instead as the 
 
 \section{Discussion}
 \label{sec:results-discussion}
-
 
 \mytodo{Include the F-n135 grep result to talk about the difficulty of this instance and related ones}
 
