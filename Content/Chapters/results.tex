@@ -13,6 +13,8 @@ and solves it by applying a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
 The reformulation is automatically applied by the solver
 and a default generic pricer relying on
 the usage of a MIP solver is employed in the column generation procedure.
+An automatic dual price smoothing stabilization, discussed in \textcite{pessoa2018automation},
+is applied by \bapcod\ to improve the converge speed of the column generation.
 \bapcod, being generic in nature,
 supports user developed extensions.
 These extensions can supply the BPC framework with either
@@ -38,7 +40,8 @@ by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
 The VRPSolver extension, instead, is available for academic use only in compiled form,
 and must be explicitly requested by email by contacting one of the
 original authors: \url{mailto:ruslan.sadykov@inria.fr}.
-Instructions to build and setup \bapcod\ can also be found in the technical report.
+Instructions to build, setup and create new \bapcod\ applications
+can be found in the technical report.
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
