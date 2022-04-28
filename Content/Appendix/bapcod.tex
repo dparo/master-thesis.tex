@@ -74,6 +74,7 @@ These parameters are used to control the general behavior of \bapcod.
 		            progressively faster (but less exhaustive) heuristics for determining columns.
 		            When the stage iteration reaches stage 0, the pricing problem should be solved exactly.
 		            \bapcod\ automatically switches to a lower stage when the previous stage converges (i.e. fails to find any reduced cost column).
+		            The technical document suggests to set this parameter to $3$ when the VRPSolver extension is in use.
 		      \item \texttt{ReducedCostFixingThreshold = 0.0}.
 		            Tells \bapcod\ to not apply reduced cost fixing.
 	      \end{itemize}
@@ -103,19 +104,29 @@ These parameters are used to control the general behavior of \bapcod.
 
 	\item Controlling the RCSP dynamic programming labeling pricer:
 	      \begin{itemize}
-		      \item \texttt{RCSPuseBidirectionalSearch = 2}, called $\phi^\mt{bidir}$ in the original paper, tells the RCSP pricer whether to use the bidirectional search for solving the pricing problem
-		      \item \texttt{RCSPapplyReducedCostFixing = 1}, called $\phi^\mt{elim}$ in the original paper, controls the bucket arc elimination procedure the labeling algorithm uses.
-		      \item \texttt{RCSPmaxNumOfColsPerExactIteration = 1}, \texttt{RCSPmaxNumOfColsPerIteration = 1},
-		            called $\gamma^\mt{exact}, \gamma^\mt{heur}$ in the original paper,
-		            controls how many path solutions the pricer generates per pricer iteration respectively in the heuristic phase or in the exact phase.
-		            We force the RCSP pricer to generate a single path per pricing iteration.
+		      \item \texttt{RCSPuseBidirectionalSearch = 2}.
+		            This parameter, referred as $\phi^\mt{bidir}$ in the scientific paper,
+		            tells the RCSP pricer to use the bidirectional search for solving the pricing problem.
+		      \item \texttt{RCSPapplyReducedCostFixing = 1}.
+		            This parameter, reffered as $\phi^\mt{elim}$ in the scientific paper,
+		            tells the pricer to employ the default standard bucket arc elimination discussed in \textcite{sadykov2021a}.
+		      \item \texttt{RCSPmaxNumOfColsPerExactIteration = 1}, \texttt{RCSPmaxNumOfColsPerIteration = 1}.
+		            These parameters, reffered as $\gamma^\mt{exact}, \gamma^\mt{heur}$ respectively in the scientific paper,
+		            control the number of generated columns per iteration by the pricer respecitively in the heuristic and exact stages.
+		            Since our pricer is able to produce a single column per pricing iteration, in order to achieve a fair comparison,
+		            we set the label setting algorithm to always generate a single route per pricing iteration.
 		      \item \texttt{RCSPallowRoutesWithSameVerticesSet = false} controls whether multiple paths which pass by the same set of vertices are allowed.
 		            Shouldn't matter since we are forcing to generate a single path per pricing iteration.
-		      \item \texttt{RCSPmaxNumOfEnumSolutionsForMIP = 1}, called $\omega^\mt{MIP}$ in the original paper, controls the threshold at which the number of enumerated path to trigger the solving through a MIP.
-		            By setting the parameter to $1$ we are essentially disabling this feature.
-		      \item \texttt{RCSPstopCutGenTimeThresholdInPricing = 1e21}, \texttt{RCSPhardTimeThresholdInPricing = 1e21}, called $\tau^\mt{soft}, \tau^\mt{hard}$ in the original paper, controls respectively the soft and hard time threshold for the pricing algorithm.
-		            This thresholds control a premature ending of the pricing algorithm in favour of cut generation or branching, if the running time increases above one of these thresholds.
-		            Since we want to measure the running time of the algorithm, even when it performs poorly, and we are not interested in generating cuts and branching, we increase these thresholds as high as possible.
+		      \item \texttt{RCSPmaxNumOfEnumSolutionsForMIP = 1}.
+		            This parameter, referred as $\omega^\mt{MIP}$ in the scientific paper,
+		            controls the threshold at which the number of enumerated paths can trigger a direct solve of the SP formulation through a MIP (route enumeration).
+		            Since we are interested in measuring the pricing complexity, it makes sense to disable the route enumeration feature.
+		            We can disable such feature by setting the corresponding parameter to $1$.
+		      \item \texttt{RCSPstopCutGenTimeThresholdInPricing = 1e21}, \texttt{RCSPhardTimeThresholdInPricing = 1e21}.
+		            These parameters, referred as $\tau^\mt{soft}, \tau^\mt{hard}$ respectively in the scientific paper,
+		            control the soft and hard time thresholds for the pricing algorithm.
+		            These thresholds impact the tailing-off condition of the pricer, namely, if the running time of the pricer exceeds one of these thresholds, column generation is preemptively interrupted in favor of cut generation or branching.
+		            We're interested in measuring the performance of the label setting algorithm even when it is struggling, therefore we set those parameters to high values to disable the tailing off condition.
 		      \item \texttt{RCSPdynamicNGmode = 1} tells BapCod to scale dynamically the ng-sets based on the fractional solution obtained by the column generation (not based on the solution received from the pricing problem).
 		      \item \texttt{RCSPinitNGneighbourhoodSize = 8}, \texttt{RCSPmaxNGneighbourhoodSize = 63}, called $\eta^\mt{init}, \eta^\mt{max}$ in the original paper, sets a "soft" elementary constraints that can dynamically be adjusted within the $\eta^\mt{init}, \eta^\mt{max}$ parameters.
 		            Raising $\eta^\mt{init}$ can improve the dual bound generated from the pricer, but usually leads to explosion of computation times, especially if it is raised a lot.
@@ -130,7 +141,7 @@ These parameters are used to control the general behavior of \bapcod.
 \end{itemize}
 
 \begin{comment}
-[Abount what is reduced cost fixing]
+[ About what is reduced cost fixing ]
 [ Bucket arc elimination procedure = Reduced cost fixing procedure]
 \textcite{sadykov2021}
 VRPSolver extension includes an implementation of the pricing functor which
