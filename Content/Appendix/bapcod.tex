@@ -75,6 +75,7 @@ These parameters are used to control the general behavior of \bapcod.
 		            When the stage iteration reaches stage 0, the pricing problem should be solved exactly.
 		            \bapcod\ automatically switches to a lower stage when the previous stage converges (i.e. fails to find any reduced cost column).
 		            The technical document suggests to set this parameter to $3$ when the VRPSolver extension is in use.
+		            The VRPSolver extension implements two heuristic stages by using a modification of the bidirectional label setting algorithm, see the \textit{Pricing heuristics} section of \textcite{sadykov2021a}.
 		      \item \texttt{ReducedCostFixingThreshold = 0.0}.
 		            Tells \bapcod\ to not apply reduced cost fixing.
 	      \end{itemize}
