@@ -112,15 +112,18 @@ In order to solve the CVRP through \bapcod, an RCSP sub-problem must also be def
 The RCSP sub-problem is formulated on a complete directed network by
 binding the RCSP modeling variables to the original CVRP formulations.
 For each vertex of the RCSP network we've also defined correctly the source
-and sink vertices and the concept of packing  and elementarity sets.
+and sink vertices and we've also defined packing and elementarity sets
+for each customer.
 The correct definition of these sets is mandatory to allow for specific
 components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
-When declaring the RCSP sub-problem,
-due to implementation details of how the VRPSolver extension works,
-we've defined the resource consumption on the arcs (instead of on the vertices)
-as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
-This definition leads to symmetric resource consumption ($q_{ij} = q_{ji}$),
-which have the benefit of speeding the efficiency of the pricing (see \cite{pessoa2020a}).
+Due to implementation details, the RCSP sub-problem requires
+the definition of the amount of resource consumption for each arc of the network.
+But in CVRP the resource consumption is defined per customer.
+Therefore, as suggested in \textcite{pessoa2020a}, we can define the resource consumption
+on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
+This definition is correct and it leads to a symmetric resource consumption ($q_{ij} = q_{ji}$),
+which have the benefit of speeding the efficiency at pricing,
+by eliminating the need of performing backward labelling.
 
 We've setup \bapcod\ in a such a way that the resolution process stops at the root
 node of the branch-and-bound tree.
@@ -138,7 +141,7 @@ We've implemented a custom functor (i.e. a glorified callback) to solve the pric
 Our functor does the following.
 First for each exact pricing iteration it dumps the problem and the corresponding dual variables
 in a separate file for each iteration.
-It forwards the pricing problem to the dynamic programming labeling algorithm
+It forwards the pricing problem to a dynamic programming labeling algorithm
 implemented in the VRPSolver pricing functor.
 At each invocation of the labeling algorithm, our functor extracts timing informations
 which it reportedly dumps so that timing comparisons against our pricer can be achieved later.
