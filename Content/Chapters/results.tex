@@ -112,12 +112,13 @@ In order to solve the CVRP through \bapcod, an RCSP sub-problem must also be def
 The RCSP sub-problem is formulated on a complete directed network by
 binding the RCSP modeling variables to the original CVRP formulations.
 For each vertex of the RCSP network we've also defined correctly the source
-and sink vertices and the concept of elementarity, packing and covering sets.
+and sink vertices and the concept of packing  and elementarity sets.
 The correct definition of these sets is mandatory to allow for specific
 components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
 When declaring the RCSP sub-problem,
 due to implementation details of how the VRPSolver extension works,
-we've defined the resource consumption on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
+we've defined the resource consumption on the arcs (instead of on the vertices)
+as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
 This definition leads to symmetric resource consumption ($q_{ij} = q_{ji}$),
 which have the benefit of speeding the efficiency of the pricing (see \cite{pessoa2020a}).
 
