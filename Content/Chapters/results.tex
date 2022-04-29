@@ -114,7 +114,7 @@ binding the RCSP modeling variables to the original CVRP formulations.
 For each vertex of the RCSP network we've also defined correctly the source
 and sink vertices and the concept of elementarity, packing and covering sets.
 The correct definition of these sets is mandatory to allow for specific
-components of the VRPSolver extension to work correctly.
+components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
 When declaring the RCSP sub-problem,
 due to implementation details of how the VRPSolver extension works,
 we've defined the resource consumption on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
