@@ -608,6 +608,8 @@ are in fact a hybridization between a BAP and a BAC framework,
 making them a branch-price-and-cut (BPC) frameworks.
 Some notable works integrating cutting-planes and proposing
 a BCP approach for the VRP can be found \textcite{fukasawa2006, ropke2012}.
+Refer to \textcite{sadykov2019b} for a discussion of the state-of-the-art
+components that are part of modern branch-and-price frameworks.
 
 \medskip
 
@@ -683,9 +685,9 @@ for solving the CVRP.
 
 At first glance,
 it might seem reasonable to branch directly on the $\lambda_p$ variables of the SP formulation.
-Unfortunately, such form of branching has two main problems.
+Unfortunately, such form of branching has two main problems \parencite{vanderbeck2010reformulation}.
 First, it is non-robust and leads to a harder pricing problem: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
-Second, it produces a highly unbalanced tree \parencite{sadykov2019b}.
+Second, it produces a highly unbalanced tree.
 
 Most of the branching approaches studied in the literature for the CVRP involve
 mere extension of branching schemes used traditionally for the TSP.
