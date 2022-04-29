@@ -30,6 +30,9 @@ an advance implementation of a bidirectional dynamic programming labeling algori
 Their labeling algorithm implements two heuristic stages, see \textcite{sadykov2021a}.
 The labeling algorithm makes use of a generalized ng-sets definition \parencite{baldacci2011}
 defined through packing and elementarity sets as presented in \textcite{pessoa2020a}.
+The ng-sets are dynamically augmented \parencite{roberti2014}
+after the column generation convergence only if the MP contains a fractional solution,
+see \textcite{pessoa2020a} for more details.
 The VRPSolver extension also implements
 some cutting cutting-planes and branching decisions
 tailored at efficiently solving routing-like problems
@@ -117,6 +120,8 @@ and sink vertices and we've also defined packing and elementarity sets
 for each customer.
 The correct definition of these sets is mandatory to allow for specific
 components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
+The ng-sets are computed automatically by employing the elementarity sets
+according to a distance matrix which also needs to be user-defined.
 Due to implementation details, the RCSP sub-problem requires
 the definition of the amount of resource consumption for each arc of the network.
 But in CVRP the resource consumption is defined per customer.
