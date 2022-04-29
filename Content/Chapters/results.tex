@@ -62,7 +62,10 @@ can be found in the official technical report presented in \textcite{sadykov2021
 
 \mytodo{Say that the distances are rounded. Refer to \cite{uchoa2017}, which contains a small explanation why this is done}
 
+CVRPLIB website: http://vrp.atd-lab.inf.puc-rio.br/index.php/en/
+
 \begin{comment}
+
 \cite{uchoa2017}
 THE CVRPLIB website
 The typical instance repository of today is a web page that allows downloading the instance
@@ -121,7 +124,8 @@ for each customer.
 The correct definition of these sets is mandatory to allow for specific
 components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
 The ng-sets are computed automatically by employing the elementarity sets
-according to a distance matrix which also needs to be user-defined.
+according to a distance matrix which also needs to be set by the user
+to the distance between customers.
 Due to implementation details, the RCSP sub-problem requires
 the definition of the amount of resource consumption for each arc of the network.
 But in CVRP the resource consumption is defined per customer.
