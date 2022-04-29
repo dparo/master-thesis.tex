@@ -18,7 +18,7 @@ is applied by \bapcod\ to improve the convergence speed of the column generation
 \bapcod, being generic in nature,
 supports user developed extensions.
 These extensions can supply the BPC framework with either
-custom defined cutting-planes (robust or non), custom branching decisions (robust or non),
+custom defined cutting-planes (robust or non), custom branching decisions (robust or non)
 or even ad-hoc pricer implementations.
 
 The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
@@ -26,9 +26,9 @@ a \bapcod\ extension distributed by the same authors.
 This extension includes an
 an advance implementation of a bidirectional dynamic programming labeling algorithm
 \parencite{sadykov2021a} for solving the pricing problem.
-The included labeling algorithm implements,
-on top of an exact implementation,
-also contains two heuristic stages implementations, see \textcite{sadykov2021a}.
+The included labeling algorithm
+can be both used as an exact pricer or as a heuristic one.
+Precisely, it contains two successively lighter heuristic implementations, see \textcite{sadykov2021a} for more details.
 The labeling algorithm makes use of a generalized ng-sets definition \parencite{baldacci2011}
 defined through packing and elementarity sets as presented in \textcite{pessoa2020a}.
 The ng-sets are dynamically augmented \parencite{roberti2014}
