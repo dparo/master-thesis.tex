@@ -874,6 +874,7 @@ Major contributions in the non-robust cutting-planes domain are:
 	      and for computational tractability and restricting the evaluation $\forall C \subseteq V_0 \mid |C| \le 5$.
 	      3-SRCs, namely SRCs where $|C| = 3$, were applied successfully in many works \parencite{desaulniers2008, jepsen2008, baldacci2011, contardo2014, pecin2017}.
 	      The SRCs were later generalized to a more general Chv\'atal-Gomory Rank-1 cuts (R1Cs) in \textcite{petersen2008}.
+          R1Cs are potentially very strong, but they make the pricing subproblems significantly harder.
 	      \textcite{baldacci2011} proposes a weakened variant of the 3-SRCs inequalities.
 	\item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
 	      are a dynamically controlled weakening of the SRCs that leads far less impact to
@@ -1030,6 +1031,7 @@ which encodes the $|N_i|$ closest neighbors of the vertex $i \in V$.
 The quantities $|N_i|$ may be raised on demand to achieve better dual bounds,
 but it has to be noted that raising them lead to an exponential increase in complexity
 in the pricing.
+The ng-sets may be determined a priori but also dynamically as it is done in \textcite{roberti2014}.
 The ng-routes allows cycles over a vertex $i \in V$ only if the route
 passes through a vertex $j \in V \mid i \notin N_j$.
 In the ng-routes relaxation,
