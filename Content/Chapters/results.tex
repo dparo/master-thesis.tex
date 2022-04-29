@@ -108,6 +108,18 @@ and by re-adapting one of the VRPTW example distributed with \bapcod\ itself,
 we've implemented the CVRP two-index arc flow model
 of \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
 but excluding the Capacity Cut Constraints (CCC) of \cref{eq:two-index-flow-ccc}.
+In order to solve the CVRP through \bapcod, an RCSP sub-problem must also be defined.
+The RCSP sub-problem is formulated on a complete directed network by
+binding the RCSP modeling variables to the original CVRP formulations.
+For each vertex of the RCSP network we've also defined correctly the source
+and sink vertices and the concept of elementarity, packing and covering sets.
+The correct definition of these sets is mandatory to allow for specific
+components of the VRPSolver extension to work correctly.
+When declaring the RCSP sub-problem,
+due to implementation details of how the VRPSolver extension works,
+we've defined the resource consumption on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
+This definition leads to symmetric resource consumption ($q_{ij} = q_{ji}$),
+which have the benefit of speeding the efficiency of the pricing (see \cite{pessoa2020a}).
 
 We've setup \bapcod\ in a such a way that the resolution process stops at the root
 node of the branch-and-bound tree.
