@@ -739,9 +739,12 @@ an arbitrary set $S \subseteq V_0$ with two descendant nodes:
 \end{equation}
 \textcite{pecin2017} apply a similar branching approach.
 
-Ryan and foster branching \parencite{ryan1981integer} is another possible branching rule.
+\textit{Ryan and Foster branching} \parencite{ryan1981integer} is another possible branching rule.
 This non-robust branching rule makes the pricing sub-problem much harder,
 but it has the main benefit to lead to more balanced search trees.
+\textit{Branching over the accumulated resource consumption}, proposed in \textcite{gelinas1995new},
+is another commonly employed branching rule, which has the main benefit of not complicating
+the pricing difficulty.
 
 
 \textit{Strong branching}, a commonly employed branching technique,
@@ -844,7 +847,8 @@ they can trivially be extended to a robust inequality for the SP formulation:
 where $\sum_{e \in \delta(S)} a_{ep}$ counts the number of times a route $p \in P$
 enters or leaves a set $S$ and $r(S)$ represents the number of truck needed
 to serve each customer $i \in S$.
-
+\textcite{lysgaard2003cvrpsep} proposes a heuristic procedure implementation
+for efficiently separating the RCC inequalities.
 
 \medskip
 
