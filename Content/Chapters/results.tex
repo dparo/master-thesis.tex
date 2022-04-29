@@ -66,7 +66,7 @@ Refer to \textcite{sadykov2019b}, for a complete discussion to modern BPC framew
 
 \mytodo{Say that the distances are rounded. Refer to \cite{uchoa2017}, which contains a small explanation why this is done}
 
-CVRPLIB website: http://vrp.atd-lab.inf.puc-rio.br/index.php/en/
+\mytodo{Put all the instances used in tables as is done in \cite{uchoa2017}}
 
 \begin{comment}
 
@@ -79,10 +79,12 @@ instances (and all the previous CVRP instances described in Section 2) are avail
 (http://vrp.galgos.inf.puc-rio.br/index.php/en/), is more sophisticated:
 \end{comment}
 
-\mytodo{Put all the instances used in tables as is done in \cite{uchoa2017}}
+CVRPLIB website: http://vrp.atd-lab.inf.puc-rio.br/index.php/en/
 
-\section{Evaluation Method}
-\label{sec:results-evaluation-method}
+
+
+\section{Evaluation Setup}
+\label{sec:results-evaluation-setup}
 
 When faced with the option of developing our branch-and-cut pricer,
 we had to choose between two main choices:
@@ -90,6 +92,7 @@ we had to choose between two main choices:
 by coding it as a \bapcod\ plugin,
 or (ii) developing the pricer in a standalone executable,
 separate from the BPC framework.
+
 
 To keep things as simple as possible we opted for the latter choice.
 This choice allowed us to gain more freedom in the implementation
@@ -101,6 +104,7 @@ that we wished without risking in linker conflicts.
 Despite in our decision, we have valued simplicity above all,
 it has to be noted that our choice leads a very big downside that has to be acknowledged.
 
+
 To keep things as simple as possible, we've decided to implement our
 pricer in a standalone separate program instead of developing it as a \bapcod\ extension.
 While this approach was convenient, it has to be noted that the performance comparison is not
@@ -110,6 +114,12 @@ The performance comparison is performed on a per pricing iteration.
 Our pricer, since it works with elementary paths, may require less number of iterations
 to prove no-more reduced cost routes exist, while a relaxed-elementarity SPPRC solver
 might require more iterations.
+
+
+
+\section{Evaluation Method}
+\label{sec:results-evaluation-method}
+
 
 \bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
 containing the VRPSolver extension implementation were used.
