@@ -128,15 +128,18 @@ We've opted to completely disabled any form of branching.
 
 \begin{itemize}
 	\item \texttt{StrongBranchingPhaseOne=""}, \texttt{StrongBranchingPhaseTwo=""}, \texttt{StrongBranchingPhaseThree=""}, \texttt{StrongBranchingPhaseFour=""}
-	      These parameters control the multiple phases of strong branching employed in \bapcod.
+	      These parameters control the strong branching behaviour of \bapcod\, which is composed of multiple phases.
 	      By setting each parameter to the empty string, we effectively disable strong branching for each phase.
 	\item \texttt{SimplifiedStrongBranchingParameterisation = false}.
-	      When this parameter is set to true, \bapcod populates the parameters \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour}
-	      with simple default values.
+	      When this parameter is set to true, \bapcod\ populates the parameters \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour}
+	      with sane default values, thus effectively enabling branching.
 	      Since populating these parameters would effectively re-enable branching, we set \texttt{SimplifiedStrongBranchingParameterisation} to false.
 \end{itemize}
 
 \section{VRPSolver extension's pricer parameters}
+
+These parameters affect the labeling algorithm and the ng-sets size
+implemented in the VRPSolver extension introduced in \textcite{pessoa2020a}.
 
 \begin{itemize}
 	\item \texttt{RCSPuseBidirectionalSearch = 2}.
