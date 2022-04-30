@@ -24,7 +24,7 @@ or even ad-hoc pricer implementations.
 The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
 a \bapcod\ extension distributed by the same authors.
 This extension includes an
-an advance implementation of a bidirectional dynamic programming labeling algorithm
+advanced implementation of a bidirectional dynamic programming labeling algorithm
 \parencite{sadykov2021a} for solving the pricing problem.
 The included labeling algorithm
 can be both used as an exact pricer or as a heuristic one.
@@ -52,11 +52,34 @@ original authors: \url{mailto:ruslan.sadykov@inria.fr}.
 Instructions to build, setup and employ \bapcod\ and its VRPSolver extension
 can be found in the official technical report presented in \textcite{sadykov2021}.
 
-Refer to \textcite{sadykov2019b}, for a complete discussion to modern BPC frameworks.
+Refer to \textcite{sadykov2019b},
+for a complete technical discussion on the ingredients of modern BPC frameworks.
 
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
+
+To assess the competitiveness of our branch-and-cut pricer, we employed several
+CVRP test instances.
+Many test instances are freely available on the \urlref{http://vrp.atd-lab.inf.puc-rio.br/index.php/en/}{CVRPLIB website}.
+The CVRPLIB website is a fantastic online resource for the vehicle routing problem research community.
+It contains interactive plots of many routing problems instances,
+along with the exact solution found by operations research practitioners
+over the years.
+Each CVRP test instance is stored in a file, which filename follows a specific template of the form:
+
+\begin{center}
+	\begin{BVerbatim}
+		<F>-n<N>-k<K>.vrp
+	\end{BVerbatim}
+\end{center}
+
+where \texttt{<N>} is the number of customers in the instance,
+\texttt{<K>} is the number of (maximum or exact) available vehicles
+and finally \texttt{<F>} denotes the set instance family.
+\texttt{<F>} is a single letter which uniquely identifies the instance
+set along with the authors who published such set.
+
 
 \mytodo{Introduce the original benchmark used and their naming convention, and filename convention <F>-n<X>-k<Y>}
 
@@ -170,7 +193,7 @@ implemented in the VRPSolver pricing functor.
 At each invocation of the labeling algorithm, our functor extracts timing informations
 which it reportedly dumps so that timing comparisons against our pricer can be achieved later.
 
-\section{Performance profiles}
+\subsection{Performance profiles}
 \label{sec:results-performance-profiles}
 
 \textit{Performance profiles} are a plot representation used to benchmark optimization software,
