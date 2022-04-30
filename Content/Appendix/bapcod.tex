@@ -29,6 +29,10 @@ On top of that, the tailing off condition for the VRPSolver pricer was disabled.
 This is done to stress as much as possible the pricer to produce
 dual bounds as close as possible to the elementary bound, and to
 improve the obtained dual bound at the end of the root node of the search-tree.
+The labeling algorithm of the VRPSolver extension is able to produce multiple
+routes per pricing iteration as to feed the BPC with more diversified paths.
+Since our pricer always outputs a single column (the optimal column),
+we've disabled such feature to yield a fair comparison.
 
 \section{Misc parameters}
 These parameters are used to control various miscellaneous aspects of \bapcod,
@@ -151,55 +155,68 @@ where it became one of the state-of-the-art approaches for tackling routing-like
 	      This parameter, reffered as $\phi^\mt{elim}$ in the scientific paper,
 	      tells the pricer to employ the default standard bucket arc elimination discussed in \textcite{sadykov2021a}.
 	\item \texttt{RCSPmaxNumOfColsPerExactIteration = 1}, \texttt{RCSPmaxNumOfColsPerIteration = 1}.
-	      These parameters, reffered as $\gamma^\mt{exact}, \gamma^\mt{heur}$ respectively in the scientific paper,
-	      control the number of generated columns per iteration by the pricer respecitively in the heuristic and exact stages.
+	      These parameters, reffered respectively as $\gamma^\mt{exact}, \gamma^\mt{heur}$ in the scientific paper,
+	      control the number of generated columns per iteration by the pricer respectively
+	      for the heuristic stages
+	      and for the exact stage.
 	      Since our pricer is able to produce a single column per pricing iteration, in order to achieve a fair comparison,
 	      we set the label setting algorithm to always generate a single route per pricing iteration.
 	\item \texttt{RCSPallowRoutesWithSameVerticesSet = false}.
 	      This parameter tells the labeling algorithm whether outputting multiple routes passing the same set of vertices are allowed.
-	      When disable, it can allow the pricer to generate a more diverse set of routes, at the cost of increasing the pricing running time.
-	      Since we're forcing to labeling algorithm to generate a single route regardless, this parameter should have no effect.
-	\item \texttt{RCSPmaxNumOfEnumSolutionsForMIP = 0}.
+	      When disabled,
+	      it can allow the pricer to generate a more diverse set of routes
+	      at the cost of increasing the pricing running time.
+	      Since we're forcing the labeling algorithm to generate a single route regardless, this parameter should have no effect.
+	\item \texttt{RCSPmaxNumOfEnumSolutionsForMIP = 1}.
 	      This parameter, referred as $\omega^\mt{MIP}$ in the scientific paper,
-	      controls the threshold at which the number of enumerated paths can trigger a direct solve of the SP formulation through a MIP (route enumeration).
+	      controls the route enumeration threshold \parencite{baldacci2008},
+	      at which the number of enumerated paths can trigger a direct solve of the SP formulation through a MIP.
 	      Since we are interested in measuring the pricing complexity, it makes sense to disable the route enumeration feature.
-	      We can disable such feature by setting the corresponding parameter to $0$.
+	      We can disable such feature by setting the corresponding parameter to $1$.
 	\item \texttt{RCSPstopCutGenTimeThresholdInPricing = 1e21}, \texttt{RCSPhardTimeThresholdInPricing = 1e21}.
-	      These parameters, referred as $\tau^\mt{soft}, \tau^\mt{hard}$ respectively in the scientific paper,
-	      control the soft and hard time thresholds for the exact pricing stage.
+	      These parameters, referred respectively as $\tau^\mt{soft}, \tau^\mt{hard}$ in the scientific paper,
+	      control respectively the soft and hard time threshold for the exact pricing stage.
 	      These thresholds impact the tailing-off condition of the pricer, namely, if the running time of the pricer exceeds one of these thresholds, column generation is preemptively interrupted in favor of cut generation or branching.
 	      We're interested in measuring the performance of the label setting algorithm even when it is struggling, therefore we set those parameters to high values to disable the tailing off condition.
 	\item \texttt{RCSPdynamicNGmode = 1}.
 	      This parameter tells BapCod to scale dynamically
 	      the ng-sets size based on the
 	      fractional solution obtained by the column generation
-	      (not based on the solution received from the pricing problem).
+	      and not based on the solution received from the pricing problem.
+	      See \textcite{pessoa2020a} for more details.
 	\item \texttt{RCSPinitNGneighbourhoodSize = 8}, \texttt{RCSPmaxNGneighbourhoodSize = 63}.
-	      These parameters, referred as $\eta^\mt{init}, \eta^\mt{max}$ respectively in the scientific paper,
+	      These parameters, referred respectively as $\eta^\mt{init}, \eta^\mt{max}$ in the scientific paper,
 	      sets the bounds in which the ng-set size can be dynamically extended.
 	      Raising $\eta^\mt{init}$ can improve the dual bound generated from the pricer, but usually leads to explosion of computation times, especially if it is raised a lot.
 	      Therefore keeping $\eta^\mt{init}$ small and raising $\eta^\mt{max}$ is instead the preferred approach if one seeks to improve the dual bound at each branch-and-bound node.
-	      The ng-sets size starts at the smaller value $\eta^\mt{init}$, and they are augmented (if param \texttt{RCSPdynamicNGmode} is enabled)
+	      The ng-sets size starts at the lower value $\eta^\mt{init}$ and it is later increased (if param \texttt{RCSPdynamicNGmode} is enabled)
 	      after the column generation convergence and only if the MP contains a fractional solution (see \cite{pessoa2020a}).
-	      Since our pricer produces elementary routes, thus generating the best dual bounds possible, we want to stress the labeling algorithm to try as hard as possible to achieve
-	      reasonable dual bounds. Therefore, by setting $\eta^\mt{init} = 8$ and $\eta^\mt{max} = 64$ we force the labeling algorithm to produce better dual bounds towards the end
-	      of the column generation convergence.
+	      Since our pricer produces the best dual bound improvement possible (elementary routes),
+	      we want to stress the labeling algorithm to try as hard as possible to achieve
+	      reasonable dual bounds.
+	      Therefore, by setting $\eta^\mt{init} = 8$ and $\eta^\mt{max} = 63$
+	      we force the labeling algorithm to produce better dual bounds towards the end of the column generation convergence.
+	      Note that, due to \bapcod's implementation details $\eta^\mt{max} \le 63$ and thus
+	      elementary routes can be guaranteed in the column generation
+	      only for instances having less than $64$ nodes.
 	\item \texttt{RCSPmaxNGaverNeighbourhoodSize = 63}.
 	      This parameter is very similar to the $\eta^\mt{max}$ parameter, but for the average case.
-	      In our case we set this parameter to the same value of $\eta^\mt{max}$ as it was suggested from one of the \bapcod\ authors: Ruslan Sadykov.
+	      In our case we set this parameter to the same value of $\eta^\mt{max}$
+	      as it was suggested from Ruslan Sadykov,
+	      a researcher who worked on \bapcod\ and VRPSolver extension implementations.
 	\item \texttt{CutTailingOffThreshold = 0.0000001}, \texttt{CutTailingOffCounterThreshold = 999999}.
-	      These parameters, referred as $\delta^\mt{gap}, \delta^\mt{num}$ respectively in the scientific paper,
-	      controls the tailing off condition of cut-separation, i.e. the threshold
+	      These parameters, referred respectively as $\delta^\mt{gap}, \delta^\mt{num}$ in the scientific paper,
+	      control the tailing off condition of cut-separation, i.e. the threshold
 	      at which the BPC deems cuts ineffective and switches to lower priority
 	      (and usually more computationally expensive) cuts.
 	      Despite their name and their application to cut separation, these two important
-	      parameters also affect the column generation procedure, specififcally the augmentation of the ng-sets.
+	      parameters also affect the column generation procedure, specifically the augmentation of the ng-sets.
 	      As pointed out in the original paper,
 	      increasing the ng-sets size can be seen as a form of "cut generation"
 	      since it improves the dual bound.
 	      Ng-sets augmentation have the highest priority, followed by cut-generation and branching in this order.
 	      Since we always prefer to augment the ng-sets as much as possible we want
-	      to disable the cut-tailing off conditions.
+	      to disable the cut-tailing off condition.
 	      We can disable the cut-tailing off condition by setting these parameters to the above values.
 \end{itemize}
 
