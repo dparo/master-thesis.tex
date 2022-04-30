@@ -171,7 +171,7 @@ The RCSP sub-problem also requires for the definition the so-called packing and 
 sets for each customer (see \cite{pessoa2020a} for more details).
 The correct definition of these generalized sets is mandatory to allow for specific
 components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
-A separate packing set and a separate elementarity set is dedicated for each customer.
+A separate packing set and a separate elementarity set is created, one for each customer.
 The VRPSolver extension requires also for the explicit definition of an additional
 distance matrix encoding the distance between pairs of elementarity sets.
 The ng-sets are computed automatically by employing the elementarity sets
@@ -180,12 +180,12 @@ to the distance between customers.
 
 Due to implementation details, the RCSP sub-problem requires
 the definition of the amount of resource consumption for each arc of the network.
-But in CVRP the resource consumption is defined per customer.
+It is not possible to define the resource consumption at the vertex level.
 Therefore, as suggested in \textcite{pessoa2020a}, we can define the resource consumption
 on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
-This definition is correct and it leads to a symmetric resource consumption ($q_{ij} = q_{ji}$),
-which have the benefit of speeding the efficiency at pricing,
-by eliminating the need of performing backward labelling.
+This definition is correct and it leads to a symmetric resource consumption ($q_{ij} = q_{ji}$).
+The symmetric resource consumption property speeds the efficiency at pricing,
+by eliminating the need of performing backward labelling \parencite{pessoa2020a}.
 
 \medskip
 
