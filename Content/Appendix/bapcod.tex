@@ -15,8 +15,14 @@ therefore it is highly suggested to first read the scientific document of \textc
 
 In the next section we will introduce the parameters that we've used, along
 with: associated values, meaning and justification for their usage.
-As a quick summary for this chapter, the parameters are set in such a way
-that branching and cut generations are disabled.
+We want to provide a brief summary of why and how these parameters were set.
+Non-robust branching and non-robust cut-generation
+must be necessarily disabled as our pricer do not support those.
+While it is technically possible to enable robust branching and cut-generation,
+we instead opted to disable these two features entirely.
+To stress the labeling algorithm it is simply enough to evaluate
+the column generation iterations issued at the root node of branch-and-bound tree
+free of additional cutting-planes.
 The ng-sets augmentation is enabled and the ng-set maximum
 set size is raised as high as possible.
 On top of that, the tailing off condition for the VRPSolver pricer was disabled.
@@ -46,19 +52,26 @@ such as total running time, which pricer to use, enabling specific
 components and performing validation checks.
 
 \begin{itemize}
-	\item \texttt{GlobalTimeLimit = 3600}. Sets the maximum allowed solving time to one hour.
-	\item \texttt{colGenSubProbSolMode = 3}. Tells \bapcod\ to use the custom user-provided pricing functor.
+	\item \texttt{GlobalTimeLimit = 3600}.
+	      Sets the maximum allowed solving time to one hour.
+	      This timelimit is global and it affects the whole BPC algorithm, from the starting
+	      to the resolution process at the root node until an integral optimal solution is found.
+	\item \texttt{colGenSubProbSolMode = 3}.
+	      Tells \bapcod\ to use the custom user-provided pricing functor.
 	      In our case, the pricing functor is a stubbed implementation which wraps the original VRPSolver extension pricing functor
 	      and times it (see previous discussions in \Cref{sec:results-evaluation-method}).
 	      By instead, setting this parameter to the value \texttt{2},
-	      it is possible to tell \bapcod\ to use the default generic MIP solver to solve the sub-problems.
-	\item \texttt{ApplyPreprocessing = true}. Tells \bapcod, to apply pre-processing to adjust bounds and remove redundant constraints.
+	      it is possible to tell \bapcod\ to use the default generic MIP pricer to solve the sub-problems.
+	\item \texttt{ApplyPreprocessing = true}.
+	      Tells \bapcod\ to apply pre-processing to adjust bounds and remove redundant constraints.
+	      Since this feature can improve the model without altering the pricing sub-problem,
+	      it is left enabled.
 	\item \texttt{PreprocessVariablesLocalBounds = false}.
 	      Prevents \bapcod\ from changing the variable bounds of sub-problems after pre-processing.
 	      Since our pricer does not support changing the bounds of the variables,
 	      we disable this feature.
 	\item \texttt{CheckSpOracleFeasibility = false}.
-	      This feature is useful for debugging when developing custom pricing functors.
+	      This feature can be used for debugging and can be useful when developing custom pricing functors.
 	      When this parameter is set to true, it allows to use an expensive MIP resolution process
 	      to verify the correctness of the pricer algorithm.
 	      The MIP is employed to check whether the produced columns satisfy all the master problem constraints.
@@ -69,11 +82,14 @@ components and performing validation checks.
 
 \section{Column Generation parameters}
 
+These parameters control the column generation framework.
+
 \begin{itemize}
 	\item \texttt{GenerateProperColumns = false}.
 	      When this parameter is set to true, \bapcod\ will error-out if the pricer produces any non-proper column,
-	      i.e. a column not respecting the sub-problem variable bounds.
-	      In our case we set this parameter to false, because from our experiments it didn't seem to coope correctly with the VRPSolver pricing functor.
+	      i.e. a column dishonoring the sub-problem variable bounds.
+	      In our case we set this parameter to false,
+	      because from our experiments it didn't seem to cooperate with the VRPSolver pricing functor.
 	\item \texttt{MaxNbOfStagesInColGenProcedure = 3}.
 	      Sets the number of stages the pricer is allowed to use.
 	      When the stage iteration is greater than 1, the pricer is allowed to use
@@ -81,18 +97,26 @@ components and performing validation checks.
 	      When the stage iteration reaches stage 0, the pricing problem should be solved exactly.
 	      \bapcod\ automatically switches to a lower stage when the previous stage converges (i.e. fails to find any reduced cost column).
 	      The technical document suggests to set this parameter to $3$ when the VRPSolver extension is in use.
-	      The VRPSolver extension implements two heuristic stages by using a modification of the bidirectional label setting algorithm, see the \textit{Pricing heuristics, Column and cut generation} sections of \textcite{sadykov2021a}.
+	      The VRPSolver extension implements two heuristic stages by using a modification of the bidirectional label setting algorithm,
+	      see the \textit{Pricing heuristics} and \textit{Column and cut generation} sections of \textcite{sadykov2021a}.
 	\item \texttt{ReducedCostFixingThreshold = 0.0}.
 	      Tells \bapcod\ to not apply reduced cost fixing.
 \end{itemize}
 
 \section{Cut Generation parameters}
+These parameters control the cutting-planes and their generation.
+We've opted to completely disable cut generation.
+
 \begin{itemize}
 	\item \texttt{MasterCuttingPlanesDepthLimit = -1}.
 	      When this parameter is set to $-1$, it disables cut generation of core cuts
 	      (i.e. the cuts natively supported within the BPC framework).
 	      The cut generation of user-defined cuts
-	      is not effected by this parameter, and therefore it must be disabled manually.
+	      is not effected by this parameter, and therefore these kinds of cuts must be disabled manually.
+	      Explicit usage of user-defined cuts must be explicitly requested for usage
+	      by registering the associated functors.
+	      We don't explicitly register any user-defined cut in the implemented model.
+	      Therefore, all cutting-planes are disabled, including the separation of the RCC inequalities of \cref{eq:two-index-flow-ccc}.
 	\item \texttt{MaxNbOfCutGeneratedAtEachIter = 0}.
 	      Sets the maximum number of core cuts added per cut round to $0$,
 	      effectively further enforcing the deactivation of the core cuts generation.
