@@ -42,7 +42,9 @@ Yet rounding introduces problems in comparing heuristic approaches contributions
 
 To evaluate the performance of our pricer we employed some of the most
 historical and commonly known CVRP instances:
-set A, B, P \parencite{augerat1995}, set E \parencite{christofides1969}, set M \parencite{christofides1979}.
+set A, B, P \parencite{augerat1995}, set E \parencite{christofides1969},
+set F \parencite{fisher1994}
+and finally set M \parencite{christofides1979}.
 Refer to the CVRPLIB website or to \textcite{uchoa2017} for more additional details
 on how these instances were obtained by their corresponding authors.
 
@@ -81,18 +83,22 @@ Precisely, it contains two successively lighter heuristic implementations, see \
 The labeling algorithm makes use of a generalized ng-sets definition \parencite{baldacci2011}
 defined through packing and elementarity sets as presented in \textcite{pessoa2020a}.
 The ng-sets are dynamically augmented \parencite{roberti2014}
-after the column generation convergence only if the MP contains a fractional solution,
+when the solution obtained after the column generation convergence
+is fractional,
 see \textcite{pessoa2020a} for more details.
-The VRPSolver extension also implements
-some cutting cutting-planes and branching decisions
+The VRPSolver extension, also,
+contains the implementation of some
+specific cutting-planes and branching decisions
 tailored at efficiently solving routing-like problems
 (or problems that exhibit similar structures)
 such as the CVRP, VRPTW and also others (see \cite{pessoa2020a}).
 The VRPSolver extension was also successfully applied
 to solve Bin Packing Problems in \textcite{pessoa2020}.
 
-\bapcod\ along with its VRPSolver are currently the leading state-of-the-art
-technology for solving vehicle routing problems \parencite{pessoa2020a}.
+\medskip
+
+\bapcod\ along with its VRPSolver extension are currently the leading state-of-the-art
+technologies for solving vehicle routing problems \parencite{pessoa2020a}.
 The \bapcod\ source code can be downloaded for free, for academic purposes only,
 by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
 The VRPSolver extension, instead, is available for academic use only in compiled form,
@@ -102,7 +108,7 @@ Instructions to build, setup and employ \bapcod\ and its VRPSolver extension
 can be found in the official technical report presented in \textcite{sadykov2021}.
 
 Refer to \textcite{sadykov2019b},
-for a complete technical discussion on the ingredients of modern BPC frameworks.
+for a complete technical discussion on the common ingredients of modern and advanced BPC frameworks.
 
 
 
