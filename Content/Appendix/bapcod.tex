@@ -1,21 +1,32 @@
 \chapter{\bapcod\ Parametrization}
 \label{sec:bapcod-appendix}
 
+This section lists exhaustively all the \bapcod\ and VRPSolver extension
+parameters that were employed  to obtain the results of \Cref{sec:results}.
+We will not provide a full exhaustive list of all the possible parameters,
+instead, we will mainly concentrate on the main ones that were necessary to achieve
+the desired intent.
+The \bapcod\ technical report \textcite{sadykov2021} provides a more
+comprehensive list and describes the parameters in more depth.
+The technical report alone is not enough to fully comprehend the purpose of each parameter,
+therefore it is highly suggested to first read the scientific document of \textcite{pessoa2020a}.
 
-This section lists more exhaustively all the \bapcod\ parameters
-that were employed to obtain the results of this thesis.
-The parameters' names and their meaning are described in the technical report of \textcite{sadykov2021}.
-We will not cover all the parameters in this section,
-we will concentrate on the most important ones only.
-The technical report alone is not enough to fully comprehend what each parameter do,
-therefore it is highly suggested to first read the scientific document of \textcite{pessoa2020a},
-where \bapcod\ and its VRPSolver extension were employed to solve many VRP instances.
+\medskip
+
+In the next section we will introduce the parameters that we've used, along
+with their values, meaning and justification for their usage.
+As a quick summary for this chapter, the parameters are set in such a way
+that branching and cut generations are disabled.
+The ng-sets is enabled and their size is raised as high as possible.
+On top of that, the tailing off condition for the VRPSolver pricer was disabled.
+This is done to stress as much as possible the pricer to produce
+dual bounds as close as possible to the elementary bounds, and to
+improve the obtained dual bound at the end of the root node resolution process.
 
 \section{Core parameters}
 
 These parameters are used to control the general behavior of \bapcod,
 such as the logging verbosity, and the overall running time behavior.
-
 
 \begin{itemize}
 	\item Controlling the logging verbosity:
@@ -67,7 +78,6 @@ such as the logging verbosity, and the overall running time behavior.
 	\item \texttt{ReducedCostFixingThreshold = 0.0}.
 	      Tells \bapcod\ to not apply reduced cost fixing.
 \end{itemize}
-
 
 \section{Cut Generation parameters}
 \begin{itemize}
