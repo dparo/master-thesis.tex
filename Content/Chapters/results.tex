@@ -62,9 +62,9 @@ for a complete technical discussion on the ingredients of modern BPC frameworks.
 To assess the competitiveness of our branch-and-cut pricer, we employed several
 CVRP test instances.
 Many test instances are freely available on the \urlref{http://vrp.atd-lab.inf.puc-rio.br/index.php/en/}{CVRPLIB website}.
-The \textit{CVRPLIB website} is a fantastic online resource for VRP practitioners.
+The \textit{CVRPLIB website} is a fantastic online database for VRP practitioners.
 It contains interactive plots of many routing problems instances,
-along with the exact solution found by the operations research community over the years.
+along with the best known/optimal solution found by the operations research community over the years.
 Each CVRP test instance is stored in a file, which filename follows a specific template of the form:
 
 \begin{center}
@@ -89,26 +89,15 @@ is computed by rounding to the nearest integer the conventional 2D Euclidean dis
 Rounding is performed to make the optimal values found by different contributions more stable for comparison.
 Yet rounding introduces problems in comparing heuristic approaches contributions, see \textcite{uchoa2017} for more details.
 
-\mytodo{Introduce the original benchmark used and their naming convention, and filename convention <F>-n<X>-k<Y>}
+To evaluate the performance of our pricer we employed some of the most
+historical, commonly known and employed test-instances:
+set A, B, P \parencite{augerat1995}, set E \parencite{christofides1969}, set M \parencite{christofides1979}.
+Refer to the CVRPLIB website or to \textcite{uchoa2017} for more additional details
+on how these instances were obtained by their corresponding authors.
 
-\mytodo{Talk about how benchmark instances are obtained}
-
-\mytodo{Say that they follow the TSPLIB95 file format}
-
-\mytodo{Say that the distances are rounded. Refer to \cite{uchoa2017}, which contains a small explanation why this is done}
 
 \mytodo{Put all the instances used in tables as is done in \cite{uchoa2017}}
 
-\begin{comment}
-
-\cite{uchoa2017}
-THE CVRPLIB website
-The typical instance repository of today is a web page that allows downloading the instance
-files and includes additional textual information, like file format description, instance
-source, best known/optimal solution values, etc. The CVRLIB web page, where the new
-instances (and all the previous CVRP instances described in Section 2) are available
-(http://vrp.galgos.inf.puc-rio.br/index.php/en/), is more sophisticated:
-\end{comment}
 
 
 \section{Evaluation Setup}
