@@ -4,7 +4,7 @@
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
-To satisfactorily measure the competitiveness of our branch-an-cut pricer,
+To satisfactorily measure the competitiveness of a branch-an-cut pricer,
 the usage of several CVRP benchmark instances is a mandatory necessity.
 The \urlref{http://vrp.atd-lab.inf.puc-rio.br/index.php/en/}{CVRPLIB website}
 is an online database for the vehicle routing problems,
@@ -33,19 +33,20 @@ instance set family (published in \cite{augerat1995}).
 The contents of each CVRP instance file follows the \texttt{TSPLIB95} file format \parencite{reinelt1995}.
 As it became usual for the TSP in \textcite{reinelt1991},
 distances between pairs of nodes
-is computed by rounding to the nearest integer the conventional 2D Euclidean distance function.
+is computed through a 2D Euclidean distance function
+rounded to the nearest integer.
 Rounding is performed to make the optimal values found by different contributions more stable for comparison.
 Yet rounding introduces problems in comparing heuristic approaches contributions, see \textcite{uchoa2017} for more details.
 
 \medskip
 
 To evaluate the performance of our pricer we employed some of the most
-historical, commonly known and employed test-instances:
+historical and commonly known CVRP instances:
 set A, B, P \parencite{augerat1995}, set E \parencite{christofides1969}, set M \parencite{christofides1979}.
 Refer to the CVRPLIB website or to \textcite{uchoa2017} for more additional details
 on how these instances were obtained by their corresponding authors.
 
-
+\medskip
 \mytodo{Put all the employed CVRP instances in tables. Similar as it is done in \cite{uchoa2017}}
 
 
