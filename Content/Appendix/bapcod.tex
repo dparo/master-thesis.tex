@@ -116,13 +116,15 @@ We've opted to completely disable cut generation.
 	      Explicit usage of user-defined cuts must be explicitly requested for usage
 	      by registering the associated functors.
 	      We don't explicitly register any user-defined cut in the implemented model.
-	      Therefore, all cutting-planes are disabled, including the separation of the RCC inequalities of \cref{eq:two-index-flow-ccc}.
+	      As a natural consequence all cutting-planes are disabled, including the separation of the RCC inequalities of \cref{eq:two-index-flow-ccc}.
 	\item \texttt{MaxNbOfCutGeneratedAtEachIter = 0}.
 	      Sets the maximum number of core cuts added per cut round to $0$,
 	      effectively further enforcing the deactivation of the core cuts generation.
 \end{itemize}
 
 \section{Branching parameters}
+These parameters control the branching scheme and branching priorities performed by the BPC algorithm.
+We've opted to completely disabled any form of branching.
 
 \begin{itemize}
 	\item \texttt{StrongBranchingPhaseOne=""}, \texttt{StrongBranchingPhaseTwo=""}, \texttt{StrongBranchingPhaseThree=""}, \texttt{StrongBranchingPhaseFour=""}
