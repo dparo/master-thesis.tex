@@ -1,7 +1,6 @@
 \chapter{Results}
 \label{sec:results}
 
-
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
 To satisfactorily measure the competitiveness of a branch-an-cut pricer,
@@ -50,7 +49,6 @@ on how these instances were obtained by their corresponding authors.
 
 \medskip
 \mytodo{Put all the employed CVRP instances in tables. Similar as it is done in \cite{uchoa2017}}
-
 
 \section{\bapcod}
 \label{sec:results-bapcod}
@@ -110,9 +108,6 @@ can be found in the official technical report presented in \textcite{sadykov2021
 Refer to \textcite{sadykov2019b},
 for a complete technical discussion on the common ingredients of modern and advanced BPC frameworks.
 
-
-
-
 \section{Evaluation Setup}
 \label{sec:results-evaluation-setup}
 
@@ -122,7 +117,6 @@ we had to choose between two main choices:
 by coding it as a \bapcod\ plugin,
 or (ii) developing the pricer in a standalone executable,
 separate from the BPC framework.
-
 
 To keep things as simple as possible we opted for the latter choice.
 This choice allowed us to gain more freedom in the implementation
@@ -134,7 +128,6 @@ that we wished without risking in linker conflicts.
 Despite in our decision, we have valued simplicity above all,
 it has to be noted that our choice leads a very big downside that has to be acknowledged.
 
-
 To keep things as simple as possible, we've decided to implement our
 pricer in a standalone separate program instead of developing it as a \bapcod\ extension.
 While this approach was convenient, it has to be noted that the performance comparison is not
@@ -145,27 +138,8 @@ Our pricer, since it works with elementary paths, may require less number of ite
 to prove no-more reduced cost routes exist, while a relaxed-elementarity SPPRC solver
 might require more iterations.
 
-
-
-
-% \section{Model}
-%
-% \mytodo{Write the BapCod model here}
-%
-% \mytodo{Point out that general branching and general cuts are disabled in BapCod}
-%
-% \mytodo{Note that specific ESPPRC type of non-robust branching\&cuts are disabled in the BapCod model}
-
-
-
-\subsection{Dual values extraction}
-
-\mytodo{Talk about how we extract the dual values from the BapCod model reduced cost variables}
-
-
 \section{Evaluation Method}
 \label{sec:results-evaluation-method}
-
 
 \bapcod\ version 0.66 (released in November 2021) and the libRCSP version 0.5.12,
 containing the VRPSolver extension implementation were used.
@@ -215,6 +189,18 @@ It forwards the pricing problem to a dynamic programming labeling algorithm
 implemented in the VRPSolver pricing functor.
 At each invocation of the labeling algorithm, our functor extracts timing informations
 which it reportedly dumps so that timing comparisons against our pricer can be achieved later.
+
+% \section{Model}
+%
+% \mytodo{Write the BapCod model here}
+%
+% \mytodo{Point out that general branching and general cuts are disabled in BapCod}
+%
+% \mytodo{Note that specific ESPPRC type of non-robust branching\&cuts are disabled in the BapCod model}
+
+\subsection{Dual values extraction}
+
+\mytodo{Talk about how we extract the dual values from the BapCod model reduced cost variables}
 
 \subsection{Performance profiles}
 \label{sec:results-performance-profiles}

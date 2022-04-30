@@ -41,34 +41,30 @@ and for understanding what's going within the guts of the BPC algorithm.
 \end{itemize}
 
 \section{Core parameters}
-These parameters are used to control the general behavior of the BPC,
+These parameters are used to control the general behavior of the BPC algorithm,
 such as total running time, which pricer to use, enabling specific
 components and performing validation checks.
 
 \begin{itemize}
-	\item Controlling the logging verbosity:
-
-	\item Controlling the general runtime behavior:
-	      \begin{itemize}
-		      \item \texttt{GlobalTimeLimit = 3600}. Sets the maximum allowed solving time to one hour.
-		      \item \texttt{colGenSubProbSolMode = 3}. Tells \bapcod\ to use the custom user-provided pricing functor.
-		            In our case, the pricing functor is a stubbed implementation which wraps the original VRPSolver extension pricing functor
-		            and times it.
-		            By setting such parameters to other values, it is possible to tell \bapcod\ to use a default generic MIP solver to solve the sub-problems.
-		      \item \texttt{ApplyPreprocessing = true}. Tells \bapcod, to apply pre-processing to adjust bounds and remove redundant constraints.
-		      \item \texttt{PreprocessVariablesLocalBounds = false}.
-		            Prevents \bapcod\ from changing the variable bounds of sub-problems after pre-processing.
-		            Since our pricer does not support changing the bounds of the variables,
-		            we disable this feature.
-		      \item \texttt{CheckSpOracleFeasibility = false}.
-		            This feature is useful for debugging when developing custom pricing functors.
-		            When this parameter is set to true, it allows to use an expensive MIP resolution process
-		            to verify the correctness of the pricer algorithm.
-		            The MIP is employed to check whether the produced columns satisfy all the master problem constraints.
-		            In our case it is disabled.
-		      \item \texttt{CheckOracleOptimality = false}.
-		            Similar to the \texttt{CheckSpOracleFeasibility} parameter, but also verifies the optimality of the generated columns.
-	      \end{itemize}
+	\item \texttt{GlobalTimeLimit = 3600}. Sets the maximum allowed solving time to one hour.
+	\item \texttt{colGenSubProbSolMode = 3}. Tells \bapcod\ to use the custom user-provided pricing functor.
+	      In our case, the pricing functor is a stubbed implementation which wraps the original VRPSolver extension pricing functor
+	      and times it (see previous discussions in \Cref{sec:results-evaluation-method}).
+	      By instead, setting this parameter to the value \texttt{2},
+	      it is possible to tell \bapcod\ to use the default generic MIP solver to solve the sub-problems.
+	\item \texttt{ApplyPreprocessing = true}. Tells \bapcod, to apply pre-processing to adjust bounds and remove redundant constraints.
+	\item \texttt{PreprocessVariablesLocalBounds = false}.
+	      Prevents \bapcod\ from changing the variable bounds of sub-problems after pre-processing.
+	      Since our pricer does not support changing the bounds of the variables,
+	      we disable this feature.
+	\item \texttt{CheckSpOracleFeasibility = false}.
+	      This feature is useful for debugging when developing custom pricing functors.
+	      When this parameter is set to true, it allows to use an expensive MIP resolution process
+	      to verify the correctness of the pricer algorithm.
+	      The MIP is employed to check whether the produced columns satisfy all the master problem constraints.
+	      In our case it is disabled.
+	\item \texttt{CheckOracleOptimality = false}.
+	      Similar to the \texttt{CheckSpOracleFeasibility} parameter, but also verifies the optimality of the generated columns.
 \end{itemize}
 
 \section{Column Generation parameters}
