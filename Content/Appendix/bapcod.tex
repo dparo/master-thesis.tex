@@ -24,19 +24,29 @@ This is done to stress as much as possible the pricer to produce
 dual bounds as close as possible to the elementary bound, and to
 improve the obtained dual bound at the end of the root node of the search-tree.
 
-\section{Core parameters}
+\section{Misc parameters}
+These parameters are used to control various miscellaneous aspects of \bapcod,
+such as the logging verbosity.
+They have limited importance, but can be quite useful for debugging purposes
+and for understanding what's going within the guts of the BPC algorithm.
 
-These parameters are used to control the general behavior of \bapcod,
-such as the logging verbosity, and the overall running time behavior.
+\begin{itemize}
+	\item \texttt{DEFAULTPRINTLEVEL = 0}.
+	      Controls the verbosity of the logging system of \bapcod\ by setting it to a relatively quiet level.
+	      This value achieves a good trade off between the amount of information which is emitted
+	      and the amount of characters printed per second.
+	\item \texttt{printMasterPrimalSols = 2}.
+	      By setting this parameter to 2, \bapcod\ will print the fractional solution after each column generation convergence.
+	      Useful for debugging.
+\end{itemize}
+
+\section{Core parameters}
+These parameters are used to control the general behavior of the BPC,
+such as total running time, which pricer to use, enabling specific
+components and performing validation checks.
 
 \begin{itemize}
 	\item Controlling the logging verbosity:
-	      \begin{itemize}
-		      \item \texttt{DEFAULTPRINTLEVEL = 0}.
-		            Controls the verbosity of the logging system of \bapcod\ by setting it to a relatively quiet level.
-		      \item \texttt{printMasterPrimalSols = 2}.
-		            By setting this parameter to 2, \bapcod\ will print the fractional solution after each column generation convergence.
-	      \end{itemize}
 
 	\item Controlling the general runtime behavior:
 	      \begin{itemize}
