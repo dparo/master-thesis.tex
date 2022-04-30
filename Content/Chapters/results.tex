@@ -62,15 +62,15 @@ for a complete technical discussion on the ingredients of modern BPC frameworks.
 To assess the competitiveness of our branch-and-cut pricer, we employed several
 CVRP test instances.
 Many test instances are freely available on the \urlref{http://vrp.atd-lab.inf.puc-rio.br/index.php/en/}{CVRPLIB website}.
-The CVRPLIB website is a fantastic online resource for VRP practitioners.
+The \textit{CVRPLIB website} is a fantastic online resource for VRP practitioners.
 It contains interactive plots of many routing problems instances,
 along with the exact solution found by the operations research community over the years.
 Each CVRP test instance is stored in a file, which filename follows a specific template of the form:
 
 \begin{center}
-	\begin{BVerbatim}
+	\begin{LVerbatim}
 		<F>-n<N>-k<K>.vrp
-	\end{BVerbatim}
+	\end{LVerbatim}
 \end{center}
 
 where \texttt{.vrp} is the file extension,
@@ -87,7 +87,7 @@ As it became usual for the TSP in \textcite{reinelt1991},
 distances between pairs of nodes
 is computed by rounding to the nearest integer the conventional 2D Euclidean distance function.
 Rounding is performed to make the optimal values found by different contributions more stable for comparison.
-Yet rounding induces problem in comparing heuristic approaches contributions, see \textcite{ucho2017} for more details.
+Yet rounding induces problem in comparing heuristic approaches contributions, see \textcite{uchoa2017} for more details.
 
 \mytodo{Introduce the original benchmark used and their naming convention, and filename convention <F>-n<X>-k<Y>}
 
