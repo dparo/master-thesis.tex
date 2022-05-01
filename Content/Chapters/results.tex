@@ -192,18 +192,21 @@ by eliminating the need of performing backward labelling \parencite{pessoa2020a}
 
 \medskip
 
-We've setup \bapcod\ in a such a way that the resolution process stops at the root
-node of the branch-and-bound tree.
-Therefore, cutting-planes and branching were disabled in our experiments.
-Although, notice that branching on arcs and RCC inequalities may be
-enabled without affecting our branch-and-cut pricer, but non-robust
-inequalities are not supported by our pricer.
-In order to obtain a more fair comparison, we've setup \bapcod\ as to prioritize
-the ng-sets augmentation whenever possible as to achieve a dual bound as close
-as possible to the elementarity bound, and on top of that,
-we've setup the VRPSolver extension pricer to produce a single column
-per column generation iterations, since our pricer is not able to achieve
-such a condition.
+We've configured \bapcod\ through the usage of parameters which are specified
+in an appropriately placed configuration file.
+The BPC framework's branching and cut-generation schemes were disabled.
+The resolution process of a CVRP instance, therefore, was asked to stop at
+the root node of the branch-and-bound tree.
+The ng-sets augmentation was enabled and the maximum ng-set threshold was configured
+as high as possible. This was done to stress the labeling algorithm to generate dual bounds as close
+as possible to the elementary bound at the end of the column generation iteration.
+The tailing off condition of the pricer was turned off.
+We've also requested the labeling algorithm to output a single column per pricing invocation.
+We believed that such setup could lay a fair test bed
+for comparing the performance of our branch-and-cut algorithm against
+the labeling algorithm.
+For a complete list of the configuration parameters that we've used refer to \Cref{sec:bapcod-appendix}.
+
 We've implemented a custom functor (i.e. a glorified callback) to solve the pricing problem.
 Our functor does the following.
 First for each exact pricing iteration it dumps the problem and the corresponding dual variables
