@@ -161,7 +161,7 @@ measuring the running time of the labeling algorithm for each pricing invocation
 By following the \bapcod\ technical document \parencite{sadykov2021},
 we've re-adapted one of the VRPTW example (included in the distribution),
 to model a Capacitated Vehicle Routing Problem.
-The model that we've implemented follows two-index arc flow model
+The master formulation that we've implemented follows the two-index arc flow model
 presented in \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
 excluding the Rounded Capacity Constraints (RCC) of \cref{eq:two-index-flow-ccc}.
 
@@ -210,6 +210,40 @@ that  we've used refer to \Cref{sec:bapcod-appendix}.
 
 \medskip
 
+We've implemented a custom pricing fucntor (i.e. a glorified callback) to solve the pricing problem.
+Our pricing functor is a simple stubbed implementation which ultimately invokes
+the normal VRPSolver extension's pricing functor.
+However, before calling the labeling algorithm we first do the following.
+First, we time the running time of the labeling algorithm so that later
+we can compare its performance.
+Second, we record the dual variables of the RMP $\pi \in \R^N$ at each
+exact pricing invocation.
+Due to implementation details of \bapcod, the value of
+the dual variables $\pi_0 \in R$ is stored separately
+and can be retrieved by accessing a field of the master problem formulation.
+The remaining dual variables $\pi_i \quad \forall i \in V_0$
+were instead retrieved recursively by exploiting the following relationship
+employed in \bapcod:
+
+\begin{equation}
+	\bar{c_{ij}} = \begin{cases}
+		c_{ij} - \frac{\pi_{j}}{2}       & \texttt{if } i = 0, j \in V_0       \\
+		c_{ij} - \frac{\pi_i + \pi_j}{2} & \texttt{if } i, j \in V_0,\ i \ne j
+	\end{cases}
+\end{equation}
+
+where $\bar{c_{ij}}$ denotes the reduced cost for an edge.
+For each pricing invocation we dump two files.
+The first dumped file is a JSON file which contains metadata information about
+the labeling algorithm, such as: the instance name, the instance size,
+the total running time for the labeling, the reduced cost of the generated route,
+the column generation iteration, etc.
+The second dumped file instead it contains a slighly modified TSPLIB95 file format,
+which encodes a CPTP problem, by introducing in a dedicate \texttt{PROFIT_SECTION}
+the dual variables that were extracted for this particular column generation iteration.
+
+and we dump the dual variables of the SP $\pi \in R^N$
+for each exact pricing invocation.
 We've implemented a custom functor (i.e. a glorified callback) to solve the pricing problem.
 Our functor does the following.
 First for each exact pricing iteration it dumps the problem and the corresponding dual variables
@@ -218,18 +252,6 @@ It forwards the pricing problem to a dynamic programming labeling algorithm
 implemented in the VRPSolver pricing functor.
 At each invocation of the labeling algorithm, our functor extracts timing informations
 which it reportedly dumps so that timing comparisons against our pricer can be achieved later.
-
-% \section{Model}
-%
-% \mytodo{Write the BapCod model here}
-%
-% \mytodo{Point out that general branching and general cuts are disabled in BapCod}
-%
-% \mytodo{Note that specific ESPPRC type of non-robust branching\&cuts are disabled in the BapCod model}
-
-\subsection{Dual values extraction}
-
-\mytodo{Talk about how we extract the dual values from the BapCod model reduced cost variables}
 
 \subsection{Performance profiles}
 \label{sec:results-performance-profiles}
