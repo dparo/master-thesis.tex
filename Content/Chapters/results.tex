@@ -152,8 +152,8 @@ might require more iterations.
 \label{sec:results-evaluation-process}
 
 We've employed \bapcod\ version 0.66 (released in November 2021) and the \texttt{libRCSP v0.5.12}.
-The latter library contains the VRPSolver extension implementation.
-The objective is to use \bapcod\ to solve a CVRP instance while simultaneously
+The latter library contains the implementation of the VRPSolver extension.
+The objective is to exploit \bapcod\ to solve many CVRP instances while simultaneously
 measuring the running time of the labeling algorithm for each pricing invocation.
 
 \medskip
@@ -162,13 +162,13 @@ By following the \bapcod\ technical document \parencite{sadykov2021},
 we've re-adapted one of the VRPTW example (included in the distribution),
 to model a Capacitated Vehicle Routing Problem.
 The model that we've implemented follows two-index arc flow model
-discussed \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds}
-but excluding the Rounded Capacity Constraints (RCC) of \cref{eq:two-index-flow-ccc}.
+presented in \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
+excluding the Rounded Capacity Constraints (RCC) of \cref{eq:two-index-flow-ccc}.
 
 In order to use the VRPSolver labeling algorithm, it is necessary
-to define Resource Constrained Shortest Path (RCSP) sub-problem.
+to define the associated Resource Constrained Shortest Path (RCSP) sub-problem.
 The RCSP sub-problem is formulated on a complete directed network by
-linking the RCSP modeling variables to the original CVRP formulations.
+linking the new RCSP modeling variables to the original CVRP formulation.
 The RCSP sub-problem requires for the correct definition of the source and sink
 vertices.
 The RCSP sub-problem also requires for the definition the so-called packing and elementarity
@@ -179,8 +179,7 @@ A separate packing set and a separate elementarity set is created, one for each 
 The VRPSolver extension requires also for the explicit definition of an additional
 distance matrix encoding the distance between pairs of elementarity sets.
 The ng-sets are computed automatically by employing the elementarity sets
-according to a distance matrix which also needs to be set by the user
-to the distance between customers.
+and the distance matrix specified from the user.
 
 Due to implementation details, the RCSP sub-problem requires
 the definition of the amount of resource consumption for each arc of the network.
@@ -188,7 +187,7 @@ It is not possible to define the resource consumption at the vertex level.
 Therefore, as suggested in \textcite{pessoa2020a}, we have defined the resource consumption
 on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
 This definition is correct and it leads to a symmetric resource consumption ($q_{ij} = q_{ji}$).
-The symmetric resource consumption property speeds the efficiency at pricing,
+The symmetric resource consumption property improves the efficiency in pricing,
 by eliminating the need of performing backward labelling \parencite{pessoa2020a}.
 
 \medskip
