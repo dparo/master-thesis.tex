@@ -238,20 +238,9 @@ The first dumped file is a JSON file which contains metadata information about
 the labeling algorithm, such as: the instance name, the instance size,
 the total running time for the labeling, the reduced cost of the generated route,
 the column generation iteration, etc.
-The second dumped file instead it contains a slighly modified TSPLIB95 file format,
-which encodes a CPTP problem, by introducing in a dedicate \texttt{PROFIT_SECTION}
+The second dumped file instead it contains a slightly modified TSPLIB95 file format,
+which encodes a CPTP problem, by introducing in a dedicated \texttt{PROFIT\_SECTION}
 the dual variables that were extracted for this particular column generation iteration.
-
-and we dump the dual variables of the SP $\pi \in R^N$
-for each exact pricing invocation.
-We've implemented a custom functor (i.e. a glorified callback) to solve the pricing problem.
-Our functor does the following.
-First for each exact pricing iteration it dumps the problem and the corresponding dual variables
-in a separate file for each iteration.
-It forwards the pricing problem to a dynamic programming labeling algorithm
-implemented in the VRPSolver pricing functor.
-At each invocation of the labeling algorithm, our functor extracts timing informations
-which it reportedly dumps so that timing comparisons against our pricer can be achieved later.
 
 \subsection{Performance profiles}
 \label{sec:results-performance-profiles}
