@@ -6,8 +6,8 @@
 To satisfactorily measure the competitiveness of our branch-an-cut pricer,
 the usage of several CVRP benchmark instances is a mandatory necessity.
 The \urlref{http://vrp.atd-lab.inf.puc-rio.br/index.php/en/}{CVRPLIB website}
-is an online database for the vehicle routing problem,
-which contains, among other things,
+is an online database for the vehicle routing problem
+which it contains, among other things,
 many freely downloadable CVRP test instances.
 This very useful resource can be used
 as a main point of reference by all the interested individuals.
@@ -22,13 +22,13 @@ Each CVRP test instance is stored in a file which filename follows a specific te
 \end{center}
 
 where \texttt{.vrp} is the file extension,
-\texttt{<N>} is the number of customers in the instance,
+\texttt{<N>} is the number of vertices in the instance,
 \texttt{<K>} is the number of (maximum or exact) available vehicles
 and finally \texttt{<F>} denotes the set instance family.
 \texttt{<F>} is a single letter which uniquely identifies the instance
 set along with the authors who published such set.
 As an example \texttt{P-n40-k5.vrp} denotes a test instance composed
-of $40$ customers and $5$ vehicles.
+of $40$ nodes ($39$ customers) and $5$ vehicles.
 The \texttt{P} in the name, indicates the instance set family, which in this
 case it was published in \textcite{augerat1995}.
 
@@ -42,8 +42,8 @@ However, rounding introduces problems in comparing heuristic contributions, see 
 
 \medskip
 
-To evaluate the performance of our pricer we used some of the most historic,
-and commonly known,
+To evaluate the performance of our pricer we used some of the most historic
+and commonly known
 CVRP instances:
 set A, B, P \parencite{augerat1995}, set E \parencite{christofides1969},
 set F \parencite{fisher1994}
@@ -56,16 +56,18 @@ place, can refer to either the CVRPLIB website or to the work of \textcite{uchoa
 
 \medskip
 
-We've generated new artificial instances from presented sets.
+We've generated new artificial instances from the presented sets.
 The idea is to generate new CVRP instances characterized by longer routes,
 so that we can assess the behavior of the proposed branch-and-cut pricer
-and the labeling algorithm respectively.
+and the labeling algorithm respectively as the routes
+they need to produce increase in length.
 The new artificial instances were created in the following way.
 Let $Q \in R_+,\ k \in Z_+$ respectively denote the vehicle
 capacity and the number of trucks of the unmodified CVRP instance.
-Define a scale factor $s \in R_+$, we generate new artificial instances
-characterized by a new $Q^\prime \in R_+, k^\prime \in Z_+$ vehicle capacity
-and number of vehicles respectively.
+Define a scale factor $s \in R_+$.
+For each unmodified CVRP instance, we generate a new artificial instance
+characterized by the vehicle capacity $Q^\prime \in R_+$
+and by the number of vehicles $k^\prime \in Z_+$.
 We've inflated the total number of available CVRP instances
 by using the following relationship:
 
@@ -74,8 +76,7 @@ $$
 $$
 
 The inflation is done for each unmodified CVRP instance and using
-multiple values for $s \in R_+$.
-
+multiple values for the scale factor $s \in R_+$.
 
 
 \section{\bapcod}
