@@ -188,24 +188,35 @@ the same execution flow that is generated from the BPC algorithm making use of t
 
 \medskip
 
-Despite in our decision, we have valued simplicity above all,
-it has to be noted that our choice leads a very big downside that has to be acknowledged.
+In the end we opted for simplicity, and we've decided to implement our pricer in a standalone executable.
+As the performance comparison between the two approaches, we've decided to measure
+the running time took for solving each pricing problem.
+It has to be acknowledged, however, that measuring the running time of each pricing iteration
+is nor good nor bad.
+There are benefits and downsides to this approach.
+First \bapcod\ needs to be configured to operate in the same domain as our pricer
+thus disabling many features that could possibly lead to strong efficiency
+when instead the whole running time is taken into consideration.
+Secondly, our branch-and-cut pricer produces elementary bounds, thus naturally solves a harder problem.
+While producing stronger bounds might be slower at the single pricing level, stronger bounds
+may effectively skip some pricing iterations in the long run.
+As an example, the branch-and-cut pricer may consistently appear two times slower with
+respect to the labeling algorithm, but however, it might still
+lead to a faster resolution of the overall CVRP.
 
-To keep things as simple as possible, we've decided to implement our
-pricer in a standalone separate program instead of developing it as a \bapcod\ extension.
-While this approach was convenient, it has to be noted that the performance comparison is not
-completely fair, since by running it in a separate process, better dual bound improvements
-don't lead to less pricing iterations.
-The performance comparison is performed on a per pricing iteration.
-Our pricer, since it works with elementary paths, may require less number of iterations
-to prove no-more reduced cost routes exist, while a relaxed-elementarity SPPRC solver
-might require more iterations.
+Summing up, it is clear that the performance comparison that we've settled in, is just
+a mere indicator of the true efficiency of the two approaches and must
+therefore be taken cautiously.
+We believe, however, there is still value in performing such a comparison as it lays
+out a first proof-of-concept/direction regarding the feasibility of the effectiveness
+of a branch-and-cut scheme for tackling the pricing problem.
 
 \medskip
 
-We've parameterized \bapcod\ as to lay a fair test bed for comparing
-the performance of our branch-and-cut framework against the VRPSolver extension's
-labeling algorithm.
+We conclude this section by introducing the \bapcod\ parametrization
+that we've employed to bend the labeling algorithm to operate in
+an environment that is compatible with our branch-and-cut algorithm.
+
 The configuration parameters are specified separately
 in an appropriately placed configuration file.
 We've disabled the BPC framework's branching and cut-generation schemes.
