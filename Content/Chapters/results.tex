@@ -143,21 +143,50 @@ for a complete technical discussion on the common ingredients of modern and adva
 \section{Evaluation Setup}
 \label{sec:results-evaluation-setup}
 
-\mytodo{This section is written like shit. Please rephrase it in sane English}
+The objective of this thesis, we recall, lies in verifying
+whether a branch-and-cut framework can be competitive in solving
+the pricing problem, especially if the lengths of the routes
+that need to be produced increase in length.
+We speculated that,
+since the performance of the labeling algorithm deteriorates as the vehicle capacity increases,
+a branch-and-cut framework could assist in solving the harder pricing problems.
+
+It is clear, however, that the two frameworks operate very differently.
+Our branch-and-cut framework does not support non-robust inequalities and variable fixing,
+but produces very strong dual bounds.
+Similarly, the labeling algorithm instead produces weaker dual bounds,
+but it supports multiple column generation per pricing invocation,
+non-robust cut generations and branching.
+Therefore, comparing the performance of the two schemes is not an easy task.
+So a natural question arises.
+What is the best approach to compare the performance of the two frameworks?
+
+\medskip
 
 When faced with the option of developing our branch-and-cut pricer,
-we had to choose between two main choices:
+we had to opt between two main choices:
 (i) developing our pricer in tight integration with the BPC framework,
 by coding it as a \bapcod\ plugin,
 or (ii) developing the pricer in a standalone executable,
 separate from the BPC framework.
 
-To keep things as simple as possible we opted for the latter choice.
-This choice allowed us to gain more freedom in the implementation
-such as: choosing any language that we liked (C),
-achieving isolated testing,
-and allowing us to use any external libraries
-that we wished without risking in linker conflicts.
+The first option has two main advantages.
+First, it allows for our branch-and-cut pricer to influence the execution flow of the BPC algorithm.
+Second, it enables to measure the effectiveness in pricing by comparing
+the running time required to either solve the root-node or to solve the entire CVRP instance.
+The downside of the first approach is however the complexity.
+
+The second option, instead, it has one big advantage.
+We can develop the pricer in full isolation, employing whichever programming
+language or external library pleases us.
+The implementation is simpler and more freedom in design choices can be attained.
+However, since the branch-and-cut pricer cannot alter the execution of the BPC algorithm,
+the only possible performance metric is the running time required to solve
+each pricing iteration.
+The branch-and-cut pricer, therefore, undergoes
+the same execution flow that is generated from the BPC algorithm making use of the labeling algorithm.
+
+\medskip
 
 Despite in our decision, we have valued simplicity above all,
 it has to be noted that our choice leads a very big downside that has to be acknowledged.
@@ -211,10 +240,9 @@ In order to use the VRPSolver labeling algorithm, it is necessary
 to define the associated Resource Constrained Shortest Path (RCSP) sub-problem.
 The RCSP sub-problem is formulated on a complete directed network by
 linking the new RCSP modeling variables to the master problem formulation.
-The RCSP sub-problem requires for the correct definition of the source and sink
-vertices.
-The RCSP sub-problem also requires for the definition of the so-called packing and elementarity
-sets for each customer (see \cite{pessoa2020a} for more details).
+The RCSP sub-problem requires for the correct definition of the following:
+the source/sink vertices and the so-called packing and elementarity sets (see \cite{pessoa2020a} for more details).
+The elementarity and packing sets must be specified correctly for each customer.
 The correct definition of these generalized sets is mandatory to allow for specific
 components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
 A separate packing set and a separate elementarity set is created, one for each customer.
@@ -238,17 +266,17 @@ for solving the pricing problem through custom user-defined code.
 Our pricing functor is a simple stubbed implementation which ultimately invokes
 the normal VRPSolver extension's pricing functor.
 However, before calling the labeling algorithm we first do the following.
-First, we time the running time of the labeling algorithm in order to assess its performance later.
+First, we measure the running time of the labeling algorithm in order to assess its performance later.
 Second, at each pricing invocation we record the dual variables $\pi \in \R^N$ of the RMP
-to later be dumped into a dedicated file per pricing invocation.
+to later be dumped into a dedicated file.
 
-Due to some implementation details of \bapcod the reduced cost of an
+Due to \bapcod's implementation details, the reduced cost of an
 edge does not follow the simple relationship $\bar{c_{ij}} = c_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V,\ i \ne j$.
 The dual variable $\pi_0 \in R$ can be retrieved from the user by accessing a field
 of the master problem formulation.
 The remaining dual variables $\pi_i \quad \forall i \in V_0$ must instead be computed
-from the reduced cost of each edge.
-\bapcod\ follows the following convention to encode the reduced cost of an edge:
+from the reduced cost of each edge $\bar{c_{ij}}$.
+\bapcod, internally, uses the following relationship to encode the reduced cost of an edge:
 
 \begin{equation}
 	\bar{c_{ij}} = \begin{cases}
@@ -257,7 +285,6 @@ from the reduced cost of each edge.
 	\end{cases}
 \end{equation}
 
-where $\bar{c_{ij}}$ denotes the reduced cost for an edge.
 By exploiting the above relationship, we've implemented a trivial recursive algorithm
 to extract all the necessary dual variables $\pi \in \R^N$.
 
@@ -269,7 +296,7 @@ the column generation iteration, etc.
 The second file, instead, encodes a CPTP instance including:
 the dual variables (i.e. the profits associated to each customer),
 the original demands, the original node positions and finally the vehicle capacity.
-The CPTP instance is encoded in a slight modification of the TSPLIB95 file format.
+The CPTP instance is encoded in a slightly modified TSPLIB95 file format.
 We've introduced a dedicated \texttt{PROFIT\_SECTION} in the file format
 to contain the extracted dual variables.
 
@@ -311,7 +338,7 @@ The ground truth optimal, as extracted from the dataset, is used instead as the 
 \section{Discussion}
 \label{sec:results-discussion}
 
-\mytodo{Complete this section after populating the Empirical Results with the appropriate perfprofiles}
+\mytodo{Complete this section after populating the Empirical Results with the appropriate perf-profiles}
 
 \begin{comment}
 \mytodo{Include the F-n135 grep result to talk about the difficulty of this instance and related ones}
