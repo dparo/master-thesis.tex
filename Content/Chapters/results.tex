@@ -54,6 +54,30 @@ place, can refer to either the CVRPLIB website or to the work of \textcite{uchoa
 \medskip
 \mytodo{Put all the employed CVRP instances in tables. Similar as it is done in \cite{uchoa2017}}
 
+\medskip
+
+We've generated new artificial instances from presented sets.
+The idea is to generate new CVRP instances characterized by longer routes,
+so that we can assess the behavior of the proposed branch-and-cut pricer
+and the labeling algorithm respectively.
+The new artificial instances were created in the following way.
+Let $Q \in R_+,\ k \in Z_+$ respectively denote the vehicle
+capacity and the number of trucks of the unmodified CVRP instance.
+Define a scale factor $s \in R_+$, we generate new artificial instances
+characterized by a new $Q^\prime \in R_+, k^\prime \in Z_+$ vehicle capacity
+and number of vehicles respectively.
+We've inflated the total number of available CVRP instances
+by using the following relationship:
+
+$$
+	Q^\prime = Q s, \quad k^\prime = \ceil*{\frac{k}{s}}
+$$
+
+The inflation is done for each unmodified CVRP instance and using
+multiple values for $s \in R_+$.
+
+
+
 \section{\bapcod}
 \label{sec:results-bapcod}
 
