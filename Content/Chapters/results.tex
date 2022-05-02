@@ -78,7 +78,6 @@ $$
 The inflation is done for each unmodified CVRP instance and using
 multiple values for the scale factor $s \in R_+$.
 
-
 \section{\bapcod}
 \label{sec:results-bapcod}
 
@@ -173,6 +172,24 @@ Our pricer, since it works with elementary paths, may require less number of ite
 to prove no-more reduced cost routes exist, while a relaxed-elementarity SPPRC solver
 might require more iterations.
 
+\medskip
+
+We've parameterized \bapcod\ as to lay a fair test bed for comparing
+the performance of our branch-and-cut framework against the VRPSolver extension's
+labeling algorithm.
+The configuration parameters are specified separately
+in an appropriately placed configuration file.
+We've disabled the BPC framework's branching and cut-generation schemes.
+Namely, the resolution process was asked to stop at
+the root node of the branch-and-bound tree.
+The ng-sets augmentation was enabled and the maximum ng-set threshold was configured
+as high as possible. This was done to stress the labeling algorithm to generate dual bounds as close
+as possible to the elementary bound at the end of each CG iteration.
+The tailing off condition of the pricer was turned off.
+We've also requested the labeling algorithm to output a single column per pricing invocation.
+For a complete list of the configuration parameters
+that  we've used refer to \Cref{sec:bapcod-appendix}.
+
 \section{Evaluation Process}
 \label{sec:results-evaluation-process}
 
@@ -193,7 +210,7 @@ excluding the Rounded Capacity Constraints (RCC) of \cref{eq:two-index-flow-ccc}
 In order to use the VRPSolver labeling algorithm, it is necessary
 to define the associated Resource Constrained Shortest Path (RCSP) sub-problem.
 The RCSP sub-problem is formulated on a complete directed network by
-linking the new RCSP modeling variables to the original CVRP formulation.
+linking the new RCSP modeling variables to the master problem formulation.
 The RCSP sub-problem requires for the correct definition of the source and sink
 vertices.
 The RCSP sub-problem also requires for the definition of the so-called packing and elementarity
@@ -215,34 +232,16 @@ This definition is correct and it leads to a symmetric resource consumption ($q_
 The symmetric resource consumption property improves the efficiency in pricing,
 by eliminating the need of performing backward labelling \parencite{pessoa2020a}.
 
-\medskip
-
-We've configured \bapcod\ through the usage of parameters which are specified
-in an appropriately placed configuration file.
-The BPC framework's branching and cut-generation schemes were disabled.
-Namely, the resolution process was was asked to stop at
-the root node of the branch-and-bound tree.
-The ng-sets augmentation was enabled and the maximum ng-set threshold was configured
-as high as possible. This was done to stress the labeling algorithm to generate dual bounds as close
-as possible to the elementary bound at the end of the column generation iteration.
-The tailing off condition of the pricer was turned off.
-We've also requested the labeling algorithm to output a single column per pricing invocation.
-We believed that such setup could lay a fair test bed
-for comparing the performance of our branch-and-cut algorithm against
-the labeling algorithm.
-For a complete list of the configuration parameters
-that  we've used refer to \Cref{sec:bapcod-appendix}.
-
-\medskip
-
-We've implemented a custom pricing functor (i.e. a glorified callback) to solve the pricing problem.
+To extract the information needed for the performance evaluation we have implemented a custom pricing functor.
+The pricing functor is in essence a glorified callback that can be used
+for solving the pricing problem through custom user-defined code.
 Our pricing functor is a simple stubbed implementation which ultimately invokes
 the normal VRPSolver extension's pricing functor.
 However, before calling the labeling algorithm we first do the following.
-First, we time the running time of the labeling algorithm so that later
-we can compare its performance.
-Second, we record the dual variables of the RMP $\pi \in \R^N$ at each
-exact pricing invocation.
+First, we time the running time of the labeling algorithm in order to assess its performance later.
+Second, at each pricing invocation we record the dual variables $\pi \in \R^N$ of the RMP
+to later be dumped into a dedicated file per pricing invocation.
+
 Due to implementation details of \bapcod, the value of
 the dual variables $\pi_0 \in R$ is stored separately
 and can be retrieved by accessing a field of the master problem formulation.
