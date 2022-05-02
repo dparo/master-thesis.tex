@@ -242,12 +242,13 @@ First, we time the running time of the labeling algorithm in order to assess its
 Second, at each pricing invocation we record the dual variables $\pi \in \R^N$ of the RMP
 to later be dumped into a dedicated file per pricing invocation.
 
-Due to implementation details of \bapcod, the value of
-the dual variables $\pi_0 \in R$ is stored separately
-and can be retrieved by accessing a field of the master problem formulation.
-The remaining dual variables $\pi_i \quad \forall i \in V_0$
-were instead retrieved recursively by exploiting the following relationship
-employed in \bapcod:
+Due to some implementation details of \bapcod the reduced cost of an
+edge does not follow the simple relationship $\bar{c_{ij}} = c_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V,\ i \ne j$.
+The dual variable $\pi_0 \in R$ can be retrieved from the user by accessing a field
+of the master problem formulation.
+The remaining dual variables $\pi_i \quad \forall i \in V_0$ must instead be computed
+from the reduced cost of each edge.
+\bapcod\ follows the following convention to encode the reduced cost of an edge:
 
 \begin{equation}
 	\bar{c_{ij}} = \begin{cases}
@@ -257,14 +258,20 @@ employed in \bapcod:
 \end{equation}
 
 where $\bar{c_{ij}}$ denotes the reduced cost for an edge.
-For each pricing invocation we dump two files.
-The first dumped file is a JSON file which contains metadata information about
+By exploiting the above relationship, we've implemented a trivial recursive algorithm
+to extract all the necessary dual variables $\pi \in \R^N$.
+
+In conclusion, at each pricing invocation we dump two files into disk.
+The first file is a JSON file which contains metadata information about
 the labeling algorithm, such as: the instance name, the instance size,
 the total running time for the labeling, the reduced cost of the generated route,
 the column generation iteration, etc.
-The second dumped file instead it contains a slightly modified TSPLIB95 file format,
-which encodes a CPTP problem, by introducing in a dedicated \texttt{PROFIT\_SECTION}
-the dual variables that were extracted for this particular column generation iteration.
+The second file, instead, encodes a CPTP instance including:
+the dual variables (i.e. the profits associated to each customer),
+the original demands, the original node positions and finally the vehicle capacity.
+The CPTP instance is encoded in a slight modification of the TSPLIB95 file format.
+We've introduced a dedicated \texttt{PROFIT\_SECTION} in the file format
+to contain the extracted dual variables.
 
 \subsection{Performance profiles}
 \label{sec:results-performance-profiles}
