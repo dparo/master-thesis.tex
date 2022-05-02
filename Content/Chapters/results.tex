@@ -196,7 +196,7 @@ The RCSP sub-problem is formulated on a complete directed network by
 linking the new RCSP modeling variables to the original CVRP formulation.
 The RCSP sub-problem requires for the correct definition of the source and sink
 vertices.
-The RCSP sub-problem also requires for the definition the so-called packing and elementarity
+The RCSP sub-problem also requires for the definition of the so-called packing and elementarity
 sets for each customer (see \cite{pessoa2020a} for more details).
 The correct definition of these generalized sets is mandatory to allow for specific
 components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
@@ -220,7 +220,7 @@ by eliminating the need of performing backward labelling \parencite{pessoa2020a}
 We've configured \bapcod\ through the usage of parameters which are specified
 in an appropriately placed configuration file.
 The BPC framework's branching and cut-generation schemes were disabled.
-The resolution process of a CVRP instance, therefore, was asked to stop at
+Namely, the resolution process was was asked to stop at
 the root node of the branch-and-bound tree.
 The ng-sets augmentation was enabled and the maximum ng-set threshold was configured
 as high as possible. This was done to stress the labeling algorithm to generate dual bounds as close
@@ -235,7 +235,7 @@ that  we've used refer to \Cref{sec:bapcod-appendix}.
 
 \medskip
 
-We've implemented a custom pricing fucntor (i.e. a glorified callback) to solve the pricing problem.
+We've implemented a custom pricing functor (i.e. a glorified callback) to solve the pricing problem.
 Our pricing functor is a simple stubbed implementation which ultimately invokes
 the normal VRPSolver extension's pricing functor.
 However, before calling the labeling algorithm we first do the following.
