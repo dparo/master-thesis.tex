@@ -1,5 +1,8 @@
 \chapter{The Pricing Problem}
 \label{sec:the-pricing-problem}
+
+\mytodo{These introductory paragraphs are either written like shit, duplicated or out-of-date. Please fix them.}
+
 In this chapter we will cover in more details the pricing sub-problem
 induced from the column generation scheme in BPC frameworks.
 We've already the pricing problem in sections ....
@@ -8,6 +11,8 @@ of this problem by exploiting Integer Programming (IP).
 
 \section{The Elementary Shortest Path Problem with Resource Constraints}
 \label{sec:the-elementary-shortest-path-problem-with-resource-constraints}
+
+\mytodo{These introductory paragraphs for the ESPPRC are either written like shit, duplicated or out-of-date. Please fix them.}
 
 In this chapter we will introduce more formally the Elementary Shortest Path Problem with Resource Constraints (ESPPRC).
 In this thesis we're interested in studying the ESPPRC induced from the PP when solving the RMP through a BPC framework employing the usage of robust inequalities only.
@@ -66,7 +71,7 @@ Desrochers et al. [29] to solve the vehicle routing problem with time windows
 
 \begin{comment}
 
-[MY OWN STUFF]
+[MY OWN STUFF, kept for reference purpose. TODO: Merge or delete later]
 \subsection{Shortest Path Problem with Resource Constraints}
 If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\bar{c_{ij}} \ge 0$,
 the ESPPRC problem is solvable in polynomial time, since the elementarity conditions are guaranteed
@@ -88,28 +93,35 @@ bound to each node.
 
 \subsection{Integer Programming Model}
 \label{sec:espprc-integer-programming-model}
-
-Contrary to CVRP, the ESPPRC is usually defined over a directed network $G^\prime = (V^\prime, A^\prime)$ composed
-of $N + 1$ nodes where the original depot node is essentially split in two nodes: a source and a sink vertex.
-Vertices $0$ and $N$ denote the start and the end of a route respectively.
-More formally, $V^\prime = V \cup \Set*{N} = \Set*{ 0,\dots, N }$, and the edge set $A^\prime$ is
+The ESPPRC is traditionally defined over a \textbf{directed}
+symmetric network.
+The ESPRCC network is characterized by $N_0 + 2$ nodes,
+where $N_0$ are the total number of customers for the original CVRP problem,
+and the remaining two vertices represent the source and sink vertices used to
+model a dissection of the depot node.
+All the customers are edge-connected in both directions with one another,
+while the source and sink vertex do not share direct connections.
+The source and sink vertices are respectively forward connected and backward connected to all other customers.
+where $V^\prime = V_0 \cup \Set*{0, N},\ |V^\prime| = N_0 + 2$.
+The edges set $A^\prime$ can instead be expressed more formally as
 
 \begin{equation}
 	\begin{aligned}
-		A^\prime = \  & \Set*{(i, j) \mid i, j \in V,\ i \ne j}                       \\
-		              & \setminus \Set*{ \Tuple*{0, N} }                              \\
-		              & \setminus \Set*{ \Tuple*{i, 0} \quad \forall i \in V^\prime } \\
-		              & \setminus \Set*{ \Tuple*{N, i} \quad \forall i \in V^\prime } \\
+		A^\prime = \  & \Set*{\Tuple*{i, j} \mid i, j \in V_0,\ i \ne j} \\
+		              & \cup \Set*{\Tuple*{0, i} \mid i \in V_0}         \\
+		              & \cup \Set*{\Tuple*{i, N} \mid i \in V_0}.
 	\end{aligned}
 \end{equation}
 
-which briefly means: all possible pairs $\Tuple*{i, j},\ i \ne j$ excluding: direct connection between $0$ and $N$, and by excluding edges entering node $0$ and flowing out of node $N$.
 The edge set $A^\prime$ has size $|A^\prime| = N(N - 1) + 2(N - 1)$.
-
-We use $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$ to denote the out-arcs crossing the set $S \subset V^\prime$.
-We use $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$ to denote the in-arcs crossing the set $S \subset V^\prime$.
-For brevity, we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltaminus(\Set*{i})$
+We formally define $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$
+to denote the out-arcs crossing the set $S \subset V^\prime$.
+Likewise, we define $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$
+to denote the in-arcs crossing the set $S \subset V^\prime$.
+For brevity’s sake,
+we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltaminus(\Set*{i})$
 to denote respectively the singleton version of the in and out arcs for vertices $i \in V$.
+Note that, $\deltaplus(0) = V_0,\ \deltaminus(N) = V_0,\ \deltaminus(0) = \emptyset,\ \deltaplus(N) = \emptyset$.
 
 At each directed edge $\Tuple*{i, j} \in A^\prime$ we have an associated weight $\bar{c_{ij}} \in \R$ which is directly linked to the dual variables of the RMP through the following equation:
 
