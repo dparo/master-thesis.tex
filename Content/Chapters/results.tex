@@ -94,6 +94,9 @@ An automatic dual price smoothing stabilization, discussed in \textcite{pessoa20
 is applied by \bapcod\ to improve the convergence speed of the column generation.
 \bapcod, being generic in nature,
 supports user developed extensions.
+\bapcod supports direct branching on the arc-flow flow variables of the master formulation
+and Vanderbeck branching \parencite{vanderbeck2011}, a non-robust branching
+scheme which imposes bounds modifications to the sub-problem variables.
 These extensions can supply the BPC framework with either
 custom defined cutting-planes (robust or non), custom branching decisions (robust or non)
 or even ad-hoc pricer implementations.
@@ -118,6 +121,9 @@ specific cutting-planes and branching decisions
 tailored at efficiently solving routing-like problems
 (or problems that exhibit similar structures)
 such as the CVRP, VRPTW and also others (see \cite{pessoa2020a}).
+The VRPSolver implements the robust RCC cuts of \textcite{laporte1983},
+and the non-robust limited-memory rank-1 cuts of \textcite{pecin2017}.
+The VRPSolver also implements the non-robust branching called Ryan\&Foster branching \parencite{ryan1981}.
 The VRPSolver extension was also successfully applied
 to solve Bin Packing Problems in \textcite{pessoa2020}.
 
