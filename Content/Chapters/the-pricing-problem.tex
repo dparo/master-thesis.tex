@@ -91,8 +91,8 @@ bound to each node.
 \textcite{righini2006} proposes a bi-directional dynamic programming algorithm to solve the ESPPRC.
 \end{comment}
 
-\subsection{Integer Programming Model}
-\label{sec:espprc-integer-programming-model}
+\subsection{Integer Programming Formulation}
+\label{sec:espprc-integer-programming-formulation}
 The ESPPRC is traditionally defined over a \textbf{directed}
 symmetric network.
 The ESPRCC network is characterized by $N_0 + 2$ nodes,
@@ -123,6 +123,9 @@ we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltam
 to denote respectively the singleton version of the in and out arcs for vertices $i \in V$.
 Note that the conditions hold:
 $\deltaplus(0) = V_0,\ \deltaminus(N) = V_0,\ \deltaminus(0) = \emptyset,\ \deltaplus(N) = \emptyset$.
+We also define $E^\prime(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in E^\prime \mid i, j \in S}$
+to denote the set of arcs having both end points in set $S \subseteq V$.
+
 
 At each directed edge $\Tuple*{i, j} \in A^\prime$ we have an associated weight $\bar{c_{ij}} \in \R$ which is directly linked to the dual variables of the RMP through the following equation:
 
@@ -145,7 +148,6 @@ We can finally write the full ESPPRC IP formulation as:
 	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-flow-conservation-constraint-depot1}    \\
 	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:espprc-flow-conservation-constraint-depot2}    \\
 	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V^\prime,\ |S| \ge 2 \label{eq:espprc-sec-constraints}         \\
-	                                & x_{0i} + x_{iN} \le 1                                                                                \qquad \forall i \in V_0         \label{eq:espprc-binding-directed}                       \\
 	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds}           \\
 \end{align}
 
@@ -155,8 +157,18 @@ a directed network, and the depot node is duplicated twice.
 Namely, constraint \eqref{eq:espprc-resource-upper-bound-constraint} expresses the resource bound modeled as a function of only the $x$ MIP variables,
 constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices excluding the source and the sink node,
 constraint \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow-conservation-constraint-depot2} are the flow imposition for respectively the source and sink node,
-constraint  \eqref{eq:espprc-binding-directed} avoids forming paths where a single customer is visited, this constraint is a direct consequence of the fact that the CVRP is defined over an undirected network,
 constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and integrality constraints on the $x$ MIP variables.
+
+Let $p^\star = \Tuple*{0, i_1, \dots, i_s, N}$ denote the optimal path solution to problem \cref{eq:espprc-obj-function,eq:espprc-flow-conservation-constraint-customers,eq:espprc-flow-conservation-constraint-depot1,eq:espprc-flow-conservation-constraint-depot2,eq:espprc-sec-constraints,eq:espprc-x-mip-var-bounds}
+visiting customers $\Set*{i_1, \dots, i_s} \subseteq V_0$.
+Notice that we have the following equation:
+
+\begin{equation}
+	\ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} = \begin{cases}
+		2 & \texttt{if } i \in p^\star \\
+		0 & \texttt{otherwise}
+	\end{cases}
+\end{equation}
 
 Finally, the most important inequalities, constraint \eqref{eq:espprc-sec-constraints}, represents the subtour elimination constraints.
 These inequalities have two major impacts: first they avoid the form of spurious unconnected subtours, second they force the elementarity condition, namely they impose that each node must be visited at most once.
@@ -268,8 +280,8 @@ Instead, major contributions are dedicated in solving the ESPPRC through dynamic
 The few contributions studying the CPTP directly to solve the PP
 are \cite{jepsen2011, jepsen2014}.
 
-\subsection{Integer Programming Model}
-\label{sec:cptp-integer-programming-model}
+\subsection{Integer Programming formulation}
+\label{sec:cptp-integer-programming-formulation}
 
 \textcite{letchford2013, jepsen2014} provided in their work an IP formulation for the CPTP.
 The IP model presented in this section is derived from their work, and it is here summarized.
