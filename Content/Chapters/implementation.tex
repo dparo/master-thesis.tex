@@ -30,12 +30,12 @@ efficient use of the machine' multiple cores basically for free,
 In this section we present the full static model that we implemented.
 
 \begin{align}
-	\min_{x,y} \quad z(x, y) & = \ExprCptpObjValDef                                                       \\
-	                         & y_0 = 1                                  &                                 \\
-	                         & \ExprCptpEdgesIncident{i}    = 2 y_i     & \quad \forall i \in V           \\
-	                         & B \le   \ExprCptpDemandSum   \le Q       &                                 \\
-	                         & x_{ij}                   \in \Set*{0, 1} & \quad \forall (i, j) \in E      \\
-	                         & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V,\ i \ge 1
+	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                                                       \\
+	                                   & y_0 = 1                                  &                                 \\
+	                                   & \ExprCptpEdgesIncident{i}    = 2 y_i     & \quad \forall i \in V           \\
+	                                   & B \le   \ExprCptpDemandSum   \le Q       &                                 \\
+	                                   & x_{ij}                   \in \Set*{0, 1} & \quad \forall (i, j) \in E      \\
+	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V,\ i \ge 1
 \end{align}
 
 which follows closely the full IP formulation presented in \eqref{eq:obj-function} without the GSECs.
@@ -43,13 +43,12 @@ We also added a non strictly necessary lower bound on the served demand, which d
 
 \section{Cutoff values}
 
-
 \subsection{Upper cutoff value}
 Since we're interested in solving the CPTP in the context of pricing for the CVRP, we're only searching for tours achieving a strictly negative objective value.
-Therefore, we can specify an upper cutoff for the objective function $z(x, y)$:
+Therefore, we can specify an upper cutoff for the objective function $z_\mt{CPTP}(x, y)$:
 
 \begin{equation}
-	z(x, y) \le 0 - \varepsilon_{\mt{ct}}
+	z_\mt{CPTP}(x, y) \le 0 - \varepsilon_{\mt{ct}}
 \end{equation}
 
 where $\varepsilon_{\mt{ct}} \in \R$ is the upper cutoff tolerance, in our implementation we picked $\varepsilon_{\mt{ct}} = 10^{-6}$, which is the default used in BapCod.
@@ -67,10 +66,10 @@ At the time of writing of this draft report, the method described in Section \re
 Instead, we opted for a much simpler approach:
 
 \begin{equation}
-	z(x, y) \ge - \sum_{i \in V} p_i
+	z_\mt{CPTP}(x, y) \ge - \sum_{i \in V} p_i
 \end{equation}
 
-which is describes a very weak lower bound, and in pretty much all cases, is easily improved in the preprocessing stage of a standard MIP solver.
+which describes a very weak lower bound, and in pretty much all cases, is easily improved in the preprocessing stage of a standard MIP solver.
 
 \section{Warm start}
 
@@ -148,7 +147,6 @@ After the 2-OPT exchange it is necessary to reverse part of the tour characteriz
 
 In our implementation we scan for vertices $a, b$ achieving the cheapest exchange, i.e. for which $\Delta(a, b)$ is minimized across all possible valid choices of $a, b$.
 
-
 \section{Separation techniques}
 
 \begin{comment}
@@ -213,14 +211,10 @@ A block diagram summarizing the integral separation is provided in Figure \ref{f
 	\label{fig:integral-separation-block-diagram}
 \end{figure}
 
-
-
-
 \subsection{Fractional separation}\label{sec:fractional-separation}
 Fractional separation is usually much harder and more computationally expensive to perform compared to integral separation.
 A valid set $S \subseteq V_0$ can be separated by solving a max-flow problem between two arbitrary source and sink vertices $s, t \in V,\ s \ne t$ on a fully connected directed graph.
 Fractional separation is modeled through a directed symmetric flow network, where $x^*_{ij}$, i.e. the current fractional solution, constitutes the capacities of the flow network.
-
 
 A solution to the max-flow problem outputs a maxflow $\maxflow(s, t)$ and a bipartition, also called "coloring", of the set $V$, namely two complementary sets $F_1(s, t), F_2(s, t)$ such that $F_1(s, t) \cup F_2(s, t) = V$ and $F_1 \cap F_2 = \emptyset$, and such that $s \in F_1(s, t),\ t \in F_2(s, t)$.
 The $\delta(F_1(s, t))$ constitutes the min-cut induced from solving the max-flow problem over $(s, t)$.
@@ -303,7 +297,6 @@ In the following sections we describe how we separate each inequality using the 
 	\label{fig:fractional-separation-block-diagram}
 \end{figure}
 
-
 \subsection{GSEC separation}
 
 \subsubsection{GSEC integral separation}\label{sec:gsec-integral-separation}
@@ -336,7 +329,6 @@ A complete pseudo-code is provided in Algorithm \ref{algo:gsec-integral-sep}.
 	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
 	\input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
 \end{algorithm}
-
 
 \subsubsection{GSEC fractional separation}\label{sec:gsec-fractional-separation}
 
@@ -383,15 +375,12 @@ The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 	\input{Content/Chapters/Snippets/gsec-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
-
-
 \subsection{GLM separation}\label{sec:glm-separation}
 \begin{quote}
 	The idea in the GLM is to consider the number of vehicles needed to service
 	the set S. A valid lower bound for this is the demand of the set plus any
 	customer visited directly from the set divided by the capacity \cite{jepsen2011}.
 \end{quote}
-
 
 In this section we describe the separation of the GLM inequalities, as they were defined in Equation \eqref{eq:glm-inequality}.
 In our work we implemented both the integral and the fractional separation for this family of inequalities.
@@ -428,7 +417,6 @@ We can separate $O(N^2)$ GLM cuts since the number of set $S \subseteq V_0$ is i
 
 The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:glm-integral-sep}, \ref{algo:glm-frac-sep} respectively.
 
-
 \begin{algorithm}
 	\caption{An algorithm for separating GLM integral inequalities for the CPTP}
 	\label{algo:glm-integral-sep}
@@ -438,7 +426,6 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\input{Content/Chapters/Snippets/glm-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
-
 \begin{algorithm}
 	\caption{An algorithm for separating GLM fractional inequalities for the CPTP}
 	\label{algo:glm-frac-sep}
@@ -446,8 +433,6 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
 	\input{Content/Chapters/Snippets/glm-frac-sep-pseudoalgo.tex}
 \end{algorithm}
-
-
 
 \subsection{RCC separation}\label{sec:rcc-separation}
 In this section we describe the separation of the RCC inequalities, as they were defined in Equation \eqref{eq:rcc-inequality}.
@@ -472,7 +457,6 @@ We can separate $O(N^2)$ RCC cuts since the number of set $S \subseteq V_0$ is i
 
 The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:rcc-integral-sep}, \ref{algo:rcc-frac-sep} respectively.
 
-
 \begin{algorithm}
 	\caption{An algorithm for separating RCC integral inequalities for the CPTP}
 	\label{algo:rcc-integral-sep}
@@ -481,7 +465,6 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
 	\input{Content/Chapters/Snippets/rcc-integral-sep-pseudoalgo.tex}
 \end{algorithm}
-
 
 \begin{algorithm}
 	\caption{An algorithm for separating RCC fractional inequalities for the CPTP}
