@@ -123,7 +123,7 @@ we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltam
 to denote respectively the singleton version of the in and out arcs for vertices $i \in V$.
 Note that the conditions hold:
 $\deltaplus(0) = V_0,\ \deltaminus(N) = V_0,\ \deltaminus(0) = \emptyset,\ \deltaplus(N) = \emptyset$.
-We also define $E^\prime(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in E^\prime \mid i, j \in S}$
+We also define $A^\prime(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in A^\prime \mid i, j \in S}$
 to denote the set of arcs having both end points in set $S \subseteq V$.
 
 
@@ -142,13 +142,13 @@ encoding feasible solutions for the ESPRCC problem (i.e. $x_{ij} = 1$ if edge $(
 We can finally write the full ESPPRC IP formulation as:
 
 \begin{align}
-	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c_{ij}} x_{ij} \label{eq:espprc-obj-function}                                                                                                               \\
-	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}              \\
-	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers} \\
-	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-flow-conservation-constraint-depot1}    \\
-	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq:espprc-flow-conservation-constraint-depot2}    \\
-	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V^\prime,\ |S| \ge 2 \label{eq:espprc-sec-constraints}         \\
-	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds}           \\
+	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c_{ij}} x_{ij} \label{eq:espprc-obj-function}                                                                                                                   \\
+	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}                  \\
+	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers}     \\
+	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-source-emitting-flow}                       \\
+	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq-espprc-sink-consuming-flow}                        \\
+	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_0 \cup \Set*{0, N},\ |S| \ge 2 \label{eq:espprc-sec-constraints} \\
+	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds}               \\
 \end{align}
 
 where, \eqref{eq:espprc-obj-function} is the objective function which we aim to minimize.
@@ -156,10 +156,12 @@ The remaining constraints characterize the set of feasible paths $P$, by paying 
 a directed network, and the depot node is duplicated twice.
 Namely, constraint \eqref{eq:espprc-resource-upper-bound-constraint} expresses the resource bound modeled as a function of only the $x$ MIP variables,
 constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices excluding the source and the sink node,
-constraint \eqref{eq:espprc-flow-conservation-constraint-depot1}, \eqref{eq:espprc-flow-conservation-constraint-depot2} are the flow imposition for respectively the source and sink node,
+constraint \eqref{eq:espprc-source-emitting-flow}, \eqref{eq-espprc-sink-consuming-flow} are the flow imposition for respectively the source and sink node,
 constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and integrality constraints on the $x$ MIP variables.
 
-Let $p^\star = \Tuple*{0, i_1, \dots, i_s, N}$ denote the optimal path solution to problem \cref{eq:espprc-obj-function,eq:espprc-flow-conservation-constraint-customers,eq:espprc-flow-conservation-constraint-depot1,eq:espprc-flow-conservation-constraint-depot2,eq:espprc-sec-constraints,eq:espprc-x-mip-var-bounds}
+Let $p^\star = \Tuple*{0, i_1, \dots, i_s, N}$
+denote the optimal path solution to problem
+\cref{eq:espprc-obj-function,eq:espprc-resource-upper-bound-constraint,eq:espprc-flow-conservation-constraint-customers,eq:espprc-source-emitting-flow,eq-espprc-sink-consuming-flow,eq:espprc-sec-constraints,eq:espprc-x-mip-var-bounds}
 visiting customers $\Set*{i_1, \dots, i_s} \subseteq V_0$.
 Notice that we have the following equation:
 
@@ -169,6 +171,21 @@ Notice that we have the following equation:
 		0 & \texttt{otherwise}
 	\end{cases}
 \end{equation}
+
+The resource consumption constraint of \Cref{eq:espprc-resource-upper-bound-constraint} is
+expressed at the arc level.
+Equivalently, it is possible to express the same constraint by considering the resource consumption
+at the arc level:
+
+\begin{equation}
+	\label{eq:espprc-resource-upper-bound-constraint-arc-level}
+	\sum_{\Tuple*{i, j} \in A^\prime} \frac{q_i + q_j}{2} x_{ij} \le Q.
+\end{equation}
+
+Due to the structure of the optimal path $p^\star$ the total resource consumption
+will not change regardless of whether
+\cref{eq:espprc-resource-upper-bound-constraint} or \cref{eq:espprc-resource-upper-bound-constraint-arc-level}
+is used.
 
 Finally, the most important inequalities, constraint \eqref{eq:espprc-sec-constraints}, represents the subtour elimination constraints.
 These inequalities have two major impacts: first they avoid the form of spurious unconnected subtours, second they force the elementarity condition, namely they impose that each node must be visited at most once.
@@ -237,10 +254,13 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	\label{fig:espprc-example-non-elementary-solution}
 \end{figure}
 
-As done in \textcite{beasley1989} the elementarity condition can be relaxed by substituting constraint \eqref{eq:espprc-sec-constraints} in favour of:
+As done in \textcite{beasley1989},
+the elementarity condition can be relaxed
+by substituting constraint \eqref{eq:espprc-sec-constraints}
+in favour of:
 
 \begin{equation}
-	\sum_{i \in S} \sum_{j \in S}  x_{ij} \le M \sum_{i \in S} \sum_{j \in V^\prime \setminus S} x_{ij} \quad \forall S \subseteq V^\prime \setminus \Set*{N}
+	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{0}
 \end{equation}
 
 where, $N = |V_0| + 1$ (recall $V_0$ is the set of customers) represents the sink vertex, and $M \in \R$ is a large positive constant.

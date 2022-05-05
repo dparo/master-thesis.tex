@@ -43,5 +43,9 @@
 }
 
 \newcommand{\ExprESPPEdgesWithin}[1][S] {
-	\sum_{\Tuple*{i, j} \in E^\prime(#1)} x_{ij}
+	\sum_{\Tuple*{i, j} \in A^\prime(#1)} x_{ij}
+}
+
+\newcommand{\ExprESPPEdgesCrossing}[1][S] {
+	\sum_{\Tuple*{i, j} \in \deltaplus(#1)} x_{ij}
 }
