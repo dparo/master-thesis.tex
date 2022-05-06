@@ -105,7 +105,8 @@ Similarly, the source and sink vertex do not share direct connections together.
 
 \medskip
 
-More formally, the ESPPRC is defined over a network $G^\prime = \Tuple*{V^\prime, A^\prime}$,
+More formally, the ESPPRC is defined over a directed symmetric network
+$G^\prime = \Tuple*{V^\prime, A^\prime}$,
 where $V^\prime = V_0 \cup \Set*{s, t}$ denotes the set of vertices and $A^\prime$ the set of arcs.
 The vertices $s = 0,\ t = N$ denote respectively the source and sink versions of the depot node.
 The vertex set $V^\prime$ has size $|V^\prime| = N_0 + 2$.
@@ -118,9 +119,10 @@ The edges set $A^\prime$ can be expressed as:
 	\end{aligned}
 \end{equation}
 The edge set $A^\prime$ has size $|A^\prime| = N(N - 1) + 2(N - 1)$.
-As it was done for the CVRP, for each vertex $i \in V^\prime$ we associate
-a resource consumption (or customer demand) $q_i \quad \forall i \in V$.
-The resource consumption semantics associated to each customer
+In accordance to the CVRP problem,
+we associate a resource consumption, or vertex demand,
+to each node of the network: $q_i \quad \forall i \in V$.
+The resource consumption semantics associated with each customer
 $i \in V_0$ remains unaltered  from the CVRP, while for the source and sink vertices
 we respectively fix $q_{s} = q_{t} = 0$.
 We formally define $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$
@@ -129,40 +131,40 @@ Likewise, we define $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S,
 to denote the in-arcs crossing the set $S \subset V^\prime$.
 For brevity’s sake,
 we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltaminus(\Set*{i})$
-to denote respectively the singleton version of the in and out arcs for vertices $i \in V$.
+to denote respectively the singleton version of the in and out arcs for vertices $i \in V^\prime$.
 Note that the conditions hold:
 $\deltaplus(s) = V_0,\ \deltaminus(t) = V_0,\ \deltaminus(s) = \emptyset,\ \deltaplus(t) = \emptyset$.
-We also define $A^\prime(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in A^\prime \mid i, j \in S}$
+We also define $A^\prime(S) = \Set*{e = \Tuple*{i, j} = \Set*{j, i}\in A^\prime \mid i, j \in S}$
 to denote the set of arcs having both end points in set $S \subseteq V$.
 
-
-As we've already presented in \cref{sec:column-generation-and-pricing-problem},
-for each directed arc $\Tuple*{i, j} \in A^\prime$
-we have an associated weight $\bar{c}_{ij} \in \R \quad \forall \Tuple*{i, j} \in A^\prime$.
-The weight $\bar{c}_{ij}$ represents the reduced cost of an arc
-and it is directly linked to the dual variables of the RMP through the following relation:
+As it was done in \cref{sec:column-generation-and-pricing-problem},
+for each directed arc we associate a weight
+$\bar{c}_{ij} \in \R \quad \forall \Tuple*{i, j} \in A^\prime$.
+The weight $\bar{c}_{ij}$ represents the reduced cost of an arc $Tuple*{i, j} \in A^\prime$.
+Its definition is linked to the dual variables $\pi \in \R^N$ associated to
+the RMP's constraints of \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}
+through the following relation:
 \begin{equation}
 	\bar{c}_{ij} = \begin{cases}
 		c_{ij} - \frac{\pi_i + \pi_j}{2} & \quad \forall i, j \in V_0 \\
-		c_{0i} - \frac{\pi_0 + \pi_j}{2} & \quad \forall j \in V_0    \\
-		c_{iN} - \frac{\pi_i + \pi_0}{2} & \quad \forall i \in V_0    \\
+		c_{si} - \frac{\pi_0 + \pi_j}{2} & \quad \forall j \in V_0    \\
+		c_{it} - \frac{\pi_i + \pi_0}{2} & \quad \forall i \in V_0    \\
 		\infty                           & \quad \texttt{otherwise}
 	\end{cases}
 \end{equation}
-where $\pi \in \R^N$ represent the dual variables associated
-to \cref{eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes}.
 Additional usage of robust inequalities (cuts or branching) manifest
 additional negative term contributions (through additional dual variables)
 directly to the reduced arc cost $\bar{c}_{ij}$.
 
 A feasible path solution to the ESPPRC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
-with $p_0 = 0, \ p_{u + 1} = N$
-in which $\Set*{p_1, \dots, p_s} \subseteq V_0$ unique customers are visited.
+with $p_0 = s, \ p_{u + 1} = t$
+in which $\Set*{p_1, \dots, p_u} \subseteq V_0$ unique customers are visited.
 Observe that there's no restriction in which customers need to be necessarily covered
 by the path $p$.
-The path $p$ can cover a vertex at most once, and its resource consumption
-$q_p = q(p) = \sum_{j=0}^{u} q_{p_j}$ satisfies $q(p) \le Q$.
-The optimal path $p^\star$ minimizes the overall path reduced cost
+Due to the elementarity condition, the path $p$ can cover a vertex at most once.
+The path's resource consumption $q_p = q(p) = \sum_{j=0}^{u} q_{p_j}$
+satisfies $q(p) \le Q$.
+The optimal path $p^\star$ minimizes the overall path's reduced cost
 $\bar{c}(p) = \sum_{i=0}^{u} \bar{c}_{p_i,p_{i+1}}$ across all
 possible feasible choices for $p$.
 Note that, regardless we have decided to model
