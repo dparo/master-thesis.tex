@@ -201,20 +201,20 @@ We can provide a formal mathematical formulation of the ESPPRC as:
 	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_0 \cup \Set*{s, t},\ |S| \ge 2 \label{eq:espprc-sec-constraints} \\
 	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds},
 \end{align}
-where \eqref{eq:espprc-obj-function} is the objective function to be minimized, i.e. the overall reduced cost of the path.
-Constraint \eqref{eq:espprc-resource-upper-bound-constraint} is the resource consumption upper bound.
-Constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices except for the source and the sink.
+where \labelcref{eq:espprc-obj-function} is the objective function to be minimized, i.e. the overall reduced cost of the path.
+Constraint \labelcref{eq:espprc-resource-upper-bound-constraint} is the resource consumption upper bound.
+Constraint \labelcref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices except for the source and the sink.
 Observe that \cref{eq:espprc-flow-conservation-constraint-customers} does not impose
 restriction on whether customer $i \ in V_0$ needs to be necessarily covered by the path.
-Constraints \eqref{eq:espprc-source-emitting-flow}, \eqref{eq-espprc-sink-consuming-flow}
+Constraints \labelcref{eq:espprc-source-emitting-flow}, \labelcref{eq-espprc-sink-consuming-flow}
 respectively impose an out-flow and in-flow of $1$ for the source and sink vertices.
-Constraints \eqref{eq:espprc-sec-constraints} are the Subtour Elimination Constraints (SEC) and
+Constraints \labelcref{eq:espprc-sec-constraints} are the Subtour Elimination Constraints (SEC) and
 have a two-fold effect.
 First, they avoid the formation of spurious tours in unconnected regions of the network, such
 as the situation depicted in \cref{fig:espprc-example-with-spurious-subtours}.
 Second, they impose the elementarity condition, restricting paths from visiting multiple times
 the same vertices, such as the situation depicted in \cref{fig:espprc-example-non-elementary-solution}.
-Constraint \eqref{eq:espprc-x-mip-var-bounds} imposes integrality
+Constraint \labelcref{eq:espprc-x-mip-var-bounds} imposes integrality
 and forces each arc $\Tuple*{i, j} \in A^\prime$ to be traversed at most once.
 
 Notice that, due to the flow conservation constraint and to the bounds on the binary varibles of
@@ -372,30 +372,30 @@ Let $x_{e}$, $y_{i} \in \Set*{0, 1}$ be two sets of binary variables which respe
 model whether an $dge e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
 We can provide a formal mathematical description of the CPTP through an Integer Programme (IP) formulation:
 \begin{align}
-	\min_{x,y} \quad z_\mt{CPTP}(x, y) & =  \sum_{i \in E} c_{e} x_{e} - \sum_{i \in V} p_i y_i \label{eq:obj-function}                                                                                                                \\
-	                                   & y_0 = 1                                                                        & \label{eq:depot-part-of-tour-constraint}                                                                     \\
-	                                   & \ExprCptpDemandSum  \le Q                                                      & \label{eq:resource-upper-bound-constraint}                                                                   \\
-	                                   & \ExprCptpEdgesIncident{i}  = 2 y_i                                             & \quad \forall i \in V         \label{eq:flow-conservation-constraint}                                        \\
-	                                   & \ExprCptpFlowExiting{S} \ge 2 y_{i}                                            & \quad \EqStackTwo{\forall i \in S}{\forall S \subseteq V_0,\ \SetSize*{S} \ge 2} \label{eq:gsec-constraints} \\
-	                                   & x_{e}                   \in \Set*{0, 1}                                        & \quad \forall e \in E               \label{eq:x-mip-var-bounds}                                              \\
-	                                   & y_{i}                    \in \Set*{0, 1}                                       & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
+	\min_{x,y} \quad z_\mt{CPTP}(x, y) & =  \sum_{i \in E} c_{e} x_{e} - \sum_{i \in V} p_i y_i \label{eq:cptp-obj-function}                                                                                                                     \\
+	                                   & y_0 = 1                                                                             & \label{eq:cptp-depot-part-of-tour-constraint}                                                                     \\
+	                                   & \ExprCptpDemandSum  \le Q                                                           & \label{eq:cptp-resource-upper-bound-constraint}                                                                   \\
+	                                   & \ExprCptpEdgesIncident{i}  = 2 y_i                                                  & \quad \forall i \in V         \label{eq:cptp-flow-conservation-constraint}                                        \\
+	                                   & \ExprCptpFlowExiting{S} \ge 2 y_{i}                                                 & \quad \EqStackTwo{\forall i \in S}{\forall S \subseteq V_0,\ \SetSize*{S} \ge 2} \label{eq:cptp-gsec-constraints} \\
+	                                   & x_{e}                   \in \Set*{0, 1}                                             & \quad \forall e \in E               \label{eq:cptp-x-mip-var-bounds}                                              \\
+	                                   & y_{i}                    \in \Set*{0, 1}                                            & \quad \forall i \in V,\ i \ge 1          \label{eq:cptp-y-mip-var-bounds}
 \end{align}
-where \eqref{eq:obj-function} is the objective function to be minimized, i.e. the total cost
+where \labelcref{eq:cptp-obj-function} is the objective function to be minimized, i.e. the total cost
 accounting for the travel distance and in profit in serving a subset of the total customers.
-Constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot is always covered by the optimal route.
-Constraint \eqref{eq:resource-upper-bound-constraint} is the resource consumption upper bound.
-Constraint \eqref{eq:flow-conservation-constraint} has a twofold effect.
+Constraint \labelcref{eq:cptp-depot-part-of-tour-constraint} ensures that the depot is always covered by the optimal route.
+Constraint \labelcref{eq:cptp-resource-upper-bound-constraint} is the resource consumption upper bound.
+Constraint \labelcref{eq:cptp-flow-conservation-constraint} has a twofold effect.
 First, it functions as a form of directed flow conservation.
 Second, it perform bindings between the sets of variables $x,\ y$;
 it ensures that the if a vertex $i \in V$ is covered by an optimal route ($y_i = 1$)
 then the number of incident edges in that node sums to $2$, otherwise to $0$.
-Constraint \eqref{eq:gsec-constraints} are the so-called Generalized Subtour Elimination Constraints (GSECs),
+Constraint \labelcref{eq:cptp-gsec-constraints} are the so-called Generalized Subtour Elimination Constraints (GSECs),
 which are employed to avoid the formation of spurious tours in unconnected regions of the network.
 There is an exponential number of GSECs,
 therefore for performance reasons,
 these constraints cannot be inserted statically in a MIP solver,
 and must instead be separated exactly at least for integral solutions.
-Constraints \eqref{eq:x-mip-var-bounds,eq:y-mip-var-bounds} impose integrality
+Constraints \labelcref{eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds} impose integrality
 and impose bounds on the edge $e \in E$ or vertex $i \in V$ traversal.
 
 The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
@@ -450,7 +450,7 @@ Therefore, $\sum_{i \in S} \sum_{j \in V_0 \setminus S} q_j  x_{ij}$ becomes
 	\ExprCptpDemandServedOutsideA{S} = \ExprCptpDemandServedOutsideB{S} =\ExprCptpDemandServedOutside{S}
 \end{equation}
 
-Finally, equation \eqref{eq:glm-inequality-v1} can be rewritten more concisely as:
+Finally, equation \labelcref{eq:glm-inequality-v1} can be rewritten more concisely as:
 
 \begin{equation}\label{eq:glm-inequality}
 	\begin{split}
@@ -459,7 +459,7 @@ Finally, equation \eqref{eq:glm-inequality-v1} can be rewritten more concisely a
 \end{equation}
 
 Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a GLM inequality as a function of the set $S$.
-By using equation \eqref{eq:glm-inequality} and the result obtained in \eqref{eq:delta-s-set-size}, we have
+By using equation \labelcref{eq:glm-inequality} and the result obtained in \labelcref{eq:delta-s-set-size}, we have
 
 \begin{equation}
 	\NNZGLM(S) = -\SetSize*{S}^2 + (N + 1)\SetSize*{S}
@@ -485,7 +485,7 @@ The RCC inequalities can then be expressed as:
 \end{equation}
 
 Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a RCC inequality as a function of the set $S$.
-The upper bound on $\NNZ_{\mt{RCC}}(S)$ follows the same reasoning of equation \eqref{eq:glm-nnz-ub}:
+The upper bound on $\NNZ_{\mt{RCC}}(S)$ follows the same reasoning of equation \labelcref{eq:glm-nnz-ub}:
 
 \begin{equation}\label{eq:rc-nnz-ub}
 	\NNZRCC(S) \le \floor*{\frac{\left( N + 1\right)^2}{4}} \quad \forall S \subseteq V_0

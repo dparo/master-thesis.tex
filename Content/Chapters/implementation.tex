@@ -38,7 +38,7 @@ In this section we present the full static model that we implemented.
 	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V,\ i \ge 1
 \end{align}
 
-which follows closely the full IP formulation presented in \eqref{eq:obj-function} without the GSECs.
+which follows closely the full IP formulation presented in \eqref{eq:cptp-obj-function} without the GSECs.
 We also added a non strictly necessary lower bound on the served demand, which details were already discussed earlier in Section \ref{sec:demand-lower-bound}.
 
 \section{Cutoff values}
@@ -302,7 +302,7 @@ In the following sections we describe how we separate each inequality using the 
 \subsubsection{GSEC integral separation}\label{sec:gsec-integral-separation}
 This is the most important separation technique, since it is mandatory to achieve feasible solutions for the CPTP problem.
 
-By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-separation}, and in Algorithm \ref{algo:cc-dfs} we can pick $S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0$.
+By recalling the GSEC inequality as presented in Equation \eqref{eq:cptp-gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-separation}, and in Algorithm \ref{algo:cc-dfs} we can pick $S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0$.
 Note that using major connected components, i.e. subtours, the set $S$ always satisfies $\SetSize*{S} \ge 2$.
 Since we are dealing with integer CPTP solutions of the form $x^*_{ij},\ y^*_{i} \in \{0, 1\}$ it is easy to see that:
 
