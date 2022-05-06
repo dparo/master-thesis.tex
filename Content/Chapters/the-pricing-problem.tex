@@ -101,28 +101,28 @@ where $N_0$, as usual, denotes the total number of customers for the original CV
 Two additional vertices are used to represent respectively the source and sink vertices.
 These two together model a dissection of the depot node.
 All the customers are edge-connected in both directions with one another.
-Similarly, the source and sink vertex do not share direct connections with one another.
+Similarly, the source and sink vertex do not share direct connections together.
 
 \medskip
 
-More formally, the ESPPRC is defined over a network $G = \Tuple*{V\^prime, A^\prime}$,
-where $V^\prime = V_0 \cup \Set*{0, N}$ denotes the set of vertices and $A^\prime$ the set of arcs.
+More formally, the ESPPRC is defined over a network $G^\prime = \Tuple*{V^\prime, A^\prime}$,
+where $V^\prime = V_0 \cup \Set*{s, t}$ denotes the set of vertices and $A^\prime$ the set of arcs.
+The vertices $s = 0,\ t = N$ denote respectively the source and sink versions of the depot node.
 The vertex set $V^\prime$ has size $|V^\prime| = N_0 + 2$.
 The edges set $A^\prime$ can be expressed as:
 \begin{equation}
 	\begin{aligned}
 		A^\prime = \  & \Set*{\Tuple*{i, j} \mid i, j \in V_0,\ i \ne j} \\
-		              & \cup \Set*{\Tuple*{0, i} \mid i \in V_0}         \\
-		              & \cup \Set*{\Tuple*{i, N} \mid i \in V_0}.
+		              & \cup \Set*{\Tuple*{s, i} \mid i \in V_0}         \\
+		              & \cup \Set*{\Tuple*{i, t} \mid i \in V_0}.
 	\end{aligned}
 \end{equation}
 The edge set $A^\prime$ has size $|A^\prime| = N(N - 1) + 2(N - 1)$.
-
 As it was done for the CVRP, for each vertex $i \in V^\prime$ we associate
 a resource consumption (or customer demand) $q_i \quad \forall i \in V$.
 The resource consumption semantics associated to each customer
 $i \in V_0$ remains unaltered  from the CVRP, while for the source and sink vertices
-we respectively fix $q_{0} = q_{N} = 0$.
+we respectively fix $q_{s} = q_{t} = 0$.
 We formally define $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$
 to denote the out-arcs crossing the set $S \subset V^\prime$.
 Likewise, we define $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$
@@ -131,7 +131,7 @@ For brevity’s sake,
 we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltaminus(\Set*{i})$
 to denote respectively the singleton version of the in and out arcs for vertices $i \in V$.
 Note that the conditions hold:
-$\deltaplus(0) = V_0,\ \deltaminus(N) = V_0,\ \deltaminus(0) = \emptyset,\ \deltaplus(N) = \emptyset$.
+$\deltaplus(s) = V_0,\ \deltaminus(t) = V_0,\ \deltaminus(s) = \emptyset,\ \deltaplus(t) = \emptyset$.
 We also define $A^\prime(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in A^\prime \mid i, j \in S}$
 to denote the set of arcs having both end points in set $S \subseteq V$.
 
