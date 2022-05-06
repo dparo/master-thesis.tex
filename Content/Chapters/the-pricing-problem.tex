@@ -131,8 +131,7 @@ As we've already presented in \cref{sec:column-generation-and-pricing-problem},
 for each directed arc $\Tuple*{i, j} \in A^\prime$
 we have an associated weight $\bar{c_{ij}} \in \R \quad \forall \Tuple*{i, j} \in A^\prime$.
 The weight $\bar{c_{ij}}$ represents the reduced cost of an arc
-and it is directly linked to the dual variables of the RMP through the following relation
-
+and it is directly linked to the dual variables of the RMP through the following relation:
 \begin{equation}
 	\bar{c_{ij}} = \begin{cases}
 		c_{ij} - \frac{\pi_i + \pi_j}{2} & \quad \forall i, j \in V_0 \\
@@ -141,11 +140,10 @@ and it is directly linked to the dual variables of the RMP through the following
 		\infty                           & \quad \texttt{otherwise}
 	\end{cases}
 \end{equation}
-
 where $\pi \in \R^N$ represent the dual variables associated
 to \cref{eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes}.
-Additional usage of robust branching or robust cuts manifest additional negative
-term contributions (through additional dual variables)
+Additional usage of robust inequalities (cuts or branching) manifest
+additional negative term contributions (through additional dual variables)
 directly to the reduced arc cost $\bar{c_{ij}}$.
 
 A feasible solution to the ESPPRC is a path $p = \Tuple*{0, i_1, \dots, i_s, N}$
