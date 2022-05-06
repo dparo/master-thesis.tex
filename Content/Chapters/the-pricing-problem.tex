@@ -200,7 +200,14 @@ Observe that \cref{eq:espprc-flow-conservation-constraint-customers} does not im
 restriction on whether customer $i \ in V_0$ needs to be necessarily covered by the path.
 Constraints \eqref{eq:espprc-source-emitting-flow}, \eqref{eq-espprc-sink-consuming-flow}
 respectively impose an out-flow and in-flow of $1$ for the source and sink vertices.
-Constraint \eqref{eq:espprc-x-mip-var-bounds} forces each arc $\Tuple*{i, j} \in A^\prime$ to be traversed at most once.
+Constraints \eqref{eq:espprc-sec-constraints} are the Subtour Elimination Constraints (SEC) and
+have a two-fold effect.
+First, they avoid the formation of spurious tours in unconnected regions of the network, such
+as the situation depicted in \cref{fig:espprc-example-with-spurious-subtours}.
+Second, they impose the elementarity condition, restricting paths from visiting multiple times
+the same vertices, such as the situation depicted in \cref{fig:espprc-example-non-elementary-solution}.
+Constraint \eqref{eq:espprc-x-mip-var-bounds} imposes integrality
+and forces each arc $\Tuple*{i, j} \in A^\prime$ to be traversed at most once.
 
 Notice that, due to the flow conservation constraint and to the bounds on the binary varibles of
 \cref{eq:espprc-flow-conservation-constraint-customers,eq:espprc-x-mip-var-bounds},
@@ -212,29 +219,22 @@ we have that the following equality holds:
 	\end{cases}
 	\quad \forall i \in V_0.
 \end{equation}
-Therefore, despite a constant factor of $2$,
+Regardless of a constant factor of $2$,
 the quantity $\ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i}$
-can be used to determine whether customer $i \in V_0$ is covered
-by the optimal path of the IP model.
+can be used to determine the number of times a  customer $i \in V_0$ is visited.
 
 The resource consumption constraint of \Cref{eq:espprc-resource-upper-bound-constraint} is
 expressed at the vertex level.
 Equivalently, it is possible to express the same constraint by considering the resource consumption
 at the arc level:
-
 \begin{equation}
 	\label{eq:espprc-resource-upper-bound-constraint-arc-level}
 	\sum_{\Tuple*{i, j} \in A^\prime} \frac{q_i + q_j}{2} x_{ij} \le Q.
 \end{equation}
-
 Due to the structure of the optimal path $p^\star$ the total resource consumption
 will not change regardless of whether
 \cref{eq:espprc-resource-upper-bound-constraint} or \cref{eq:espprc-resource-upper-bound-constraint-arc-level}
 is used.
-
-Finally, the most important inequalities, constraint \eqref{eq:espprc-sec-constraints}, represents the subtour elimination constraints.
-These inequalities have two major impacts: first they avoid the form of spurious unconnected subtours, second they force the elementarity condition, namely they impose that each node must be visited at most once.
-Two examples depicting respectively a solution containing spurious subtours and a non-elementary solution are provided in Figures \ref{fig:espprc-example-with-spurious-subtours} and \ref{fig:espprc-example-non-elementary-solution}.
 
 \begin{figure}[ht]
 	\begin{tikzpicture}[>=stealth, main/.style = {draw, circle, fill=black!10!white}]
@@ -261,9 +261,10 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	\end{tikzpicture}
 
 	\centering
-	\caption{An example of an ESPRRC solution containing spurious subtours.
-		$V^\prime = \Set*{0, \dots, 7}$, ($0$ is the source vertex, $7$ the sink vertex).
-		SEC inequalities, presented in \cref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
+	\caption{
+		An example of a path containing spurious unconnected sub-tours,
+		over a network with $V^\prime = \Set*{0, \dots, 7},\ s = 0,\ t = 7$.
+		The SEC inequalities of \cref{eq:espprc-sec-constraints} prohibit the depicted situation from occurring.
 	}
 	\label{fig:espprc-example-with-spurious-subtours}
 \end{figure}
@@ -292,9 +293,10 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	\end{tikzpicture}
 
 	\centering
-	\caption{An example of an ESPRRC non-elementary solution.
-		$V^\prime = \Set*{0, \dots, 7}$, ($0$ is the source vertex, $7$ the sink vertex).
-		SEC inequalities, presented in \cref{eq:espprc-sec-constraints}, make the situation depicted in the figure impossible to occur.
+	\caption{
+		An example of a path not satisfying the elementarity constraints,
+		over a network with $V^\prime = \Set*{0, \dots, 7},\ s = 0,\ t = 7$.
+		The SEC inequalities of \cref{eq:espprc-sec-constraints} prohibit the depicted situation from occurring.
 	}
 	\label{fig:espprc-example-non-elementary-solution}
 \end{figure}
