@@ -93,20 +93,22 @@ bound to each node.
 
 \subsection{Integer Programming Formulation}
 \label{sec:espprc-integer-programming-formulation}
+
 The ESPPRC is traditionally defined over a \textbf{directed}
 symmetric network.
 The ESPRCC network is characterized by $N_0 + 2$ nodes,
-where $N_0$ are the total number of customers for the original CVRP problem,
-and the remaining two vertices represent the source and sink vertices used to
-model a dissection of the depot node.
-We assume that there's no associated resource consumption for the source and sink vertices: $q_0 = q_N = 0$.
-The resource consumption semantics for the customers $i \in V_0$, instead,
-remains unaltered from the CVRP: $q_{i} \ge 0 \forall i \in V_0$.
-All the customers are edge-connected in both directions with one another,
-while the source and sink vertex do not share direct connections.
-The source and sink vertices are respectively forward connected and backward connected to all other customers.
-where $V^\prime = V_0 \cup \Set*{0, N},\ |V^\prime| = N_0 + 2$.
-The edges set $A^\prime$ can instead be expressed more formally as:
+where $N_0$, as usual, denotes the total number of customers for the original CVRP problem.
+Two additional vertices are used to represent respectively the source and sink vertices.
+These two together model a dissection of the depot node.
+All the customers are edge-connected in both directions with one another.
+Similarly, the source and sink vertex do not share direct connections with one another.
+
+\medskip
+
+More formally, the ESPPRC is defined over a network $G = \Tuple*{V\^prime, A^\prime}$,
+where $V^\prime = V_0 \cup \Set*{0, N}$ denotes the set of vertices and $A^\prime$ the set of arcs.
+The vertex set $V^\prime$ has size $|V^\prime| = N_0 + 2$.
+The edges set $A^\prime$ can be expressed as:
 \begin{equation}
 	\begin{aligned}
 		A^\prime = \  & \Set*{\Tuple*{i, j} \mid i, j \in V_0,\ i \ne j} \\
@@ -116,6 +118,11 @@ The edges set $A^\prime$ can instead be expressed more formally as:
 \end{equation}
 The edge set $A^\prime$ has size $|A^\prime| = N(N - 1) + 2(N - 1)$.
 
+As it was done for the CVRP, for each vertex $i \in V^\prime$ we associate
+a resource consumption (or customer demand) $q_i \quad \forall i \in V$.
+The resource consumption semantics associated to each customer
+$i \in V_0$ remains unaltered  from the CVRP, while for the source and sink vertices
+we respectively fix $q_{0} = q_{N} = 0$.
 We formally define $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$
 to denote the out-arcs crossing the set $S \subset V^\prime$.
 Likewise, we define $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$
