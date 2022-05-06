@@ -106,8 +106,7 @@ All the customers are edge-connected in both directions with one another,
 while the source and sink vertex do not share direct connections.
 The source and sink vertices are respectively forward connected and backward connected to all other customers.
 where $V^\prime = V_0 \cup \Set*{0, N},\ |V^\prime| = N_0 + 2$.
-The edges set $A^\prime$ can instead be expressed more formally as
-
+The edges set $A^\prime$ can instead be expressed more formally as:
 \begin{equation}
 	\begin{aligned}
 		A^\prime = \  & \Set*{\Tuple*{i, j} \mid i, j \in V_0,\ i \ne j} \\
@@ -115,8 +114,8 @@ The edges set $A^\prime$ can instead be expressed more formally as
 		              & \cup \Set*{\Tuple*{i, N} \mid i \in V_0}.
 	\end{aligned}
 \end{equation}
-
 The edge set $A^\prime$ has size $|A^\prime| = N(N - 1) + 2(N - 1)$.
+
 We formally define $\deltaplus(S) = \Set*{(i, j) \in A^\prime \mid i \in S, j \notin S}$
 to denote the out-arcs crossing the set $S \subset V^\prime$.
 Likewise, we define $\deltaminus(S) = \Set*{(i, j) \in A^\prime \mid i \notin S, j \in S}$
@@ -160,7 +159,12 @@ possible feasible choices for $p$.
 Note that, regardless we have pushed the dual variables contributions $\pi \in \R^N$
 at the arc level instead at the vertex level,
 the path reduced cost still sums to:
-$\bar{c}(p) = \sum_{i=0}^{u} \pi_{p_i} + \sum_{i=0}^{u} c_{p_i,p_{i+1}}$.
+$\bar{c}(p) = \sum_{i=0}^{u} c_{p_i,p_{i+1}} - \sum_{i=0}^{u} \pi_{p_i}$.
+Therefore, $\pi_i \in R,\ i \in V_0$ can be interpreted as the
+gained profit obtained in serving customer $i \in V_0$.
+Similarly,
+$\pi_0 \in R$ can be interpreted as an additional constant term
+biasing the reduced cost of a feasible route $p$.
 
 
 \medskip
