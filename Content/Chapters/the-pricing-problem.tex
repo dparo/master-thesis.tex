@@ -151,12 +151,15 @@ directly to the reduced arc cost $\bar{c}_{ij}$.
 A feasible path solution to the ESPPRC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
 with $p_0 = 0, \ p_{u + 1} = N$
 in which $\Set*{p_1, \dots, p_s} \subseteq V_0$ unique customers are visited.
+Observe that there's no restriction in which customers need to be necessarily covered
+by the path $p$.
 The path $p$ can cover a vertex at most once, and its resource consumption
 $q_p = q(p) = \sum_{j=0}^{u} q_{p_j}$ satisfies $q(p) \le Q$.
 The optimal path $p^\star$ minimizes the overall path reduced cost
 $\bar{c}(p) = \sum_{i=0}^{u} \bar{c}_{p_i,p_{i+1}}$ across all
 possible feasible choices for $p$.
-Note that, regardless we have pushed the dual variables contributions $\pi \in \R^N$
+Note that, regardless we have decided to model
+the dual variables contributions $\pi \in \R^N$
 at the arc level instead at the vertex level,
 the path reduced cost still sums to:
 $\bar{c}(p) = \sum_{i=0}^{u} c_{p_i,p_{i+1}} - \sum_{i=0}^{u} \pi_{p_i}$.
@@ -191,17 +194,13 @@ constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a fl
 constraint \eqref{eq:espprc-source-emitting-flow}, \eqref{eq-espprc-sink-consuming-flow} are the flow imposition for respectively the source and sink node,
 constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and integrality constraints on the $x$ MIP variables.
 
-Let $p^\star = \Tuple*{0, i_1, \dots, i_s, N}$
-denote the optimal path solution to problem
-\cref{eq:espprc-obj-function,eq:espprc-resource-upper-bound-constraint,eq:espprc-flow-conservation-constraint-customers,eq:espprc-source-emitting-flow,eq-espprc-sink-consuming-flow,eq:espprc-sec-constraints,eq:espprc-x-mip-var-bounds}
-visiting customers $\Set*{i_1, \dots, i_s} \subseteq V_0$.
-Notice that we have the following equation:
-
+Notice that the presented IP formulation makes the following equality hold:
 \begin{equation}
 	\ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} = \begin{cases}
-		2 & \texttt{if } i \in p^\star \\
+		2 & \texttt{if } i \in p \\
 		0 & \texttt{otherwise}
 	\end{cases}
+	\quad \forall i \in V_0.
 \end{equation}
 
 The resource consumption constraint of \Cref{eq:espprc-resource-upper-bound-constraint} is
@@ -286,18 +285,19 @@ Two examples depicting respectively a solution containing spurious subtours and 
 	\label{fig:espprc-example-non-elementary-solution}
 \end{figure}
 
-As done in \textcite{beasley1989},
-the elementarity condition can be relaxed
-by substituting constraint \eqref{eq:espprc-sec-constraints}
-in favour of:
-
+As it is shown in \textcite{beasley1989},
+if one wishes to avoid the formation of spurious unconnected subtours,
+but wishes to relax the elementarity condition as to model an SPPRC,
+it can achieve this by \cref{eq:espprc-sec-constraints} in favor of:
 \begin{equation}
 	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{0}
 \end{equation}
-
-where, $N = |V_0| + 1$ (recall $V_0$ is the set of customers) represents the sink vertex, and $M \in \R$ is a large positive constant.
-In some cases, it is possible to relax the elementarity condition.
-Relaxing the elementarity condition can simplify the pricing problem at the cost of obtaining weaker dual bounds for the RMP.
+where $M \in \R_+$ denotes an arbitrary large positive constant.
+Modeling the pricing as an SPPRC, can greatly reduce
+the column generation running time, at the cost
+of generating significantly weaker dual bound improvements.
+Refer back to the discussion in \cref{sec:intro-solving-the-pricing-problem}
+for more details.
 
 \section{The Capacitated Profitable Tour Problem}
 \label{sec:the-capacitated-profitable-tour-problem}
