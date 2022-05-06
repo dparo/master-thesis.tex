@@ -191,17 +191,20 @@ We can provide a formal mathematical formulation of the ESPPRC as:
 	                                & \ExprESPPOutgoingEdges[i]{s} = 1                                                                                                      \label{eq:espprc-source-emitting-flow}                       \\
 	                                & \ExprESPPIngoingEdges[i]{t} = 1                                                                                                       \label{eq-espprc-sink-consuming-flow}                        \\
 	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_0 \cup \Set*{s, t},\ |S| \ge 2 \label{eq:espprc-sec-constraints} \\
-	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds}
+	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds},
 \end{align}
-where, \eqref{eq:espprc-obj-function} is the objective function which we aim to minimize.
-The remaining constraints characterize the set of feasible paths $P$, by paying attention that we are now dealing with
-a directed network, and the depot node is duplicated twice.
-Namely, constraint \eqref{eq:espprc-resource-upper-bound-constraint} expresses the resource bound modeled as a function of only the $x$ MIP variables,
-constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices excluding the source and the sink node,
-constraint \eqref{eq:espprc-source-emitting-flow}, \eqref{eq-espprc-sink-consuming-flow} are the flow imposition for respectively the source and sink node,
-constraint \eqref{eq:espprc-x-mip-var-bounds} imposes bound and integrality constraints on the $x$ MIP variables.
+where \eqref{eq:espprc-obj-function} is the objective function to be minimized, i.e. the overall reduced cost of the path.
+Constraint \eqref{eq:espprc-resource-upper-bound-constraint} is the resource consumption upper bound,
+constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices except for the source and the sink.
+Observe that \cref{eq:espprc-flow-conservation-constraint-customers} does not impose
+restriction on whether customer $i \ in V_0$ needs to be necessarily covered by the path.
+Constraints \eqref{eq:espprc-source-emitting-flow}, \eqref{eq-espprc-sink-consuming-flow}
+respectively impose an out-flow and in-flow of $1$ for the source and sink vertices.
+Constraint \eqref{eq:espprc-x-mip-var-bounds} forces each arc $\Tuple*{i, j} \in A^\prime$ to be traversed at most once.
 
-Notice that the presented IP formulation makes the following equality hold:
+Notice that, due to the flow conservation constraint and to the bounds on the binary varibles of
+\cref{eq:espprc-flow-conservation-constraint-customers,eq:espprc-x-mip-var-bounds},
+we have that the following equality holds:
 \begin{equation}
 	\ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} = \begin{cases}
 		2 & \texttt{if } i \in p \\
@@ -209,6 +212,10 @@ Notice that the presented IP formulation makes the following equality hold:
 	\end{cases}
 	\quad \forall i \in V_0.
 \end{equation}
+Therefore, despite a constant factor of $2$,
+the quantity $\ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i}$
+can be used to determine whether customer $i \in V_0$ is covered
+by the optimal path of the IP model.
 
 The resource consumption constraint of \Cref{eq:espprc-resource-upper-bound-constraint} is
 expressed at the vertex level.
