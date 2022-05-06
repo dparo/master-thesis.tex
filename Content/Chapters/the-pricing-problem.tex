@@ -369,21 +369,22 @@ the RMP's constraints of \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly
 Namely, $p_i = \pi_i \quad \forall i \in V$.
 
 Let $x_{e}$, $y_{i} \in \Set*{0, 1}$ be two sets of binary variables which respectively
-model wheteher an $e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
+model whether an $dge e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
 We can provide a formal mathematical description of the CPTP through an Integer Programme (IP) formulation:
 \begin{align}
-	\min_{x,y} \quad z_\mt{CPTP}(x, y) & =  \sum_{i \in V} \sum_{\EqStackTwo{j \in V}{j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}                                                                                                                \\
-	                                   & y_0 = 1                                                                                                                   & \label{eq:depot-part-of-tour-constraint}                                                                     \\
-	                                   & \ExprCptpEdgesIncident{i}  = 2 y_i                                                                                        & \quad \forall i \in V         \label{eq:flow-conservation-constraint}                                        \\
-	                                   & \ExprCptpFlowExiting{S} \ge 2 y_{i}                                                                                       & \quad \EqStackTwo{\forall i \in S}{\forall S \subseteq V_0,\ \SetSize*{S} \ge 2} \label{eq:gsec-constraints} \\
-	                                   & \ExprCptpDemandSum  \le Q                                                                                                 & \label{eq:resource-upper-bound-constraint}                                                                   \\
-	                                   & x_{ij}                   \in \Set*{0, 1}                                                                                  & \quad \forall (i, j) \in E               \label{eq:x-mip-var-bounds}                                         \\
-	                                   & y_{i}                    \in \Set*{0, 1}                                                                                  & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
+	\min_{x,y} \quad z_\mt{CPTP}(x, y) & =  \sum_{i \in E} c_{e} x_{e} - \sum_{i \in V} p_i y_i \label{eq:obj-function}                                                                                                                \\
+	                                   & y_0 = 1                                                                        & \label{eq:depot-part-of-tour-constraint}                                                                     \\
+	                                   & \ExprCptpDemandSum  \le Q                                                      & \label{eq:resource-upper-bound-constraint}                                                                   \\
+	                                   & \ExprCptpEdgesIncident{i}  = 2 y_i                                             & \quad \forall i \in V         \label{eq:flow-conservation-constraint}                                        \\
+	                                   & \ExprCptpFlowExiting{S} \ge 2 y_{i}                                            & \quad \EqStackTwo{\forall i \in S}{\forall S \subseteq V_0,\ \SetSize*{S} \ge 2} \label{eq:gsec-constraints} \\
+	                                   & x_{e}                   \in \Set*{0, 1}                                        & \quad \forall e \in E               \label{eq:x-mip-var-bounds}                                              \\
+	                                   & y_{i}                    \in \Set*{0, 1}                                       & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
 \end{align}
 where \eqref{eq:obj-function} is the objective function to be minimized, i.e. the total cost
 accounting for the travel distance and in profit in serving a subset of the total customers.
 Constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot is always covered by the optimal route.
-Constraint \eqref{eq:flow-conservation-constraint} has a two fold effect.
+Constraint \eqref{eq:resource-upper-bound-constraint} is the resource consumption upper bound.
+Constraint \eqref{eq:flow-conservation-constraint} has a twofold effect.
 First, it functions as a form of directed flow conservation.
 Second, it perform bindings between the sets of variables $x,\ y$;
 it ensures that the if a vertex $i \in V$ is covered by an optimal route ($y_i = 1$)
@@ -394,8 +395,8 @@ There is an exponential number of GSECs,
 therefore for performance reasons,
 these constraints cannot be inserted statically in a MIP solver,
 and must instead be separated exactly at least for integral solutions.
-The equation \eqref{eq:resource-upper-bound-constraint} models the fact that a tour may visit any vertex as long as the total demand doesn't exceed the vehicle capacity.
-Finally, the equations \eqref{eq:x-mip-var-bounds}, \eqref{eq:y-mip-var-bounds} specify the bounds and domain of the $x_{ij}$ and $y_{i}$ variables respectively.
+Constraints \eqref{eq:x-mip-var-bounds,eq:y-mip-var-bounds} impose integrality
+and impose bounds on the edge $e \in E$ or vertex $i \in V$ traversal.
 
 The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
 If we ignore the GSECs and the binary variable bounds, the total number of constraints characterizing the model add up to $N + 2$.
