@@ -158,7 +158,7 @@ directly to the reduced arc cost $\bar{c}_{ij}$.
 
 A feasible path solution to the ESPPRC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
 with $p_0 = s, \ p_{u + 1} = t$
-in which $\Set*{p_1, \dots, p_u} \subseteq V_0$ unique customers are visited.
+in which $\Set*{p_1, \dots, p_u} \subseteq V_0$ customers are visited.
 Observe that there's no restriction in which customers need to be necessarily covered
 by the path $p$.
 Due to the elementarity condition, the path $p$ can cover a vertex at most once.
@@ -178,23 +178,21 @@ Similarly,
 $\pi_0 \in R$ can be interpreted as an additional constant term
 biasing the reduced cost of a feasible route $p$.
 
-
 \medskip
 
-Let $x_{ij} \in \Set*{0, 1} \quad \forall i, j \in V^\prime$ be a new set of binary variables
-encoding feasible solutions for the ESPRCC problem (i.e. $x_{ij} = 1$ if edge $(i, j)$ is picked in the optimal path).
-We can finally write the full ESPPRC IP formulation as:
-
+We are now ready to provide a ESPPRC formal description through an Integer Programme (IP).
+Let $x_{ij} \in \Set*{0, 1} \quad \Tuple*{i, j} \in A^\prime$ be a new set of binary variables:
+$x_{ij} = 1$ if arc $\Tuple*{i, j} \in A^\prime$ is picked by the optimal path.
+We can provide a formal mathematical formulation of the ESPPRC as:
 \begin{align}
 	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c}_{ij} x_{ij} \label{eq:espprc-obj-function}                                                                                                                   \\
 	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}                  \\
 	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers}     \\
-	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-source-emitting-flow}                       \\
-	                                & \ExprESPPIngoingEdges[i]{N} = 1                                                                                                       \label{eq-espprc-sink-consuming-flow}                        \\
-	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_0 \cup \Set*{0, N},\ |S| \ge 2 \label{eq:espprc-sec-constraints} \\
-	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds}               \\
+	                                & \ExprESPPOutgoingEdges[i]{s} = 1                                                                                                      \label{eq:espprc-source-emitting-flow}                       \\
+	                                & \ExprESPPIngoingEdges[i]{t} = 1                                                                                                       \label{eq-espprc-sink-consuming-flow}                        \\
+	                                & \ExprESPPEdgesWithin[S] \le |S| - 1                                                                  \qquad \forall S \subseteq V_0 \cup \Set*{s, t},\ |S| \ge 2 \label{eq:espprc-sec-constraints} \\
+	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds}
 \end{align}
-
 where, \eqref{eq:espprc-obj-function} is the objective function which we aim to minimize.
 The remaining constraints characterize the set of feasible paths $P$, by paying attention that we are now dealing with
 a directed network, and the depot node is duplicated twice.
