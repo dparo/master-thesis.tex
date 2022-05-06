@@ -202,8 +202,8 @@ We can provide a formal mathematical formulation of the ESPPRC as:
 	                                & x_{ij}                   \in \lbrace 0, 1 \rbrace                                                    \qquad \forall \Tuple*{i, j} \in A^\prime    \label{eq:espprc-x-mip-var-bounds},
 \end{align}
 where \eqref{eq:espprc-obj-function} is the objective function to be minimized, i.e. the overall reduced cost of the path.
-Constraint \eqref{eq:espprc-resource-upper-bound-constraint} is the resource consumption upper bound,
-constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices except for the source and the sink.
+Constraint \eqref{eq:espprc-resource-upper-bound-constraint} is the resource consumption upper bound.
+Constraint \eqref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices except for the source and the sink.
 Observe that \cref{eq:espprc-flow-conservation-constraint-customers} does not impose
 restriction on whether customer $i \ in V_0$ needs to be necessarily covered by the path.
 Constraints \eqref{eq:espprc-source-emitting-flow}, \eqref{eq-espprc-sink-consuming-flow}
@@ -333,6 +333,7 @@ and therefore presents many similarities with other very well known
 problems such as:
 (i) the Orienteering Problem (OP) \parencite{golden1987, laporte1990}
 and (ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995}.
+See \textcite{letchford2013} for the Steiner extension of these problem.
 The CPTP is an NP-hard combinatorial optimization problem representing
 a distribution problem, in which,
 given as input a set of customers
@@ -359,27 +360,17 @@ are \cite{jepsen2011, jepsen2014}.
 \subsection{Integer Programming formulation}
 \label{sec:cptp-integer-programming-formulation}
 
-\textcite{letchford2013, jepsen2014} provided in their work an IP formulation for the CPTP.
+\textcite{jepsen2014} provided in their work an IP formulation for the CPTP.
 The IP model presented in this section is derived from their work, and it is here summarized.
+We will reuse the mathematical notation employed for the CVRP already presented in \cref{sec:intro-cvrp-mathematical-notation}.
+Let $p_i \in \R,\ p \ge 0$ denote the profit associated to visiting a vertex $i \in V$.
+We have that the profit function is directly linked to the dual variables $\pi \in \R^N$ associated to
+the RMP's constraints of \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
+Namely, $p_i = \pi_i \quad \forall i \in V$.
 
-Let $G = \Tuple*{V, E}$ denote a complete undirected graph, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
-$E = \Set*{e = (i, j) \mid i,j \in V, j \ge i + 1}$ the set of edges, and $N$ the number of nodes in the graph.
-The value $0 \in V$ is used to denote the depot node.
-For convenience, we define $V_0 = V \setminus \Set*{0}$ to express the set of customers, and $N_0 = N - 1$ to denote the number of customers.
-Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
-More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ (i, j) \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
-For brevity, we also define $\delta(i) = \delta(\Set*{i})$ to denote the set of edges incident to node $i \in V$.
-
-Let $p_{i} \in \R, p_{i} \ge 0$ denote the profit function, and $q_{i} \in \R, q_{i} \ge 0$ denote the demand function, which represent respectively the profit gain and required demand in visiting a vertex $i \in V$.
-By convention $q_0 = 0$, but notice that the profit at the depot is allowed to be $p_0 \ge 0$.
-Let $d_{ij} \in \R, d_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
-We assume that the distance function is symmetric $d_{ij} = d_{ji}$ and satisfies the triangle inequality $d_{ij} \le d_{ih} + d_{hj}$.
-
-We define two sets of binary variables: $x_{ij}$, $y_{i} \in \Set*{0, 1}$, used to compose output solutions for the CPTP.
-Together they model respectively an edge and a vertex as being part of the tour solution.
-
-Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we can finally express the CPTP problem as an integer programming formulation
-
+Let $x_{e}$, $y_{i} \in \Set*{0, 1}$ be two sets of binary variables which respectively
+model wheteher an $e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
+We can provide a formal mathematical description of the CPTP through an Integer Programme (IP) formulation:
 \begin{align}
 	\min_{x,y} \quad z_\mt{CPTP}(x, y) & =  \sum_{i \in V} \sum_{\EqStackTwo{j \in V}{j \ge i + 1}} d_{ij} x_{ij} - \sum_{i \in V} p_i y_i \label{eq:obj-function}                                                                                                                \\
 	                                   & y_0 = 1                                                                                                                   & \label{eq:depot-part-of-tour-constraint}                                                                     \\
@@ -389,12 +380,20 @@ Given an upper bound $Q \in \R,Q \ge 0$ for the total resource consumption, we c
 	                                   & x_{ij}                   \in \Set*{0, 1}                                                                                  & \quad \forall (i, j) \in E               \label{eq:x-mip-var-bounds}                                         \\
 	                                   & y_{i}                    \in \Set*{0, 1}                                                                                  & \quad \forall i \in V,\ i \ge 1          \label{eq:y-mip-var-bounds}
 \end{align}
-
-The equation \eqref{eq:obj-function} denotes the objective function, and it is made of two terms: the cost of traveling through the tour (positive contribution) and the total sum of the profits associated to visiting a subset of the vertices (negative contribution).
-The constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot is always visited.
-Constraints \eqref{eq:flow-conservation-constraint} imposes flow conservation constraints for each vertex.
-The equation \eqref{eq:gsec-constraints} are the generalized subtour elimination constraints \textbf{(GSECs)} and must be present to guarantee that the solution does not contain spurious unconnected subtours.
-There is an exponential number of GSECs, as such, for performance reasons these constraints cannot be inserted statically in a MIP solver, and must instead be efficiently dynamically separated.
+where \eqref{eq:obj-function} is the objective function to be minimized, i.e. the total cost
+accounting for the travel distance and in profit in serving a subset of the total customers.
+Constraint \eqref{eq:depot-part-of-tour-constraint} ensures that the depot is always covered by the optimal route.
+Constraint \eqref{eq:flow-conservation-constraint} has a two fold effect.
+First, it functions as a form of directed flow conservation.
+Second, it perform bindings between the sets of variables $x,\ y$;
+it ensures that the if a vertex $i \in V$ is covered by an optimal route ($y_i = 1$)
+then the number of incident edges in that node sums to $2$, otherwise to $0$.
+Constraint \eqref{eq:gsec-constraints} are the so-called Generalized Subtour Elimination Constraints (GSECs),
+which are employed to avoid the formation of spurious tours in unconnected regions of the network.
+There is an exponential number of GSECs,
+therefore for performance reasons,
+these constraints cannot be inserted statically in a MIP solver,
+and must instead be separated exactly at least for integral solutions.
 The equation \eqref{eq:resource-upper-bound-constraint} models the fact that a tour may visit any vertex as long as the total demand doesn't exceed the vehicle capacity.
 Finally, the equations \eqref{eq:x-mip-var-bounds}, \eqref{eq:y-mip-var-bounds} specify the bounds and domain of the $x_{ij}$ and $y_{i}$ variables respectively.
 
@@ -406,30 +405,6 @@ We could allow for single customer solutions by relaxing the binary variable req
 Instead, it may be simpler to take a different approach and leave the IP model as is.
 By employing a bruteforce algorithm in $\Theta(N)$ time we can scan for improving single-customer solutions.
 After the resolution of the IP model, we check for improving single-customer solutions and, if any exist, we update the incumbent.
-
-\subsection{GSECs inequalities}\label{sec:gsec-inequality}
-
-\mytodo{Add more details/history/literature about GSECs here.}
-
-It may be interesting to study the relationship between the number of non-zero binary variables participating in a GSEC as a function of the set size $\SetSize*{S}$.
-To achieve this we can express the size of the edge crossing set $\delta(S)$ as
-
-\begin{equation}\label{eq:delta-s-set-size}
-	\SetSize*{\delta(S)} = \SetSize*{S} (N - \SetSize*{S})
-\end{equation}
-
-which is maximized when $\SetSize*{S} = \frac{N}{2}$, thus leading to the following easy upper bound:
-
-\begin{equation}\label{eq:delta-s-set-size-ub}
-	\SetSize*{\delta(S)} \le \frac{N^2}{4}
-\end{equation}
-
-Let $\NNZGSEC(S)$ denote the number of non-zero binary variables participating in a GSEC inequality.
-It is easy to see that the following result holds
-\begin{equation}\label{eq:gsec-nnz-ub}
-	\NNZGSEC(S) \le 1 + \floor*{\frac{N^2}{4}} \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
-\end{equation}
-This trivial bound allows us to preallocate a fixed amount of memory beforehand prior to performing any inequality separation, saving us copious memory allocation time.
 
 \subsection{Additional bounds}
 
