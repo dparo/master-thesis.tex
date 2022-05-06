@@ -73,7 +73,7 @@ Desrochers et al. [29] to solve the vehicle routing problem with time windows
 
 [MY OWN STUFF, kept for reference purpose. TODO: Merge or delete later]
 \subsection{Shortest Path Problem with Resource Constraints}
-If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\bar{c_{ij}} \ge 0$,
+If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\bar{c}_{ij} \ge 0$,
 the ESPPRC problem is solvable in polynomial time, since the elementarity conditions are guaranteed
 to be satisfied in this case.
 In this particular case, some authors have proposed efficient methods to tackle this case:
@@ -99,6 +99,9 @@ The ESPRCC network is characterized by $N_0 + 2$ nodes,
 where $N_0$ are the total number of customers for the original CVRP problem,
 and the remaining two vertices represent the source and sink vertices used to
 model a dissection of the depot node.
+We assume that there's no associated resource consumption for the source and sink vertices: $q_0 = q_N = 0$.
+The resource consumption semantics for the customers $i \in V_0$, instead,
+remains unaltered from the CVRP: $q_{i} \ge 0 \forall i \in V_0$.
 All the customers are edge-connected in both directions with one another,
 while the source and sink vertex do not share direct connections.
 The source and sink vertices are respectively forward connected and backward connected to all other customers.
@@ -129,11 +132,11 @@ to denote the set of arcs having both end points in set $S \subseteq V$.
 
 As we've already presented in \cref{sec:column-generation-and-pricing-problem},
 for each directed arc $\Tuple*{i, j} \in A^\prime$
-we have an associated weight $\bar{c_{ij}} \in \R \quad \forall \Tuple*{i, j} \in A^\prime$.
-The weight $\bar{c_{ij}}$ represents the reduced cost of an arc
+we have an associated weight $\bar{c}_{ij} \in \R \quad \forall \Tuple*{i, j} \in A^\prime$.
+The weight $\bar{c}_{ij}$ represents the reduced cost of an arc
 and it is directly linked to the dual variables of the RMP through the following relation:
 \begin{equation}
-	\bar{c_{ij}} = \begin{cases}
+	\bar{c}_{ij} = \begin{cases}
 		c_{ij} - \frac{\pi_i + \pi_j}{2} & \quad \forall i, j \in V_0 \\
 		c_{0i} - \frac{\pi_0 + \pi_j}{2} & \quad \forall j \in V_0    \\
 		c_{iN} - \frac{\pi_i + \pi_0}{2} & \quad \forall i \in V_0    \\
@@ -144,14 +147,20 @@ where $\pi \in \R^N$ represent the dual variables associated
 to \cref{eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes}.
 Additional usage of robust inequalities (cuts or branching) manifest
 additional negative term contributions (through additional dual variables)
-directly to the reduced arc cost $\bar{c_{ij}}$.
+directly to the reduced arc cost $\bar{c}_{ij}$.
 
-A feasible solution to the ESPPRC is a path $p = \Tuple*{0, i_1, \dots, i_s, N}$
-in which $\Set*{i_1, \dots, i_s} \subseteq V_0$ unique customers are visited.
-Note that $c_{0i} = c_{iN} \quad \forall i \in V_0$ and for convenience we fix
-$c_{0N} = \infty$.
+A feasible path solution to the ESPPRC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
+with $p_0 = 0, \ p_{u + 1} = N$
+in which $\Set*{p_1, \dots, p_s} \subseteq V_0$ unique customers are visited.
 The path $p$ can cover a vertex at most once, and its resource consumption
-$q(p) = \sum_{j = 0}^{s} q_{i_j}$, satisfies $q(p) \le Q$.
+$q_p = q(p) = \sum_{j=0}^{u} q_{p_j}$ satisfies $q(p) \le Q$.
+The optimal path $p^\star$ minimizes the overall path reduced cost
+$\bar{c}(p) = \sum_{i=0}^{u} \bar{c}_{p_i,p_{i+1}}$ across all
+possible feasible choices for $p$.
+Note that, regardless we have pushed the dual variables contributions $\pi \in \R^N$
+at the arc level instead at the vertex level,
+the path reduced cost still sums to:
+$\bar{c}(p) = \sum_{i=0}^{u} \pi_{p_i} + \sum_{i=0}^{u} c_{p_i,p_{i+1}}$.
 
 
 \medskip
@@ -161,7 +170,7 @@ encoding feasible solutions for the ESPRCC problem (i.e. $x_{ij} = 1$ if edge $(
 We can finally write the full ESPPRC IP formulation as:
 
 \begin{align}
-	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c_{ij}} x_{ij} \label{eq:espprc-obj-function}                                                                                                                   \\
+	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c}_{ij} x_{ij} \label{eq:espprc-obj-function}                                                                                                                   \\
 	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q                            \label{eq:espprc-resource-upper-bound-constraint}                  \\
 	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers}     \\
 	                                & \ExprESPPOutgoingEdges[i]{0} = 1                                                                                                      \label{eq:espprc-source-emitting-flow}                       \\

@@ -157,16 +157,18 @@ As we will see later, it is often simpler to link $r(S)$ to the trivial lower bo
 	r(S) \ge \ceil*{\frac{q(S)}{Q}}
 \end{equation}
 
-A route $p$ is a loop-back sequence $p = \Tuple*{i_0, i_1, \dots, i_s, i_{s + 1}}$, with $i_0 = i_{s + 1} = 0$ in which
-$\Set*{i_1, \dots, i_s} \subseteq V_0$ customers are visited.
-The route $p$ has a travel cost of $c_p = c(p) = \sum_{j=0}^s c_{i_j,i_{j+1}}$.
+A route $p$ is a loop-back sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u + 1}}$,
+with $p_0 = p_{u + 1} = 0$
+in which $\Set*{p_1, \dots, p_s} \subseteq V_0$ customers are visited.
+The route $p$ has a travel cost of $c_p = c(p) = \sum_{i=0}^{u} c_{p_i,p_{i+1}}$
+with resource consumption $q_p = q(p) = \sum_{i=0}^{u} q_{i}$.
 A feasible solution to a CVRP problem consists of \textbf{exactly} $K$ routes (or circuits)
 associated with each vehicle starting and ending at the depot node.
 The traditional definition of CVRP requires full use of the total number of available vehicles $K$,
 however,
 this requirement can lead to suboptimal solutions with respect to using fewer vehicles for some cases.
 In classic CVRP, each customer is visited exactly once (elementarity condition),
-and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $Q$.
+and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $q(p) \le Q$.
 An optimal solution to the CVRP is a feasible solution which minimizes the sum of the overall edge weights across all the tours.
 
 \medskip
@@ -499,19 +501,19 @@ which takes the name of \textbf{Restricted Master Problem} (RMP).
 In BAP frameworks, we seek to solve the following sub-problem:
 
 \begin{equation}\label{eq:pp-problem}
-	{c^\star_p} = \min_{p \in P} \Set*{ \bar{c_p} = \sum_{e = \Set*{i, j} \in E} \Expr*{c_{e} - \frac{\pi_i + \pi_j}{2}} a_{ep}  }
+{c^\star_p} = \min_{p \in P} \Set*{ \bar{c}_p = \sum_{e = \Set*{i, j} \in E} \Expr*{c_{e} - \frac{\pi_i + \pi_j}{2}} a_{ep}  }
 \end{equation}
 
 which takes the famous name of \textbf{Pricing Problem} (PP).
-In \cref{eq:pp-problem}, $\bar{c_p}$ denotes the reduced cost of a route $p \in P$
+In \cref{eq:pp-problem}, $\bar{c}_p$ denotes the reduced cost of a route $p \in P$
 and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$
 that leads to the best dual bound improvement.
-Notice that $\bar{c_p}$ can also be expressed as $\bar{c_p} = c_p - \pi_0 - \sum_{i \in V_0} \pi_i a_{ip}$.
+Notice that $\bar{c}_p$ can also be expressed as $\bar{c}_p = c_p - \pi_0 - \sum_{i \in V_0} \pi_i a_{ip}$.
 For convenience,
-we define $\bar{c_{e}} = c_{e} - \frac{\pi_i + \pi_j}{2}$
+we define $\bar{c}_{e} = c_{e} - \frac{\pi_i + \pi_j}{2}$
 as the reduced cost of an edge $e\in E$.
 
-Any $p \in P$ which satisfies $\bar{c_p} < 0$ is a valid column which can enter the basis of the RMP.
+Any $p \in P$ which satisfies $\bar{c}_p < 0$ is a valid column which can enter the basis of the RMP.
 The BAP solver needs to smartly manage the set $\mcP \subseteq P$, which it stores it inside a pool.
 It is responsibility of the BAP framework to efficiently manage which routes
 to preserve or drop from $\mcP$ during the running time of the resolution process.
@@ -527,7 +529,7 @@ used to solve the PP is usually called \textbf{oracle} or \textbf{pricer} in the
 The oracle needs to solve the pricing sub-problem which, due to the definition of the set $P$,
 coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
 over a \textbf{new directed symmetric} network with weights
-$\bar{c_{ij}} = c_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$.
+$\bar{c}_{ij} = c_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$.
 Resources are non-decreasing quantities,
 such as capacity or time,
 which are used to evaluate
@@ -580,7 +582,7 @@ $(p_1, \dots, p_K) \mid \lambda^\star_{p_i} = 1$.
 It is also important to note,
 that the CG doesn't need to solve the PP optimally at each iteration of the simplex algorithm.
 To improve the dual bound,
-it is usually enough to find any $p \in P$ achieving $\bar{c_p} < 0$.
+it is usually enough to find any $p \in P$ achieving $\bar{c}_p < 0$.
 There is no need to solve the pricing problem exactly,
 except to prove the optimality at the last column generation iteration.
 Therefore, fast and efficient heuristic algorithms may be employed
@@ -656,7 +658,7 @@ which can be safely added to the RMP
 without altering the structure of the set of feasible paths $P$ \parencite{fukasawa2006}.
 That is,
 robust inequalities do not require explicit modeling in the PP formulation
-and instead manifest their contribution directly in the reduced cost edges $\bar{c_e}$.
+and instead manifest their contribution directly in the reduced cost edges $\bar{c}_e$.
 An oracle, therefore,
 after the introduction of a robust inequality in the RMP,
 needs to solve the same ESPPRC problem but with slightly different weights associated on each edge.
@@ -720,10 +722,10 @@ Let $\omega_e \in \R$ represent the dual variable associated to
 edge $e \in E$ and to
 one of the branching polarity in \cref{eq:sp-branching-on-arcs},
 then, after branching,
-the new reduced cost $\bar{c_e}$ for an arc $e \in E$ becomes:
+the new reduced cost $\bar{c}_e$ for an arc $e \in E$ becomes:
 
 \begin{equation}
-	\bar{c_e} = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e
+\bar{c}_e = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e
 \end{equation}
 
 where again $\pi \in \R^N$ represents the dual variables associated with \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
