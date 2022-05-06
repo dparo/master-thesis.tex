@@ -72,7 +72,7 @@ We've inflated the total number of available CVRP instances
 by using the following relationship:
 
 $$
-	Q^\prime = Q s, \quad k^\prime = \ceil*{\frac{k}{s}}
+	Q^\prime = Q \times s, \quad k^\prime = \ceil*{\frac{k}{s}}
 $$
 
 The inflation is done for each unmodified CVRP instance and using
@@ -351,6 +351,18 @@ The ground truth optimal, as extracted from the dataset, is used instead as the 
 \mytodo{Describe operating system, processor speed, etc}
 
 \mytodo{Spam this section with performance profiles}
+
+Each performance profile follows the syntax:
+\begin{center}
+	\begin{LVerbatim}
+		<FAMILY-NAME>-scaled-<s>-last-10
+	\end{LVerbatim}
+\end{center}
+where \texttt{<FAMILY>} denotes the CVRP instances family (i.e. E, F, etc) and \texttt{<s>} is the scale factor for the vehicle capacity.
+The term \texttt{last-10} is used to denote that the performance profile uses only the last 10 pricing iterations for performing the comparison.
+
+At the time of writing, only the following scaling factors were tested: $s = 1.0,\ s = 2.0,\ s = 4.0$.
+
 
 \section{Discussion}
 \label{sec:results-discussion}
