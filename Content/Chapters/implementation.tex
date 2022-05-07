@@ -50,18 +50,23 @@ The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0, 
 \label{sec:impl-full-static-model}
 
 In this section we present the full static model that we implemented.
-
+We've implemented the CPTP formulation of
+\labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
+excluding the GSECs of \cref{eq:cptp-gsec-constraints}.
+The GSECs we will be added during the running-time of the branch-and-cut algorithm
+through an exact separation procedure.
+The full static model is:
 \begin{align}
-	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                                             \\
-	                                   & y_0 = 1                                  &                       \\
-	                                   & B \le   \ExprCptpDemandSum   \le Q       &                       \\
-	                                   & \ExprCptpEdgesIncident{i}    = 2 y_i     & \quad \forall i \in V \\
-	                                   & x_{e}                   \in \Set*{0, 1}  & \quad \forall e \in E \\
-	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V
+	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                                              \\
+	                                   & y_0 = 1                                  &                        \\
+	                                   & B \le   \ExprCptpDemandSum   \le Q       &                        \\
+	                                   & \ExprCptpEdgesIncident{i}    = 2 y_i     & \quad \forall i \in V  \\
+	                                   & x_{e}                   \in \Set*{0, 1}  & \quad \forall e \in E  \\
+	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V,
 \end{align}
-
-which follows closely the full IP formulation presented in \eqref{eq:cptp-obj-function} without the GSECs.
-We also added a non strictly necessary lower bound on the served demand, which details were already discussed earlier in Section \ref{sec:demand-lower-bound}.
+where $B \in R_+$ is an additional lower bound on the resource consumption that can help in slightly improving the linear relaxation.
+The value of $B$ is computed as $B = q_u + q_v$, where $u, v \in V_0,\ u \ne v$
+represent the least two demanding customers in the network: $q_u \le q_v \le q_i \quad \forall i \in V_0, i \ne u, v$.
 
 \section{Cutoff values}
 \label{sec:impl-cutoff-values}
@@ -145,7 +150,7 @@ A node $h$ is a good candidate for insertion if at least one of the following co
 	\item The number of visited nodes in the current tour is $2$ and $Q_t + q_h \le Q$.
 \end{enumerate}
 
-In our implementation we employed a cheapest insertion scheme, therefore the pair $(h, a)$ for the current insertion iteration is picked such that it minimizes as much as possible the extra mileage $\Delta_m(h, a)$.
+In our implementation we employed the cheapest insertion scheme, therefore the pair $(h, a)$ for the current insertion iteration is picked such that it minimizes as much as possible the extra mileage $\Delta_m(h, a)$.
 The iteration stops when no more valid $h$ vertices can be found for insertion.
 It may happen that no valid $h$ can be found, yet the current tour length is $2$.
 In this very unlikely scenario, we can conclude that the CPTP formulation does not admit any feasible solution before even solving the IP formulation.

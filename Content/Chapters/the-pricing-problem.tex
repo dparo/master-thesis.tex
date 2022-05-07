@@ -402,8 +402,12 @@ impose bounds and integrality condition
 on the number of traversal for edges $e \in E$ and vertices $i \in V$.
 The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
 If we ignore the GSECs and variable bounds, the IP model owns a total of $N + 2$ constraints.
-
-\medskip
+Constraints \labelcref{eq:cptp-gsec-constraints}
+can also be rewritten in a different form:
+\begin{equation}
+	\label{eq:cptp-gsec-constraints-v2}
+	\sum\limits_{e \in E(S)} x_e \le \sum\limits_{i \in S \setminus \Set*{j}} y_i \quad \forall j \in S,\ \forall S \subseteq V_0,\ |S| \ge 2.
+\end{equation}
 
 Note that model
 \labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
@@ -501,7 +505,8 @@ the GLM inequalities can be expressed as:
 \end{equation}
 
 The general idea behind multistar inequalities is the following.
-The vehicle visiting the customers in $S$ and crossing edge $\Set*{i, j}, i \in S, j \notin S$,
-must have sufficient capacity to serve customer $j$.
+The vehicle visiting the customers in $i \in S$
+and crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$,
+must have sufficient capacity to serve customer $j \notin S$.
 \textcite{letchford2006} shows that the GLM inequalities are efficiently separable in
-polynomial time by finding minimum $(s, t)$-cuts $\forall i \in V_0,\ t = 0$
+polynomial time by finding minimum $(s, t)$-cuts $\forall i \in V_0,\ t = 0$.
