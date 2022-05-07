@@ -238,7 +238,7 @@ Then any valid set $S \in V_0$ can be computed in the following way from a MIP i
 
 which implies that any major connected component that does not contain the depot node, can be used as a valid set $S \subseteq V_0$ for separating inequalities.
 If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution contains a single subtour, and does not violate any GSECs.
-A block diagram summarizing the integral separation is provided in Figure \ref{fig:integral-separation-block-diagram}.
+A block diagram summarizing the integral separation is provided in \cref{fig:integral-separation-block-diagram}.
 
 \begin{figure}[ht]
 	\centering
@@ -325,7 +325,7 @@ Any trivial implementation may "get stuck" in massively long loops pushing atomi
 Careful attention must be paid when developing one such algorithm.
 Good software engineering practices, such as unit testing, can help in spotting problematic implementations.
 
-A block diagram summarizing the fractioanl separation is provided in Figure \ref{fig:fractional-separation-block-diagram}.
+A block diagram summarizing the fractional separation is provided in \cref{fig:fractional-separation-block-diagram}.
 In the following sections we describe how we separate each inequality using the computed $S \subseteq V_0$.
 
 \begin{figure}[ht]
