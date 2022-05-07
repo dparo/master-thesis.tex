@@ -467,10 +467,10 @@ we obtain the following linear, but weaker, RCC:
 \begin{equation}
 	\label{eq:rcc-inequality}
 	\begin{split}
-		\sum\limits_{e \in \delta(S)} x_e \ge 2 \ceil*{\frac{q(S)}{Q}} - 2 \frac{\sum\limits_{i \in S} q_i \Expr*{1 - y_i}}{\ExprQr(S)} \quad \forall S \subseteq V_0,
+		\sum\limits_{e \in \delta(S)} x_e \ge 2 \Expr*{\ceil*{\frac{q(S)}{Q}} - \frac{\sum\limits_{i \in S} q_i \Expr*{1 - y_i}}{\ExprQr(S)}} \quad \forall S \subseteq V_0,
 	\end{split}
 \end{equation}
-where $\ExprQr(S) = \fmod{q(S)}{Q}$ denotes the remainder capacity associated to set $S \subseteq V$.
+where $\ExprQr(S) = \fmod{q(S)}{Q}$ is the remainder capacity associated to set $S \subseteq V$.
 Notice, that \cref{eq:rcc-inequality} guarantees a valid inequality for the CPTP
 only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
 Fortunately this is the case for most, if not all, routing problems considered in the literature.
