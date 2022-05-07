@@ -505,8 +505,9 @@ the GLM inequalities can be expressed as:
 \end{equation}
 
 The general idea behind multistar inequalities is the following.
-The vehicle visiting the customers in $i \in S$
-and crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$,
-must have sufficient capacity to serve customer $j \notin S$.
+The vehicle must have sufficient capacity to serve
+all the customers covered by $S$
+and all other customers outside $S$ which
+are connected to nodes in $S$ through a crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$.
 \textcite{letchford2006} shows that the GLM inequalities are efficiently separable in
 polynomial time by finding minimum $(s, t)$-cuts $\forall i \in V_0,\ t = 0$.
