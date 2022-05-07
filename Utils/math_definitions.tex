@@ -12,13 +12,13 @@
 \newcommand{\deltaminus}{\delta^-}
 
 \newcommand{\ExprQr}{Q_{\mathrm{R}}}
-\newcommand{\ExprCptpEdgesIncident}[2][j]{\sum_{#1 \in \delta(#2)}       x_{#2#1}}
+\newcommand{\ExprCptpEdgesIncident}[2][e]{\sum_{#1 \in \delta(#2)}       x_{#1}}
 
 \newcommand{\ExprCptpObjValDef}{\sum_{i \in E} c_{e} x_{e} - \sum_{i \in V} p_i y_i }
 
 \newcommand{\ExprCptpDemandSumWithin}[2][i]{\sum_{#1 \in #2} q_{#1} y_{#1}}
 \newcommand{\ExprCptpDemandSum}[1][i]{\sum_{#1 \in V} q_{#1} y_{#1}}
-\newcommand{\ExprCptpFlowExitingWithWeight}[2]{\sum_{\Tuple*{i, j} \in \delta(#1)} x_{ij} #2}
+\newcommand{\ExprCptpFlowExitingWithWeight}[2]{\sum_{e \in \delta(#1)} x_{e} #2}
 \newcommand{\ExprCptpFlowExiting}[1]{\ExprCptpFlowExitingWithWeight{#1}{}}
 
 \newcommand{\ExprCptpServedDemandWithWeight}[3]{\sum_{#2 \in #1} y_{#2} #3}

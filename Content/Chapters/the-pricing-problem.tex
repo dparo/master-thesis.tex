@@ -380,7 +380,7 @@ We can provide a formal mathematical description of the CPTP through an Integer 
 	                                   & \ExprCptpEdgesIncident{i}  = 2 y_i                & \quad \forall i \in V         \label{eq:cptp-flow-conservation-constraint}                                        \\
 	                                   & \ExprCptpFlowExiting{S} \ge 2 y_{i}               & \quad \EqStackTwo{\forall i \in S}{\forall S \subseteq V_0,\ \SetSize*{S} \ge 2} \label{eq:cptp-gsec-constraints} \\
 	                                   & x_{e}                   \in \Set*{0, 1}           & \quad \forall e \in E               \label{eq:cptp-x-mip-var-bounds}                                              \\
-	                                   & y_{i}                    \in \Set*{0, 1}          & \quad \forall i \in V,\ i \ge 1          \label{eq:cptp-y-mip-var-bounds}
+	                                   & y_{i}                    \in \Set*{0, 1}          & \quad \forall i \in V             \label{eq:cptp-y-mip-var-bounds}
 \end{align}
 where \labelcref{eq:cptp-obj-function} is the objective function to be minimized, i.e. the cost
 accounting for the total travel distance and the profit in serving a subset of the vertices.
