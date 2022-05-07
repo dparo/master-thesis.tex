@@ -404,11 +404,11 @@ If we ignore the GSECs and variable bounds, the IP model owns a total of $N + 2$
 \medskip
 
 Note that model
-\labelcref{eq:cptp-obj-function,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
+\labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
 does not permit for single-customer routes.
-Instead of modyfing the formulation to allow for this edge case,
-it may be simpler to leav the model unchanged.
-By employing a bruteforce algorithm in $\Theta(N)$ time we can scan for improving single-customer solutions.
+Instead of modifying the formulation to allow for this edge case,
+it may be simpler to leave the model unchanged.
+By employing a brute-force algorithm in $\Theta(N)$ time we can scan for improving single-customer solutions.
 After the resolution of the IP model,
 we check for improving single-customer solutions and,
 if any exist,
