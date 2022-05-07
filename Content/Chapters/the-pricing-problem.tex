@@ -418,16 +418,52 @@ we update the incumbent.
 \label{sec:cptp-additional-valid-inequalities}
 
 In this section we present additional valid inequalities for the CPTP problem.
-These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can heavily speed up the resolution process.
-Most of these cuts follow the presentation proposed in \cite{jepsen2014}.
-We will concentrate mostly on the most important ones, additional inequalities and information are treated in more detail in \cite{jepsen2014}.
+While these additional inequalities are not strictly necessary
+to ensure the correctness of the optimal solution,
+when embedded inside an efficient branch-and-cut framework,
+can massively improve the linear relaxation and thus speed up the resolution process.
+
+The inequalities that we present follow closely the presentation provided in \textcite{jepsen2014}.
+Our presentation is not meant to be inclusive of every valid inequalities for the CPTP.
+Instead, we will concentrate on the presentation of the most important ones
+that we've considered in the final implementation of our branch-and-cut pricer.
+Presentation of additional inequalities for the CPTP problem can be found in \textcite{jepsen2014}.
+
+
+\subsection{Rounded Capacity Constraints (RCC)}
+\label{sec:cptp-rcc}
+
+The Rounded Capacity Constraints, RCC for short, were first presented
+for the CVRP  in \cite{laporte1983}.
+
+Let $q(S) = \sum_{i \in S} q_i$ and $\ExprQrS = \fmod{q(S)}{Q}$ be respectively the total demand and remainder capacity associated to set $S \subseteq V_0$.
+The RCC inequalities can then be expressed as:
+
+\begin{equation}
+	\label{eq:rcc-inequality}
+	\begin{split}
+		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQrS}}   \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{\ExprQrS} \right) \quad \forall S \subseteq V_0
+	\end{split}
+\end{equation}
+
+Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a RCC inequality as a function of the set $S$.
+The upper bound on $\NNZ_{\mt{RCC}}(S)$ follows the same reasoning of equation \labelcref{eq:glm-nnz-ub}:
+
+\begin{equation}
+	\label{eq:rc-nnz-ub}
+	\NNZRCC(S) \le \floor*{\frac{\left( N + 1\right)^2}{4}} \quad \forall S \subseteq V_0
+\end{equation}
+
 
 \subsection{Generalized Large Multistar (GLM)}
+\label{sec:cptp-glm}
+
 The Generalized Large Multistar inequalities, GLM for short, were first proposed in \cite{gouveia1995} for the CVRP, and further discussed in \cite{letchford2006}.
 In the additional work of \cite{letchford2002}, the GLM cuts are further generalized in the so-called Knapsack Large Multistar (KLM) inequalities.
 The GLM inequalities can be expressed as:
 
-\begin{equation}\label{eq:glm-inequality-v1}
+\begin{equation}
+	\label{eq:glm-inequality-v1}
 	\begin{split}
 		\ExprCptpFlowExiting{S} \ge \frac{2}{Q} \Expr*{  \ExprCptpDemandSumWithin[i]{S} + \ExprCptpDemandServedOutsideA{S} } \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 	\end{split}
@@ -446,7 +482,8 @@ Therefore, $\sum_{i \in S} \sum_{j \in V_0 \setminus S} q_j  x_{ij}$ becomes
 
 Finally, equation \labelcref{eq:glm-inequality-v1} can be rewritten more concisely as:
 
-\begin{equation}\label{eq:glm-inequality}
+\begin{equation}
+	\label{eq:glm-inequality}
 	\begin{split}
 		\ExprCptpFlowExitingWithWeight{S}{\Expr*{1 - 2 \frac{q_j}{Q}}} - 2 	\ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{Q}}  \ge  0   \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
 	\end{split}
@@ -461,26 +498,7 @@ By using equation \labelcref{eq:glm-inequality} and the result obtained in \labe
 
 which is maximized when $\SetSize*{S} = \frac{N+1}{2}$.
 It is now easy to see that the following result holds
-\begin{equation}\label{eq:glm-nnz-ub}
+\begin{equation}
+	\label{eq:glm-nnz-ub}
 	\NNZGLM(S) \le \floor*{ \frac{\Expr*{N + 1}^2}{4}} \quad \forall S \subseteq V_0,\ \SetSize*{S} \ge 2
-\end{equation}
-
-\subsection{Rounded Capacity Constraints (RCC)}
-The Rounded Capacity Constraints, RCC for short, were first presented
-for the CVRP  in \cite{laporte1983}.
-
-Let $q(S) = \sum_{i \in S} q_i$ and $\ExprQrS = \fmod{q(S)}{Q}$ be respectively the total demand and remainder capacity associated to set $S \subseteq V_0$.
-The RCC inequalities can then be expressed as:
-
-\begin{equation}\label{eq:rcc-inequality}
-	\begin{split}
-		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQrS}}   \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{\ExprQrS} \right) \quad \forall S \subseteq V_0
-	\end{split}
-\end{equation}
-
-Let $\NNZGLM(S)$ denote the number of non-zero binary variables participating in a RCC inequality as a function of the set $S$.
-The upper bound on $\NNZ_{\mt{RCC}}(S)$ follows the same reasoning of equation \labelcref{eq:glm-nnz-ub}:
-
-\begin{equation}\label{eq:rc-nnz-ub}
-	\NNZRCC(S) \le \floor*{\frac{\left( N + 1\right)^2}{4}} \quad \forall S \subseteq V_0
 \end{equation}
