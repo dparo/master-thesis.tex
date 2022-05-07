@@ -147,7 +147,7 @@ We also define $E(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in E \mid i, j \in S}
 
 Let $q_{i} \in \R,\ q_{i} \ge 0 \quad \forall i \in V$ denote the demand function, which represent the required demand that need to be served for vertex $i \in V$.
 For convenience, we fix a fictitious demand for the depot: $q_0 = 0$.
-Given a set $S \subseteq V$, we define $q(S) = \sum_{i \in S} q_i$ as the total demand of the set $S$.
+Given a set $S \subseteq V$, we define $q(S) = \sum_{i \in S} q_i$ as the total demand of the set $S \subseteq V$.
 Let $c_{ij} \in \R, c_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 The loop arcs $\Set*{i, i} \notin E$ in CVRP are traditionally not allowed, thus we fix $c_{ii} = \infty$.
 We assume a Euclidean CVRP problem, i.e. the distance function is symmetric $c_e = c_{ij} = c_{ji}$ and satisfies the triangle inequality $c_{ij} \le c_{ih} + c_{hj}$.
