@@ -52,12 +52,12 @@ The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0, 
 In this section we present the full static model that we implemented.
 
 \begin{align}
-	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                                                       \\
-	                                   & y_0 = 1                                  &                                 \\
-	                                   & B \le   \ExprCptpDemandSum   \le Q       &                                 \\
-	                                   & \ExprCptpEdgesIncident{i}    = 2 y_i     & \quad \forall i \in V           \\
-	                                   & x_{ij}                   \in \Set*{0, 1} & \quad \forall (i, j) \in E      \\
-	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V,\ i \ge 1
+	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                                             \\
+	                                   & y_0 = 1                                  &                       \\
+	                                   & B \le   \ExprCptpDemandSum   \le Q       &                       \\
+	                                   & \ExprCptpEdgesIncident{i}    = 2 y_i     & \quad \forall i \in V \\
+	                                   & x_{e}                   \in \Set*{0, 1}  & \quad \forall e \in E \\
+	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V
 \end{align}
 
 which follows closely the full IP formulation presented in \eqref{eq:cptp-obj-function} without the GSECs.
