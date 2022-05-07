@@ -332,7 +332,8 @@ problems with profits (TSPP) (see \cite{feillet2005}),
 and therefore presents many similarities with other very well known
 problems such as:
 (i) the Orienteering Problem (OP) \parencite{golden1987, laporte1990}
-and (ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995}.
+(ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995},
+(iii) the Capacitated m-Ring-Star Problem (CmRSP) \parencite{baldacci2007capacitated}.
 See \textcite{letchford2013} for the Steiner extension of these problem.
 The CPTP is an NP-hard combinatorial optimization delivery problem,
 in which,
@@ -363,6 +364,7 @@ are \cite{jepsen2011, jepsen2014}.
 Our CPTP description follows closely the formulation provided in \textcite{jepsen2014}.
 For describing the problem's formulation we will extend the CVRP mathematical notation
 previously introduced in \cref{sec:intro-cvrp-mathematical-notation}.
+
 Let $p_i \in \R,\ p \ge 0$ denote the profit associated in visiting a vertex $i \in V$.
 The profit function is directly linked to the dual variables $\pi \in \R^N$ associated to
 the RMP's constraints of \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
@@ -420,8 +422,8 @@ we update the incumbent.
 In this section we present additional valid inequalities for the CPTP problem.
 While these additional inequalities are not strictly necessary
 to ensure the correctness of the optimal solution,
-when embedded inside an efficient branch-and-cut framework,
-can massively improve the linear relaxation and thus speed up the resolution process.
+when embedded inside an efficient branch-and-cut framework through efficient separation techniques,
+can massively strengtehn the linear relaxation and thus speed up the resolution process.
 
 The inequalities that we present follow closely the presentation provided in \textcite{jepsen2014}.
 Our presentation is not meant to be inclusive of every valid inequalities for the CPTP.
@@ -437,20 +439,38 @@ The Rounded Capacity Constraints, RCC for short, were first presented
 for the CVRP  in \cite{laporte1983}
 and were already presented in \cref{sec:intro-cvrp-two-index-flow-formulation}.
 
-Let $q(S) = \sum_{i \in S} q_i$ and $\ExprQr(S) = \fmod{q(S)}{Q}$
-be respectively the total demand and remainder capacity associated to set $S \subseteq V$.
-The RCC inequalities can be extended to the CPTP problem as:
+Recall that $q(S) = \sum_{i \in S} q_i$ represents
+the total demand in serving all vertices in set $S \subseteq V$.
+The RCPP can be expressed for the CPTP as:
 \begin{equation}
-	\ExprCptpFlowExiting{S} \ge \ceil*{\frac{q(S)}{Q}} \quad \forall S \subseteq V_0
+	\label{eq:cptp-rcc-inequality-original}
+	\ExprCptpFlowExiting{S} \ge \ceil*{\frac{\sum\limits_{i \in S} q_i y_i}{Q}} \quad \forall S \subseteq V_0.
 \end{equation}
+Unfortunately, the ceil function is a non-linear operation and therefore
+such constraint cannot be inserted in most MIP solvers.
 
+Fortunately, \textcite{baldacci2007capacitated} provides a way to
+combat this undesirable behavior at the cost of obtaining a looser bound of the RCC.
+Namely, given $\alpha, \beta, \gamma \in Z_+$, with $\alpha > \gamma$ and
+$\fmod{\alpha}{\gamma} \ne 0$, the following result holds:
+\begin{equation}
+	\label{eq:baldacci-rcc-theorem-weaker-bound}
+	\ceil*{\frac{\alpha - \beta}{\gamma}} \ge \ceil*{\frac{\alpha}{\gamma}} - \frac{\beta}{\fmod{\alpha}{\gamma}}.
+\end{equation}
+\textcite{jepsen2014} point out that \cref{eq:baldacci-rcc-theorem-weaker-bound}
+holds even when $\alpha > \gamma$ is not satisfied.
+By picking $\alpha = q(S) = \sum_{i \in S} q_i,\ \beta = \sum_{i \in S} q_i\Expr*{1 - y_i},\ \gamma = Q$,
+we obtain the following linear, but weaker, RCC:
 \begin{equation}
 	\label{eq:rcc-inequality}
 	\begin{split}
-		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQr(S)}}   \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{\ExprQr} \right) \quad \forall S \subseteq V_0
+		\sum\limits_{e \in \delta(S)} x_e \ge 2 \ceil*{\frac{q(S)}{Q}} - 2 \frac{\sum\limits_{i \in S} q_i \Expr*{1 - y_i}}{\ExprQr(S)} \quad \forall S \subseteq V_0,
 	\end{split}
 \end{equation}
-
+where $\ExprQr(S) = \fmod{q(S)}{Q}$ denotes the remainder capacity associated to set $S \subseteq V$.
+Notice, that \cref{eq:rcc-inequality} guarantees a valid inequality for the CPTP
+only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
+Fortunately this is the case for most, if not all, routing problems considered in the literature.
 
 \subsection{Generalized Large Multistar (GLM)}
 \label{sec:cptp-glm}
