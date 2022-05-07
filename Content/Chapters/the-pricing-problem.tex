@@ -441,16 +441,19 @@ and were already presented in \cref{sec:intro-cvrp-two-index-flow-formulation}.
 
 Recall that $q(S) = \sum_{i \in S} q_i$ represents
 the total demand in serving all vertices in set $S \subseteq V$.
-The RCPP can be expressed for the CPTP as:
+The RCC constraints they function as a capacity constraint
+by imposing that any customer set $S \subseteq V_0$ is crossed by a number of edges
+not smaller by the number of trucks that would be necessary to serve all customers in $S \subseteq V_0$.
+The RCC can be readjusted to CPTP problem \parencite{jepsen2014}:
 \begin{equation}
 	\label{eq:cptp-rcc-inequality-original}
-	\ExprCptpFlowExiting{S} \ge \ceil*{\frac{\sum\limits_{i \in S} q_i y_i}{Q}} \quad \forall S \subseteq V_0.
+	\ExprCptpFlowExiting{S} \ge 2 \ceil*{\frac{\sum\limits_{i \in S} q_i y_i}{Q}} \quad \forall S \subseteq V_0.
 \end{equation}
 Unfortunately, the ceil function is a non-linear operation and therefore
 such constraint cannot be inserted in most MIP solvers.
 
 Fortunately, \textcite{baldacci2007capacitated} provides a way to
-combat this undesirable behavior at the cost of obtaining a looser bound of the RCC.
+combat this undesirable aspect at the cost of obtaining a looser bound of the RCC.
 Namely, given $\alpha, \beta, \gamma \in Z_+$, with $\alpha > \gamma$ and
 $\fmod{\alpha}{\gamma} \ne 0$, the following result holds:
 \begin{equation}
