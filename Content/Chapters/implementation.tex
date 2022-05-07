@@ -25,7 +25,29 @@ may provide at least two benefits: (i) parallelization and
 efficient use of the machine' multiple cores basically for free,
 (ii) take advantage of all the engineering effort that went in creating an efficient MIP solver.
 
+
+\subsection{Additional bounds}
+\label{sec:impl-additional-bounds}
+
+\mytodo{Merge this section into the full static model description}
+
+\subsubsection{Resource Consumption Lower Bound}
+\label{sec:impl-resource-consumption-lower-bound}
+
+Although non strictly-necessary,
+it is possible to improve the linear relaxation of the IP model
+by introducing a static constraint modeling a lower bound for the resource consumption:
+
+\begin{equation}\label{eq:resource-lower-bound-constraint}
+	\ExprCptpDemandSum[i]   \ge B
+\end{equation}
+
+where $B \in \R, B \ge 0$ is a constant and represents the required minimum served demand.
+The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0, u \ne v$ represent the least two demanding customers among all the customers, i.e. $q_u \le q_v \le q_i \quad \forall i \in V_0,\ i \ne u, v$.
+
+
 \section{Full static model}
+\label{sec:impl-full-static-model}
 
 In this section we present the full static model that we implemented.
 
@@ -42,8 +64,11 @@ which follows closely the full IP formulation presented in \eqref{eq:cptp-obj-fu
 We also added a non strictly necessary lower bound on the served demand, which details were already discussed earlier in Section \ref{sec:demand-lower-bound}.
 
 \section{Cutoff values}
+\label{sec:impl-cutoff-values}
 
 \subsection{Upper cutoff value}
+\label{sec:impl-upper-cutoff-value}
+
 Since we're interested in solving the CPTP in the context of pricing for the CVRP, we're only searching for tours achieving a strictly negative objective value.
 Therefore, we can specify an upper cutoff for the objective function $z_\mt{CPTP}(x, y)$:
 
@@ -56,6 +81,8 @@ where $\varepsilon_{\mt{ct}} \in \R$ is the upper cutoff tolerance, in our imple
 The upper cutoff value can improve the linear relaxation and reduce the number of branch and bound nodes that need to be explored, especially when the MIP solver cannot infer any good starting primal solution.
 
 \subsection{Lower cutoff value}
+\label{sec:impl-lower-cutoff-value}
+
 A good lower cutoff value on the objective function can improve the linear relaxation, and reduce the number of branch and bounds nodes that need to be explored.
 When combined with an upper cutoff value, and a good set of warm start solutions it can help to start the solution process with an already relatively closed gap.
 
@@ -72,6 +99,7 @@ Instead, we opted for a much simpler approach:
 which describes a very weak lower bound, and in pretty much all cases, is easily improved in the preprocessing stage of a standard MIP solver.
 
 \section{Warm start}
+\label{sec:impl-warm-start}
 
 Heuristic algorithms can be used to provide good feasible primal solutions to the MIP
 prior to solving the root node.
@@ -82,6 +110,8 @@ Much work was dedicated in studying good heuristics for the TSP, see \cite{rosen
 In the remainder of this section we explain the implemented warm start procedure which is characterized by two stage: a constructive insertion heuristic stage followed by a 2-OPT refinement stage.
 
 \subsection{Insertion heuristic}
+\label{sec:impl-insertion-heuristic}
+
 \cite{rosenkrantz1977} do a fantastic job describing the insertion heuristic algorithm for the TSP and various facets in which it can be implemented.
 The insertion heuristic algorithm can construct a new feasible primal solution in $\Theta(N^2)$ time.
 In this section, we will focus on adapting the insertion heuristic for the TSP so that it can be applied to CPTP problems.
@@ -124,6 +154,8 @@ In our implementation we picked $s = 0$ and $t \in V_0$, such that $q_s + q_t \l
 This allows us to generate $O(N)$ good feasible primal solutions using insertion heuristic in $O(N^3)$ time.
 
 \subsection{2-OPT refinement}
+\label{sec:impl-2opt-refinement}
+
 In our implementation, each solution produced from the insertion heuristic is further improved using a 2-OPT refinement procedure.
 The 2-OPT algorithm is a heuristic local-search hill-climbing procedure proposed originally for the TSP in \cite{flood1956}, \cite{croes1958}.
 
@@ -148,6 +180,7 @@ After the 2-OPT exchange it is necessary to reverse part of the tour characteriz
 In our implementation we scan for vertices $a, b$ achieving the cheapest exchange, i.e. for which $\Delta(a, b)$ is minimized across all possible valid choices of $a, b$.
 
 \section{Separation techniques}
+\label{sec:impl-separation-techniques}
 
 \begin{comment}
 \cite{ralphs2003}
@@ -169,7 +202,10 @@ All the cuts that we implemented, are backed by the same shared separation proce
 In the next two sections, we describe the common separation procedure used to find good $S \subseteq V_0$ sets.
 Then for each cut, we describe: how $S$ is used for generating the inequality and when each cut is reported to the MIP solver or when it is, instead, ignored.
 
-\subsection{Integral separation}\label{sec:integral-separation}
+\subsection{Integral separation}
+\label{sec:impl-integral-separation}
+
+
 The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
 Assume that the MIP solver finds an optimal integer solution $x^* \in \Set*{0, 1}, y^* \in \Set*{0, 1}$ that violates a GSEC constraint.
 If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
@@ -211,7 +247,9 @@ A block diagram summarizing the integral separation is provided in Figure \ref{f
 	\label{fig:integral-separation-block-diagram}
 \end{figure}
 
-\subsection{Fractional separation}\label{sec:fractional-separation}
+\subsection{Fractional separation}
+\label{sec:impl-fractional-separation}
+
 Fractional separation is usually much harder and more computationally expensive to perform compared to integral separation.
 A valid set $S \subseteq V_0$ can be separated by solving a max-flow problem between two arbitrary source and sink vertices $s, t \in V,\ s \ne t$ on a fully connected directed graph.
 Fractional separation is modeled through a directed symmetric flow network, where $x^*_{ij}$, i.e. the current fractional solution, constitutes the capacities of the flow network.
@@ -298,8 +336,11 @@ In the following sections we describe how we separate each inequality using the 
 \end{figure}
 
 \subsection{GSEC separation}
+\label{sec:impl-gsec-separation}
 
-\subsubsection{GSEC integral separation}\label{sec:gsec-integral-separation}
+\subsubsection{GSEC integral separation}
+\label{sec:impl-gsec-integral-separation}
+
 This is the most important separation technique, since it is mandatory to achieve feasible solutions for the CPTP problem.
 
 By recalling the GSEC inequality as presented in Equation \eqref{eq:cptp-gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-separation}, and in Algorithm \ref{algo:cc-dfs} we can pick $S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0$.
@@ -330,7 +371,8 @@ A complete pseudo-code is provided in Algorithm \ref{algo:gsec-integral-sep}.
 	\input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
-\subsubsection{GSEC fractional separation}\label{sec:gsec-fractional-separation}
+\subsubsection{GSEC fractional separation}
+\label{sec:impl-gsec-fractional-separation}
 
 By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the discussion about separating fractional $S \subseteq V_0$ in Section \ref{sec:fractional-separation}, it is easy to see that given a fractional solution instance of the form $0 \le x^*_{ij} \le 1,\ 0 \le y^*_{i} \le 1$ we have that:
 
@@ -375,7 +417,9 @@ The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 	\input{Content/Chapters/Snippets/gsec-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
-\subsection{GLM separation}\label{sec:glm-separation}
+\subsection{GLM separation}
+\label{sec:impl-glm-separation}
+
 \begin{quote}
 	The idea in the GLM is to consider the number of vehicles needed to service
 	the set S. A valid lower bound for this is the demand of the set plus any
@@ -434,7 +478,9 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\input{Content/Chapters/Snippets/glm-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
-\subsection{RCC separation}\label{sec:rcc-separation}
+\subsection{RCC separation}
+\label{sec:impl-rcc-separation}
+
 In this section we describe the separation of the RCC inequalities, as they were defined in Equation \eqref{eq:rcc-inequality}.
 In our work we implemented both the integral and the fractional separation for this family of inequalities.
 However, we will omit the detail of the integral separation in this section, since they follow naturally from ideas explained in previous sections.

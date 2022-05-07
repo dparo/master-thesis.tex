@@ -414,22 +414,8 @@ we check for improving single-customer solutions and,
 if any exist,
 we update the incumbent.
 
-
-\subsection{Additional bounds}
-
-\subsubsection{Resource Consumption Lower Bound}\label{sec:demand-lower-bound}
-Although non strictly-necessary,
-it is possible to improve the linear relaxation of the IP model
-by introducing a static constraint modeling a lower bound for the resource consumption:
-
-\begin{equation}\label{eq:resource-lower-bound-constraint}
-	\ExprCptpDemandSum[i]   \ge B
-\end{equation}
-
-where $B \in \R, B \ge 0$ is a constant and represents the required minimum served demand.
-The constant $B$ value can be computed as $B = q_u + q_v$, where $u, v \in V_0, u \ne v$ represent the least two demanding customers among all the customers, i.e. $q_u \le q_v \le q_i \quad \forall i \in V_0,\ i \ne u, v$.
-
-\section{Additional Valid Inequalities}\label{sec:additional-valid-inequalities}
+\section{Additional Valid Inequalities}
+\label{sec:cptp-additional-valid-inequalities}
 
 In this section we present additional valid inequalities for the CPTP problem.
 These inequalities are not strictly required to solve a CPTP, but when embedded inside a Branch and Cut framework can heavily speed up the resolution process.
