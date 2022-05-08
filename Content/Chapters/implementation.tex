@@ -26,7 +26,6 @@ may provide at least two benefits: (i) parallelization and
 efficient use of the machine' multiple cores basically for free,
 (ii) take advantage of all the engineering effort that went in creating an efficient MIP solver.
 
-
 \section{Full static model}
 \label{sec:impl-full-static-model}
 
@@ -173,7 +172,6 @@ Then for each cut, we describe: how $S$ is used for generating the inequality an
 
 \subsection{Integral separation}
 \label{sec:impl-integral-separation}
-
 
 The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
 Assume that the MIP solver finds an optimal integer solution $x^* \in \Set*{0, 1}, y^* \in \Set*{0, 1}$ that violates a GSEC constraint.
@@ -386,6 +384,48 @@ The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 	\input{Content/Chapters/Snippets/gsec-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
+\subsection{RCC separation}
+\label{sec:impl-rcc-separation}
+
+In this section we describe the separation of the RCC inequalities, as they were defined in Equation \eqref{eq:rcc-inequality}.
+In our work we implemented both the integral and the fractional separation for this family of inequalities.
+However, we will omit the detail of the integral separation in this section, since they follow naturally from ideas explained in previous sections.
+
+The fractional separation of RCC inequalities is not any different from the separation of the GLM fractional inequalities presented in Section \ref{sec:glm-separation}.
+The only difference is that the set $S \subseteq V_0$, does not need to satisfy $\SetSize*{S} \ge 2$.
+
+Therefore, a set $\SetSize*{S} \subseteq V_0$ can separate a single RCC cut if the following inequality
+
+\begin{equation}
+	\begin{split}
+		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQr(S)}}    \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{Q_{\mathrm{R}}(S)} \right) - \varepsilon_{\mt{RCC}}
+	\end{split}
+\end{equation}
+
+is violated.
+The $\varepsilon_{\mt{RCC}}$ is a constant which denotes the violation tolerance for the RCC fractional separation.
+In our implementation we picked $\varepsilon_{\mt{RCC}} = 0.05$.
+We can separate $O(N^2)$ RCC cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
+
+The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:rcc-integral-sep}, \ref{algo:rcc-frac-sep} respectively.
+
+\begin{algorithm}
+	\caption{An algorithm for separating RCC integral inequalities for the CPTP}
+	\label{algo:rcc-integral-sep}
+	\KwResult{$n_c$: number of subtours formed}
+	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+	\input{Content/Chapters/Snippets/rcc-integral-sep-pseudoalgo.tex}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{An algorithm for separating RCC fractional inequalities for the CPTP}
+	\label{algo:rcc-frac-sep}
+	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+	\input{Content/Chapters/Snippets/rcc-frac-sep-pseudoalgo.tex}
+\end{algorithm}
+
 \subsection{GLM separation}
 \label{sec:impl-glm-separation}
 
@@ -445,46 +485,4 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
 	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
 	\input{Content/Chapters/Snippets/glm-frac-sep-pseudoalgo.tex}
-\end{algorithm}
-
-\subsection{RCC separation}
-\label{sec:impl-rcc-separation}
-
-In this section we describe the separation of the RCC inequalities, as they were defined in Equation \eqref{eq:rcc-inequality}.
-In our work we implemented both the integral and the fractional separation for this family of inequalities.
-However, we will omit the detail of the integral separation in this section, since they follow naturally from ideas explained in previous sections.
-
-The fractional separation of RCC inequalities is not any different from the separation of the GLM fractional inequalities presented in Section \ref{sec:glm-separation}.
-The only difference is that the set $S \subseteq V_0$, does not need to satisfy $\SetSize*{S} \ge 2$.
-
-Therefore, a set $\SetSize*{S} \subseteq V_0$ can separate a single RCC cut if the following inequality
-
-\begin{equation}
-	\begin{split}
-		\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQr(S)}}    \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{Q_{\mathrm{R}}(S)} \right) - \varepsilon_{\mt{RCC}}
-	\end{split}
-\end{equation}
-
-is violated.
-The $\varepsilon_{\mt{RCC}}$ is a constant which denotes the violation tolerance for the RCC fractional separation.
-In our implementation we picked $\varepsilon_{\mt{RCC}} = 0.05$.
-We can separate $O(N^2)$ RCC cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
-
-The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:rcc-integral-sep}, \ref{algo:rcc-frac-sep} respectively.
-
-\begin{algorithm}
-	\caption{An algorithm for separating RCC integral inequalities for the CPTP}
-	\label{algo:rcc-integral-sep}
-	\KwResult{$n_c$: number of subtours formed}
-	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
-	\input{Content/Chapters/Snippets/rcc-integral-sep-pseudoalgo.tex}
-\end{algorithm}
-
-\begin{algorithm}
-	\caption{An algorithm for separating RCC fractional inequalities for the CPTP}
-	\label{algo:rcc-frac-sep}
-	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
-	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
-	\input{Content/Chapters/Snippets/rcc-frac-sep-pseudoalgo.tex}
 \end{algorithm}
