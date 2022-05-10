@@ -270,6 +270,8 @@ several fractional separation heuristics for the CCC.
 However,
 an exact CCC separation is required for integral solutions
 to ensure the correctness of the optimal solution.
+\textcite{lysgaard2003cvrpsep} implements efficient
+heuristics for separating the CCC of \cref{eq:two-index-flow-ccc}.
 
 
 \subsection{The three-index arc flow formulation}
@@ -817,7 +819,7 @@ The RCC were first presented in \textcite{laporte1983} for the CVRP 2F formulati
 
 The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990} for the CVRP with unit demands,
 extended to the generic CVRP in \textcite{gouveia1995, achuthan1998},
-and later generalized in the so called Generalized Large Multistart (GLM) for the CVRP in \textcite{letchford2002} .
+and later generalized in the so called Generalized Large Multistart (GLM) for the CVRP in \textcite{letchford2002,letchford2006}.
 Given two disjoint sets of customers $A, B \subseteq V_0 \mid A \cap B = \emptyset$,
 and $\alpha, \beta, \gamma \in \R$,
 a multistar inequality is described in the 2F formulation through a
