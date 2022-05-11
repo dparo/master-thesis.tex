@@ -22,20 +22,21 @@ For an introduction to CPLEX refer to \Cref{sec:introduction-to-cplex}.
 
 Compared to tailored algorithms (such as the labeling algorithm),
 it is clear that using a modern well-developed MIP solver, such as CPLEX,
-may provide at least two benefits: (i) parallelization and
-efficient use of the machine' multiple cores basically for free,
+may provide at least two benefits:
+(i) parallelization and efficient use of the machine' multiple cores basically for free,
 (ii) take advantage of all the engineering effort that went in creating an efficient MIP solver.
 
 \section{Full static model}
 \label{sec:impl-full-static-model}
 
-In this section we present the full static model that we implemented.
-We've implemented the CPTP formulation of
-\labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
-excluding the GSECs of \cref{eq:cptp-gsec-constraints}.
-The GSECs we will be added during the running-time of the branch-and-cut algorithm
+This section describes the full static model that we've implemented,
+which is based on the CPTP formulation of \labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
+excluding the GSECs of \cref{eq:cptp-gsec-constraints};
+see discussion in \cref{sec:the-capacitated-profitable-tour-problem} for more details.
+To guarantee the correctness of the approach,
+the GSECs will be dynamically generated inserted during the running-time of the branch-and-cut algorithm
 through an exact separation procedure.
-The full static model is:
+We've implemented the following static Integer Programme (IP) model:
 \begin{align}
 	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                                              \\
 	                                   & y_0 = 1                                  &                        \\
@@ -58,10 +59,14 @@ Therefore, we can specify an upper cutoff for the objective function $z_\mt{CPTP
 	z_\mt{CPTP}(x, y) \le 0 - \varepsilon_{\mt{ct}}
 \end{equation}
 
-where $\varepsilon_{\mt{ct}} \in \R$ is the upper cutoff tolerance, in our implementation we picked $\varepsilon_{\mt{ct}} = 10^{-6}$, which is the default used in BapCod.
-
-The upper cutoff value reduces the number of branch and bound nodes that need to be explored,
-when the branch-and-bound algorithm is invoked.
+where $\varepsilon_{\mt{ct}} \in \R+$ is the upper cutoff tolerance.
+The upper cutoff tolerance biases the threshold at which the produced
+route can be considered a valided reduced cost column.
+A non-zero value for $\varepsilon_{\mt{ct}} \in \R$ avoids numerical
+stability problems caused by the usage of floating point arithmetic
+employed in BPC implementations.
+In our case we picked $\varepsilon_{\mt{ct}} = 10^{-6}$ which
+is the default value used in the BPC framework of \textcite{sadykov2021}.
 
 \section{Warm start}
 \label{sec:impl-warm-start}
