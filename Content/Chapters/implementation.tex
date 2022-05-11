@@ -350,6 +350,8 @@ While there may be other ways to separate sets $S \subseteq V_0$, the described 
 This is very convenient because a single separation procedure for $S \subseteq V_0$ can be shared across all the inequalities, thus reducing computation time.
 Other kinds of inequalities, which are not considered in this thesis, may benefit from other more elaborate separation techniques.
 
+For conciseness reasons, we will not report the pseudocode of
+the max-flow and Gomory-Hu tree algorithms.
 We conclude the section by pointing out that writing fast and correct max-flow algorithms that operate with floating point arithmetic can be difficult and error-prone, since most operations become non-exact.
 Any trivial implementation may "get stuck" in massively long loops pushing atomically small quantity of flows.
 Careful attention must be paid when developing one such algorithm.
