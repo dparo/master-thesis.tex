@@ -34,7 +34,8 @@ which is based on the CPTP formulation of \labelcref{eq:cptp-obj-function,eq:cpt
 excluding the GSECs of \cref{eq:cptp-gsec-constraints};
 see discussion in \cref{sec:the-capacitated-profitable-tour-problem} for more details.
 To guarantee the correctness of the approach,
-the GSECs will be dynamically generated inserted during the running-time of the branch-and-cut algorithm
+the GSECs will be dynamically generated and inserted
+during the running-time of the branch-and-cut algorithm
 through an exact separation procedure.
 We've implemented the following static Integer Programme (IP) model:
 \begin{align}
@@ -85,45 +86,67 @@ In the remainder of this section we explain the implemented warm start procedure
 \subsection{Insertion heuristic}
 \label{sec:impl-insertion-heuristic}
 
-\cite{rosenkrantz1977} do a fantastic job describing the insertion heuristic algorithm for the TSP and various facets in which it can be implemented.
-The insertion heuristic algorithm can construct a new feasible primal solution in $\Theta(N^2)$ time.
-In this section, we will focus on adapting the insertion heuristic for the TSP so that it can be applied to CPTP problems.
+\cite{rosenkrantz1977} do a fantastic job describing the insertion heuristic algorithm
+for the TSP and various facets in which it can be implemented.
+The insertion heuristic algorithm
+can construct a new feasible primal solution in $\Theta(N^2)$ time.
+In this section,
+we will focus on adapting the insertion heuristic for the TSP so that it can be applied to CPTP problems.
 
 \medskip
 
-Start by selecting two distinct nodes $s, t \in V,\ q_s + q_t \le Q$ to form an initial tour back-to-back.
+Start by selecting two distinct nodes $u, v \in V,\ q_u + q_v \le Q$
+to form an initial tour back-to-back $p = \Tuple*{u, v}$.
 
-The insertion heuristic algorithm works iteratively where, at each step of the iteration, we have an almost feasible CPTP tour (since the depot node might not yet be covered).
-At the end of the whole algorithm, the final obtained tour will be CPTP feasible (if any exist).
-Let's define $Q_t \le Q$ as the total demand served in the current tour.
-At each iteration, choose a vertex $a$ that belongs to the current tour and a vertex $h$ which is not yet part of the tour.
+The insertion heuristic is an iterative approach,
+where at each step of the iteration
+an almost-feasible CPTP tour is available.
+If the CPTP admits a single feasible solution,
+when all the iterations of the insertion heuristic are exhausted,
+the final available tour will surely be CPTP feasible.
+Let's define $q(p) \le Q$ as the total demand served
+in the tour available at each iteration.
+At each iteration,
+choose a vertex $a \in p$ and a vertex $h \notin p$.
 Let's define $b$ as the successor of node $a$ in the current tour.
-The idea is to try to insert $h$ in the current tour, by deleting edge $(a, b)$, and inserting edges $(a, h),\ (h, b)$ but only if $h$ must be inserted or improves over the current tour.
-Let's define the extra mileage as
-:
+The idea is to try to insert $h$ in the tour,
+by deleting edge $\Tuple*{a, b}$
+and inserting edges $\Tuple*{a, h},\ \Tuple*{h, b}$.
+The insertion operation should be performed only
+if the $h$ insertion is mandatory to restore feasibility,
+or alternatively if it's insertion lowers the route cost.
+More formally, let's define the extra mileage as:
 \begin{equation}
 	\Delta_m(h, a) =
 	\begin{cases}
-		d_{ah} + d_{hb} - d_{ab} - p_h, & \texttt{if } Q_t + q_h \le Q \\
-		\infty,                         & \texttt{otherwise}
+		d_{ah} + d_{hb} - d_{ab} - p_h, & \texttt{if } q(p) + q_h \le Q \\
+		\infty,                         & \texttt{otherwise},
 	\end{cases}
 \end{equation}
-
-which represents the delta cost in inserting $h$ as the successor of $a$.
-A node $h$ is a good candidate for insertion if at least one of the following conditions is true:
+which represents the delta cost in inserting $h$ as the successor of node $a$.
+A vertex $h \in V$ is a good candidate for insertion
+if at least one of the following conditions is true:
 \begin{enumerate}
-	\item $\Delta_m(h, a) < 0$, i.e. inserting $h$ improves over the current tour.
+	\item $\Delta_m(h, a) < 0$, i.e. inserting $h$ improves over the current route.
 	\item $h = 0$, i.e. $h$ is the depot node. The depot node at some point must be inserted regardless whether it is improving or not.
-	      Note that by convention we have defined $q_0 = 0$, therefore $Q_t + q_0 \le Q$ is always satisfied for the depot node.
-	\item The number of visited nodes in the current tour is $2$ and $Q_t + q_h \le Q$.
+	      Note that by convention we have defined $q_0 = 0$, therefore $q(p) + q_0 \le Q$ is always satisfied for the depot node.
+	\item The number of visited nodes in the current tour is $2$ and $q(p) + q_h \le Q$.
 \end{enumerate}
 
+Prior to insertion a CPTP tour has the form $p = \Tuple*{\dots, a, b, \dots}$.
+After the insertion operation successfully completes: $p = \Tuple*{\dots, a, h, b, \dots}$.
 In our implementation we employed the cheapest insertion scheme, therefore the pair $(h, a)$ for the current insertion iteration is picked such that it minimizes as much as possible the extra mileage $\Delta_m(h, a)$.
 The iteration stops when no more valid $h$ vertices can be found for insertion.
-It may happen that no valid $h$ can be found, yet the current tour length is $2$.
-In this very unlikely scenario, we can conclude that the CPTP formulation does not admit any feasible solution before even solving the IP formulation.
+At the end of the insertion heuristic, $p$ is a CPTP feasible tour visiting the depot node.
+Note that the depot node may not necessarily be the first element of the tour: $p_0 \ne 0$.
+A simple circular rotation is sufficient to restore the condition $p_0 = 0$.
+It may happen that no valid $h$ can be found,
+yet the current tour length is $2$.
+In this very unlikely scenario,
+we can conclude that the CPTP formulation does not admit any feasible solution
+before even solving the IP formulation.
 
-In our implementation we picked $s = 0$ and $t \in V_0$, such that $q_s + q_t \le Q$.
+In our implementation we picked $u = 0$ and $v \in V_0$, such that $q_u + q_v \le Q$.
 This allows us to generate $O(N)$ good feasible primal solutions using insertion heuristic in $O(N^3)$ time.
 
 \subsection{2-OPT refinement}
@@ -137,9 +160,10 @@ Unfortunately, as it is pointed out in \cite{chandra1999}, the 2-OPT algorithm m
 Although this is bad news, it is also worth pointing out that this rarely occur in practice, as the probabilistic average number of iterations required for 2-OPT is at most polynomial.
 
 Each iteration of the 2-OPT procedure searches for an existing edge crossing, and if any exists, it performs a 2-OPT exchange to undo it.
-A 2-OPT exchange is a primal operation: it always maintain the original feasibility, therefore if the 2-OPT algorithm is applied on a feasible solution, it will remain feasible at the end of the whole procedure.
+A 2-OPT exchange is a primal operation: it always maintains the original feasibility, therefore if the 2-OPT algorithm is applied on a feasible solution, it will remain feasible at the end of the whole procedure.
 We briefly describe the 2-OPT exchange.
-Let $a, b \in V$ be two vertices visited in the current tour, and let's use $a_s, b_s \in V$ to denote respectively the successor of $a$ and $b$ in the current tour.
+Let $a, b \in V$ be two vertices visited in the current tour.
+Let $a_s, b_s \in V$ denote respectively the successor of $a$ and $b$ in the current tour.
 A 2-OPT exchange removes edges $(a, a_s)$, $(b, b_s)$ in favor of $(a, b)$, $(a_s, b_s)$ but only if the delta distance defined as:
 
 \begin{equation}
@@ -151,6 +175,12 @@ If this is the case, performing a 2-OPT exchange over vertices $(a, b)$ can impr
 After the 2-OPT exchange it is necessary to reverse part of the tour characterized from the head $a_s$ and tail $b$: $[a_s, \dots, b]$.
 
 In our implementation we scan for vertices $a, b$ achieving the cheapest exchange, i.e. for which $\Delta(a, b)$ is minimized across all possible valid choices of $a, b$.
+
+\section{Branching}
+\label{sec:impl-branching}
+
+We don't implement any specific branching schemes.
+We rely on the branching schemes already provided from the CPLEX MIP optimizer.
 
 \section{Separation techniques}
 \label{sec:impl-separation-techniques}
