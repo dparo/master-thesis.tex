@@ -29,7 +29,7 @@ may provide at least two benefits:
 We quickly summarize the outline of the chapter.
 \Cref{sec:impl-full-static-model} presents the implemented static IP model,
 which is based on the CPTP formulation previously described in \cref{sec:the-capacitated-profitable-tour-problem}.
-\Cref{sec:impl-warm-start} describes the primal heuristics employed
+\Cref{sec:impl-warm-starting} describes the primal heuristics employed
 to warm start the CPLEX optimizer.
 \Cref{sec:impl-branching} describes the employed branching schemes.
 Finally, \cref{sec:impl-separation-techniques} describes the cutting-planes,
@@ -90,19 +90,28 @@ value employed by the BPC algorithm.
 In our case we picked $\varepsilon_{\mt{ct}} = 10^{-6}$,
 since it is the value used by the modern BPC framework presented in \textcite{sadykov2021}.
 
-\section{Warm start}
-\label{sec:impl-warm-start}
+\section{Warm Starting}
+\label{sec:impl-warm-starting}
 
-The so-called \textit{warm starting} is an approach consisting in the process
-of providing initial feasible solutions to the MIP solver prior to starting
-the resolution process.
-Primal heuristic algorithms can be effectively employed to generate sensible warm starts for the MIP.
-Warm starting can tremendously help in closing the primal-dual bound gap.
-A CPTP problem has many similarities with TSP, therefore heuristics for the TSP, if slightly adapted,
-can be applied successfully to this problem domain.
+\textit{Warm starting} is a process which consists in feeding
+a MIP optimizer with (good) feasible solutions
+prior to starting the resolution process.
+Having a set of (good) initial feasible solutions,
+can help a modern MIP solver to reach optimality in less time,
+Warm starting, if properly implemented,
+can tremendously reduce the primal-dual bound gap for many problem domains.
+
+Primal heuristic algorithms provide a fast and sensible approach for warm starting.
+A CPTP problem has many similarities with TSP.
+Therefore,
+TSP's heuristics can be readjusted to work successfully even for the CPTP.
 Much work was dedicated in studying good heuristics for the TSP, see \cite{rosenkrantz1977}, \cite{johnson1997}, \cite{laporte1992}, \cite{johnson2007}, \cite{hoffman2013}.
 
-In the remainder of this section we explain the implemented warm start procedure which is characterized by two stage: a constructive insertion heuristic stage followed by a 2-OPT refinement stage.
+In the remainder of this section,
+we explain the warm starting procedure that we've implemented.
+The procedure is characterized by two stages:
+a constructive insertion heuristic stage (see \cref{sec:impl-insertion-heuristic})
+followed by a 2-OPT refinement stage (see \cref{sec:impl-2opt-refinement}),
 
 \subsection{Insertion heuristic}
 \label{sec:impl-insertion-heuristic}
