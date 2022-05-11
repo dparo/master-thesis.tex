@@ -19,7 +19,7 @@ is a commercial optimization software package for solving problems expressed as 
 linear programs, mixed-integer programs, quadratic programs, or quadratic constrained programs.
 For an introduction to CPLEX refer to \Cref{sec:introduction-to-cplex}.
 Compared to tailored pricers, such as the labeling algorithm \parencite{desrochers1992, feillet2004},
-it is clear that using a modern well-developed MIP solver, such as CPLEX,
+it is clear that using a modern MIP solver, such as CPLEX,
 may provide at least two benefits:
 (i) parallelization and efficient use of the machine' multiple cores basically for free,
 (ii) take advantage of all the engineering effort that went in creating an efficient MIP solver.
@@ -27,13 +27,13 @@ may provide at least two benefits:
 \medskip
 
 We quickly summarize the outline of the chapter.
-Section \cref{sec:impl-full-static-model} presents the implemented
-static IP model, which is based on the CPTP formulation of \cref{sec:the-capacitated-profitable-tour-problem}.
-Section \cref{sec:impl-upper-cutoff-value} describes the employed upper cutoff-value,
+\Cref{sec:impl-full-static-model} presents the implemented static IP model,
+which is based on the CPTP formulation previously described in \cref{sec:the-capacitated-profitable-tour-problem}.
+\Cref{sec:impl-upper-cutoff-value} describes the employed upper cutoff-value,
 a technique to reduce the number of branch and bounds nodes used
-Section \cref{sec:impl-warm-start} describes the primal heuristics employed
+\Cref{sec:impl-warm-start} describes the primal heuristics employed
 to warm start the CPLEX optimizer.
-Section \cref{sec:impl-branching} describes the employed branching schemes.
+\Cref{sec:impl-branching} describes the employed branching schemes.
 Finally, \cref{sec:impl-separation-techniques} describes the cutting-planes,
 including their separation,
 aimed at improving the linear relaxation.
