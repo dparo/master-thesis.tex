@@ -395,7 +395,7 @@ on the number of traversal for edges $e \in E$ and vertices $i \in V$.
 The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
 If we ignore the GSECs and variable bounds, the IP model owns a total of $N + 2$ constraints.
 Constraints \labelcref{eq:cptp-gsec-constraints}
-can also be rewritten in a different form:
+can also be rewritten in a different form \parencite{jepsen2014}:
 \begin{equation}
 	\label{eq:cptp-gsec-constraints-v2}
 	\sum\limits_{e \in E(S)} x_e \le \sum\limits_{i \in S \setminus \Set*{j}} y_i \quad \forall j \in S,\ \forall S \subseteq V_0,\ |S| \ge 2.
@@ -439,7 +439,7 @@ the total demand in serving all vertices in set $S \subseteq V$.
 The RCC constraints they function as a capacity constraint
 by imposing that any customer set $S \subseteq V_0$ is crossed by a number of edges
 not smaller by the number of trucks that would be necessary to serve all customers in $S \subseteq V_0$.
-The RCC can be readjusted to CPTP problem \parencite{jepsen2014}:
+The RCC can be extended to the CPTP problem \parencite{jepsen2014}:
 \begin{equation}
 	\label{eq:cptp-rcc-inequality-original}
 	\ExprCptpFlowExiting{S} \ge 2 \ceil*{\frac{\sum\limits_{i \in S} q_i y_i}{Q}} \quad \forall S \subseteq V_0,\ |S| \ge 1.

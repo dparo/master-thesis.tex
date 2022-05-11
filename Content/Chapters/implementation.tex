@@ -29,8 +29,6 @@ may provide at least two benefits:
 We quickly summarize the outline of the chapter.
 \Cref{sec:impl-full-static-model} presents the implemented static IP model,
 which is based on the CPTP formulation previously described in \cref{sec:the-capacitated-profitable-tour-problem}.
-\Cref{sec:impl-upper-cutoff-value} describes the employed upper cutoff-value,
-a technique to reduce the number of branch and bounds nodes used
 \Cref{sec:impl-warm-start} describes the primal heuristics employed
 to warm start the CPLEX optimizer.
 \Cref{sec:impl-branching} describes the employed branching schemes.
@@ -71,16 +69,20 @@ $q_u \le q_v \le q_i \quad \forall i \in V_0, i \ne u, v$.
 In the context of pricing for the CVRP,
 we're only interested in routes achieving a strictly negative cost function.
 The upper cutoff value can help a MIP optimizer
-at reducing the number of branch-and-bound nodes
-that need to be explored.
-The upper cutoff value behaves as a constraint specified on the objective function $z_\mt{CPTP}(x, y)$:
+in reducing the number of evaluated branch-and-bound nodes.
+The upper cutoff value behaves as a constraint specified directly on the objective function:
 \begin{equation}
-	z_\mt{CPTP}(x, y) \le 0 - \varepsilon_{\mt{ct}}
+	z_\mt{CPTP}(x, y) \le 0 - \varepsilon_{\mt{ct}},
 \end{equation}
 where $\varepsilon_{\mt{ct}} \in \R_+$ is the upper cutoff tolerance.
-The upper cutoff tolerance biases the threshold at which the produced
+Most MIP solvers, including CPLEX, has internal support for specifying cutoff values.
+However, it is important to note that specifying the cutoff value is not identical
+to specifying an explicit constraint in the static model.
+Cutoff values contribute only when the branch-and-bound procedure is invoked.
+Whereas, an explicit constraint contributes even at the linear relaxation level.
+The upper cutoff tolerance $\varepsilon_{\mt{ct}}$ biases the threshold at which the produced
 route can be considered a valid reduced cost column.
-A non-zero value for $\varepsilon_{\mt{ct}} \in \R$ avoids numerical
+A non-zero value for $\varepsilon_{\mt{ct}}$ avoids numerical
 stability problems caused by the usage of floating point arithmetic
 employed in BPC implementations.
 To guarantee correctness, the value of $\varepsilon_{\mt{ct}}$ should match the
