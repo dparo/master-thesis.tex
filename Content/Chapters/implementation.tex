@@ -1,13 +1,13 @@
 \chapter{Implementation}
 
-In this chapter we discuss the implementation of the proposed method
-for tackling the pricing problem which is based on the CPTP
-discussed in \cref{sec:the-capacitated-profitable-tour-problem}.
-We employed the latest \textit{CPLEX 22.1 C callable library} (released in March 2022)
-as a base
-to develop our branch-and-cut-algorithm.
-The pricer is developed in the \textit{C} language, and its implementation
-is freely available under a permissive \textit{MIT} license
+This chapter is dedicated to introducing the implementation
+of the proposed branch-and-cut algorithm.
+As the main foundation, the proposed approach employs
+the latest \textit{CPLEX 22.1 C callable library} (released in March 2022).
+The branch-and-cut framework can be used as a pricer in the context
+of column generation for the CVRP.
+The algorithm's source coed is developed in the \textit{C} language,
+and it is freely available under a permissive \textit{MIT} license
 at the following Github repository: \url{https://github.com/dparo/master-thesis}.
 
 \medskip
@@ -20,7 +20,7 @@ For an introduction to CPLEX refer to \Cref{sec:introduction-to-cplex}.
 
 \medskip
 
-Compared to tailored algorithms (such as the labeling algorithm),
+Compared to tailored pricers, such as the labeling algorithm \parencite{desrochers1992, feillet2004},
 it is clear that using a modern well-developed MIP solver, such as CPLEX,
 may provide at least two benefits:
 (i) parallelization and efficient use of the machine' multiple cores basically for free,
