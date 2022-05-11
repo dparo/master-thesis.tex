@@ -119,7 +119,7 @@ More formally, let's define the extra mileage as:
 \begin{equation}
 	\Delta_m(h, a) =
 	\begin{cases}
-		d_{ah} + d_{hb} - d_{ab} - p_h, & \texttt{if } q(p) + q_h \le Q \\
+		c_{ah} + c_{hb} - c_{ab} - p_h, & \texttt{if } q(p) + q_h \le Q \\
 		\infty,                         & \texttt{otherwise},
 	\end{cases}
 \end{equation}
@@ -165,11 +165,9 @@ We briefly describe the 2-OPT exchange.
 Let $a, b \in V$ be two vertices visited in the current tour.
 Let $a_s, b_s \in V$ denote respectively the successor of $a$ and $b$ in the current tour.
 A 2-OPT exchange removes edges $(a, a_s)$, $(b, b_s)$ in favor of $(a, b)$, $(a_s, b_s)$ but only if the delta distance defined as:
-
 \begin{equation}
-	\Delta(a, b) = d_{ab} + d_{a_sb_s} - d_{aa_s} - d_{bb_s}
+	\Delta(a, b) = c_{ab} + c_{a_sb_s} - c_{aa_s} - c_{bb_s}
 \end{equation}
-
 satisfies $\Delta(a, b) < 0$.
 If this is the case, performing a 2-OPT exchange over vertices $(a, b)$ can improve the current tour.
 After the 2-OPT exchange it is necessary to reverse part of the tour characterized from the head $a_s$ and tail $b$: $[a_s, \dots, b]$.
