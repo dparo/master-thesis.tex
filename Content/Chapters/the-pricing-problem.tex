@@ -17,7 +17,20 @@ of this problem by exploiting Integer Programming (IP).
 In this chapter we will introduce more formally the Elementary Shortest Path Problem with Resource Constraints (ESPPRC).
 In this thesis we're interested in studying the ESPPRC induced from the PP when solving the RMP through a BPC framework employing the usage of robust inequalities only.
 
-In the general case, the underlying network of ESPPRC problems may have negative cost cyles, which makes solving the ESPPRC an NP-hard problem \parencite{dror1994}.
+In the general case,
+the underlying network of ESPPRC problems may have negative cost cyles,
+which makes solving the ESPPRC an NP-hard problem \parencite{dror1994}.
+In the unlikely case in which the ESPPRC does not contain negative cost cycles,
+the problem can be modeled as a SPPRC, which can be solved efficiently in pseudo-polynomial time using
+a dynamic programming algorithm.
+Initial contributions, in fact employed Lagrangean relaxation to relax the
+resource consumption constraint.
+By employing a branch-and-bound scheme and an off-the-shelf standard shortest-path algorithm,
+such as the Djkstra algorithm \parencite{sniedovich2006dijkstra}, to compute feasible dual solutions.
+See the contributions of \textcite{beasley1989, carlyle2008}, just to name a few.
+But as pointed out in \textcite{righini2004},
+Lagrangian relaxation is effective only when the dualized variables
+are positive for a good portion of the Lagrange multipliers search space.
 
 As claimed in \textcite{dror1994}, the ESPPRC is an NP-hard problem,
 However, the sub-problem can be solved through a dynamic programming approach, as proposed by \textcite{feillet2004}.
@@ -40,19 +53,6 @@ Since we are not interested in non-robust cuts, the sub-problem
 induced from the SP formulation coincides with an ESPPRC.
 If non-robust cuts are employed, the sub-problem becomes
 a slight variation of the EPSRRC which is characterized by additional constraints.
-
-\medskip
-
-In the case where the reduced cost network of the ESPPRC does not contain negative cost cycles
-the elementarity condition does not need explicit modeling
-and the resulting problem may be solved efficiently.
-Some authors have proposed branch-and-bound
-schemes applying the Lagrangian relaxation to the resource constraints
-and by solving the associated unconstrained shortest path
-problem, through standard algorithms \parencite{beasley1989, carlyle2008}.
-But as pointed out in \textcite{righini2004},
-Lagrangian relaxation is effective only when the dualized variables
-are positive for a good position of the Lagrange multipliers search space.
 
 \begin{comment}
 \cite{bettinelli2010mathematical} ---------------
@@ -328,7 +328,8 @@ a subset of customers with profits.
 In OP, the route length is bounded in terms of number of vertices visited,
 whereas in CPTP the route is bounded in terms of accumulated demand served
 through the maximum available vehicle capacity.
-Using the reduction to Hamiltonian circuit problem employed to prove that the OP is NP-hard \parencite{laporte1990},
+Using the reduction to Hamiltonian circuit problem
+employed to prove that the OP is NP-hard \parencite{laporte1990},
 the same reasoning can be applied to conclude that CPTP is also NP-hard.
 
 In more details,
