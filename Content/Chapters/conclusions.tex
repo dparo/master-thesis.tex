@@ -51,7 +51,6 @@ relaxing the bounds on the $y_i$ mip variables,
 and then for each vertex visited twice of more, the associated bound
 on the $y_i$ is strengthened.
 
-
 \medskip
 
 We noticed many branch-and-bound nodes being generated,
@@ -61,10 +60,33 @@ of the MIP solver by reducing the number of branching occurrences.
 
 Heuristic algorithm to solve maxflow???
 
-
 Possibly improve converge speed by using heuristic patching at each
 node of the branch-and-bound tree.
 
+\begin{quote}
+	\cite{jepsen2014}
+	Furthermore, a comparison with state-of-the-art dynamic programming algorithms has
+	shown that the BAC algorithm is competitive, and acts as a good complement to the dynamic programming algorithms.
+	That is, in some case the dynamic programming algorithms are much faster and able to solve instances that cannot be
+	solved by the BAC algorithm. On the other hand the BAC algorithm appear to be superior on very large instances, e.g., the
+	BAC algorithm solved instances with up to 800 nodes compared to a maximum of 200 nodes for the dynamic programming
+	algorithms. There is a tendency towards, that the BAC algorithm is faster than the dynamic programming algorithms on
+	instances with highly negative weights and is slower on instances with solution values close to 0. This is not too surprising
+	since the bounding functions used in the dynamic programming algorithms is expected to cut off large parts of the state-
+	space in the latter case. This may render the BAC algorithms less efficient in a column generation scheme for current state-
+	of-the-art algorithms, since instances with much negativity are usually solved heuristically and only the instances with cost
+	near zero are solved to optimality. However, our experiments indicate that the BAC algorithm may prove to be worthwhile
+	when the number of nodes increases (to more than the current maximum of 151 nodes for the CVRP). To sum up, the BAC
+	algorithm solved 58 out of a total 76 instances which is 18 more than the dynamic programming algorithms, and the BAC
+	algorithm appears to have its strength when the number of nodes is large.
+\end{quote}
+
+\begin{quote}
+	\cite{jepsen2014}
+	We believe that there is a large unexploited potential in BAC algorithms for CPTP, and hence the paper is intended to
+	serve as a platform for further development, also acting as a survey/tutorial. Future research can experiment with subsets
+	of the presented cuts, extensions of the cuts, and the interplay between these.
+\end{quote}
 
 \begin{comment}
 \textcite{sadykov2019b}
