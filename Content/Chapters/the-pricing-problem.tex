@@ -367,14 +367,16 @@ To the best of our knowledge, the few contributions studying the CPTP
 in the context of pricing for the VRP can be found in \textcite{bixby1999, jepsen2008,jepsen2011,jepsen2014}.
 \textcite{jepsen2014} study the CPTP problem in the context of pricing for the VRP.
 Their work lays out a first foundational theory for further development
-of the CPTP for this domain.
+of the CPTP as an independent problem or as in the context of pricing.
 Their work may serve in the future as a tutorial/survey/framework
 for further development of branch-and-cut algorithms for the CPTP.
 They propose a branch-and-cut framework for the CPTP,
-along with a directed symmetric IP formulation.
+along with a directed symmetric network IP formulation.
 They adapt many valid inequalities from related problems,
 introduce a new family of inequalities (rounded multistar inequalities)
-and finally discuss and implement their efficient separation.
+discuss and implement their efficient separation,
+and finally proposes an efficient heuristic for separating
+the \textit{knapsack large multistar inequalities} \parencite{letchford2002}.
 They study the competitiveness of their approach
 along with the usefulness of the valid inequalities through a computational study.
 Their results show that while a branch-and-cut framework based on CPTP may
