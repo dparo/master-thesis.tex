@@ -332,8 +332,7 @@ Using the reduction to Hamiltonian circuit problem
 employed to prove that the OP is NP-hard \parencite{laporte1990},
 the same reasoning can be applied to conclude that CPTP is also NP-hard.
 The CPTP has many roots in common with the OP, in fact,
-\textcite{jepsen2014} proves that the polytope of teh CPTP
-can be transformed to an instance of the polytope for the OP.
+the OP may be regarded as a special case of an edge-capacitated CPTP with unit demands.
 Refer to \textcite{fischetti1998, gendreau1998} for contributions
 exposing BAC frameworks and valid inequalities for the OP.
 Many of such inequalities (but not all) are also valid for the CPTP \parencite{jepsen2014}.
@@ -414,12 +413,12 @@ Let $x_{e}$, $y_{i} \in \Set*{0, 1}$ be two sets of binary variables which respe
 model whether an edge $e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
 We can provide a formal mathematical description of the CPTP through an Integer Programme (IP) formulation:
 \begin{align}
-	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef \label{eq:cptp-obj-function}                                                                                                                     \\
-	                                   & y_0 = 1                                           & \label{eq:cptp-depot-part-of-tour-constraint}                                                                     \\
-	                                   & \ExprCptpDemandSum  \le Q                         & \label{eq:cptp-resource-upper-bound-constraint}                                                                   \\
-	                                   & \ExprCptpEdgesIncident{i}  = 2 y_i                & \quad \forall i \in V         \label{eq:cptp-flow-conservation-constraint}                                        \\
-	                                   & \ExprCptpFlowExiting{S} \ge 2 y_{i}               & \quad \EqStackTwo{\forall i \in S}{\forall S \subseteq V_0,\ \SetSize*{S} \ge 2} \label{eq:cptp-gsec-constraints} \\
-	                                   & x_{e}                   \in \Set*{0, 1}           & \quad \forall e \in E               \label{eq:cptp-x-mip-var-bounds}                                              \\
+	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef \label{eq:cptp-obj-function}                                                                                                         \\
+	                                   & y_0 = 1                                           & \label{eq:cptp-depot-part-of-tour-constraint}                                                         \\
+	                                   & \ExprCptpDemandSum  \le Q                         & \label{eq:cptp-resource-upper-bound-constraint}                                                       \\
+	                                   & \ExprCptpEdgesIncident{i}  = 2 y_i                & \quad \forall i \in V         \label{eq:cptp-flow-conservation-constraint}                            \\
+	                                   & \ExprCptpFlowExiting{S} \ge 2 y_{i}               & \quad \forall i \in S,\ \forall S \subseteq V_0,\ \SetSize*{S} \ge 2 \label{eq:cptp-gsec-constraints} \\
+	                                   & x_{e}                   \in \Set*{0, 1}           & \quad \forall e \in E               \label{eq:cptp-x-mip-var-bounds}                                  \\
 	                                   & y_{i}                    \in \Set*{0, 1}          & \quad \forall i \in V             \label{eq:cptp-y-mip-var-bounds}
 \end{align}
 where \labelcref{eq:cptp-obj-function} is the objective function to be minimized, i.e. the cost
@@ -428,11 +427,12 @@ Constraint \labelcref{eq:cptp-depot-part-of-tour-constraint} ensures that the de
 Constraint \labelcref{eq:cptp-resource-upper-bound-constraint} is the resource consumption upper bound.
 Constraint \labelcref{eq:cptp-flow-conservation-constraint} has a twofold effect.
 First, it functions as a form of directed flow conservation.
-Second, it perform bindings between the sets of variables $x,\ y$;
-it ensures that the if a vertex $i \in V$ is covered by an optimal route ($y_i = 1$)
+Second, it binds the $x,\ y$ sets of variables together;
+namely, it ensures that the if a vertex $i \in V$ is covered by an optimal route ($y_i = 1$)
 then the number of incident edges in that node sums to $2$, otherwise to $0$.
-Constraint \labelcref{eq:cptp-gsec-constraints} are the so-called Generalized Subtour Elimination Constraints (GSECs),
-which are employed to avoid the formation of spurious tours in unconnected regions of the network.
+Constraint \labelcref{eq:cptp-gsec-constraints}
+are the so-called Generalized Subtour Elimination Constraints (GSECs),
+which avoid the formation of spurious tours in unconnected regions of the network.
 There is an exponential number of GSECs,
 therefore for performance reasons,
 these constraints cannot be inserted statically in a MIP solver,
@@ -440,13 +440,19 @@ and must instead be separated exactly at least for integral solutions.
 Constraints \labelcref{eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds} respectively
 impose bounds and integrality condition
 on the number of traversal for edges $e \in E$ and vertices $i \in V$.
-The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables.
+The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables and an exponential number of constraints.
 If we ignore the GSECs and variable bounds, the IP model owns a total of $N + 2$ constraints.
 Constraints \labelcref{eq:cptp-gsec-constraints}
-can also be rewritten in a different form \parencite{jepsen2014}:
+can also be rewritten in a different form \parencite{wolsey2020integer}:
 \begin{equation}
 	\label{eq:cptp-gsec-constraints-v2}
 	\sum\limits_{e \in E(S)} x_e \le \sum\limits_{i \in S \setminus \Set*{j}} y_i \quad \forall j \in S,\ \forall S \subseteq V_0,\ |S| \ge 2.
+\end{equation}
+Equivalently,
+the \cref{eq:cptp-resource-upper-bound-constraint}
+can be defined at the edge level:
+\begin{equation}
+	\sum_{e = \Set*{i, j} \in E} \frac{q_i + q_j}{2} x_e \le Q
 \end{equation}
 
 Note that model
@@ -467,7 +473,7 @@ In this section we present additional valid inequalities for the CPTP problem.
 While these additional inequalities are not strictly necessary
 to ensure the correctness of the optimal solution,
 when embedded inside an efficient branch-and-cut framework through efficient separation techniques,
-can massively strengtehn the linear relaxation and thus speed up the resolution process.
+can massively strengthen the linear relaxation and thus speed up the resolution process.
 
 The inequalities that we present follow closely the presentation provided in \textcite{jepsen2014}.
 Our presentation is not meant to be inclusive of every valid inequalities for the CPTP.
