@@ -116,12 +116,12 @@ followed by a 2-OPT refinement stage (see \cref{sec:impl-2opt-refinement}),
 \subsection{Insertion heuristic}
 \label{sec:impl-insertion-heuristic}
 
-\cite{rosenkrantz1977} do a fantastic job describing the insertion heuristic algorithm
+\cite{rosenkrantz1977} do a fantastic job in describing the insertion heuristic algorithm
 for the TSP and various facets in which it can be implemented.
 The insertion heuristic algorithm
 can construct a new feasible primal solution in $\Theta(N^2)$ time.
 In this section,
-we will focus on adapting the insertion heuristic for the TSP so that it can be applied to CPTP problems.
+we will focus on readjusting the TSP insertion heuristic so that it can work with a CPTP problem.
 
 \medskip
 
@@ -131,11 +131,11 @@ to form an initial tour back-to-back $p = \Tuple*{u, v}$.
 The insertion heuristic is an iterative approach,
 where at each step of the iteration
 an almost-feasible CPTP tour is available.
-If the CPTP admits a single feasible solution,
+If the CPTP admits feasible solutions,
 when all the iterations of the insertion heuristic are exhausted,
 the final available tour will surely be CPTP feasible.
 Let's define $q(p) \le Q$ as the total demand served
-in the tour available at each iteration.
+in by the partial route in the current iteration.
 At each iteration,
 choose a vertex $a \in p$ and a vertex $h \notin p$.
 Let's define $b$ as the successor of node $a$ in the current tour.
@@ -153,7 +153,7 @@ More formally, let's define the extra mileage as:
 		\infty,                         & \texttt{otherwise},
 	\end{cases}
 \end{equation}
-which represents the delta cost in inserting $h$ as the successor of node $a$.
+which represents the delta route cost in inserting $h$ as the successor of node $a$.
 A vertex $h \in V$ is a good candidate for insertion
 if at least one of the following conditions is true:
 \begin{enumerate}
@@ -163,11 +163,13 @@ if at least one of the following conditions is true:
 	\item The number of visited nodes in the current tour is $2$ and $q(p) + q_h \le Q$.
 \end{enumerate}
 
-Prior to insertion a CPTP tour has the form $p = \Tuple*{\dots, a, b, \dots}$.
-After the insertion operation successfully completes: $p = \Tuple*{\dots, a, h, b, \dots}$.
-In our implementation we employed the cheapest insertion scheme, therefore the pair $(h, a)$ for the current insertion iteration is picked such that it minimizes as much as possible the extra mileage $\Delta_m(h, a)$.
+Prior to insertion the partial route has the form $p = \Tuple*{\dots, a, b, \dots}$;
+whereas after the insertion operation completes: $p = \Tuple*{\dots, a, h, b, \dots}$.
+In our implementation we employed the cheapest insertion scheme,
+therefore the pair $(h, a)$ for is picked such that it minimizes the extra mileage $\Delta_m(h, a)$
+across all possible choices for $a \in p,\ h \notin p$.
 The iteration stops when no more valid $h$ vertices can be found for insertion.
-At the end of the insertion heuristic, $p$ is a CPTP feasible tour visiting the depot node.
+At the end of the insertion heuristic, $p$ is a valid route which visits the depot node.
 Note that the depot node may not necessarily be the first element of the tour: $p_0 \ne 0$.
 A simple circular rotation is sufficient to restore the condition $p_0 = 0$.
 It may happen that no valid $h$ can be found,
