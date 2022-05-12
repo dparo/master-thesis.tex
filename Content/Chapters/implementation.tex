@@ -238,6 +238,11 @@ We rely on the branching schemes already provided from the CPLEX MIP optimizer.
 \section{Separation techniques}
 \label{sec:impl-separation-techniques}
 
+Despite separation of some generic families of cutting-planes are already provided
+from modern MIP optimizers such as CPLEX (see \cref{sec:introduction-to-cplex}),
+reporting additional inequalities, which cannot be deduced from the static model,
+can drastically improve the running time of the resolution process.
+
 \begin{comment}
 \cite{ralphs2003}
 The most important and challenging aspect of any branch and cut algorithm is designing

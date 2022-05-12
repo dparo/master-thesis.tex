@@ -553,10 +553,18 @@ the GLM were further generalized to the so-called Knapsack Large Multistar (KLM)
 \textcite{letchford2006} study the effectiveness of the multistar family of cuts
 when applied to the vehicle routing problems.
 The multistar cuts represent a set of inequalities that are related to
-the intersection between a 0-1 knapsack problem and the CPTP problem.
+the intersection between a 0-1 knapsack problem and the node-capacitated profitable tour problem (CPTP).
 
-By following the original presentation of \textcite{jepsen2014},
-the GLM inequalities can be expressed as:
+Consider the capacity inequality:
+\begin{equation}
+	\label{eq:cptpt-weaker-rcc}
+	\sum_{e \in \delta(S)} x_e \ge \frac{2}{Q} \sum_{i \in S} d_i y_i \quad \forall S \subseteq V_0,\ |S| \ge 2,
+\end{equation}
+which is a weaker form of the RCC in \cref{eq:cptp-rcc-inequality-original}, where rounding is not performed.
+\Cref{eq:cptpt-weaker-rcc} can be improved to obtain the GLM inequalities,
+by noting that  nodes $j \notin S$ are also visited when the crossing edges $\delta(S)$ are used.
+
+The GLM inequalities can be expressed as \parencite{jepsen2014}:
 \begin{equation}
 	\label{eq:cptp-glm-inequality}
 	\sum\limits_{e \in \delta(S)} x_e \ge \frac{2}{Q} \Expr*{
@@ -569,7 +577,7 @@ the GLM inequalities can be expressed as:
 The general idea behind multistar inequalities is the following.
 The vehicle must have sufficient capacity to serve
 all the customers covered by $S$
-and all other customers outside $S$ which
-are connected to nodes in $S$ through a crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$.
+and all other customers outside $S$
+which are connected to nodes in $S$ through a crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$.
 \textcite{letchford2006} shows that the GLM inequalities are efficiently separable in
 polynomial time by finding minimum $(s, t)$-cuts $\forall i \in V_0,\ t = 0$.
