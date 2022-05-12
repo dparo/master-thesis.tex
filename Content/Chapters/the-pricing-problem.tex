@@ -336,12 +336,16 @@ per customer is available only once.
 The CPTP can also be described in simple words
 as a single-truck ($k = 1$) (C)VRP where it is possible to serve only a small set of customers,
 based on a profit value that is gained when serving occurs.
-The CPTP shows up naturally as a sub-problem in the column generation approach employed in solving many VRP variants.
-It is an important special case of the ESPPRC, where the source and sink vertices coincide.
-This problem is easier to describe than the ESPPRC,
-however due to its narrower scope,
-it is less addressed in the literature.
-Instead, major contributions are dedicated in solving the ESPPRC through dynamic programming algorithms.
+The CPTP shows up naturally as a sub-problem
+in the column generation approach employed in solving many VRP variants.
+It is an important special case of the
+ESPPRC when the source and sink vertices are used to represent the same node.
+This CPTP problem is easier to describe than the ESPPRC.
+Contrary to the traditional description of the ESPPRC,
+the CPTP is easier to describe and its formulation can be provided
+on an undirected symmetric network, reducing the total number of independent variables.
+However, due to its narrower scope,
+it is far less addressed in the literature.
 
 To the best of our knowledge, the few contributions studying the CPTP
 in the context of pricing for the VRP can be found in \textcite{jepsen2008,jepsen2011,jepsen2014}.
@@ -354,8 +358,9 @@ owes a lot to the work that was done in \textcite{jepsen2014}.
 \label{sec:cptp-integer-programming-formulation}
 
 Our CPTP description follows closely the formulation provided in \textcite{jepsen2014}.
-For describing the problem's formulation we will extend the CVRP mathematical notation
-previously introduced in \cref{sec:intro-cvrp-mathematical-notation}.
+To describe the formulation
+we will continue to use the mathematical notation introduced in \cref{sec:intro-cvrp-mathematical-notation}
+for the CVRP and extend it.
 
 Let $p_i \in \R,\ p \ge 0$ denote the profit associated in visiting a vertex $i \in V$.
 The profit function is directly linked to the dual variables $\pi \in \R^N$ associated to
