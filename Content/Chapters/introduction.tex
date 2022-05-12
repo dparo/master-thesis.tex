@@ -543,7 +543,7 @@ which are used to evaluate
 the feasibility of a route.
 The ESPPRC problem asks for an elementary path (i.e. each vertex visited at most once) starting
 from a vertex, called a source vertex, and ending in another vertex, called the sink vertex.
-In the ESPPRC, the depot node is replaced by two vertices (one source, one sink)
+In the ESPPRC, the depot node is split in two vertices (one source, one sink)
 and the newly obtained network is characterized by $N + 1$ vertices.
 
 \medskip
@@ -883,7 +883,7 @@ Major contributions in the non-robust cutting-planes domain are:
 	\setlength{\itemsep}{0pt}
 	\setlength{\parskip}{0pt}
 
-	\item \textbf{Strengthened Capacity Cuts (SCCs)} proposed in \textcite{baldacci2008},
+	\item \textbf{Strong/Strengthened Capacity Cuts (SCCs)} proposed in \textcite{baldacci2008},
 	      which can be considered a non-robust tighter version of the RCCs.
 	      Compared to RCCs, they are not affected by routes entering set $S \subseteq V_0$ more than once.
 	\item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009}
@@ -913,6 +913,7 @@ Major contributions in the non-robust cutting-planes domain are:
 	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
 	      SDCs may be viewed as a special case of k-CECs where $k = \infty$.
 	      The k-CECs have less impact in the pricing problem compared to SDCs.
+    \item \textbf{Clique inequalities} readjusted for the VRPTW problem domain in \textcite{spoorendonk2010clique}.
 \end{enumerate}
 
 
