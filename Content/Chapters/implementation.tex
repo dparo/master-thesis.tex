@@ -235,13 +235,23 @@ i.e. for which the delta distance $\Delta(a, b)$ is minimized across all possibl
 We don't implement any specific branching schemes.
 We rely on the branching schemes already provided from the CPLEX MIP optimizer.
 
+\mytodo{Strong branching employed?}
+
 \section{Separation techniques}
 \label{sec:impl-separation-techniques}
 
-Despite separation of some generic families of cutting-planes are already provided
-from modern MIP optimizers such as CPLEX (see \cref{sec:introduction-to-cplex}),
+Despite separation of some general families of cutting-planes are already provided
+from modern MIP optimizers such as CPLEX, such as:
+Chvátal-Gomory cuts, mixed integer rounding cuts, disjunctive cuts
+and cover inequalities (see \cref{sec:introduction-to-cplex});
 reporting additional inequalities, which cannot be deduced from the static model,
 can drastically improve the running time of the resolution process.
+
+\begin{comment}
+\cite{jepsen2014}
+The BAC algorithm is implemented within CPLEX 12 using the callback functions for the cut generation
+from the callable library.
+\end{comment}
 
 \begin{comment}
 \cite{ralphs2003}

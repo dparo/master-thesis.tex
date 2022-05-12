@@ -379,7 +379,7 @@ the \textit{knapsack large multistar inequalities} \parencite{letchford2002}.
 They study the competitiveness of their approach
 along with the usefulness of the valid inequalities through a computational study.
 Their results show that while a branch-and-cut framework based on CPTP may
-not be competitive w.r.t. to dynamic programming in most cases,
+not be competitive in solving the historical CVRP instances w.r.t. to dynamic programming in most cases,
 it seemed to perform better when the number of nodes in the network increases,
 or as the network weights were highly negative
 and was slower on solutions where the objective value was very close to zero.
@@ -512,6 +512,7 @@ The RCC can be extended to the CPTP problem \parencite{jepsen2014}:
 \Cref{eq:cptp-rcc-inequality-original}
 is very similar to the CVRP's RCC of \cref{eq:two-index-flow-ccc-bpp-lb},
 except that the right-hand side if composed of model's variables instead of constants.
+Notice that such approach is correct since $\sum_{e \in \delta(S)} x_e \in \Z_+$.
 Unfortunately, the ceil function is a non-linear operation and therefore
 such constraint cannot be inserted in most MIP solvers.
 
@@ -523,7 +524,8 @@ $\fmod{\alpha}{\gamma} \ne 0$, the following result holds:
 	\label{eq:baldacci-rcc-theorem-weaker-bound}
 	\ceil*{\frac{\alpha - \beta}{\gamma}} \ge \ceil*{\frac{\alpha}{\gamma}} - \frac{\beta}{\fmod{\alpha}{\gamma}}.
 \end{equation}
-\textcite{jepsen2014} point out that \cref{eq:baldacci-rcc-theorem-weaker-bound}
+Without further explanations provided,
+\textcite{jepsen2014} claims that \cref{eq:baldacci-rcc-theorem-weaker-bound}
 holds even when $\alpha > \gamma$ is not satisfied.
 By picking $\alpha = q(S) = \sum_{i \in S} q_i,\ \beta = \sum_{i \in S} q_i\Expr*{1 - y_i},\ \gamma = Q$,
 we obtain the following linear, but weaker, RCC:
@@ -560,7 +562,8 @@ Consider the capacity inequality:
 	\label{eq:cptpt-weaker-rcc}
 	\sum_{e \in \delta(S)} x_e \ge \frac{2}{Q} \sum_{i \in S} d_i y_i \quad \forall S \subseteq V_0,\ |S| \ge 2,
 \end{equation}
-which is a weaker form of the RCC in \cref{eq:cptp-rcc-inequality-original}, where rounding is not performed.
+which is a weaker form of the RCC in \cref{eq:cptp-rcc-inequality-original},
+where ceiling is not performed.
 \Cref{eq:cptpt-weaker-rcc} can be improved to obtain the GLM inequalities,
 by noting that  nodes $j \notin S$ are also visited when the crossing edges $\delta(S)$ are used.
 
