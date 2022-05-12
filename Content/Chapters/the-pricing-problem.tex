@@ -354,13 +354,17 @@ Their work lays out a first foundational theory for further development
 of the CPTP for this domain.
 Their work may serve in the future as a tutorial/survey/framework
 for further development of branch-and-cut algorithms for the CPTP.
-They propose a branch-and-cut framework for the CPTP,
-present many valid inequalities by readjusting the commonly known VRP's cutting-planes.
+They propose a branch-and-cut framework for the CPTP
+where they propose and adapt many valid inequalities from related problems,
+introduce a new family of inequalities (rounded multistar inequalities)
+and finally discuss and implement their efficient separation.
 They study the competitiveness of their approach
-along with the contributions achieved by each valid inequality kind.
+along with the usefulness of the valid inequalities through a computational study.
 Their results show that while a branch-and-cut framework based on CPTP may
 not be competitive w.r.t. to dynamic programming in most cases,
-it seemed to perform better when the number of nodes in the network increases.
+it seemed to perform better when the number of nodes in the network increases,
+proving that such approach could provide a good complement
+to the dynamic programming algorithms.
 In conclusion,
 \textcite{jepsen2014}
 show that there may be value in further developing branch-and-cut
@@ -447,6 +451,18 @@ Instead, we will concentrate on the presentation of the most important ones
 that we've considered in the final implementation of our branch-and-cut pricer.
 Presentation of additional inequalities for the CPTP problem can be found in \textcite{jepsen2014}.
 
+As pointed out in \textcite{jepsen2014},
+RCIs seem to be frequently separable during the running time of the branch-and-cut procedure.
+Suggesting that their usage, may likely lead to a speed-up in the resolution process
+compared to the running time cost for their separation.
+
+As pointed out in \textcite{jepsen2014},
+GLMs seem to be frequently separable during the running time of the branch-and-cut procedure.
+Suggesting that their usage, may likely lead to a speed-up in the resolution process
+compared to the running time cost for their separation.
+meaning that their usage is likely to speed up the resolution process.
+
+
 \subsection{Rounded Capacity Constraints (RCC)}
 \label{sec:cptp-rcc}
 
@@ -490,6 +506,7 @@ where $\ExprQr(S) = \fmod{q(S)}{Q}$ is the remainder capacity associated to set 
 Notice, that \cref{eq:baldacci-rcc-theorem-weaker-bound} guarantees correctness
 of the \cref{eq:rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
 Fortunately this is the case for most, if not all, routing problems considered in the literature.
+
 
 \subsection{Generalized Large Multistar (GLM)}
 \label{sec:cptp-glm}
