@@ -340,19 +340,34 @@ The CPTP shows up naturally as a sub-problem
 in the column generation approach employed in solving many VRP variants.
 It is an important special case of the
 ESPPRC when the source and sink vertices are used to represent the same node.
-This CPTP problem is easier to describe than the ESPPRC.
 Contrary to the traditional description of the ESPPRC,
 the CPTP is easier to describe and its formulation can be provided
 on an undirected symmetric network, reducing the total number of independent variables.
 However, due to its narrower scope,
-it is far less addressed in the literature.
+it is far less addressed in the literature compared to ESPPRC.
 
 To the best of our knowledge, the few contributions studying the CPTP
 in the context of pricing for the VRP can be found in \textcite{jepsen2008,jepsen2011,jepsen2014}.
-\textcite{jepsen2014} study the problem in more details,
-and readjusted many commonly known VRP's cutting-planes to the CPTP problem.
-Our presentation and implementation of the proposed branch-and-cut framework,
-owes a lot to the work that was done in \textcite{jepsen2014}.
+\textcite{jepsen2014} study the CPTP problem in the context of pricing for the VRP.
+Their work lays out a first foundational theory for further development
+of the CPTP for this domain.
+Their work may serve in the future as a tutorial/survey/framework
+for further development of branch-and-cut algorithms for the CPTP.
+They propose a branch-and-cut framework for the CPTP,
+present many valid inequalities by readjusting the commonly known VRP's cutting-planes.
+They study the competitiveness of their approach
+along with the contributions achieved by each valid inequality kind.
+Their results show that while a branch-and-cut framework based on CPTP may
+not be competitive in most cases,
+it seemed to perform better w.r.t. to dynamic programming
+when the number of customers increases.
+In conclusion,
+\textcite{jepsen2014}
+show that there may be value in further developing branch-and-price
+frameworks in the context of pricing for  the CVRP.
+
+The presentation of this section, along with the implementation of \cref{sec:implementation-chapter}
+owes a lot to the efforts of \textcite{jepsen2014}.
 
 \subsection{Integer Programming formulation}
 \label{sec:cptp-integer-programming-formulation}
