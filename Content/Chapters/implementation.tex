@@ -182,27 +182,47 @@ This allows us to generate $O(N)$ good feasible primal solutions using insertion
 \subsection{2-OPT refinement}
 \label{sec:impl-2opt-refinement}
 
-In our implementation, each solution produced from the insertion heuristic is further improved using a 2-OPT refinement procedure.
-The 2-OPT algorithm is a heuristic local-search hill-climbing procedure proposed originally for the TSP in \cite{flood1956}, \cite{croes1958}.
+Each solution produced from the insertion heuristic
+can be further improved using a \textit{2-OPT refinement procedure}.
+The 2-OPT algorithm is a heuristic local-search hill-climbing procedure
+proposed originally for the TSP in \textcite{flood1956, croes1958} independentl.
 
-An application of the 2-OPT algorithm works iteratively requiring $\Omega(N^2)$ time.
-Unfortunately, as it is pointed out in \cite{chandra1999}, the 2-OPT algorithm may in the worst case take an exponential number of iterations when fed with purposely artificially constructed instances.
-Although this is bad news, it is also worth pointing out that this rarely occur in practice, as the probabilistic average number of iterations required for 2-OPT is at most polynomial.
+The 2-OPT algorithm works iteratively requiring $\Omega(N^2)$ number of iterations.
+Unfortunately,
+as it is pointed out in \textcite{chandra1999},
+the 2-OPT procedure may in the worst case take an exponential number of iterations
+when fed with purposely artificially constructed instances.
+Although this is bad news,
+it is also worth pointing out that this rarely occur in practice,
+as the probabilistic average number of iterations required for 2-OPT is at most polynomial.
 
-Each iteration of the 2-OPT procedure searches for an existing edge crossing, and if any exists, it performs a 2-OPT exchange to undo it.
-A 2-OPT exchange is a primal operation: it always maintains the original feasibility, therefore if the 2-OPT algorithm is applied on a feasible solution, it will remain feasible at the end of the whole procedure.
-We briefly describe the 2-OPT exchange.
-Let $a, b \in V$ be two vertices visited in the current tour.
-Let $a_s, b_s \in V$ denote respectively the successor of $a$ and $b$ in the current tour.
-A 2-OPT exchange removes edges $(a, a_s)$, $(b, b_s)$ in favor of $(a, b)$, $(a_s, b_s)$ but only if the delta distance defined as:
+Each iteration of the 2-OPT procedure searches for an existing edge crossing,
+and if any exists,
+it performs a 2-OPT exchange to undo it.
+A 2-OPT exchange is a \textit{primal operation},
+i.e. its application preserves route feasibility.
+A 2-OPT exchange does not add nor remove vertices from the current route $p$,
+therefore the route's gained profit does not change during
+the running time of the 2-OPT procedure.
+Hence, it is trivial to readjust the TSP 2-OPT procedure to the CPTP problem.
+
+Let $a, b \in p$ be two vertices visited in the current route.
+Let $a_s, b_s \in p$ denote respectively the successor of $a$ and $b$ in the current route.
+A 2-OPT exchange removes edges $(a, a_s)$, $(b, b_s)$
+in favor of $(a, b)$, $(a_s, b_s)$
+but only if the delta distance, defined as:
 \begin{equation}
-	\Delta(a, b) = c_{ab} + c_{a_sb_s} - c_{aa_s} - c_{bb_s}
+	\Delta(a, b) = c_{ab} + c_{a_sb_s} - c_{aa_s} - c_{bb_s},
 \end{equation}
 satisfies $\Delta(a, b) < 0$.
-If this is the case, performing a 2-OPT exchange over vertices $(a, b)$ can improve the current tour.
-After the 2-OPT exchange it is necessary to reverse part of the tour characterized from the head $a_s$ and tail $b$: $[a_s, \dots, b]$.
+If this is the case, performing a 2-OPT exchange over vertices $(a, b)$ lowers the route cost.
+After a 2-OPT exchange,
+it is necessary to reverse the portion of the route
+characterized from the head $a_s$ and tail $b$: $[a_s, \dots, b]$.
 
-In our implementation we scan for vertices $a, b$ achieving the cheapest exchange, i.e. for which $\Delta(a, b)$ is minimized across all possible valid choices of $a, b$.
+In our implementation
+we scan for vertices $a, b$ achieving the cheapest exchange,
+i.e. for which the delta distance $\Delta(a, b)$ is minimized across all possible valid choices of $a, b \in p$.
 
 \section{Branching}
 \label{sec:impl-branching}
