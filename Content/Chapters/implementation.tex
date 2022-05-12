@@ -206,15 +206,15 @@ i.e. its application preserves route feasibility.
 A 2-OPT exchange does not add nor remove vertices from the current route $p$,
 therefore the route's gained profit does not change during
 the running time of the 2-OPT procedure.
-Hence, it is trivial to readjust the TSP 2-OPT procedure to the CPTP problem.
+Hence, it is trivial to readjust the original TSP's 2-OPT procedure to the CPTP problem.
 
 Let $a, b \in p$ be two vertices visited in the current route.
-Let $a_s, b_s \in p$ denote respectively the successor of $a$ and $b$ in the current route.
-A 2-OPT exchange removes edges $(a, a_s)$, $(b, b_s)$
-in favor of $(a, b)$, $(a_s, b_s)$
+Let $a^\prime, b^\prime \in p$ denote respectively the successor of $a$ and $b$ in the current route.
+A 2-OPT exchange removes edges $(a, a^\prime)$, $(b, b^\prime)$
+in favor of $(a, b)$, $(a^\prime, b^\prime)$
 but only if the delta distance, defined as:
 \begin{equation}
-	\Delta(a, b) = c_{ab} + c_{a_sb_s} - c_{aa_s} - c_{bb_s},
+	\Delta(a, b) = c_{a b} + c_{a^\prime b^\prime} - c_{a a^\prime} - c_{b b^\prime},
 \end{equation}
 satisfies $\Delta(a, b) < 0$.
 If this is the case, performing a 2-OPT exchange over vertices $(a, b)$ lowers the route cost.
