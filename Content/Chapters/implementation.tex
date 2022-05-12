@@ -105,7 +105,8 @@ Primal heuristic algorithms provide a fast and sensible approach for warm starti
 A CPTP problem has many similarities with TSP.
 Therefore,
 TSP's heuristics can be readjusted to work successfully even for the CPTP.
-Much work was dedicated in studying good heuristics for the TSP, see \cite{rosenkrantz1977}, \cite{johnson1997}, \cite{laporte1992}, \cite{johnson2007}, \cite{hoffman2013}.
+Much work was dedicated in studying good heuristics for the TSP,
+see \cite{rosenkrantz1977, johnson1997, laporte1992, johnson2007, hoffman2013}.
 
 In the remainder of this section,
 we explain the warm starting procedure that we've implemented.
@@ -158,8 +159,10 @@ A vertex $h \in V$ is a good candidate for insertion
 if at least one of the following conditions is true:
 \begin{enumerate}
 	\item $\Delta_m(h, a) < 0$, i.e. inserting $h$ improves over the current route.
-	\item $h = 0$, i.e. $h$ is the depot node. The depot node at some point must be inserted regardless whether it is improving or not.
-	      Note that by convention we have defined $q_0 = 0$, therefore $q(p) + q_0 \le Q$ is always satisfied for the depot node.
+	\item $h = 0$, i.e. $h$ is the depot node.
+	      The depot node at some point must be inserted regardless whether it is improving or not.
+	      Note that by convention we have defined $q_0 = 0$,
+	      therefore $q(p) + q_0 \le Q$ is always satisfied for the depot node.
 	\item The number of visited nodes in the current tour is $2$ and $q(p) + q_h \le Q$.
 \end{enumerate}
 
@@ -187,7 +190,7 @@ This allows us to generate $O(N)$ good feasible primal solutions using insertion
 Each solution produced from the insertion heuristic
 can be further improved using a \textit{2-OPT refinement procedure}.
 The 2-OPT algorithm is a heuristic local-search hill-climbing procedure
-proposed originally for the TSP in \textcite{flood1956, croes1958} independentl.
+proposed originally for the TSP in \textcite{flood1956, croes1958} independently.
 
 The 2-OPT algorithm works iteratively requiring $\Omega(N^2)$ number of iterations.
 Unfortunately,
