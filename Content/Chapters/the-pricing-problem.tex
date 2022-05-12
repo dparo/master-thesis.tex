@@ -27,7 +27,7 @@ Initial contributions, in fact employed Lagrangean relaxation to relax the
 resource consumption constraint.
 By employing a branch-and-bound scheme and an off-the-shelf standard shortest-path algorithm,
 such as the Djkstra algorithm \parencite{sniedovich2006dijkstra}, to compute feasible dual solutions.
-See the contributions of \textcite{beasley1989, carlyle2008}, just to name a few.
+See the contributions of \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous}, just to name a few.
 But as pointed out in \textcite{righini2004},
 Lagrangian relaxation is effective only when the dualized variables
 are positive for a good portion of the Lagrange multipliers search space.
@@ -331,6 +331,12 @@ through the maximum available vehicle capacity.
 Using the reduction to Hamiltonian circuit problem
 employed to prove that the OP is NP-hard \parencite{laporte1990},
 the same reasoning can be applied to conclude that CPTP is also NP-hard.
+The CPTP has many roots in common with the OP, in fact,
+\textcite{jepsen2014} proves that the polytope of teh CPTP
+can be transformed to an instance of the polytope for the OP.
+Refer to \textcite{fischetti1998, gendreau1998} for contributions
+exposing BAC frameworks and valid inequalities for the OP.
+Many of such inequalities (but not all) are also valid for the CPTP \parencite{jepsen2014}.
 
 In more details,
 the CPTP is a combinatorial optimization delivery problem,
@@ -358,14 +364,15 @@ However, due to its narrower scope,
 it is far less addressed in the literature compared to ESPPRC.
 
 To the best of our knowledge, the few contributions studying the CPTP
-in the context of pricing for the VRP can be found in \textcite{jepsen2008,jepsen2011,jepsen2014}.
+in the context of pricing for the VRP can be found in \textcite{bixby1999, jepsen2008,jepsen2011,jepsen2014}.
 \textcite{jepsen2014} study the CPTP problem in the context of pricing for the VRP.
 Their work lays out a first foundational theory for further development
 of the CPTP for this domain.
 Their work may serve in the future as a tutorial/survey/framework
 for further development of branch-and-cut algorithms for the CPTP.
-They propose a branch-and-cut framework for the CPTP
-where they propose and adapt many valid inequalities from related problems,
+They propose a branch-and-cut framework for the CPTP,
+along with a directed symmetric IP formulation.
+They adapt many valid inequalities from related problems,
 introduce a new family of inequalities (rounded multistar inequalities)
 and finally discuss and implement their efficient separation.
 They study the competitiveness of their approach
