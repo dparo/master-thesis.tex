@@ -101,7 +101,7 @@ These extensions can supply the BPC framework with either
 custom defined cutting-planes (robust or non), custom branching decisions (robust or non)
 or even ad-hoc pricer implementations.
 
-The \textit{VRPSolver} extension \parencite{pessoa2020a}, is
+The \textit{VRPSolver} extension \parencite{pessoa2020generic}, is
 a \bapcod\ extension distributed by the same authors.
 This extension includes an
 advanced implementation of a bidirectional dynamic programming labeling algorithm
@@ -111,17 +111,17 @@ can be both used as an exact pricer or as a heuristic one.
 Precisely, it contains two successively lighter heuristic implementations,
 see \textcite{sadykov2021bucket} for more details.
 The labeling algorithm makes use of a generalized ng-sets definition \parencite{baldacci2011}
-defined through packing and elementarity sets as presented in \textcite{pessoa2020a}.
+defined through packing and elementarity sets as presented in \textcite{pessoa2020generic}.
 The ng-sets are dynamically augmented \parencite{roberti2014}
 when the solution obtained after the column generation convergence
 is fractional,
-see \textcite{pessoa2020a} for more details.
+see \textcite{pessoa2020generic} for more details.
 The VRPSolver extension, also,
 contains the implementation of some
 specific cutting-planes and branching decisions
 tailored at efficiently solving routing-like problems
 (or problems that exhibit similar structures)
-such as the CVRP, VRPTW and also others (see \cite{pessoa2020a}).
+such as the CVRP, VRPTW and also others (see \cite{pessoa2020generic}).
 The VRPSolver implements the robust RCC cuts of \textcite{laporte1983},
 and the non-robust limited-memory rank-1 cuts of \textcite{pecin2017improved}.
 The VRPSolver also implements the non-robust branching called Ryan\&Foster branching \parencite{ryan1981integer}.
@@ -131,7 +131,7 @@ to solve Bin Packing Problems in \textcite{pessoa2020}.
 \medskip
 
 \bapcod\ along with its VRPSolver extension are currently the leading state-of-the-art
-technologies for solving vehicle routing problems \parencite{pessoa2020a}.
+technologies for solving vehicle routing problems \parencite{pessoa2020generic}.
 The \bapcod\ source code can be downloaded for free, for academic purposes only,
 by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
 The VRPSolver extension, instead, is available for academic use only in compiled form,
@@ -259,7 +259,8 @@ to define the associated Resource Constrained Shortest Path (RCSP) sub-problem.
 The RCSP sub-problem is formulated on a complete directed network by
 linking the new RCSP modeling variables to the master problem formulation.
 The RCSP sub-problem requires for the correct definition of the following:
-the source/sink vertices and the so-called packing and elementarity sets (see \cite{pessoa2020a} for more details).
+the source/sink vertices and the so-called packing and elementarity sets
+(see \cite{pessoa2020generic} for more details).
 The elementarity and packing sets must be specified correctly for each customer.
 The correct definition of these generalized sets is mandatory to allow for specific
 components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
@@ -272,11 +273,11 @@ and the distance matrix specified from the user.
 Due to implementation details, the RCSP sub-problem requires
 the definition of the amount of resource consumption for each arc of the network.
 It is not possible to define the resource consumption at the vertex level.
-Therefore, as suggested in \textcite{pessoa2020a}, we have defined the resource consumption
+Therefore, as suggested in \textcite{pessoa2020generic}, we have defined the resource consumption
 on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
 This definition is correct and it leads to a symmetric resource consumption ($q_{ij} = q_{ji}$).
 The symmetric resource consumption property improves the efficiency in pricing,
-by eliminating the need of performing backward labelling \parencite{pessoa2020a}.
+by eliminating the need of performing backward labelling \parencite{pessoa2020generic}.
 
 To extract the information needed for the performance evaluation we have implemented a custom pricing functor.
 The pricing functor is in essence a glorified callback that can be used
@@ -334,7 +335,7 @@ The Y-axis instead shows the probability of being within an X ratio from the bas
 
 We've extensively employed performance profiles to compare the competitiveness of
 our proposed branch-and-cut based pricer
-against the RCSP dynamic programming algorithm used by \bapcod\ \parencite{pessoa2020a}.
+against the RCSP dynamic programming algorithm used by \bapcod\ \parencite{pessoa2020generic}.
 
 \begin{comment}
 In this thesis, we will use performance profiles extensively to measure each solver by exploiting two performance metrics: \textbf{Time metric}, \textbf{Cost metric}.

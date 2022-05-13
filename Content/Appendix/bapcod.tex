@@ -9,7 +9,7 @@ the desired intent.
 The \bapcod\ technical report \textcite{sadykov2021} provides a more
 comprehensive list and describes the parameters in more depth.
 The technical report alone is not enough to fully comprehend the purpose of each parameter,
-therefore it is highly suggested to first read the scientific document of \textcite{pessoa2020a}.
+therefore it is highly suggested to first read the scientific document of \textcite{pessoa2020generic}.
 
 \medskip
 
@@ -144,7 +144,7 @@ We've opted to completely disabled any form of branching.
 
 These parameters affect the labeling algorithm, the ng-sets size,
 the route enumeration procedure and some other minor aspects of the VRPSolver extension.
-We recall that the VRPSolver extension was introduced in \textcite{pessoa2020a},
+We recall that the VRPSolver extension was introduced in \textcite{pessoa2020generic},
 where it became one of the state-of-the-art approaches for tackling routing-like problems.
 
 \begin{itemize}
@@ -183,14 +183,14 @@ where it became one of the state-of-the-art approaches for tackling routing-like
 	      the ng-sets size based on the
 	      fractional solution obtained by the column generation
 	      and not based on the solution received from the pricing problem.
-	      See \textcite{pessoa2020a} for more details.
+	      See \textcite{pessoa2020generic} for more details.
 	\item \texttt{RCSPinitNGneighbourhoodSize = 8}, \texttt{RCSPmaxNGneighbourhoodSize = 63}.
 	      These parameters, referred respectively as $\eta^\mt{init}, \eta^\mt{max}$ in the scientific paper,
 	      sets the bounds in which the ng-set size can be dynamically extended.
 	      Raising $\eta^\mt{init}$ can improve the dual bound generated from the pricer, but usually leads to explosion of computation times, especially if it is raised a lot.
 	      Therefore keeping $\eta^\mt{init}$ small and raising $\eta^\mt{max}$ is instead the preferred approach if one seeks to improve the dual bound at each branch-and-bound node.
 	      The ng-sets size starts at the lower value $\eta^\mt{init}$ and it is later increased (if param \texttt{RCSPdynamicNGmode} is enabled)
-	      after the column generation convergence and only if the MP contains a fractional solution (see \cite{pessoa2020a}).
+	      after the column generation convergence and only if the MP contains a fractional solution (see \cite{pessoa2020generic}).
 	      Since our pricer produces the best dual bound improvement possible (elementary routes),
 	      we want to stress the labeling algorithm to try as hard as possible to achieve
 	      reasonable dual bounds.
