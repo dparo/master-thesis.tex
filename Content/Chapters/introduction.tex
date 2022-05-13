@@ -620,7 +620,7 @@ are in fact a hybridization between a BAP and a BAC framework,
 making them a branch-price-and-cut (BPC) frameworks.
 Some notable works integrating cutting-planes and proposing
 a BCP approach for the VRP can be found \textcite{fukasawa2006, ropke2012}.
-Refer to \textcite{sadykov2019b} for a discussion of the state-of-the-art
+Refer to \textcite{sadykov2019modern} for a discussion of the state-of-the-art
 components that are part of modern branch-and-price frameworks.
 
 \medskip
@@ -888,13 +888,13 @@ Major contributions in the non-robust cutting-planes domain are:
 	      Compared to RCCs, they are not affected by routes entering set $S \subseteq V_0$ more than once.
 	\item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009}
 	      are another proposed generalization of the RCCs.
-	\item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008a}, a non-robust
+	\item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008subsetrow}, a non-robust
 	      inequality obtained as a subset of the  Chv\'atal-Gomory rank-1 cuts \parencite{chvatal1973}
 	      applied to a subset $C \subseteq V_0$ of customers.
 	      Their separation is NP-hard.
 	      Therefore, Typically the subset $C$ is separated through enumeration
 	      and for computational tractability and restricting the evaluation $\forall C \subseteq V_0 \mid |C| \le 5$.
-	      3-SRCs, namely SRCs where $|C| = 3$, were applied successfully in many works \parencite{desaulniers2008, jepsen2008, baldacci2011, contardo2014, pecin2017improved}.
+	      3-SRCs, namely SRCs where $|C| = 3$, were applied successfully in many works \parencite{desaulniers2008, jepsen2011, baldacci2011, contardo2014, pecin2017improved}.
 	      The SRCs were later generalized to a more general Chv\'atal-Gomory Rank-1 cuts (R1Cs) in \textcite{petersen2008}.
           R1Cs are potentially very strong, but they make the pricing subproblems significantly harder.
 	      \textcite{baldacci2011} proposes a weakened variant of the 3-SRCs inequalities.
@@ -938,7 +938,7 @@ the ESPPRC is an NP-hard problem.
 
 \medskip
 
-The $q$-routes \parencite{christofides1981}
+The $q$-routes \parencite{christofides1981exact}
 are routes $p$ with total resource consumption $q(p) \le Q$
 that do not necessarily satisfy the elementarity condition and may thus contain cycles.
 In $q$-routes each additional visit to already covered customers
@@ -986,7 +986,7 @@ Its running time complexity for pricing q-routes is $O(N^2 Q)$ operations.
 The label-correcting algorithm tends to have shortcomings when the
 produced routes visit a high number of nodes,
 i.e. when the vehicle capacity is not particularly stringent.
-This results in a large amount of processed labels that require processing \parencite{jepsen2008a}.
+This results in a large amount of processed labels that require processing \parencite{jepsen2008branchandcut}.
 
 The label-correcting algorithm, was later extended to handle
 elementary paths in \textcite{feillet2004},
@@ -1162,7 +1162,7 @@ for solving the VRP.
 
 Up to the late 1980s, the exact approaches for tackling the CVRP was
 based on tree-search algorithms employing branch-and-bound schemes
-(see \textcite{pierce1969, christofides1969, christofides1981, laporte1986}),
+(see \textcite{pierce1969, christofides1969, christofides1981exact, laporte1986}),
 sometimes employing Lagrangian duality relaxation (see \textcite{fisher1994, miller1995}),
 or additive bounding procedures (see \textcite{fischetti1994a, hadjiconstantinou1995}).
 

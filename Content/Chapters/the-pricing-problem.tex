@@ -55,10 +55,10 @@ If non-robust cuts are employed, the sub-problem becomes
 a slight variation of the EPSRRC which is characterized by additional constraints.
 
 Attempting to solve the ESPPRC through branch-and-cut frameworks
-have been lately attempted and evaluated in the works of \textcite{jepsen2008}.
+have been lately attempted and evaluated in the works of \textcite{jepsen2008branchandcut}.
 Along with empirical results,
 these contributions provide IP mathematical models and additional valid inequalities.
-\textcite{jepsen2008} provides an IP formulation described over and undirected network.
+\textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
 
 A branch-and-cut approach for the ESPP (without the resource constraints)
 was instead studied in \textcite{taccari2016}.
@@ -103,7 +103,7 @@ bound to each node.
 
 Our presentation of the ESPPRC follows the one provided in \textcite{beasley1989, toth2002, toth2014},
 where the model is defined over  a \textbf{directed} symmetric network.
-Refer to \textcite{jepsen2008} for a model defined over an undirected symmetric network.
+Refer to \textcite{jepsen2008branchandcut} for a model defined over an undirected symmetric network.
 The ESPRCC network is characterized by $N_0 + 2$ nodes,
 where $N_0$, as usual, denotes the total number of customers for the original CVRP problem.
 Two additional vertices are used to represent respectively the source and sink vertices.
@@ -378,7 +378,7 @@ it is far less addressed in the literature compared to ESPPRC.
 To the best of our knowledge, the few contributions studying the CPTP
 in the context of pricing for the VRP can be found in \textcite{bixby1999, jepsen2011,jepsen2014}.
 \textcite{jepsen2014} study the CPTP problem in the context of pricing for the VRP.
-Their work originate from the initial efforts in \textcite{jepsen2008},
+Their work originate from the initial efforts in \textcite{jepsen2008branchandcut},
 were a branch-and-cut algorithm was applied to solve the ESPPRC.
 Their work lays out a first foundational theory for further development
 of the CPTP as an independent problem or as in the context of pricing.
@@ -483,7 +483,7 @@ we update the incumbent.
 
 
 \begin{quote}
-	\cite{jepsen2008}
+	\cite{jepsen2008branchandcut}
 	Also, it would be interesting to extend the BAC algorithm to solve the more general ESPPRC.
 	Extending the mathematical formulation to cover a directed graph is fairly easy. This will result in a
 	doubling of the number of variables. This does not favor the BAC algorithm where compact formu-

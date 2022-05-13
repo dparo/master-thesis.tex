@@ -13,7 +13,7 @@ at the following Github repository: \url{https://github.com/dparo/master-thesis}
 
 \begin{quote}
 	The BAC algorithm is implemented using callback functions for cut gen-
-	eration which is available in the CPLEX callable library \cite{jepsen2008}.
+	eration which is available in the CPLEX callable library \cite{jepsen2008branchandcut}.
 \end{quote}
 
 \medskip
@@ -438,7 +438,7 @@ In the following sections we describe how we separate each inequality using the 
 	(6) can have a huge influence on the computational time for the BAC algorithm. A low threshold on
 	violation will result in good lower bounds and fewer branch nodes but a slower convergence in each
 	node, while the opposite is true for a high threshold. Also the number of violated cuts added in each
-	iteration can influence the convergence and the time spent re-optimizing the LP-problem \cite{jepsen2008}.
+	iteration can influence the convergence and the time spent re-optimizing the LP-problem \cite{jepsen2008branchandcut}.
 \end{quote}
 
 Fortunately it is possible to instruct CPLEX to evaluate the cuts.
