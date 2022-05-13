@@ -219,7 +219,7 @@ and (ii) as a capacity constraint, by imposing that any customer set $S$ is cros
 Recall that, $r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$,
 also, $r(S)$ always satisfies $r(S) \ge 1$ for non-trivial CVRP instances: $q(S) > 0$.
 
-It was shown in \textcite{cornuejols1993}, that it is possible to replace $r(S)$ in constraint
+It was shown in \textcite{martello1990knapsack, cornuejols1993}, that it is possible to replace $r(S)$ in constraint
 \eqref{eq:two-index-flow-ccc}, with the much simpler Bin Packing Problem lower bound $\ceil*{q(S) / Q}$
 thus obtaining the following inequality:
 
@@ -640,7 +640,7 @@ The major contributions employing route enumeration in place of branching can be
 \textcite{baldacci2008,baldacci2011}.
 
 Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration
-(see \cite{pessoa2008, pessoa2009,contardo2014,pecin2017,pecin2017b,pessoa2020}).
+(see \cite{pessoa2008, pessoa2009,contardo2014,pecin2017improved,pecin2017new,pessoa2020}).
 After the convergence of the column generation, route enumeration is attempted.
 If the number of enumerated routes starts to exceed a maximum limit, enumeration
 is preemptively aborted and conventional branching is applied.
@@ -749,7 +749,7 @@ an arbitrary set $S \subseteq V_0$ with two descendant nodes:
 	\sum_{e \in \delta(S)}x_e \le 2 r(S), \quad
 	\sum_{e \in \delta(S)}x_e \ge 2 r(S) + 2
 \end{equation}
-\textcite{pecin2017} apply a similar branching approach.
+\textcite{pecin2017improved} apply a similar branching approach.
 
 \textit{Ryan and Foster branching} \parencite{ryan1981integer} is another possible branching rule.
 This non-robust branching rule makes the pricing sub-problem much harder,
@@ -767,7 +767,7 @@ would heuristically lead to the best dual bound improvement
 or that it is heuristically known to lead to a more balanced search-tree.
 Strong branching can reduce the size of the search-tree
 at the expense of a slower branching candidate evaluation.
-\textcite{fukasawa2006, pecin2017a, pecin2017b} applied strong branching
+\textcite{fukasawa2006, pecin2017limited, pecin2017new} applied strong branching
 to the vehicle routing problems.
 
 \medskip
@@ -894,14 +894,14 @@ Major contributions in the non-robust cutting-planes domain are:
 	      Their separation is NP-hard.
 	      Therefore, Typically the subset $C$ is separated through enumeration
 	      and for computational tractability and restricting the evaluation $\forall C \subseteq V_0 \mid |C| \le 5$.
-	      3-SRCs, namely SRCs where $|C| = 3$, were applied successfully in many works \parencite{desaulniers2008, jepsen2008, baldacci2011, contardo2014, pecin2017}.
+	      3-SRCs, namely SRCs where $|C| = 3$, were applied successfully in many works \parencite{desaulniers2008, jepsen2008, baldacci2011, contardo2014, pecin2017improved}.
 	      The SRCs were later generalized to a more general Chv\'atal-Gomory Rank-1 cuts (R1Cs) in \textcite{petersen2008}.
           R1Cs are potentially very strong, but they make the pricing subproblems significantly harder.
 	      \textcite{baldacci2011} proposes a weakened variant of the 3-SRCs inequalities.
-	\item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017},
+	\item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017improved},
 	      are a dynamically controlled weakening of the SRCs that leads far less impact to
 	      the PP.
-	      Later, \textcite{pecin2017a} extends this concept to the Limited Memory Rank-1 Cuts (lm-R1Cs).
+	      Later, \textcite{pecin2017limited} extends this concept to the Limited Memory Rank-1 Cuts (lm-R1Cs).
 	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011, contardo2014}, they can be considered
 	      a specialized version of the SCCs.
 	      They can enforce partial route elementarity in the RMP formulation
@@ -1135,7 +1135,7 @@ hurting the convergence speed of the column generation algorithm \parencite{toth
 Therefore, some dual variables stabilization techniques
 have been proposed to fix this problem and
 to reduce the number of pricing iterations required
-by the column generation algorithm (see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018}).
+by the column generation algorithm (see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018automation}).
 Also employing the SC formulation in place of the SP formulation,
 the dual variables have been shown to be typically more stable \parencite{rousseau2007, feillet2010}.
 
@@ -1251,12 +1251,12 @@ In their approach the size of the ng-sets size
 is enlarged dynamically in order to seek for more effective dual bounds.
 
 
-Another modern BCP algorithm was proposed in \textcite{pecin2017}.
+Another modern BCP algorithm was proposed in \textcite{pecin2017improved}.
 By using a bidirectional label setting algorithm,
 lm-SRCs cuts, modern dual smoothing and enumeration approaches
 and the ng-routes relaxation, they were able to solve CVRP instances made of 200 customers
 and also some instances up to 360 customers.
-\textcite{pecin2017b} extends the work of \textcite{pecin2017} to the VRPTW variant.
+\textcite{pecin2017new} extends the work of \textcite{pecin2017improved} to the VRPTW variant.
 At the day of writing, \textcite{pessoa2020a} is the current state-of-the-art
 BCP framework based on column generation with ng-routes relaxation
 for solving the CVRP problem.
@@ -1324,7 +1324,7 @@ In practice, the vehicle capacity is rarely the bottleneck and
 real-world modern distribution problems are instead characterized by much longer routes.
 The dynamic programming labeling algorithm
 \parencite{desrochers1992,feillet2004}
-is the commonly employed method to tackle the Pricing Problem (PP) \parencite{gutierrez-jarpa2010, archetti2011, bettinelli2011, contardo2014, contardo2015, pecin2017b, pecin2017, pessoa2020a}.
+is the commonly employed method to tackle the Pricing Problem (PP) \parencite{gutierrez-jarpa2010, archetti2011, bettinelli2011, contardo2014, contardo2015, pecin2017new, pecin2017improved, pessoa2020a}.
 It has been shown that the computational performance of such algorithm
 tends to deteriorate as the length of the generated routes increases.
 
