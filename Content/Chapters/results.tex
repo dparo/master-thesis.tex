@@ -354,6 +354,8 @@ The ground truth optimal, as extracted from the dataset, is used instead as the 
 
 \mytodo{Report timelimit and seed values}
 
+\mytodo{Write out the number of threads the MIP optimizer runs with}
+
 Each performance profile follows the syntax:
 \begin{center}
 	\begin{LVerbatim}
@@ -364,7 +366,6 @@ where \texttt{<FAMILY>} denotes the CVRP instances family (i.e. E, F, etc) and \
 The term \texttt{last-10} is used to denote that the performance profile uses only the last 10 pricing iterations for performing the comparison.
 
 At the time of writing, only the following scaling factors were tested: $s = 1.0,\ s = 2.0,\ s = 4.0$.
-
 
 \section{Discussion}
 \label{sec:results-discussion}
