@@ -514,7 +514,7 @@ In our implementation a GSEC inequality is separated for $S \subseteq V_0,\ \Set
 
 is violated.
 The $\varepsilon_{\mt{GSEC}}$ is a constant which denotes the violation tolerance for the GSEC fractional separation.
-In our implementation we picked $\varepsilon_{\mt{GSEC}} = 0.2$.
+In our implementation we picked $\varepsilon_{\mt{GSEC}} = \epsGsecFValue$.
 If the GSEC inequality violation does not surpass this tolerance, the GSEC inequality is not generated and reported to the MIP solver.
 On top of that, to further reduce the number of generated GSECs, we report only the single most violated GSEC per set $S \subseteq V_0$ by using the customer $i \in V_0$ that maximizes the $\maxflow(s, t) - 2 y_i$ violation.
 
@@ -548,7 +548,7 @@ Therefore, a set $\SetSize*{S} \subseteq V_0$ can separate a single RCC cut if t
 
 is violated.
 The $\varepsilon_{\mt{RCC}}$ is a constant which denotes the violation tolerance for the RCC fractional separation.
-In our implementation we picked $\varepsilon_{\mt{RCC}} = 0.05$.
+In our implementation we picked $\varepsilon_{\mt{RCC}} = \epsRccFValue$.
 We can separate $O(N^2)$ RCC cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
 
 The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:rcc-integral-sep}, \ref{algo:rcc-frac-sep} respectively.
@@ -607,7 +607,7 @@ Otherwise a single GLM cut can be separated if the following inequality
 
 is violated.
 The $\varepsilon_{\mt{GLM}}$ is a constant which denotes the violation tolerance for the GLM fractional separation.
-In our implementation we picked $\varepsilon_{\mt{GLM}} = 0.05$.
+In our implementation we picked $\varepsilon_{\mt{GLM}} = \epsGlmFValue$.
 We can separate $O(N^2)$ GLM cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
 
 The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:glm-integral-sep}, \ref{algo:glm-frac-sep} respectively.
