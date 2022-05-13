@@ -983,8 +983,10 @@ The label-correcting algorithm
 is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
 a common algorithm present in the "tool belt" of all operations research practitioners.
 Its running time complexity for pricing q-routes is $O(N^2 Q)$ operations.
-Notice that its performance scales with the vehicle capacity $Q$, and therefore
-may be less competitive when $Q$ increases.
+The label-correcting algorithm tends to have shortcomings when the
+produced routes visit a high number of nodes,
+i.e. when the vehicle capacity is not particularly stringent.
+This results in a large amount of processed labels that require processing \parencite{jepsen2008a}.
 
 The label-correcting algorithm, was later extended to handle
 elementary paths in \textcite{feillet2004},

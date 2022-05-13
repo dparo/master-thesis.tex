@@ -55,7 +55,14 @@ If non-robust cuts are employed, the sub-problem becomes
 a slight variation of the EPSRRC which is characterized by additional constraints.
 
 Attempting to solve the ESPPRC through branch-and-cut frameworks
-have been lately attempted in the works of \textcite{jepsen2008}.
+have been lately attempted and evaluated in the works of \textcite{jepsen2008}.
+Along with empirical results,
+these contributions provide IP mathematical models and additional valid inequalities.
+\textcite{jepsen2008} provides an IP formulation described over and undirected network.
+
+A branch-and-cut approach for the ESPP (without the resource constraints)
+was instead studied in \textcite{taccari2016}.
+
 
 
 \begin{comment}
@@ -94,8 +101,9 @@ bound to each node.
 \subsection{Integer Programming Formulation}
 \label{sec:espprc-integer-programming-formulation}
 
-The ESPPRC is traditionally defined over a \textbf{directed}
-symmetric network.
+Our presentation of the ESPPRC follows the one provided in \textcite{beasley1989, toth2002, toth2014},
+where the model is defined over  a \textbf{directed} symmetric network.
+Refer to \textcite{jepsen2008} for a model defined over an undirected symmetric network.
 The ESPRCC network is characterized by $N_0 + 2$ nodes,
 where $N_0$, as usual, denotes the total number of customers for the original CVRP problem.
 Two additional vertices are used to represent respectively the source and sink vertices.
@@ -325,7 +333,8 @@ and therefore presents many similarities with other very well known
 problems such as:
 (i) the Orienteering Problem (OP) \parencite{golden1987, laporte1990}
 (ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995},
-(iii) the Capacitated m-Ring-Star Problem (CmRSP) \parencite{baldacci2007capacitated}.
+(iii) the Prize Collecting Traveling Salesman Problem (PCTSP) \parencite{balas1989prize, balas1995prize},
+(iv) the Capacitated m-Ring-Star Problem (CmRSP) \parencite{baldacci2007capacitated}.
 See \textcite{letchford2013} for the Steiner extension of these problems.
 The OP, an NP-hard problem \parencite{laporte1990}, asks for a route serving
 a subset of customers with profits.
@@ -546,6 +555,8 @@ of the \cref{eq:rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_0$ ho
 Fortunately this is the case for most, if not all, routing problems considered in the literature.
 
 No exact separation procedure is currently known RCC inequalities \parencite{jepsen2014}.
+\textcite{jepsen2014} suggest to use the same GLM separation procedure, see \cref{sec:cptp-glm}.
+Therefore the
 
 \subsection{Generalized Large Multistar (GLM)}
 \label{sec:cptp-glm}
@@ -593,4 +604,11 @@ and all other customers outside $S$
 which are connected to nodes in $S$ through a crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$.
 GLM inequalities are efficiently separable in
 polynomial time by finding minimum
-$(s, t)$-cuts $\forall i \in V_0,\ t = 0$ \parencite{letchford2006, jepsen2014}.
+$(u, v)$-cuts $\forall u \in V_0,\ v = 0$
+in a directed flow-network with capacities which depend on the vertex $u$
+\parencite{letchford2006, jepsen2014}.
+A simpler approach might consist instead,
+in minimizing only the term $\sum_{e \in \delta(S)} x_e$ as to stress the violation.
+This can be achieved by computing $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
+in a directed flow network where capacities are given exclusively from the
+fractional solution $c_{ij} = x^\star _{\Set*{ij}}\quad \forall i, j \in V$.

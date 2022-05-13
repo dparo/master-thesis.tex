@@ -41,12 +41,14 @@ aimed at improving the linear relaxation.
 
 Our branch-and-cut based pricer makes of a static IP model
 based on the CPTP formulation of \labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
-excluding the GSECs of \cref{eq:cptp-gsec-constraints};
+disregarding the GSECs of \cref{eq:cptp-gsec-constraints};
 see discussion in \cref{sec:the-capacitated-profitable-tour-problem} for more details.
 To guarantee the correctness of the approach,
-the GSECs will be dynamically generated and inserted
-during the running-time of the branch-and-cut algorithm
-through an exact separation procedure.
+the GSECs will be dynamically separated on violation
+during the running-time of the branch-and-cut algorithm.
+Note that to guarantee the correctness of the approach,
+the GSECs must be separated through an exact procedure
+(at least for the integral solutions).
 We've implemented the following static Integer Programme (IP) model:
 \begin{align}
 	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                                              \\
@@ -248,7 +250,13 @@ reporting additional inequalities, which cannot be deduced from the static model
 can drastically improve the running time of the resolution process.
 
 
+The GSECs can be separated for fractional solutions by solving $(s, t)$-min-cuts
+on a flow network where capacities are given from the fractional solution $x^\star$.
+
 No exact separation procedure is currently known RCC inequalities \parencite{jepsen2014}.
+
+GLM separation is sub-optimal because  the capacities
+of the flow network need to also account for the demand of the vertices.
 
 Despite the are no exact separation procedure known for the RCC inequalities,
 we take the approach taken in \textcite{jepsen2014},
