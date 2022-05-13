@@ -56,12 +56,12 @@ the GSECs must be separated through an exact procedure
 (at least for the integral solutions).
 We've implemented the following static Integer Programme (IP) model:
 \begin{align}
-	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                                              \\
-	                                   & y_0 = 1                                  &                        \\
-	                                   & B \le   \ExprCptpDemandSum   \le Q       &                        \\
-	                                   & \ExprCptpEdgesIncident{i}    = 2 y_i     & \quad \forall i \in V  \\
-	                                   & x_{e}                   \in \Set*{0, 1}  & \quad \forall e \in E  \\
-	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V,
+	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                     & \label{eq:cptp-static-model-0}                         \\
+	                                   & y_0 = 1                                  & \label{eq:cptp-static-model-1}                         \\
+	                                   & B \le   \ExprCptpDemandSum   \le Q       & \label{eq:cptp-static-model-2}                         \\
+	                                   & \ExprCptpEdgesIncident{i}    = 2 y_i     & \quad \forall i \in V  \label{eq:cptp-static-model-3}  \\
+	                                   & x_{e}                   \in \Set*{0, 1}  & \quad \forall e \in E  \label{eq:cptp-static-model-4}  \\
+	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V  \label{eq:cptp-static-model-5},
 \end{align}
 where
 $B \in R_+$ is an additional lower bound on the resource consumption
@@ -316,7 +316,9 @@ The connected components can be computed by a simple depth first search traversa
 
 \begin{algorithm}
 	\caption{An algorithm for computing the connected components through a DFS traversal}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integer solution}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current integral solution of
+		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
+	}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
 	\input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
@@ -474,7 +476,9 @@ A complete pseudo-code is provided in Algorithm \ref{algo:gsec-integral-sep}.
 	\label{algo:gsec-integral-sep}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current integral solution of
+		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
+	}
 	\input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
@@ -520,7 +524,7 @@ The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
 	\caption{An algorithm for separating GSEC fractional inequalities for the CPTP}
 	\label{algo:gsec-frac-sep}
 	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
-	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+	\KwData{$x^*, y^* \in [0, 1]$: current fractional solution of \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}}
 	\input{Content/Chapters/Snippets/gsec-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
@@ -554,7 +558,9 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\label{algo:rcc-integral-sep}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current integral solution of
+		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
+	}
 	\input{Content/Chapters/Snippets/rcc-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
@@ -562,7 +568,9 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\caption{An algorithm for separating RCC fractional inequalities for the CPTP}
 	\label{algo:rcc-frac-sep}
 	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
-	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+	\KwData{$x^*, y^* \in [0, 1]$: current fractional solution of
+		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}
+	}
 	\input{Content/Chapters/Snippets/rcc-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
@@ -609,7 +617,9 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\label{algo:glm-integral-sep}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current optimal integral solution}
+	\KwData{$x^*, y^* \in \{0, 1\}$: current integral solution of
+		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
+	}
 	\input{Content/Chapters/Snippets/glm-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
@@ -617,6 +627,8 @@ The complete pseudocode for both the integral and fractional separation can be f
 	\caption{An algorithm for separating GLM fractional inequalities for the CPTP}
 	\label{algo:glm-frac-sep}
 	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
-	\KwData{$x^*, y^* \in [0, 1]$: current optimal fractional solution}
+	\KwData{$x^*, y^* \in [0, 1]$: current fractional solution of
+		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}
+	}
 	\input{Content/Chapters/Snippets/glm-frac-sep-pseudoalgo.tex}
 \end{algorithm}
