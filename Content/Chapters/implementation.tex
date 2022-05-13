@@ -237,7 +237,7 @@ We rely on the branching schemes already provided from the CPLEX MIP optimizer.
 
 \mytodo{Strong branching employed?}
 
-\section{Separation techniques}
+\section{Cutting-planes separation}
 \label{sec:impl-separation-techniques}
 
 Despite separation of some general families of cutting-planes are already provided
@@ -246,6 +246,16 @@ Chvátal-Gomory cuts, mixed integer rounding cuts, disjunctive cuts
 and cover inequalities (see \cref{sec:introduction-to-cplex});
 reporting additional inequalities, which cannot be deduced from the static model,
 can drastically improve the running time of the resolution process.
+
+
+No exact separation procedure is currently known RCC inequalities \parencite{jepsen2014}.
+
+Despite the are no exact separation procedure known for the RCC inequalities,
+we take the approach taken in \textcite{jepsen2014},
+and use min-cuts to separate this family of inequalities.
+Despite this procedure may be suboptimal, it has the specific
+benefit that the same labeling procedure employed in the GLM separation,
+can also be used for this family of cuts.
 
 \begin{comment}
 \cite{jepsen2014}

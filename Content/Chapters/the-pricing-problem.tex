@@ -538,6 +538,8 @@ Notice, that \cref{eq:baldacci-rcc-theorem-weaker-bound} guarantees correctness
 of the \cref{eq:rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
 Fortunately this is the case for most, if not all, routing problems considered in the literature.
 
+No exact separation procedure is currently known RCC inequalities \parencite{jepsen2014}.
+
 \subsection{Generalized Large Multistar (GLM)}
 \label{sec:cptp-glm}
 
@@ -582,5 +584,6 @@ The vehicle must have sufficient capacity to serve
 all the customers covered by $S$
 and all other customers outside $S$
 which are connected to nodes in $S$ through a crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$.
-\textcite{letchford2006} shows that the GLM inequalities are efficiently separable in
-polynomial time by finding minimum $(s, t)$-cuts $\forall i \in V_0,\ t = 0$.
+GLM inequalities are efficiently separable in
+polynomial time by finding minimum
+$(s, t)$-cuts $\forall i \in V_0,\ t = 0$ \parencite{letchford2006, jepsen2014}.
