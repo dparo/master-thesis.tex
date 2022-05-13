@@ -102,7 +102,7 @@ These parameters control the column generation framework.
 	      \bapcod\ automatically switches to a lower stage when the previous stage converges (i.e. fails to find any reduced cost column).
 	      The technical document suggests to set this parameter to $3$ when the VRPSolver extension is in use.
 	      The VRPSolver extension implements two heuristic stages by using a modification of the bidirectional label setting algorithm,
-	      see the \textit{Pricing heuristics} and \textit{Column and cut generation} sections of \textcite{sadykov2021a}.
+	      see the \textit{Pricing heuristics} and \textit{Column and cut generation} sections of \textcite{sadykov2021bucket}.
 	\item \texttt{ReducedCostFixingThreshold = 0.0}.
 	      Tells \bapcod\ to not apply reduced cost fixing.
 \end{itemize}
@@ -152,8 +152,8 @@ where it became one of the state-of-the-art approaches for tackling routing-like
 	      This parameter, referred as $\phi^\mt{bidir}$ in the scientific paper,
 	      tells the RCSP pricer to use the bidirectional search for solving the pricing problem.
 	\item \texttt{RCSPapplyReducedCostFixing = 1}.
-	      This parameter, reffered as $\phi^\mt{elim}$ in the scientific paper,
-	      tells the pricer to employ the default standard bucket arc elimination discussed in \textcite{sadykov2021a}.
+	      This parameter, referred as $\phi^\mt{elim}$ in the scientific paper,
+	      tells the pricer to employ the default standard bucket arc elimination discussed in \textcite{sadykov2021bucket}.
 	\item \texttt{RCSPmaxNumOfColsPerExactIteration = 1}, \texttt{RCSPmaxNumOfColsPerIteration = 1}.
 	      These parameters, reffered respectively as $\gamma^\mt{exact}, \gamma^\mt{heur}$ in the scientific paper,
 	      control the number of generated columns per iteration by the pricer respectively
