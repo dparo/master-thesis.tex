@@ -481,6 +481,23 @@ we check for improving single-customer solutions and,
 if any exist,
 we update the incumbent.
 
+
+\begin{quote}
+	\cite{jepsen2008}
+	Also, it would be interesting to extend the BAC algorithm to solve the more general ESPPRC.
+	Extending the mathematical formulation to cover a directed graph is fairly easy. This will result in a
+	doubling of the number of variables. This does not favor the BAC algorithm where compact formu-
+	lations are preferred but it may be manageable. However, a much more delicate matter is handling
+	resources with bounds imposed at the nodes or edges (compared to a capacity resource where the
+	bound is global). Such resources includes the well known time window constraints which are often
+	modeled using ”big-M” constraints that are known to be notoriously computationally unstable. An al-
+	ternative for handling time window-like constraints are the use of valid inequalities such as infeasible
+	path inequalities. However, there are an exponential number of these inequalities which are N P -
+	hard to separate (compared to the polynomial separation time of the generalized subtour elimination
+	constraints) so these cuts are bound to have a significant impact on the running time.
+\end{quote}
+
+
 \section{Additional Valid Inequalities}
 \label{sec:cptp-additional-valid-inequalities}
 
