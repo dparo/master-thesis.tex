@@ -54,6 +54,10 @@ induced from the SP formulation coincides with an ESPPRC.
 If non-robust cuts are employed, the sub-problem becomes
 a slight variation of the EPSRRC which is characterized by additional constraints.
 
+Attempting to solve the ESPPRC through branch-and-cut frameworks
+have been lately attempted in the works of \textcite{jepsen2008}.
+
+
 \begin{comment}
 \cite{bettinelli2010mathematical} ---------------
 It is possible to address the pricing problem by optimizing its relaxation,
@@ -363,8 +367,10 @@ However, due to its narrower scope,
 it is far less addressed in the literature compared to ESPPRC.
 
 To the best of our knowledge, the few contributions studying the CPTP
-in the context of pricing for the VRP can be found in \textcite{bixby1999, jepsen2008,jepsen2011,jepsen2014}.
+in the context of pricing for the VRP can be found in \textcite{bixby1999, jepsen2011,jepsen2014}.
 \textcite{jepsen2014} study the CPTP problem in the context of pricing for the VRP.
+Their work originate from the initial efforts in \textcite{jepsen2008},
+were a branch-and-cut algorithm was applied to solve the ESPPRC.
 Their work lays out a first foundational theory for further development
 of the CPTP as an independent problem or as in the context of pricing.
 Their work may serve in the future as a tutorial/survey/framework
@@ -533,7 +539,8 @@ we obtain the following linear, but weaker, RCC:
 	\label{eq:rcc-inequality}
 	\sum\limits_{e \in \delta(S)} x_e \ge 2 \Expr*{\ceil*{\frac{q(S)}{Q}} - \frac{\sum\limits_{i \in S} q_i \Expr*{1 - y_i}}{\ExprQr(S)}} \quad \forall S \subseteq V_0,\ |S| \ge 1,
 \end{equation}
-where $\ExprQr(S) = \fmod{q(S)}{Q}$ is the remainder capacity associated to set $S \subseteq V$.
+where $\ExprQr(S) = \fmod{q(S)}{Q}$ is the remainder capacity associated
+to an arbitrary set $S \subseteq V$.
 Notice, that \cref{eq:baldacci-rcc-theorem-weaker-bound} guarantees correctness
 of the \cref{eq:rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
 Fortunately this is the case for most, if not all, routing problems considered in the literature.
