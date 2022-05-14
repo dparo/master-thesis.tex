@@ -21,7 +21,7 @@ In this section we consider the basic version of the ESPPRC,
 i.e. non-robust inequalities at the RMP level are not considered
 since these change the structure and formulation of the basic ESPPRC problem.
 
-The ESPPRC asks for the determination of a shortest path on a weighted network
+The ESPPRC asks for the determination of the shortest path on a weighted network
 between two vertices $s, t$
 subject to restrictions of the resource consumption.
 In the ESPPRC problem the elementarity condition requires that such optimal path may visit at most once each vertex of the network.
@@ -41,8 +41,8 @@ see previous discussion in \cref{sec:intro-solving-the-pricing-problem}.
 
 \medskip
 
-A special case of the ESPPRC is obtained when it can be proved that the underlying
-network won't contain any negative cost cycles.
+In the special case in which the ESPPRC in which a network with proven non-negative
+cost cycles, the elementarity condition maybe safely dropped \parencite{beasley1989}.
 In such case, an optimal solution of the associated non-elementary SPPRC problem
 is an optimal solution to the original elementary version of the problem \parencite{beasley1989}.
 The associated SPPRC can be solved efficiently in pseudo-polynomial time.
@@ -54,6 +54,12 @@ to compute feasible dual solutions.
 See the contributions of
 \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous},
 just to name a few.
+But as pointed out in \textcite{righini2004},
+Lagrangian relaxation is effective only when the dualized variables
+are positive for a good portion of the Lagrange multipliers search space,
+which limit the effectiveness of the approach in the context of pricing.
+
+
 
 
 In the unlikely case in which the ESPPRC does not contain negative cost cycles,
@@ -76,10 +82,11 @@ see \cite{desrochers1992, feillet2004, righini2004, righini2006, boland2006, rig
 To the best of our knowledge,
 branch-and-cut approaches for tackling the (E)SPPRC have been barely covered.
 The few branch-and-cut contributions that we are aware of are:
-\textcite{jepsen2008branchandcut} for the ESPPCC
-and \textcite{jepsen2011,jepsen2014} to the CPTP (a special case of ESPPCC).
+\textcite{jepsen2008branchandcut} for the ESPPCC,
+\textcite{jepsen2011,jepsen2014} to the CPTP (a special case of ESPPCC),
+\textcite{taccari2016} for the non-resource constrained ESPP.
 ESPRCC branch-and-cut algorithms have not been covered,
-and this is probabably to the inherent difficulty in modeling time windows constraints within IP formulations,
+and this is probably to the inherent difficulty in modeling time windows constraints within IP formulations,
 which are modeled as big-M constraints, which are inherently computationally unstable \parencite{jepsen2008branchandcut}.
 
 
@@ -111,10 +118,6 @@ have been lately attempted and evaluated in the works of \textcite{jepsen2008bra
 Along with empirical results,
 these contributions provide IP mathematical models and additional valid inequalities.
 \textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
-
-A branch-and-cut approach for the ESPP (without the resource constraints)
-was instead studied in \textcite{taccari2016}.
-
 
 
 \begin{comment}
