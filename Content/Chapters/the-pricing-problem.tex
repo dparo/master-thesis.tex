@@ -3,7 +3,6 @@
 
 \mytodo{These introductory paragraphs are either written like shit, duplicated or out-of-date. Please fix them.}
 
-
 While the ESPPRC can be studied as a separate standalone problem,
 here we are instead interested in the contributions that it can
 provide in the context of pricing for the CVRP.
@@ -44,7 +43,6 @@ First, the IP formulation would require to model a directed network thus leading
 Second, the delicate usage of big-M constraints are required to model resource constraints
 that have bounds at the edge or node level (such as time-windows constraints).
 Unfortunately, big-M constraints are inherently computationally unstable \parencite{jepsen2008branchandcut}.
-
 
 \section{The Elementary Shortest Path Problem with Capacity Constraints}
 \label{sec:the-elementary-shortest-path-problem-with-resource-constraints}
@@ -323,24 +321,19 @@ is used.
 	\label{fig:espprc-example-non-elementary-solution}
 \end{figure}
 
-As \textcite{beasley1989} proposes for the general ESPPRC,
+As it is done in \textcite{beasley1989},
 if one wishes to avoid the formation of spurious unconnected subtours,
-but wishes to relax the elementarity condition as to model an SPPRC,
+but wishes to relax the elementarity condition,
 it can achieve this by \cref{eq:espprc-sec-constraints} in favor
 of a big-M constraint of the form:
 \begin{equation}
 	\label{eq:espprc-relaxed-elementarity}
-	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{0}
+	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{s}
 \end{equation}
 where $M \in \R_+$ denotes an arbitrary large positive constant.
-In our case, however, since $A^\prime$ does not admit for in-arcs
-and out-arcs for respectively the source and sink vertices,
-\cref{eq:espprc-relaxed-elementarity}
-can be replaced with the much simpler:
-\begin{equation}
-	\label{eq:esppcc-simpler-relaxed-elementarity}
-	\ExprESPPOutgoingEdges{i} \le 1 \quad \forall i \in V \cup \Set*{s, t}.
-\end{equation}
+\Cref{eq:espprc-relaxed-elementarity} avoids the situation depicted
+in \cref{fig:espprc-example-with-spurious-subtours}
+while permitting the situation depicted in \cref{fig:espprc-example-non-elementary-solution}.
 Modeling the pricing as an SPPCC, can greatly reduce
 the column generation running time, at the cost
 of generating significantly weaker dual bound improvements.
@@ -446,7 +439,6 @@ have been lately attempted and evaluated in the works of \textcite{jepsen2008bra
 Along with empirical results,
 these contributions provide IP mathematical models and additional valid inequalities.
 \textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
-
 
 The presentation of this section, along with the implementation of \cref{sec:implementation-chapter}
 owes a lot to the efforts of \textcite{jepsen2014}.
