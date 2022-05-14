@@ -110,7 +110,7 @@ provided in \textcite{beasley1989, toth2002, toth2014}.
 Refer to \textcite{jepsen2008branchandcut} for an ESPPCC model defined over an undirected symmetric network.
 However, it has to be noted that the undirected symmetric network is in the general case needed
 to handle time-windows constraints.
-The ESPRCC network is characterized by $N_0 + 2$ nodes,
+The ESPPRC network is characterized by $N_0 + 2$ nodes,
 where $N_0$, as usual, denotes the total number of customers for the original CVRP problem.
 Two additional vertices are used to represent respectively the source and sink vertices.
 These two together model a dissection of the depot node.
@@ -318,7 +318,8 @@ is used.
 As it is shown in \textcite{beasley1989},
 if one wishes to avoid the formation of spurious unconnected subtours,
 but wishes to relax the elementarity condition as to model an SPPRC,
-it can achieve this by \cref{eq:espprc-sec-constraints} in favor of:
+it can achieve this by \cref{eq:espprc-sec-constraints} in favor
+of a big-M constraint of the form:
 \begin{equation}
 	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{0}
 \end{equation}
