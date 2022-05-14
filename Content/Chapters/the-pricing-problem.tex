@@ -14,12 +14,30 @@ of this problem by exploiting Integer Programming (IP).
 
 \mytodo{These introductory paragraphs for the ESPPRC are either written like shit, duplicated or out-of-date. Please fix them.}
 
-In this chapter we will introduce more formally the Elementary Shortest Path Problem with Resource Constraints (ESPPRC).
-In this thesis we're interested in studying the ESPPRC induced from the PP when solving the RMP through a BPC framework employing the usage of robust inequalities only.
 
-In the general case,
-the underlying network of ESPPRC problems may have negative cost cyles,
-which makes solving the ESPPRC an NP-hard problem \parencite{dror1994}.
+This section is devoted to discussing the
+Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+in the context of pricing for the CVRP.
+While we have already glimpsed over this problem in \cref{sec:column-generation-and-pricing-problem, sec:intro-solving-the-pricing-problem},
+we've never provided a formal description of the mathematical model.
+In this section we consider the basic version of the ESPPRC,
+i.e. non-robust inequalities at the RMP level are not considered
+since these change the structure and formulation of the basic ESPPRC problem.
+
+The ESPPRC asks for the determination of the shortest path on a weighted network
+between two vertices $s, t$
+subject to restrictions of the resource consumption.
+In the ESPPRC problem the elementarity condition requires that such optimal path may visit at most once each vertex of the network.
+The ESPPRC's underlying network may,
+in the general case,
+contain negative cost cycles,
+which makes solving such problem NP-hard \parencite{dror1994}.
+A dynamic programming algorithm to tackle the elementary version of the problem was proposed in \textcite{feillet2004}.
+Traditionally however, in the context of pricing, the problem can be relaxed into an SPPRC,
+and the problem can be solved in pseudo-polynomial time with a faster dynamic programming algorithm of \textcite{desrochers1992}.
+Unfortunately, relaxing the elementarity condition leads to slower column generation and worsening of dual bounds,
+see discussion in \cref{sec:intro-solving-the-pricing-problem}.
+
 In the unlikely case in which the ESPPRC does not contain negative cost cycles,
 the problem can be modeled as a SPPRC, which can be solved efficiently in pseudo-polynomial time using
 a dynamic programming algorithm.
@@ -27,7 +45,8 @@ Initial contributions, in fact employed Lagrangean relaxation to relax the
 resource consumption constraint.
 By employing a branch-and-bound scheme and an off-the-shelf standard shortest-path algorithm,
 such as the Djkstra algorithm \parencite{sniedovich2006dijkstra}, to compute feasible dual solutions.
-See the contributions of \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous}, just to name a few.
+See the contributions of \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous},
+just to name a few.
 But as pointed out in \textcite{righini2004},
 Lagrangian relaxation is effective only when the dualized variables
 are positive for a good portion of the Lagrange multipliers search space.
@@ -349,6 +368,10 @@ the OP may be regarded as a special case of an edge-capacitated CPTP with unit d
 Refer to \textcite{fischetti1998, gendreau1998} for contributions
 exposing BAC frameworks and valid inequalities for the OP.
 Many of such inequalities (but not all) are also valid for the CPTP \parencite{jepsen2014}.
+We will introduce the CPTP in the context of pricing for the CVRP.
+We will study the basic version of the CPTP,
+i.e. we will not consider additional non-robust inequalities
+at the RMP level that could change the structure of the problem.
 
 In more details,
 the CPTP is a combinatorial optimization delivery problem,
