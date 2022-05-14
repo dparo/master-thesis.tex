@@ -161,7 +161,7 @@ to denote the set of arcs having both end points in set $S \subseteq V$.
 As it was done in \cref{sec:column-generation-and-pricing-problem},
 for each directed arc we associate a weight
 $\bar{c}_{ij} \in \R \quad \forall \Tuple*{i, j} \in A^\prime$.
-The weight $\bar{c}_{ij}$ represents the reduced cost of an arc $Tuple*{i, j} \in A^\prime$.
+The weight $\bar{c}_{ij}$ represents the reduced cost of an arc $\Tuple*{i, j} \in A^\prime$.
 Its definition is linked to the dual variables $\pi \in \R^N$ associated to
 the RMP's constraints of \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}
 through the following relation:
@@ -175,7 +175,8 @@ through the following relation:
 \end{equation}
 Additional usage of robust inequalities (cuts or branching) manifest
 additional negative term contributions (through additional dual variables)
-directly to the reduced arc cost $\bar{c}_{ij}$.
+directly to the reduced arc cost $\bar{c}_{ij}$,
+see previous discussion in \cref{sec:intro-branching-and-cut-generation-within-bap-frameworks}.
 
 A feasible path solution to the ESPPCC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
 with $p_0 = s, \ p_{u + 1} = t$
@@ -204,7 +205,7 @@ biasing the reduced cost of a feasible route $p$.
 We are now ready to provide a ESPPCC formal description through an Integer Programme (IP).
 Let $x_{ij} \in \Set*{0, 1} \quad \Tuple*{i, j} \in A^\prime$ be a new set of binary variables:
 $x_{ij} = 1$ if arc $\Tuple*{i, j} \in A^\prime$ is picked by the optimal path.
-We can provide a formal mathematical formulation of the ESPPCC as:
+We can provide a formal mathematical formulation of the ESPPCC as an Integer Programme (IP):
 \begin{align}
 	\min_{x} \quad z_\mt{ESPPCC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c}_{ij} x_{ij}                                                     \label{eq:espprc-obj-function}                                                                \\
 	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q  \label{eq:espprc-resource-upper-bound-constraint}                                             \\
@@ -218,7 +219,7 @@ where \labelcref{eq:espprc-obj-function} is the objective function to be minimiz
 Constraint \labelcref{eq:espprc-resource-upper-bound-constraint} is the resource consumption upper bound.
 Constraint \labelcref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices except for the source and the sink.
 Observe that \cref{eq:espprc-flow-conservation-constraint-customers} does not impose
-restriction on whether customer $i \ in V_0$ needs to be necessarily covered by the path.
+restriction on whether customer $i \in V_0$ needs to be necessarily covered by the path.
 Constraints \labelcref{eq:espprc-source-emitting-flow}, \labelcref{eq-espprc-sink-consuming-flow}
 respectively impose an out-flow and in-flow of $1$ for the source and sink vertices.
 Constraints \labelcref{eq:espprc-sec-constraints} are the Subtour Elimination Constraints (SEC) and
@@ -322,16 +323,23 @@ is used.
 	\label{fig:espprc-example-non-elementary-solution}
 \end{figure}
 
-As it is shown in \textcite{beasley1989},
+As \textcite{beasley1989} proposes for the general ESPPRC,
 if one wishes to avoid the formation of spurious unconnected subtours,
 but wishes to relax the elementarity condition as to model an SPPRC,
 it can achieve this by \cref{eq:espprc-sec-constraints} in favor
 of a big-M constraint of the form:
 \begin{equation}
+	\label{eq:espprc-relaxed-elementarity}
 	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{0}
 \end{equation}
 where $M \in \R_+$ denotes an arbitrary large positive constant.
-Modeling the pricing as an SPPRC, can greatly reduce
+Thankfully, for the ESPPCC \cref{eq:espprc-relaxed-elementarity}
+can be replaced with the much simpler equivalent:
+\begin{equation}
+	\label{eq:esppcc-simpler-relaxed-elementarity}
+	\ExprESPPOutgoingEdges{i} \le 1 \quad \forall i \in V \cup \Set*{s, t}.
+\end{equation}
+Modeling the pricing as an SPPCC, can greatly reduce
 the column generation running time, at the cost
 of generating significantly weaker dual bound improvements.
 Refer back to the discussion in \cref{sec:intro-solving-the-pricing-problem}
