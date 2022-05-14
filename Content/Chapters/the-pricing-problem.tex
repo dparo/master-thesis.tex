@@ -3,6 +3,11 @@
 
 \mytodo{These introductory paragraphs are either written like shit, duplicated or out-of-date. Please fix them.}
 
+
+While the ESPPRC can be studied as a separate standalone problem,
+here we are instead interested in the contributions that it can
+provide in the context of pricing for the CVRP.
+
 In this chapter we will cover in more details the pricing sub-problem
 induced from the column generation scheme in BPC frameworks.
 We've already the pricing problem in sections ....
@@ -91,7 +96,7 @@ Initial contributions for tackling the ESPCC exploited this property.
 The resource consumption constraint was relaxed through a Lagrangean relaxation
 approach.
 Through the usage of a branch-and-bound scheme and an off-the-shelf
-standard shortest path algorithm (e.g. Dijkstra \cite{sniedovich2006dijkstra})
+standard shortest path algorithm, e.g. Dijkstra \parencite{sniedovich2006dijkstra},
 they obtained feasible dual solutions over strictly positive weighted networks.
 See the contributions of
 \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous},
@@ -99,25 +104,27 @@ just to name a few.
 But as pointed out in \textcite{righini2004},
 Lagrangian relaxation is effective only when the dualized variables
 are positive for a good portion of the Lagrange multipliers search space,
-which limit the effectiveness of the approach in the context of pricing.
+which limit the effectiveness of these approaches in the context of pricing.
 
 \subsection{Integer Programming Formulation}
 \label{sec:espprc-integer-programming-formulation}
 
-Our presentation of the ESPPCC readjusts the
+While \textcite{jepsen2008branchandcut} provides
+an \textbf{undirected} symmetric network based formulation for the ESPPCC,
+in our presentation we have preferred instead to re-adjust the more-general
 \textbf{directed} symmetric network based ESPPRC formulation
-provided in \textcite{beasley1989, toth2002, toth2014}.
-Refer to \textcite{jepsen2008branchandcut} for an ESPPCC model defined over an undirected symmetric network.
-However, it has to be noted that the undirected symmetric network is in the general case needed
-to handle time-windows constraints.
-The ESPPRC network is characterized by $N_0 + 2$ nodes,
-where $N_0$, as usual, denotes the total number of customers for the original CVRP problem.
-Two additional vertices are used to represent respectively the source and sink vertices.
+provided in the works of \textcite{beasley1989, toth2002, toth2014}.
+For this reason we need to readjust/extend the
+mathematical notation that was originally provided for the undirected CVRP in \cref{sec:intro-cvrp-mathematical-notation}.
+
+\medskip
+
+The ESPPCC network is characterized by $N_0 + 2$ nodes,
+where $N_0$, denotes the total number of customers in the original CVRP problem.
+Two additional vertices $s = 0, t = N$ are used to represent respectively the source and sink vertices.
 These two together model a dissection of the depot node.
 All the customers are edge-connected in both directions with one another.
 Similarly, the source and sink vertex do not share direct connections together.
-
-\medskip
 
 More formally, the ESPPCC is defined over a directed symmetric network
 $G^\prime = \Tuple*{V^\prime, A^\prime}$,
