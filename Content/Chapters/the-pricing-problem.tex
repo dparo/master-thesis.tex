@@ -41,7 +41,7 @@ that have bounds at the edge or node level (such as time-windows constraints).
 Unfortunately, big-M constraints are inherently computationally unstable \parencite{jepsen2008branchandcut}.
 
 
-\section{The Elementary Shortest Path Problem with Capacity Constraint}
+\section{The Elementary Shortest Path Problem with Capacity Constraints}
 \label{sec:the-elementary-shortest-path-problem-with-resource-constraints}
 
 This section is dedicated to the discussion of the
@@ -51,8 +51,7 @@ While we have already glimpsed at the general ESPPRC case of this problem in
 \cref{sec:column-generation-and-pricing-problem,sec:intro-solving-the-pricing-problem},
 we've never provided a formal description of the mathematical model.
 In this section we consider the basic version of the ESPPCC,
-i.e. non-robust inequalities at the RMP level are not considered
-since these change the structure and formulation of the basic ESPPCC problem.
+i.e. non-robust inequalities at the RMP level are not considered.
 In case non-robust inequalities are employed,
 ESPPCC does not suffice in modeling the pricing problem.
 A slight variation of the ESPPCC characterized by additional constraints
@@ -106,7 +105,7 @@ which limit the effectiveness of the approach in the context of pricing.
 \label{sec:espprc-integer-programming-formulation}
 
 Our presentation of the ESPPCC readjusts the
-\textbf{directed} symmetric network based ESPPC formulation
+\textbf{directed} symmetric network based ESPPRC formulation
 provided in \textcite{beasley1989, toth2002, toth2014}.
 Refer to \textcite{jepsen2008branchandcut} for an ESPPCC model defined over an undirected symmetric network.
 However, it has to be noted that the undirected symmetric network is in the general case needed
@@ -329,6 +328,11 @@ the column generation running time, at the cost
 of generating significantly weaker dual bound improvements.
 Refer back to the discussion in \cref{sec:intro-solving-the-pricing-problem}
 for more details.
+
+Additional valid inequalities and a branch-and-cut framework
+for the ESPPCC was provided in the work of \textcite{jepsen2008branchandcut}.
+In this thesis we are mainly concerned with the CPTP in the context of pricing.
+Therefore we will not spend more efforts in discussing the ESPPCC.
 
 \section{The Capacitated Profitable Tour Problem}
 \label{sec:the-capacitated-profitable-tour-problem}
