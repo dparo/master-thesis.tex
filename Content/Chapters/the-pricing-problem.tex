@@ -32,14 +32,12 @@ The few branch-and-cut contributions that we are aware of are:
 \textcite{jepsen2008branchandcut} for the ESPPCC,
 \textcite{jepsen2011,jepsen2014} to the CPTP (a special case of ESPPCC),
 \textcite{taccari2016} for the non-resource constrained ESPP.
-ESPRCC branch-and-cut algorithms have not been covered,
-and this is probably to the inherent difficulty in modeling time windows constraints within IP formulations,
-which are modeled as big-M constraints, which are inherently computationally unstable \parencite{jepsen2008branchandcut}.
-Attempting to solve the ESPPCC through branch-and-cut frameworks
-have been lately attempted and evaluated in the works of \textcite{jepsen2008branchandcut}.
-Along with empirical results,
-these contributions provide IP mathematical models and additional valid inequalities.
-\textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
+ESPPRC branch-and-cut algorithms have not been covered,
+and this is probably to the inherent two difficulties in modeling time windows constraints within IP formulations.
+First, the IP formulation would require to model a directed network thus leading to a doubled size model.
+Second, the delicate usage of big-M constraints are required to model resource constraints
+that have bounds at the edge or node level (such as time-windows constraints).
+Unfortunately, big-M constraints are inherently computationally unstable \parencite{jepsen2008branchandcut}.
 
 
 
@@ -82,6 +80,8 @@ see previous discussion in \cref{sec:intro-solving-the-pricing-problem}.
 
 In the special case in which the ESPPRC in which a network with proven non-negative
 cost cycles, the elementarity condition maybe safely dropped \parencite{beasley1989}.
+A sufficient but not-necessary condition is when the reduced cost variables
+are positive: $\bar{c}_{ij} \ge 0$.
 In such case, an optimal solution of the associated non-elementary SPPRC problem
 is an optimal solution to the original elementary version of the problem \parencite{beasley1989}.
 The associated SPPRC can be solved efficiently in pseudo-polynomial time.
@@ -89,7 +89,7 @@ Initial contributions for tackling the ESPPRC exploited this property.
 The resource consumption constraint was relaxed through a Lagrangean relaxation
 approach, and by employing a branch-and-bound scheme and an off-the-shelf
 standard shortest path algorithm (e.g. Dijkstra \cite{sniedovich2006dijkstra})
-to compute feasible dual solutions.
+to compute feasible dual solutions over strictly positive weighted networks.
 See the contributions of
 \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous},
 just to name a few.
@@ -97,42 +97,6 @@ But as pointed out in \textcite{righini2004},
 Lagrangian relaxation is effective only when the dualized variables
 are positive for a good portion of the Lagrange multipliers search space,
 which limit the effectiveness of the approach in the context of pricing.
-
-
-
-
-\begin{comment}
-\cite{bettinelli2010mathematical} ---------------
-It is possible to address the pricing problem by optimizing its relaxation,
-obtained by dropping the elementarity constraints. Solving a resource con-
-strained shortest path problem (RCSPP) requires less computing time but
-yields less tight lower bounds, since columns may include cycles. The two
-different approaches have been followed for instance by Feillet et al. [42] and
-Desrochers et al. [29] to solve the vehicle routing problem with time windows
-(VRPTW) through column generation.
-\end{comment}
-
-\begin{comment}
-
-[MY OWN STUFF, kept for reference purpose. TODO: Merge or delete later]
-\subsection{Shortest Path Problem with Resource Constraints}
-If there are no negative cost cyles, e.g. when the reduced cost variables are positive $\bar{c}_{ij} \ge 0$,
-the ESPPRC problem is solvable in polynomial time, since the elementarity conditions are guaranteed
-to be satisfied in this case.
-In this particular case, some authors have proposed efficient methods to tackle this case:
-\cite{beasley1989,carlyle2008,dumitrescu2003improved,muhandiramge2009}.
-These proposed approaches work under the assumption that no negative cost cycle is present,
-and use lagrangian relaxation to relax the capacity constraints.
-
-\subsection{Elementary Shortest Path Problem with Resource Constraints}
-In the case where the network may be contain negative cost cycles, the
-elementarity condition must be explicitly modeled, or relaxed, in order
-to obtain reasonable dual bound solutions for the CVRP.
-\textcite{feillet2004} proposes a dynamic programming algorithm where
-the elementary property is handled through the usage of an additional resource
-bound to each node.
-\textcite{righini2006} proposes a bi-directional dynamic programming algorithm to solve the ESPPRC.
-\end{comment}
 
 \subsection{Integer Programming Formulation}
 \label{sec:espprc-integer-programming-formulation}
@@ -451,6 +415,13 @@ to the dynamic programming algorithms,
 showing that there may be value in further developing
 branch-and-cut frameworks for pricing in column generation schemes.
 
+Attempting to solve the ESPPCC through branch-and-cut frameworks
+have been lately attempted and evaluated in the works of \textcite{jepsen2008branchandcut}.
+Along with empirical results,
+these contributions provide IP mathematical models and additional valid inequalities.
+\textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
+
+
 The presentation of this section, along with the implementation of \cref{sec:implementation-chapter}
 owes a lot to the efforts of \textcite{jepsen2014}.
 
@@ -523,23 +494,6 @@ After the resolution of the IP model,
 we check for improving single-customer solutions and,
 if any exist,
 we update the incumbent.
-
-
-\begin{quote}
-	\cite{jepsen2008branchandcut}
-	Also, it would be interesting to extend the BAC algorithm to solve the more general ESPPRC.
-	Extending the mathematical formulation to cover a directed graph is fairly easy. This will result in a
-	doubling of the number of variables. This does not favor the BAC algorithm where compact formu-
-	lations are preferred but it may be manageable. However, a much more delicate matter is handling
-	resources with bounds imposed at the nodes or edges (compared to a capacity resource where the
-	bound is global). Such resources includes the well known time window constraints which are often
-	modeled using ”big-M” constraints that are known to be notoriously computationally unstable. An al-
-	ternative for handling time window-like constraints are the use of valid inequalities such as infeasible
-	path inequalities. However, there are an exponential number of these inequalities which are N P -
-	hard to separate (compared to the polynomial separation time of the generalized subtour elimination
-	constraints) so these cuts are bound to have a significant impact on the running time.
-\end{quote}
-
 
 \section{Additional Valid Inequalities}
 \label{sec:cptp-additional-valid-inequalities}
