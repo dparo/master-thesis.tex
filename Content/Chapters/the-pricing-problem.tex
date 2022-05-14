@@ -13,6 +13,7 @@ While there may be multiple resources in play with different semantics
 (time, capacity, gasoline, etc)
 in the ESPPRC problem,
 in this thesis we are mainly focused in ESPPRC subject to the single resource: the vehicle capacity.
+Monotonic consumption of the resources.
 Sometimes the ESPPRC subject to only the capacity constraint is called the Elementary Shortest
 Path Problem with Capacity Constraints (ESPPCC).
 It is however important to acknowledge that in the general case the ESPPRC allows for modeling
@@ -40,29 +41,31 @@ that have bounds at the edge or node level (such as time-windows constraints).
 Unfortunately, big-M constraints are inherently computationally unstable \parencite{jepsen2008branchandcut}.
 
 
-
-
-\section{The Elementary Shortest Path Problem with Resource Constraints}
+\section{The Elementary Shortest Path Problem with Capacity Constraint}
 \label{sec:the-elementary-shortest-path-problem-with-resource-constraints}
 
 This section is dedicated to the discussion of the
-Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+Elementary Shortest Path Problem with Capacity Constraints (ESPPCC)
 in the context of pricing for the CVRP.
-While we have already glimpsed over this problem in \cref{sec:column-generation-and-pricing-problem,sec:intro-solving-the-pricing-problem},
+While we have already glimpsed at the general ESPPRC case of this problem in
+\cref{sec:column-generation-and-pricing-problem,sec:intro-solving-the-pricing-problem},
 we've never provided a formal description of the mathematical model.
-In this section we consider the basic version of the ESPPRC,
+In this section we consider the basic version of the ESPPCC,
 i.e. non-robust inequalities at the RMP level are not considered
-since these change the structure and formulation of the basic ESPPRC problem.
-Since we are not interested in non-robust cuts, the sub-problem
-induced from the SP formulation coincides with an ESPPRC.
-If non-robust cuts are employed, the sub-problem becomes
-a slight variation of the EPSRRC which is characterized by additional constraints.
+since these change the structure and formulation of the basic ESPPCC problem.
+In case non-robust inequalities are employed,
+ESPPCC does not suffice in modeling the pricing problem.
+A slight variation of the ESPPCC characterized by additional constraints
+becomes mandatory to ensure correctness of the column generation approach.
 
-The ESPPRC asks for the determination of the shortest path on a weighted network
+The ESPPCC asks for the determination of the shortest path on a weighted network
 between two vertices $s, t$
-subject to restrictions of the resource consumption.
-In the ESPPRC problem the elementarity condition requires that such optimal path may visit at most once each vertex of the network.
-The ESPPRC's underlying network may in the general case,
+subject to a single resource restriction characterized
+by the amount of goods available for serving.
+In the ESPPCC problem,
+the elementarity condition imposes that no optimal path may
+cover the same vertices two or more times.
+The ESPPCC's underlying network may in the general case,
 contain negative cost cycles.
 The presence of negative cost cycles makes solving such problem NP-hard \parencite{dror1994}.
 A dynamic programming algorithm
@@ -78,18 +81,19 @@ see previous discussion in \cref{sec:intro-solving-the-pricing-problem}.
 
 \medskip
 
-In the special case in which the ESPPRC in which a network with proven non-negative
+In the case that the ESPPCC's weighted network contains no non-negative
 cost cycles, the elementarity condition maybe safely dropped \parencite{beasley1989}.
 A sufficient but not-necessary condition is when the reduced cost variables
-are positive: $\bar{c}_{ij} \ge 0$.
+are all positive: $\bar{c}_{ij} \ge 0 \quad \forall i, j \in V_0 \cup \Set*{s, t}$.
 In such case, an optimal solution of the associated non-elementary SPPRC problem
 is an optimal solution to the original elementary version of the problem \parencite{beasley1989}.
 The associated SPPRC can be solved efficiently in pseudo-polynomial time.
-Initial contributions for tackling the ESPPRC exploited this property.
+Initial contributions for tackling the ESPCC exploited this property.
 The resource consumption constraint was relaxed through a Lagrangean relaxation
-approach, and by employing a branch-and-bound scheme and an off-the-shelf
+approach.
+Through the usage of a branch-and-bound scheme and an off-the-shelf
 standard shortest path algorithm (e.g. Dijkstra \cite{sniedovich2006dijkstra})
-to compute feasible dual solutions over strictly positive weighted networks.
+they obtained feasible dual solutions over strictly positive weighted networks.
 See the contributions of
 \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous},
 just to name a few.
@@ -102,7 +106,7 @@ which limit the effectiveness of the approach in the context of pricing.
 \label{sec:espprc-integer-programming-formulation}
 
 Our presentation of the ESPPCC readjusts the
-\textbf{directed} symmetric network based ESPPRC formulation
+\textbf{directed} symmetric network based ESPPC formulation
 provided in \textcite{beasley1989, toth2002, toth2014}.
 Refer to \textcite{jepsen2008branchandcut} for an ESPPCC model defined over an undirected symmetric network.
 However, it has to be noted that the undirected symmetric network is in the general case needed
@@ -167,7 +171,7 @@ Additional usage of robust inequalities (cuts or branching) manifest
 additional negative term contributions (through additional dual variables)
 directly to the reduced arc cost $\bar{c}_{ij}$.
 
-A feasible path solution to the ESPPRC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
+A feasible path solution to the ESPPCC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
 with $p_0 = s, \ p_{u + 1} = t$
 in which $\Set*{p_1, \dots, p_u} \subseteq V_0$ customers are visited.
 Observe that there's no restriction in which customers need to be necessarily covered
@@ -191,12 +195,12 @@ biasing the reduced cost of a feasible route $p$.
 
 \medskip
 
-We are now ready to provide a ESPPRC formal description through an Integer Programme (IP).
+We are now ready to provide a ESPPCC formal description through an Integer Programme (IP).
 Let $x_{ij} \in \Set*{0, 1} \quad \Tuple*{i, j} \in A^\prime$ be a new set of binary variables:
 $x_{ij} = 1$ if arc $\Tuple*{i, j} \in A^\prime$ is picked by the optimal path.
-We can provide a formal mathematical formulation of the ESPPRC as:
+We can provide a formal mathematical formulation of the ESPPCC as:
 \begin{align}
-	\min_{x} \quad z_\mt{ESPPRC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c}_{ij} x_{ij}                                                     \label{eq:espprc-obj-function}                                                                \\
+	\min_{x} \quad z_\mt{ESPPCC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c}_{ij} x_{ij}                                                     \label{eq:espprc-obj-function}                                                                \\
 	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q  \label{eq:espprc-resource-upper-bound-constraint}                                             \\
 	                                & \ExprESPPIngoingEdges{i} = \ExprESPPOutgoingEdges{i}                                                  \qquad \forall i \in V_0          \label{eq:espprc-flow-conservation-constraint-customers}    \\
 	                                & \ExprESPPOutgoingEdges[i]{s} = 1                                                                      \label{eq:espprc-source-emitting-flow}                                                        \\
@@ -374,8 +378,8 @@ based on a profit value that is gained when serving occurs.
 The CPTP shows up naturally as a sub-problem
 in the column generation approach employed in solving many VRP variants.
 It is an important special case of the
-ESPPRC when the source and sink vertices are used to represent the same node.
-Contrary to the traditional description of the ESPPRC,
+ESPPCC when the source and sink vertices are used to represent the same node.
+Contrary to the traditional description of the ESPPCC,
 the CPTP is easier to describe.
 Its formulation can be provided on an undirected symmetric network,
 reducing the total number of independent variables.
@@ -386,7 +390,7 @@ To the best of our knowledge, the few contributions studying the CPTP
 in the context of pricing for the VRP can be found in \textcite{bixby1999, jepsen2011,jepsen2014}.
 \textcite{jepsen2014} study the CPTP problem in the context of pricing for the VRP.
 Their work originate from the initial efforts in \textcite{jepsen2008branchandcut},
-were a branch-and-cut algorithm was applied to solve the ESPPRC.
+were a branch-and-cut algorithm was applied to solve the ESPPCC.
 Their work lays out a first foundational theory for further development
 of the CPTP as an independent problem or as in the context of pricing.
 Their work may serve in the future as a tutorial/survey/framework

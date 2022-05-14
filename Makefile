@@ -6,7 +6,8 @@ export PRINT= n
 
 BUILD_DIR:=./build
 STUDENT_NAME:=Paro_Davide
-RELEASE_PDF:=$(BUILD_DIR)/$(STUDENT_NAME).pdf
+TARGET_PDF :=$(BUILD_DIR)/$(STUDENT_NAME).pdf
+OPTIMIZED_PDF :=$(BUILD_DIR)/$(STUDENT_NAME).optimized.pdf
 
 
 SVGS := $(shell find ./Imgs -type f -name '*.svg')
@@ -15,8 +16,8 @@ PDFS := $(shell find ./Imgs -type f -name '*.pdf' | grep -v ".cropped.")
 PDFS_CROPPED := $(patsubst %.pdf, %.cropped.pdf, $(PDFS))
 
 
-all: $(BUILD_DIR)/main.pdf
-release: spellcheck all $(RELEASE_PDF)
+all: $(TARGET_PDF)
+release: spellcheck all $(OPTIMIZED_PDF)
 clean:
 	# Clean latexmk files
 	latexmk -c
@@ -51,18 +52,20 @@ croppdfs: $(PDFS_CROPPED)
 
 prebuild: $(BUILD_DIR) svg2pdf croppdfs
 
-$(BUILD_DIR)/main.pdf: prebuild
+$(TARGET_PDF): prebuild
 	latexmk -pdf
+	cp $(BUILD_DIR)/main.pdf $(TARGET_PDF)
+	du --all -hc -d 1 $(TARGET_PDF)
 
 spellcheck:
 	find ./ -name "*.tex" -exec aspell --mode=tex --encoding=utf-8 --lang=en --add-extra-dicts=./dictionary.en.pws check "{}" \;
 
-$(RELEASE_PDF): $(BUILD_DIR)/main.pdf
+$(OPTIMIZED_PDF): $(TARGET_PDF)
 	# Compress and Convert into PDF/A using ghostscript
 	gs -dNOPAUSE -dQUIET -dBATCH \
 		-dPDFSETTINGS=/prepress \
 		-dPDFA=1 -sColorConversionStrategy=RGB -dPDFACompatibilityPolicy=2 \
-		-sDEVICE=pdfwrite -sOutputFile=$(RELEASE_PDF) $(BUILD_DIR)/main.pdf
+		-sDEVICE=pdfwrite -sOutputFile=$(OPTIMIZED_PDF) $(TARGET_PDF)
 
 	# Show pdf files of the original uncompressed file and the new compressed one
-	du --all -hc -d 1 $(BUILD_DIR)/main.pdf $(RELEASE_PDF)
+	du --all -hc -d 1 $(TARGET_PDF) $(OPTIMIZED_PDF)
