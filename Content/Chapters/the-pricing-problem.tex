@@ -333,8 +333,10 @@ of a big-M constraint of the form:
 	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{0}
 \end{equation}
 where $M \in \R_+$ denotes an arbitrary large positive constant.
-Thankfully, for the ESPPCC \cref{eq:espprc-relaxed-elementarity}
-can be replaced with the much simpler equivalent:
+In our case, however, since $A^\prime$ does not admit for in-arcs
+and out-arcs for respectively the source and sink vertices,
+\cref{eq:espprc-relaxed-elementarity}
+can be replaced with the much simpler:
 \begin{equation}
 	\label{eq:esppcc-simpler-relaxed-elementarity}
 	\ExprESPPOutgoingEdges{i} \le 1 \quad \forall i \in V \cup \Set*{s, t}.
