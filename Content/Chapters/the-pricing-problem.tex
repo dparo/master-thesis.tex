@@ -137,9 +137,12 @@ bound to each node.
 \subsection{Integer Programming Formulation}
 \label{sec:espprc-integer-programming-formulation}
 
-Our presentation of the ESPPCC follows the one provided in \textcite{beasley1989, toth2002, toth2014},
-where the model is defined over  a \textbf{directed} symmetric network.
-Refer to \textcite{jepsen2008branchandcut} for a model defined over an undirected symmetric network.
+Our presentation of the ESPPCC readjusts the
+\textbf{directed} symmetric network based ESPPRC formulation
+provided in \textcite{beasley1989, toth2002, toth2014}.
+Refer to \textcite{jepsen2008branchandcut} for an ESPPCC model defined over an undirected symmetric network.
+However, it has to be noted that the undirected symmetric network is in the general case needed
+to handle time-windows constraints.
 The ESPRCC network is characterized by $N_0 + 2$ nodes,
 where $N_0$, as usual, denotes the total number of customers for the original CVRP problem.
 Two additional vertices are used to represent respectively the source and sink vertices.
