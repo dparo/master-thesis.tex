@@ -9,6 +9,41 @@ We've already the pricing problem in sections ....
 In this chapter we will provide mathematical descriptions
 of this problem by exploiting Integer Programming (IP).
 
+While there may be multiple resources in play with different semantics
+(time, capacity, gasoline, etc)
+in the ESPPRC problem,
+in this thesis we are mainly focused in ESPPRC subject to the single resource: the vehicle capacity.
+Sometimes the ESPPRC subject to only the capacity constraint is called the Elementary Shortest
+Path Problem with Capacity Constraints (ESPPCC).
+It is however important to acknowledge that in the general case the ESPPRC allows for modeling
+the pricing problems of many VRP variants such as the VRPTW, where also the "time resource"
+plays a critical role.
+
+Label-correcting dynamic programming approaches
+dominate as the main approach to solve the (E)SPPRC in the context of pricing,
+see \cite{desrochers1992, feillet2004, righini2004, righini2006, boland2006, righini2008, pugliese2010, baldacci2011, lozano2013, lozano2016, sadykov2021bucket}.
+The proposed algorithm is a natural extension of the Bellman–Ford algorithm \parencite{bellman1958, fordjr1956},
+a common algorithm present in the "toolbelt" of all operations research practitioners,
+which computes shortest paths from a source vertex to all other vertices,
+by taking also in consideration additional path constraints.
+To the best of our knowledge,
+branch-and-cut approaches for tackling the (E)SPPRC have been barely covered.
+The few branch-and-cut contributions that we are aware of are:
+\textcite{jepsen2008branchandcut} for the ESPPCC,
+\textcite{jepsen2011,jepsen2014} to the CPTP (a special case of ESPPCC),
+\textcite{taccari2016} for the non-resource constrained ESPP.
+ESPRCC branch-and-cut algorithms have not been covered,
+and this is probably to the inherent difficulty in modeling time windows constraints within IP formulations,
+which are modeled as big-M constraints, which are inherently computationally unstable \parencite{jepsen2008branchandcut}.
+Attempting to solve the ESPPCC through branch-and-cut frameworks
+have been lately attempted and evaluated in the works of \textcite{jepsen2008branchandcut}.
+Along with empirical results,
+these contributions provide IP mathematical models and additional valid inequalities.
+\textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
+
+
+
+
 \section{The Elementary Shortest Path Problem with Resource Constraints}
 \label{sec:the-elementary-shortest-path-problem-with-resource-constraints}
 
@@ -20,6 +55,10 @@ we've never provided a formal description of the mathematical model.
 In this section we consider the basic version of the ESPPRC,
 i.e. non-robust inequalities at the RMP level are not considered
 since these change the structure and formulation of the basic ESPPRC problem.
+Since we are not interested in non-robust cuts, the sub-problem
+induced from the SP formulation coincides with an ESPPRC.
+If non-robust cuts are employed, the sub-problem becomes
+a slight variation of the EPSRRC which is characterized by additional constraints.
 
 The ESPPRC asks for the determination of the shortest path on a weighted network
 between two vertices $s, t$
@@ -60,64 +99,6 @@ are positive for a good portion of the Lagrange multipliers search space,
 which limit the effectiveness of the approach in the context of pricing.
 
 
-
-
-In the unlikely case in which the ESPPRC does not contain negative cost cycles,
-the problem can be modeled as a SPPRC, which can be solved efficiently in pseudo-polynomial time using
-a dynamic programming algorithm.
-Initial contributions, in fact employed Lagrangean relaxation to relax the
-resource consumption constraint.
-By employing a branch-and-bound scheme and an off-the-shelf standard shortest-path algorithm,
-such as the Djkstra algorithm \parencite{sniedovich2006dijkstra}, to compute feasible dual solutions.
-See the contributions of \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous},
-just to name a few.
-But as pointed out in \textcite{righini2004},
-Lagrangian relaxation is effective only when the dualized variables
-are positive for a good portion of the Lagrange multipliers search space,
-which limit the effectiveness of the approach in the context of pricing.
-
-Label-correcting dynamic programming approaches
-dominate as the main approach to solve the (E)SPPRC in the context of pricing,
-see \cite{desrochers1992, feillet2004, righini2004, righini2006, boland2006, righini2008, pugliese2010, baldacci2011, lozano2013, lozano2016, sadykov2021bucket}.
-To the best of our knowledge,
-branch-and-cut approaches for tackling the (E)SPPRC have been barely covered.
-The few branch-and-cut contributions that we are aware of are:
-\textcite{jepsen2008branchandcut} for the ESPPCC,
-\textcite{jepsen2011,jepsen2014} to the CPTP (a special case of ESPPCC),
-\textcite{taccari2016} for the non-resource constrained ESPP.
-ESPRCC branch-and-cut algorithms have not been covered,
-and this is probably to the inherent difficulty in modeling time windows constraints within IP formulations,
-which are modeled as big-M constraints, which are inherently computationally unstable \parencite{jepsen2008branchandcut}.
-
-
-
-As claimed in \textcite{dror1994}, the ESPPRC is an NP-hard problem,
-However, the sub-problem can be solved through a dynamic programming approach, as proposed by \textcite{feillet2004}.
-The proposed algorithm is a natural extension of the Bellman–Ford algorithm \parencite{bellman1958, fordjr1956},
-a common algorithm present in the "toolbelt" of all operations research practitioners,
-which computes shortest paths from a source vertex to all other vertices,
-by taking also in consideration additional path constraints.
-
-While there may be multiple resources in play with different semantics
-(time, capacity, gasoline, etc)
-in the ESPPRC problem,
-in this thesis we are mainly focused in ESPPRC subject to the single resource: the vehicle capacity.
-Sometimes the ESPPRC subject to only the capacity constraint is called the Elementary Shortest
-Path Problem with Capacity Constraints (ESPPCC).
-It is however important to acknowledge that in the general case the ESPPRC allows for modeling
-the pricing problems of many VRP variants such as the VRPTW, where also the "time resource"
-plays a critical role.
-
-Since we are not interested in non-robust cuts, the sub-problem
-induced from the SP formulation coincides with an ESPPRC.
-If non-robust cuts are employed, the sub-problem becomes
-a slight variation of the EPSRRC which is characterized by additional constraints.
-
-Attempting to solve the ESPPCC through branch-and-cut frameworks
-have been lately attempted and evaluated in the works of \textcite{jepsen2008branchandcut}.
-Along with empirical results,
-these contributions provide IP mathematical models and additional valid inequalities.
-\textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
 
 
 \begin{comment}
