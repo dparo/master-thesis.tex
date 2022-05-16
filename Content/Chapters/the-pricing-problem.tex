@@ -1,11 +1,41 @@
 \chapter{The Pricing Problem}
 \label{sec:the-pricing-problem}
 
-\mytodo{These introductory paragraphs are either written like shit, duplicated or out-of-date. Please fix them.}
+As we've discussed in \cref{sec:intro-branch-and-price},
+the Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+appears as the pricing sub-problem in column generation schemes
+for vehicle routing problems.
+Therefore, its study is of fundamental importance in order to
+engineer efficient branch-and-price frameworks.
+We refer the reader to \cref{sec:intro-solving-the-pricing-problem}
+for a literature review on the importance and methodologies
+for solving the pricing problem.
 
-While the ESPPRC can be studied as a separate standalone problem,
-here we are instead interested in the contributions that it can
-provide in the context of pricing for the CVRP.
+While the ESPPRC can be seldom studied as a standalone problem,
+in this work we are mainly interested at it from the perspective
+of pricing for the vehicle routing problem.
+The general definition of the ESPPRC allows for multiple resources definition
+with different semantics, for example: time, capacity, gasoline, etc.
+The resources are usually monotically increasing quantities which
+increase as the route traverses a new edge or vertex.
+Resource consumption bounds can be given at different level of scopes which
+can be classified as: global, at the vertex level, or at the arc level.
+
+The Elementary Shortest Path Problem with Capacity Constraints (ESPPCC) is a special
+case of ESPPRC characterized by a single resource, the amount of goods,
+which is bounded by a global quantity $Q$, the vehicle capacity.
+The ESPPCC can be used to model the pricing sub-problem in column
+generation schemes for the Capacitated Vehicle Routing Problem (CVRP).
+
+Since in our work we are focusing our attention to the CVRP, instead
+to a more general routing problem, we will focus most of our attention
+to the ESPPCC problem.
+It is important to acknowledge that, the general ESPPRC version of the problem
+is required to model other variations of the vehicle routing problem,
+such as the commonly studied VRPTW.
+In this chapter we will provide mathematical descriptions of
+this problem by exploiting Integer Programming (IP).
+
 
 In this chapter we will cover in more details the pricing sub-problem
 induced from the column generation scheme in BPC frameworks.
@@ -13,16 +43,9 @@ We've already the pricing problem in sections ....
 In this chapter we will provide mathematical descriptions
 of this problem by exploiting Integer Programming (IP).
 
-While there may be multiple resources in play with different semantics
-(time, capacity, gasoline, etc)
-in the ESPPRC problem,
-in this thesis we are mainly focused in ESPPRC subject to the single resource: the vehicle capacity.
-Monotonic consumption of the resources.
-Sometimes the ESPPRC subject to only the capacity constraint is called the Elementary Shortest
-Path Problem with Capacity Constraints (ESPPCC).
-It is however important to acknowledge that in the general case the ESPPRC allows for modeling
-the pricing problems of many VRP variants such as the VRPTW, where also the "time resource"
-plays a critical role.
+
+\subsection{Literature Review on Branch-and-Cut approaches applied to the Pricing Problem}
+\label{sec:the-pricing-problem-literature-review}
 
 Label-correcting dynamic programming approaches
 dominate as the main approach to solve the (E)SPPRC in the context of pricing,
