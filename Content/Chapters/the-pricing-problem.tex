@@ -17,9 +17,9 @@ of pricing for the vehicle routing problem.
 The general definition of the ESPPRC allows for multiple resources definition
 with different semantics, for example: time, capacity, gasoline, etc.
 The resources are usually monotically increasing quantities which
-increase as the route traverses a new edge or vertex.
+increase as the route traverses new edges or vertices.
 Resource consumption bounds can be given at different level of scopes which
-can be classified as: global, at the vertex level, or at the arc level.
+can be classified as: at the global scope, at the vertex level scope, or at the arc level scope.
 
 The Elementary Shortest Path Problem with Capacity Constraints (ESPPCC) is a special
 case of ESPPRC characterized by a single resource, the amount of goods,
@@ -33,16 +33,26 @@ to the ESPPCC problem.
 It is important to acknowledge that, the general ESPPRC version of the problem
 is required to model other variations of the vehicle routing problem,
 such as the commonly studied VRPTW.
-In this chapter we will provide mathematical descriptions of
-this problem by exploiting Integer Programming (IP).
 
+The Capacitated Profitable Tour Problem (CPTP) is another
+combinatorial optimization problem which can be used to model
+the pricing sub-problem for the column generation schemes
+employed to solve the CVRP.
+The CPTP asks for a minimum cost route instead of a minimum cost path,
+and can be seen as a special case of ESPPCC where the starting
+and destination vertices coincide.
 
-In this chapter we will cover in more details the pricing sub-problem
-induced from the column generation scheme in BPC frameworks.
-We've already the pricing problem in sections ....
-In this chapter we will provide mathematical descriptions
-of this problem by exploiting Integer Programming (IP).
+\medskip
 
+We will formally introduce, discuss and provide an IP formulation
+for the ESPPCC in \cref{sec:the-elementary-shortest-path-problem-with-capacity-constraints}.
+Analogously, we will do the same for the CPTP in \cref{sec:the-capacitated-profitable-tour-problem},
+where we will also discuss additional valid inequalities.
+
+Before jumping directly to the discussion of these two problems,
+we will first dedicate the next section (\labelcref{sec:the-pricing-problem-literature-review})
+to review the small amount of literature available
+on branch-and-cut approaches for pricing.
 
 \subsection{Literature Review on Branch-and-Cut approaches applied to the Pricing Problem}
 \label{sec:the-pricing-problem-literature-review}
@@ -73,8 +83,66 @@ Along with empirical results,
 these contributions provide IP mathematical models and additional valid inequalities.
 \textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
 
+\medskip
+
+\textcite{jepsen2014} study the CPTP problem in the context of pricing for the CVRP.
+Their work originate from the initial efforts of \textcite{jepsen2008branchandcut},
+where the ESPPCC was studied and a branch-and-cut approach was proposed to solve it.
+The work of \citeauthor{jepsen2014} provides a first tutorial/survey/framework
+and foundational theory for further development of the CPTP as, either
+an independent problem or in the context of pricing.
+They focus on the development of a model, additional valid inequalities and
+a branch-and-cut algorithm for solving it.
+They readjust many inequalities from related problems
+and discuss their efficient separation.
+
+\textcite{jepsen2014} study the competitiveness of their approach
+along with the usefulness of the valid inequalities through a computational study.
+Their results show that while a branch-and-cut framework based on CPTP may
+not be competitive w.r.t. to dynamic programming
+when solving the pricing of induced from the column generation
+of the historical CVRP instances.
+However, their results showed that the branch-and-cut algorithm
+was able to solve some bigger ESPPCC/CPTP instances where the
+dynamic programming solution suffered.
+Their results show that:
+\begin{enumerate}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
+
+	\item \label{itm:cptp-branch-and-cut-better-p1} The branch-and-cut
+	      algorithm seemed to help in solving some standalone CPTP instances characterized
+	      by a huge number of customers (approximately more than 200),
+	      where the labeling algorithm ran out of available computation time.
+	\item \label{itm:cptp-branch-and-cut-better-p2} The branch-and-cut algorithm
+	      performed much better w.r.t. the labeling algorithm when the
+	      weights of the associated ESPPCC network were highly negative.
+	\item \label{itm:cptp-branch-and-cut-better-p3} The branch-and-cut framework had a tendency
+	      to perform worse when the optimal objective value of the problem was very close to the zero
+	      threshold.
+\end{enumerate}
+The result \labelcref{itm:cptp-branch-and-cut-better-p1} is obtained for standalone
+CPTP solutions and thus may not be relevant in the context of pricing.
+Result \labelcref{itm:cptp-branch-and-cut-better-p2} is of little-interest
+in the context of pricing
+since highly negative weights network are usually solved through heuristics regardless.
+The result \labelcref{itm:cptp-branch-and-cut-better-p3}, which is not in favor for a
+branch-and-cut based pricing solution,
+can probably be attributed to the fact that labeling algorithms
+are usually optimized to cut off huge portions of the solution space when
+the objective function has optimal values very close to the zero threshold.
+
+Despite their contribution
+needs to be revisited given the modern
+advances on both sides,
+their results proved that a branch-and-cut approach could provide a good complement
+to the dynamic programming algorithms.
+Concluding that there may be value in further researching
+on branch-and-cut frameworks for pricing in column generation schemes.
+
+
 \section{The Elementary Shortest Path Problem with Capacity Constraints}
-\label{sec:the-elementary-shortest-path-problem-with-resource-constraints}
+\label{sec:the-elementary-shortest-path-problem-with-capacity-constraints}
 
 This section is dedicated to the discussion of the
 Elementary Shortest Path Problem with Capacity Constraints (ESPPCC)
@@ -437,64 +505,10 @@ it is a problem which is far less addressed in the literature.
 To the best of our knowledge, the few contributions studying the CPTP
 in the context of pricing for the CVRP can be found in \textcite{bixby1999, jepsen2011,jepsen2014}.
 
-\textcite{jepsen2014} study the CPTP problem in the context of pricing for the CVRP.
-Their work originate from the initial efforts of \textcite{jepsen2008branchandcut},
-where the ESPPCC was studied and a branch-and-cut approach was proposed to solve it.
-The work of \citeauthor{jepsen2014} provides a first tutorial/survey/framework
-and foundational theory for further development of the CPTP as, either
-an independent problem or in the context of pricing.
-They focus on the development of a model, additional valid inequalities and
-a branch-and-cut algorithm for solving it.
-They readjust many inequalities from related problems
-and discuss their efficient separation.
-
-\textcite{jepsen2014} study the competitiveness of their approach
-along with the usefulness of the valid inequalities through a computational study.
-Their results show that while a branch-and-cut framework based on CPTP may
-not be competitive w.r.t. to dynamic programming
-when solving the pricing of induced from the column generation
-of the historical CVRP instances.
-However, their results showed that the branch-and-cut algorithm
-was able to solve some bigger ESPPCC/CPTP instances where the
-dynamic programming solution suffered.
-Their results show that:
-\begin{enumerate}
-	\setlength{\itemsep}{0pt}
-	\setlength{\parskip}{0pt}
-
-	\item \label{itm:cptp-branch-and-cut-better-p1} The branch-and-cut
-	      algorithm seemed to help in solving some standalone CPTP instances characterized
-	      by a huge number of customers (approximately more than 200),
-	      where the labeling algorithm ran out of available computation time.
-	\item \label{itm:cptp-branch-and-cut-better-p2} The branch-and-cut algorithm
-	      performed much better w.r.t. the labeling algorithm when the
-	      weights of the associated ESPPCC network were highly negative.
-	\item \label{itm:cptp-branch-and-cut-better-p3} The branch-and-cut framework had a tendency
-	      to perform worse when the optimal objective value of the problem was very close to the zero
-	      threshold.
-\end{enumerate}
-The result \labelcref{itm:cptp-branch-and-cut-better-p1} is obtained for standalone
-CPTP solutions and thus may not be relevant in the context of pricing.
-Result \labelcref{itm:cptp-branch-and-cut-better-p2} is of little-interest
-in the context of pricing
-since highly negative weights network are usually solved through heuristics regardless.
-The result \labelcref{itm:cptp-branch-and-cut-better-p3}, which is not in favor for a
-branch-and-cut based pricing solution,
-can probably be attributed to the fact that labeling algorithms
-are usually optimized to cut off huge portions of the solution space when
-the objective function has optimal values very close to the zero threshold.
-
-Despite their contribution
-needs to be revisited given the modern
-advances on both sides,
-their results proved that a branch-and-cut approach could provide a good complement
-to the dynamic programming algorithms.
-Concluding that there may be value in further researching
-on branch-and-cut frameworks for pricing in column generation schemes.
-
 The presentation of this section,
 along with the implementation of \cref{sec:implementation-chapter}
-owes a lot to the efforts of \textcite{jepsen2014}.
+owes a lot to the original efforts of \textcite{jepsen2014},
+where they laid the foundational framework for the CPTP.
 
 \subsection{Integer Programming formulation}
 \label{sec:cptp-integer-programming-formulation}
