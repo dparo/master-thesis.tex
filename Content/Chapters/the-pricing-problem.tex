@@ -37,7 +37,7 @@ The few branch-and-cut contributions that we are aware of are:
 \textcite{jepsen2008branchandcut} for the ESPPCC,
 \textcite{jepsen2011,jepsen2014} to the CPTP (a special case of ESPPCC),
 \textcite{taccari2016} for the non-resource constrained ESPP.
-ESPPRC branch-and-cut algorithms have not been covered,
+Branch-and-cut solutions for the general ESPPRC have not been covered,
 and this is probably to the inherent two difficulties in modeling time windows constraints within IP formulations.
 First, the IP formulation would require to model a directed network thus leading to a doubled size model.
 Second, the delicate usage of big-M constraints are required to model resource constraints
@@ -62,7 +62,7 @@ becomes mandatory to ensure correctness of the column generation approach.
 
 The ESPPCC asks for the determination of the shortest path on a weighted network
 between two vertices $s, t$
-subject to a single resource restriction characterized
+subject to a single global resource restriction characterized
 by the amount of goods available for serving.
 In the ESPPCC problem,
 the elementarity condition imposes that no optimal path may
@@ -117,9 +117,9 @@ mathematical notation that was originally provided for the undirected CVRP in \c
 
 \medskip
 
-The ESPPCC network is characterized by $N_0 + 2$ nodes,
+The ESPPCC network is characterized by $N^\prime = N_0 + 2$ nodes,
 where $N_0$, denotes the total number of customers in the original CVRP problem.
-Two additional vertices $s = 0, t = N$ are used to represent respectively the source and sink vertices.
+Two additional vertices $s = 0, t = N^\prime - 1$ are used to represent respectively the source and sink vertices.
 These two together model a dissection of the depot node.
 All the customers are edge-connected in both directions with one another.
 Similarly, the source and sink vertex do not share direct connections together.
@@ -127,8 +127,8 @@ Similarly, the source and sink vertex do not share direct connections together.
 More formally, the ESPPCC is defined over a directed symmetric network
 $G^\prime = \Tuple*{V^\prime, A^\prime}$,
 where $V^\prime = V_0 \cup \Set*{s, t}$ denotes the set of vertices and $A^\prime$ the set of arcs.
-The vertices $s = 0,\ t = N$ denote respectively the source and sink versions of the depot node.
-The vertex set $V^\prime$ has size $|V^\prime| = N_0 + 2$.
+The vertices $s = 0,\ t = N^\prime - 1$ denote respectively the source and sink versions of the depot node.
+The vertex set $V^\prime$ has size $|V^\prime| = N^\prime = N_0 + 2$.
 The edges set $A^\prime$ can be expressed as:
 \begin{equation}
 	\begin{aligned}
@@ -137,10 +137,10 @@ The edges set $A^\prime$ can be expressed as:
 		              & \cup \Set*{\Tuple*{i, t} \mid i \in V_0}.
 	\end{aligned}
 \end{equation}
-The edge set $A^\prime$ has size $|A^\prime| = N(N - 1) + 2(N - 1)$.
+The edge set $A^\prime$ has size $|A^\prime| = N^\prime(N^\prime - 1) + 2(N^\prime - 1)$.
 In accordance to the CVRP problem,
 we associate a resource consumption, or vertex demand,
-to each node of the network: $q_i \quad \forall i \in V$.
+to each node of the network: $q_i \quad \forall i \in V^\prime$.
 The resource consumption semantics associated with each customer
 $i \in V_0$ remains unaltered  from the CVRP, while for the source and sink vertices
 we respectively fix $q_{s} = q_{t} = 0$.
@@ -151,10 +151,10 @@ to denote the in-arcs crossing the set $S \subset V^\prime$.
 For brevity’s sake,
 we also define $\deltaplus(i) = \deltaplus(\Set*{i})$, $\deltaminus(i) = \deltaminus(\Set*{i})$
 to denote respectively the singleton version of the in and out arcs for vertices $i \in V^\prime$.
-Note that the conditions hold:
+Note that the following conditions hold:
 $\deltaplus(s) = V_0,\ \deltaminus(t) = V_0,\ \deltaminus(s) = \emptyset,\ \deltaplus(t) = \emptyset$.
-We also define $A^\prime(S) = \Set*{e = \Tuple*{i, j} = \Set*{j, i}\in A^\prime \mid i, j \in S}$
-to denote the set of arcs having both end points in set $S \subseteq V$.
+We also define $A^\prime(S) = \Set*{\Tuple*{i, j} \in A^\prime \mid i, j \in S}$
+to denote the set of arcs having both end points in set $S \subseteq V^\prime$.
 
 As it was done in \cref{sec:column-generation-and-pricing-problem},
 for each directed arc we associate a weight
@@ -162,7 +162,7 @@ $\bar{c}_{ij} \in \R \quad \forall \Tuple*{i, j} \in A^\prime$.
 The weight $\bar{c}_{ij}$ represents the reduced cost of an arc $\Tuple*{i, j} \in A^\prime$.
 Its definition is linked to the dual variables $\pi \in \R^N$ associated to
 the RMP's constraints of \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}
-through the following relation:
+through the following relationship:
 \begin{equation}
 	\bar{c}_{ij} = \begin{cases}
 		c_{ij} - \frac{\pi_i + \pi_j}{2} & \quad \forall i, j \in V_0 \\
@@ -172,9 +172,9 @@ through the following relation:
 	\end{cases}
 \end{equation}
 Additional usage of robust inequalities (cuts or branching) manifest
-additional negative term contributions (through additional dual variables)
-directly to the reduced arc cost $\bar{c}_{ij}$,
-see previous discussion in \cref{sec:intro-branching-and-cut-generation-within-bap-frameworks}.
+additional negative term contributions, through additional dual variables,
+directly to the reduced arc cost $\bar{c}_{ij}$.
+See previous discussion in \cref{sec:intro-branching-and-cut-generation-within-bap-frameworks}.
 
 A feasible path solution to the ESPPCC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
 with $p_0 = s, \ p_{u + 1} = t$
