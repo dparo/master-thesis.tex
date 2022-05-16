@@ -548,7 +548,8 @@ we update the incumbent as appropriate.
 In this section we present additional valid inequalities for the CPTP problem.
 While these additional inequalities are not strictly necessary
 to ensure the correctness of the solution approach,
-when embedded inside an efficient branch-and-cut framework through efficient separation techniques,
+when embedded inside an efficient branch-and-cut framework,
+through efficient separation techniques,
 can massively strengthen the linear relaxation and thus speed up the resolution process.
 
 The inequalities that we present follow closely the presentation provided in \textcite{jepsen2014}.
@@ -575,7 +576,7 @@ and were already presented in \cref{sec:intro-cvrp-two-index-flow-formulation}.
 
 Recall that $q(S) = \sum_{i \in S} q_i$ represents
 the total demand in serving all vertices in set $S \subseteq V$.
-The RCC constraints they function as a capacity constraint
+The RCC constraints function as a capacity constraint
 by imposing that any customer set $S \subseteq V_0$ is crossed by a number of edges
 not smaller by the number of trucks that would be necessary to serve all customers in $S \subseteq V_0$.
 The RCC can be extended to the CPTP problem \parencite{jepsen2014}:
@@ -585,7 +586,7 @@ The RCC can be extended to the CPTP problem \parencite{jepsen2014}:
 \end{equation}
 \Cref{eq:cptp-rcc-inequality-original}
 is very similar to the CVRP's RCC of \cref{eq:two-index-flow-ccc-bpp-lb},
-except that the right-hand side if composed of model's variables instead of constants.
+except that the right-hand side is composed of model's variables instead of constants.
 Notice that such approach is correct since $\sum_{e \in \delta(S)} x_e \in \Z_+$.
 Unfortunately, the ceil function is a non-linear operation and therefore
 such constraint cannot be inserted in most MIP solvers.
@@ -598,9 +599,10 @@ $\fmod{\alpha}{\gamma} \ne 0$, the following result holds:
 	\label{eq:baldacci-rcc-theorem-weaker-bound}
 	\ceil*{\frac{\alpha - \beta}{\gamma}} \ge \ceil*{\frac{\alpha}{\gamma}} - \frac{\beta}{\fmod{\alpha}{\gamma}}.
 \end{equation}
-Without further explanations provided,
 \textcite{jepsen2014} claims that \cref{eq:baldacci-rcc-theorem-weaker-bound}
-holds even when $\alpha > \gamma$ is not satisfied.
+holds even when $\alpha > \gamma$ is not satisfied
+(unfortunately the authors don't provide further explanations on why this is the case).
+
 By picking $\alpha = q(S) = \sum_{i \in S} q_i,\ \beta = \sum_{i \in S} q_i\Expr*{1 - y_i},\ \gamma = Q$,
 we obtain the following linear, but weaker, RCC:
 \begin{equation}
@@ -613,18 +615,16 @@ Notice, that \cref{eq:baldacci-rcc-theorem-weaker-bound} guarantees correctness
 of the \cref{eq:rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
 Fortunately this is the case for most, if not all, routing problems considered in the literature.
 
-No exact separation procedure is currently known RCC inequalities \parencite{jepsen2014}.
-\textcite{jepsen2014} suggest to use the same GLM separation procedure, see \cref{sec:cptp-glm}.
-Therefore the
+As \textcite{jepsen2014} points out,
+no exact separation procedures are currently known RCC inequalities,
+for this reason,
+they suggest using the sets identified by the separation of the multistar inequalities,
+such as the GLM separation procedure.
+See the next \cref{sec:cptp-glm}.
+
 
 \subsection{Generalized Large Multistar (GLM)}
 \label{sec:cptp-glm}
-
-\begin{quote}
-	The idea in the GLM is to consider the number of vehicles needed to service
-	the set S. A valid lower bound for this is the demand of the set plus any
-	customer visited directly from the set divided by the capacity \cite{jepsen2011}.
-\end{quote}
 
 The Generalized Large Multistar inequalities,
 GLM for short,
@@ -661,13 +661,16 @@ The vehicle must have sufficient capacity to serve
 all the customers covered by $S$
 and all other customers outside $S$
 which are connected to nodes in $S$ through a crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$.
-GLM inequalities are efficiently separable in
-polynomial time by finding minimum
+The "capacity" in GLM is measured in terms of the number of vehicles,
+which is obtained from dividing by $Q$ the demand of the set $S$ plus
+any customer visited directly from the set $S$ itself.
+GLM inequalities are efficiently separable with
+an exact polynomial time procedure by finding minimum
 $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
 in a directed flow-network with capacities which depend on the vertex $u$
 \parencite{letchford2006, jepsen2014}.
-A simpler approach might consist instead,
-in minimizing only the term $\sum_{e \in \delta(S)} x_e$ as to stress the violation.
+A simpler approach consists instead of using a heuristic approach
+by minimizing only the term $\sum_{e \in \delta(S)} x_e$ as to stress the violation.
 This can be achieved by computing $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
 in a directed flow network where capacities are given exclusively from the
-fractional solution $c_{ij} = x^\star _{\Set*{i, j}}\quad \forall i, j \in V$.
+fractional solution $x^\star _{\Set*{i, j}}\quad \forall i, j \in V$.
