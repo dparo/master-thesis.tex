@@ -23,10 +23,10 @@ This heavily prunes the search space, but still
 allows the MIP solver to decide which variables
 to fix as to provide the best outcome possible.
 
-Implement smarter branching schemes, such as branching over cutsets.
+Implement smarter branching schemes, such as branching over cut-sets.
 Study more effective cutting planes and
 faster separation techniques.
-Study more effecitve bounding procedures and cutting off values
+Study more effective bounding procedures and cutting off values
 prior to starting the resolution process through the MIP.
 
 Use min-cut heuristic procedures to improve
@@ -47,7 +47,7 @@ or by using the branch-and-cut itself.
 Another possible solution could be to emulate the decremental state space
 relaxation, but by employing the branch-and-cut frameworks itself.
 The branch-and-cut algorithm is asked to first generate $q$-routes by
-relaxing the bounds on the $y_i$ mip variables,
+relaxing the bounds on the $y_i$ MIP variables,
 and then for each vertex visited twice of more, the associated bound
 on the $y_i$ is strengthened.
 
@@ -58,7 +58,7 @@ suggesting that a smarter and more effective bounding technique to
 generate an effective initial dual bound could speed up the convergence
 of the MIP solver by reducing the number of branching occurrences.
 
-Heuristic algorithm to solve maxflow???
+Heuristic algorithm to solve max-flow???
 
 Possibly improve converge speed by using heuristic patching at each
 node of the branch-and-bound tree.
@@ -115,7 +115,7 @@ cuts may provide a faster convergence of the solution approach.
 
 \begin{comment}
 \textcite{sadykov2019modern}
-Moder nMIP solvers implementing the branch-and-cut approach have been progressing at a
+Modern MIP solvers implementing the branch-and-cut approach have been progressing at a
 fast pace for the last 30 years, and now they have found a widespread use around
 the globe. The branch-and-cut approach however has its limits. It is not efficient
 (i.e. does not scale well) for problems for which all known linear relaxations are not
