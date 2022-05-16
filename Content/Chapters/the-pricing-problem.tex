@@ -476,7 +476,7 @@ owes a lot to the efforts of \textcite{jepsen2014}.
 \subsection{Integer Programming formulation}
 \label{sec:cptp-integer-programming-formulation}
 
-Our CPTP description closely follows the formulation provided in \textcite{jepsen2014}.
+We provide a CPTP formulation, which closely follows the formulation provided in \textcite{jepsen2014}.
 In terms of mathematical notation, we will use and extend the original
 mathematical constructs introduced in \cref{sec:intro-cvrp-mathematical-notation} for the CVRP.
 
@@ -486,7 +486,7 @@ the RMP's constraints of \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly
 Namely, $p_i = \pi_i \quad \forall i \in V$.
 
 Let $x_{e}$, $y_{i} \in \Set*{0, 1}$ be two sets of binary variables which respectively
-model whether an edge $e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
+model whether an undirected edge $e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
 We can provide a formal mathematical description of the CPTP through an Integer Programme (IP) formulation:
 \begin{align}
 	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                     & \label{eq:cptp-obj-function}                                                                          \\
@@ -495,7 +495,7 @@ We can provide a formal mathematical description of the CPTP through an Integer 
 	                                   & \ExprCptpEdgesIncident{i}  = 2 y_i       & \quad \forall i \in V         \label{eq:cptp-flow-conservation-constraint}                            \\
 	                                   & \ExprCptpFlowExiting{S} \ge 2 y_{i}      & \quad \forall i \in S,\ \forall S \subseteq V_0,\ \SetSize*{S} \ge 2 \label{eq:cptp-gsec-constraints} \\
 	                                   & x_{e}                   \in \Set*{0, 1}  & \quad \forall e \in E               \label{eq:cptp-x-mip-var-bounds}                                  \\
-	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V             \label{eq:cptp-y-mip-var-bounds}
+	                                   & y_{i}                    \in \Set*{0, 1} & \quad \forall i \in V             \label{eq:cptp-y-mip-var-bounds},
 \end{align}
 where \labelcref{eq:cptp-obj-function} is the objective function to be minimized, i.e. the cost
 accounting for the total travel distance and the profit in serving a subset of the vertices.
@@ -514,7 +514,7 @@ therefore for performance reasons,
 these constraints cannot be inserted statically in a MIP solver,
 and must instead be separated exactly at least for integral solutions.
 Constraints \labelcref{eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds} respectively
-impose bounds and integrality condition
+impose bounds and integrality conditions
 on the number of traversal for edges $e \in E$ and vertices $i \in V$.
 The IP model consists of $\frac{N^2 + N}{2}$ number of binary variables and an exponential number of constraints.
 If we ignore the GSECs and variable bounds, the IP model owns a total of $N + 2$ constraints.
@@ -524,11 +524,11 @@ can also be rewritten in a different form \parencite{wolsey2020integer}:
 	\label{eq:cptp-gsec-constraints-v2}
 	\sum\limits_{e \in E(S)} x_e \le \sum\limits_{i \in S \setminus \Set*{j}} y_i \quad \forall j \in S,\ \forall S \subseteq V_0,\ |S| \ge 2.
 \end{equation}
-Equivalently,
-the \cref{eq:cptp-resource-upper-bound-constraint}
+Equivalently, the constraint of \cref{eq:cptp-resource-upper-bound-constraint}
 can be defined at the edge level:
 \begin{equation}
-	\sum_{e = \Set*{i, j} \in E} \frac{q_i + q_j}{2} x_e \le Q
+	\label{eq:cptp-resource-upper-bound-constraint-edge-level}
+	\sum_{e = \Set*{i, j} \in E} \frac{q_i + q_j}{2} x_e \le Q.
 \end{equation}
 
 Note that model
@@ -540,7 +540,7 @@ By employing a brute-force algorithm in $\Theta(N)$ time we can scan for improvi
 After the resolution of the IP model,
 we check for improving single-customer solutions and,
 if any exist,
-we update the incumbent.
+we update the incumbent as appropriate.
 
 \section{Additional Valid Inequalities}
 \label{sec:cptp-additional-valid-inequalities}
