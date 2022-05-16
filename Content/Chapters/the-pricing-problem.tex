@@ -399,18 +399,23 @@ can be visited twice or more, thus implying that the earnable profit
 per customer is available only once.
 
 The CPTP shows up naturally as a sub-problem
-in the column generation approach employed in solving many VRP variants.
+in the column generation approach employed in solving the CVRP.
 It is an important special case of the
-ESPPCC when the source and sink vertices are used to represent the same node.
-Contrary to the formulation of the general ESPPRC,
-the CPTP is easier to describe.
+ESPPCC when the source and sink vertices encode the same node (the depot node).
+In the traditional CPTP formulation \parencite{jepsen2014},
+the profit is encoded at the node level
+instead of being included directly in the definition
+of the reduced cost variable $\bar{c}_{ij} \quad \forall i, j \in V_0 \cup \Set*{0}$
+as it is done in the ESPPCC.
+Contrary to the formulation of the more general ESPPRC,
+the CPTP is much easier to describe.
 However, due to its narrower scope,
 it is a problem which is far less addressed in the literature.
 To the best of our knowledge, the few contributions studying the CPTP
 in the context of pricing for the CVRP can be found in \textcite{bixby1999, jepsen2011,jepsen2014}.
 
 \textcite{jepsen2014} study the CPTP problem in the context of pricing for the CVRP.
-Their work originate from the initial efforts in \textcite{jepsen2008branchandcut},
+Their work originate from the initial efforts of \textcite{jepsen2008branchandcut},
 where the ESPPCC was studied and a branch-and-cut approach was proposed to solve it.
 The work of \citeauthor{jepsen2014} provides a first tutorial/survey/framework
 and foundational theory for further development of the CPTP as, either
@@ -423,28 +428,36 @@ and discuss their efficient separation.
 \textcite{jepsen2014} study the competitiveness of their approach
 along with the usefulness of the valid inequalities through a computational study.
 Their results show that while a branch-and-cut framework based on CPTP may
-not be competitive in solving the historical CVRP instances w.r.t. to dynamic programming in most cases,
-it seemed to perform better mainly under two scenarios:
+not be competitive w.r.t. to dynamic programming
+when solving the pricing of induced from the column generation
+of the historical CVRP instances.
+However, their results showed that the branch-and-cut algorithm
+was able to solve some bigger ESPPCC/CPTP instances where the
+dynamic programming solution suffered.
+Their results show that:
 \begin{enumerate}
 	\setlength{\itemsep}{0pt}
 	\setlength{\parskip}{0pt}
 
-	\item \label{itm:cptp-branch-and-cut-better-p1} when the number of nodes in the network increases.
-	      Namely, the dynamic programming algorithms have difficulties in solving pricing problems
-	      of more than 200 customers.
-	\item \label{itm:cptp-branch-and-cut-better-p2} when the network weights were highly negative.
-	\item \label{itm:cptp-branch-and-cut-better-p3} the branch-and-cut framework had a tendency
-	      of performing worse compared to the labeling algorithm
-	      when the optimal objective value was very close to zero.
+	\item \label{itm:cptp-branch-and-cut-better-p1} The branch-and-cut
+	      algorithm seemed to help in solving some standalone CPTP instances characterized
+	      by a huge number of customers (approximately more than 200),
+	      where the labeling algorithm ran out of available computation time.
+	\item \label{itm:cptp-branch-and-cut-better-p2} The branch-and-cut algorithm
+	      performed much better w.r.t. the labeling algorithm when the
+	      weights of the associated ESPPCC network were highly negative.
+	\item \label{itm:cptp-branch-and-cut-better-p3} The branch-and-cut framework had a tendency
+	      to perform worse when the optimal objective value of the problem was very close to the zero
+	      threshold.
 \end{enumerate}
-The result \cref{itm:cptp-branch-and-cut-better-p1} may be outdated and not hold true anymore.
-Instead, The result \cref{itm:cptp-branch-and-cut-better-p2} is not very interesting
+The result \cref{itm:cptp-branch-and-cut-better-p1} is obtained for standalone
+CPTP solutions and thus may not be relevant for the context of pricing.
+Result \cref{itm:cptp-branch-and-cut-better-p2} is of little-interest
+in the context of pricing
 since highly negative weights network are usually solved through heuristics regardless.
-The result \cref{itm:cptp-branch-and-cut-better-p3}
-is not in favor for the branch-and-cut approaches.
-The difference in behavior of the labeling algorithm w.r.t.
-points \cref{itm:cptp-branch-and-cut-better-p2,itm:cptp-branch-and-cut-better-p3}
-has to probably be attributed to the fact that labeling algorithms
+The result \cref{itm:cptp-branch-and-cut-better-p3}, which is not in favor for a
+branch-and-cut based pricing solution,
+can probably be attributed to the fact that labeling algorithms
 are usually optimized to cut off huge portions of the solution space when
 the objective function has optimal values very close to the zero threshold.
 
