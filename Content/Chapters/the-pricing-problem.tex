@@ -416,7 +416,7 @@ The work of \citeauthor{jepsen2014} provides a first tutorial/survey/framework
 and foundational theory for further development of the CPTP as, either
 an independent problem or in the context of pricing.
 They focus on the development of a model, additional valid inequalities and
-a branch-and-cut algorithm for solving this problem.
+a branch-and-cut algorithm for solving it.
 They readjust many inequalities from related problems
 and discuss their efficient separation.
 
@@ -424,15 +424,34 @@ and discuss their efficient separation.
 along with the usefulness of the valid inequalities through a computational study.
 Their results show that while a branch-and-cut framework based on CPTP may
 not be competitive in solving the historical CVRP instances w.r.t. to dynamic programming in most cases,
-it seemed to perform better when the number of nodes in the network increases,
-or as the network weights were highly negative
-and was slower on solutions where the objective value was very close to zero.
-Unfortunately network with highly negative weights are usually
-solved through heuristics,
-while the bounding procedure of exact labeling algorithm is usually optimized
-to cut off huge portions of the solution space in the latter case.
-Nonetheless, their contribution
-proved that such approach could provide a good complement
+it seemed to perform better mainly under two scenarios:
+\begin{enumerate}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
+
+	\item \label{itm:cptp-branch-and-cut-better-p1} when the number of nodes in the network increases.
+	      Namely, the dynamic programming algorithms have difficulties in solving pricing problems
+	      of more than 200 customers.
+	\item \label{itm:cptp-branch-and-cut-better-p2} when the network weights were highly negative.
+	\item \label{itm:cptp-branch-and-cut-better-p3} the branch-and-cut framework had a tendency
+	      of performing worse compared to the labeling algorithm
+	      when the optimal objective value was very close to zero.
+\end{enumerate}
+The result \cref{itm:cptp-branch-and-cut-better-p1} may be outdated and not hold true anymore.
+Instead, The result \cref{itm:cptp-branch-and-cut-better-p2} is not very interesting
+since highly negative weights network are usually solved through heuristics regardless.
+The result \cref{itm:cptp-branch-and-cut-better-p3}
+is not in favor for the branch-and-cut approaches.
+The difference in behavior of the labeling algorithm w.r.t.
+points \cref{itm:cptp-branch-and-cut-better-p2,itm:cptp-branch-and-cut-better-p3}
+has to probably be attributed to the fact that labeling algorithms
+are usually optimized to cut off huge portions of the solution space when
+the objective function has optimal values very close to the zero threshold.
+
+Despite
+their contribution needs to be revisited given the modern
+advances on both sides,
+their results proved that a branch-and-cut approach could provide a good complement
 to the dynamic programming algorithms,
 showing that there may be value in further developing
 branch-and-cut frameworks for pricing in column generation schemes.
