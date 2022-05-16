@@ -547,26 +547,23 @@ we update the incumbent as appropriate.
 
 In this section we present additional valid inequalities for the CPTP problem.
 While these additional inequalities are not strictly necessary
-to ensure the correctness of the optimal solution,
+to ensure the correctness of the solution approach,
 when embedded inside an efficient branch-and-cut framework through efficient separation techniques,
 can massively strengthen the linear relaxation and thus speed up the resolution process.
 
 The inequalities that we present follow closely the presentation provided in \textcite{jepsen2014}.
-Our presentation is not meant to be inclusive of every valid inequalities for the CPTP.
-Instead, we will concentrate on the presentation of the most important ones
-that we've considered in the final implementation of our branch-and-cut pricer.
-Presentation of additional inequalities for the CPTP problem can be found in \textcite{jepsen2014}.
-
-As pointed out in \textcite{jepsen2014},
-RCIs seem to be frequently separable during the running time of the branch-and-cut procedure.
-Suggesting that their usage, may likely lead to a speed-up in the resolution process
-compared to the running time cost for their separation.
-
-As pointed out in \textcite{jepsen2014},
-GLMs seem to be frequently separable during the running time of the branch-and-cut procedure.
-Suggesting that their usage, may likely lead to a speed-up in the resolution process
-compared to the running time cost for their separation.
-meaning that their usage is likely to speed up the resolution process.
+Refer to the \textcite{jepsen2014} for a more complete set of valid inequalities.
+In this thesis we will concentrate mainly on two additional valid inequalities:
+the Rounded Capacity Constraints (RCC) discussed in \cref{sec:cptp-rcc},
+and the Generalized Large Multistars (GLM) discussed in \cref{sec:cptp-glm}.
+We have concentrated our attentions on only these two sets of inequalities
+for two main reasons.
+First, the work of \textcite{jepsen2014} showed that these two inequalities are the most frequently
+separated, suggesting that their inclusion would likely speed up the resolution process.
+Second, their separation procedure can share the same separation procedure required
+to separate the GSECs.
+Thus reducing the implementation efforts requierd for their inclusion.
+Refer to the implementation details of \cref{sec:impl-separation-techniques}.
 
 \subsection{Rounded Capacity Constraints (RCC)}
 \label{sec:cptp-rcc}
