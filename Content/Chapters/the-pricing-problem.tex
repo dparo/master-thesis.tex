@@ -44,6 +44,12 @@ Second, the delicate usage of big-M constraints are required to model resource c
 that have bounds at the edge or node level (such as time-windows constraints).
 Unfortunately, big-M constraints are inherently computationally unstable \parencite{jepsen2008branchandcut}.
 
+Attempting to solve the ESPPCC through branch-and-cut frameworks
+have been lately attempted and evaluated in the works of \textcite{jepsen2008branchandcut}.
+Along with empirical results,
+these contributions provide IP mathematical models and additional valid inequalities.
+\textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
+
 \section{The Elementary Shortest Path Problem with Capacity Constraints}
 \label{sec:the-elementary-shortest-path-problem-with-resource-constraints}
 
@@ -350,25 +356,25 @@ Therefore we will not spend more efforts in discussing the ESPPCC.
 \label{sec:the-capacitated-profitable-tour-problem}
 
 The Capacitated Profitable Tour Problem, abbreviated as CPTP,
-belongs to the group of the so-called travelling salesman
-problems with profits (TSPP) (see \cite{feillet2005}),
-and therefore presents many similarities with other very well known
-problems such as:
+belongs to the group of the so-called
+Travelling Salesman Problems with Profits (TSPP) (see \cite{feillet2005}),
+and therefore presents many similarities with other
+studied optimization problems such as:
 (i) the Orienteering Problem (OP) \parencite{golden1987, laporte1990}
 (ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995},
 (iii) the Prize Collecting Traveling Salesman Problem (PCTSP) \parencite{balas1989prize, balas1995prize},
 (iv) the Capacitated m-Ring-Star Problem (CmRSP) \parencite{baldacci2007capacitated}.
-See \textcite{letchford2013} for the Steiner extension of these problems.
+Refer to \textcite{letchford2013} for the Steiner extension of these problems.
+
 The OP, an NP-hard problem \parencite{laporte1990}, asks for a route serving
-a subset of customers with profits.
+a subset of customers with associated profits.
 In OP, the route length is bounded in terms of number of vertices visited,
-whereas in CPTP the route is bounded in terms of accumulated demand served
-through the maximum available vehicle capacity.
+whereas in CPTP the route is bounded in terms of the accumulated demand served.
 Using the reduction to Hamiltonian circuit problem
 employed to prove that the OP is NP-hard \parencite{laporte1990},
 the same reasoning can be applied to conclude that CPTP is also NP-hard.
-The CPTP has many roots in common with the OP, in fact,
-the OP may be regarded as a special case of an edge-capacitated CPTP with unit demands.
+The OP may be regarded as a special case of an edge-capacitated CPTP with unit demands.
+
 Refer to \textcite{fischetti1998, gendreau1998} for contributions
 exposing BAC frameworks and valid inequalities for the OP.
 Many of such inequalities (but not all) are also valid for the CPTP \parencite{jepsen2014}.
@@ -377,7 +383,9 @@ We will study the basic version of the CPTP,
 i.e. we will not consider additional non-robust inequalities
 at the RMP level that could change the structure of the problem.
 
-In more details,
+\medskip
+
+In more detail,
 the CPTP is a combinatorial optimization delivery problem,
 in which,
 given as input a set of customers
@@ -385,40 +393,34 @@ defined over a fully connected undirected network, the goal resides in finding
 a resource constrained elementary tour (or circuit) starting from a common point called the depot,
 that minimizes the overall travel distance while maximizing
 the profits associated in serving only a subset of the customers.
+The profit value is gained only when serving occurs.
 The elementarity constraint dictates that no vertex
 can be visited twice or more, thus implying that the earnable profit
 per customer is available only once.
-The CPTP can also be described in simple words
-as a single-truck ($k = 1$) (C)VRP where it is possible to serve only a small set of customers,
-based on a profit value that is gained when serving occurs.
+
 The CPTP shows up naturally as a sub-problem
 in the column generation approach employed in solving many VRP variants.
 It is an important special case of the
 ESPPCC when the source and sink vertices are used to represent the same node.
-Contrary to the traditional description of the ESPPCC,
+Contrary to the traditional description of the ESPPCC/ESPPRC,
 the CPTP is easier to describe.
-Its formulation can be provided on an undirected symmetric network,
-reducing the total number of independent variables.
-However, due to its narrower scope,
-it is far less addressed in the literature compared to ESPPRC.
-
+However, due to its narrower scope compared to the ESPPRC,
+it is a problem which is far less addressed in the literature.
 To the best of our knowledge, the few contributions studying the CPTP
 in the context of pricing for the VRP can be found in \textcite{bixby1999, jepsen2011,jepsen2014}.
+
 \textcite{jepsen2014} study the CPTP problem in the context of pricing for the VRP.
 Their work originate from the initial efforts in \textcite{jepsen2008branchandcut},
-were a branch-and-cut algorithm was applied to solve the ESPPCC.
-Their work lays out a first foundational theory for further development
-of the CPTP as an independent problem or as in the context of pricing.
-Their work may serve in the future as a tutorial/survey/framework
-for further development of branch-and-cut algorithms for the CPTP.
-They propose a branch-and-cut framework for the CPTP,
-along with a directed symmetric network IP formulation.
-They adapt many valid inequalities from related problems,
-introduce a new family of inequalities (rounded multistar inequalities)
-discuss and implement their efficient separation,
-and finally proposes an efficient heuristic for separating
-the \textit{knapsack large multistar inequalities} \parencite{letchford2002}.
-They study the competitiveness of their approach
+where the ESPPCC was studied and a branch-and-cut approach was proposed to solve it.
+The work of \citeauthor{jepsen2014} provides a first tutorial/survey/framework
+and foundational theory for further development of the CPTP as, either
+an independent problem or in the context of pricing.
+They focus on the development of a model, additional valid inequalities and
+a branch-and-cut algorithm for solving this problem.
+They readjust many inequalities from related problems
+and discuss their efficient separation.
+
+\textcite{jepsen2014} study the competitiveness of their approach
 along with the usefulness of the valid inequalities through a computational study.
 Their results show that while a branch-and-cut framework based on CPTP may
 not be competitive in solving the historical CVRP instances w.r.t. to dynamic programming in most cases,
@@ -429,19 +431,14 @@ Unfortunately network with highly negative weights are usually
 solved through heuristics,
 while the bounding procedure of exact labeling algorithm is usually optimized
 to cut off huge portions of the solution space in the latter case.
-Nonetheless, \textcite{jepsen2014}
+Nonetheless, their contribution
 proved that such approach could provide a good complement
 to the dynamic programming algorithms,
 showing that there may be value in further developing
 branch-and-cut frameworks for pricing in column generation schemes.
 
-Attempting to solve the ESPPCC through branch-and-cut frameworks
-have been lately attempted and evaluated in the works of \textcite{jepsen2008branchandcut}.
-Along with empirical results,
-these contributions provide IP mathematical models and additional valid inequalities.
-\textcite{jepsen2008branchandcut} provides an IP formulation described over and undirected network.
-
-The presentation of this section, along with the implementation of \cref{sec:implementation-chapter}
+The presentation of this section,
+along with the implementation of \cref{sec:implementation-chapter}
 owes a lot to the efforts of \textcite{jepsen2014}.
 
 \subsection{Integer Programming formulation}
