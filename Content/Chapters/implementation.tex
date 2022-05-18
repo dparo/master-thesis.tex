@@ -7,14 +7,9 @@ As the main foundation, the proposed approach employs
 the latest \textit{CPLEX 22.1 C callable library} (released in March 2022).
 The branch-and-cut framework can be used as a pricer in the context
 of column generation for the CVRP.
-The algorithm's source coed is developed in the \textit{C} language,
+The algorithm's source code is developed in the \textit{C} language,
 and it is freely available under a permissive \textit{MIT} license
 at the following Github repository: \url{https://github.com/dparo/master-thesis}.
-
-\begin{quote}
-	The BAC algorithm is implemented using callback functions for cut gen-
-	eration which is available in the CPLEX callable library \cite{jepsen2008branchandcut}.
-\end{quote}
 
 \medskip
 
@@ -22,14 +17,21 @@ at the following Github repository: \url{https://github.com/dparo/master-thesis}
 CPLEX for short,
 is a commercial optimization software package for solving problems expressed as either:
 linear programs, mixed-integer programs, quadratic programs, or quadratic constrained programs.
-For an introduction to CPLEX refer to \Cref{sec:introduction-to-cplex}.
+For an introduction to CPLEX refer to \cref{sec:introduction-to-cplex}.
 Compared to tailored pricers, such as the labeling algorithm \parencite{desrochers1992, feillet2004},
 it is clear that using a modern MIP solver, such as CPLEX,
 may provide at least two benefits:
 (i) parallelization and efficient use of the machine' multiple cores basically for free,
 (ii) take advantage of all the engineering effort that went in creating an efficient MIP solver.
+Our branch-and-cut implementation heavily relies on the CPLEX optimizer
+to solve the associated MIP model.
+The cutting-planes separation was implemented using the CPLEX generic callback functions,
+which have the benefit of not disabling the so-called \textit{Dynamic Search},
+the proprietary advanced branch-and-cut algorithm employed internally inside CPLEX,
+see discussion in \cref{sec:introduction-to-cplex}.
 
 \medskip
+
 
 We quickly summarize the outline of the chapter.
 \Cref{sec:impl-full-static-model} presents the implemented static IP model,
@@ -254,7 +256,6 @@ and cover inequalities (see \cref{sec:introduction-to-cplex});
 reporting additional inequalities, which cannot be deduced from the static model,
 can drastically improve the running time of the resolution process.
 
-
 The GSECs can be separated for fractional solutions by solving $(s, t)$-min-cuts
 on a flow network where capacities are given from the fractional solution $x^\star$.
 
@@ -278,7 +279,6 @@ necessarily need an exact separation procedure.
 For these reasons, heuristic separation procedures for the GLM and RCC
 cuts may provide a faster convergence of the solution approach.
 
-
 GLM inequalities are efficiently separable in
 polynomial time by finding minimum
 $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
@@ -289,7 +289,6 @@ in minimizing only the term $\sum_{e \in \delta(S)} x_e$ as to stress the violat
 This can be achieved by computing $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
 in a directed flow network where capacities are given exclusively from the
 fractional solution $c_{ij} = x^\star _{\Set*{i, j}}\quad \forall i, j \in V$.
-
 
 \begin{comment}
 \cite{jepsen2014}
