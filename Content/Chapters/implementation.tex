@@ -140,7 +140,8 @@ for the TSP and various facets in which it can be implemented.
 The insertion heuristic algorithm
 can construct a new feasible primal solution in $\Theta(N^2)$ time.
 In this section,
-we will focus on readjusting the TSP insertion heuristic so that it can work with a CPTP problem.
+we will readjust the TSP insertion heuristic
+so that it can be applied to the CPTP.
 
 \medskip
 
@@ -148,7 +149,7 @@ Start by selecting two distinct nodes $u, v \in V,\ q_u + q_v \le Q$
 to form an initial tour back-to-back $p = \Tuple*{u, v}$.
 
 The insertion heuristic is an iterative approach,
-where at each step of the iteration
+where at each iteration
 an almost-feasible CPTP tour is available.
 If the CPTP admits feasible solutions,
 when all the iterations of the insertion heuristic are exhausted,
@@ -186,8 +187,8 @@ if at least one of the following conditions is true:
 
 Prior to insertion the partial route has the form $p = \Tuple*{\dots, a, b, \dots}$;
 whereas after the insertion operation completes: $p = \Tuple*{\dots, a, h, b, \dots}$.
-In our implementation we employed the cheapest insertion scheme,
-therefore the pair $(h, a)$ for is picked such that it minimizes the extra mileage $\Delta_m(h, a)$
+In our implementation we employed the \textit{cheapest insertion scheme},
+i.e. the pair $(h, a)$ is picked such that it minimizes the extra mileage $\Delta_m(h, a)$
 across all possible choices for $a \in p,\ h \notin p$.
 The iteration stops when no more valid $h$ vertices can be found for insertion.
 At the end of the insertion heuristic, $p$ is a valid route which visits the depot node.
@@ -229,8 +230,8 @@ therefore the route's gained profit does not change during
 the running time of the 2-OPT procedure.
 Hence, it is trivial to readjust the original TSP's 2-OPT procedure to the CPTP problem.
 
-Let $a, b \in p$ be two vertices visited in the current route.
-Let $a^\prime, b^\prime \in p$ denote respectively the successor of $a$ and $b$ in the current route.
+Let $a, b \in p$ be two vertices visited in the current route $p$.
+Let $a^\prime, b^\prime \in p$ denote respectively the successor of $a$ and $b$ in the current route $p$.
 A 2-OPT exchange removes edges $(a, a^\prime)$, $(b, b^\prime)$
 in favor of $(a, b)$, $(a^\prime, b^\prime)$
 but only if the delta distance, defined as:
@@ -246,24 +247,26 @@ characterized from the head $a_s$ and tail $b$: $[a_s, \dots, b]$.
 In our implementation
 we scan for vertices $a, b$ achieving the cheapest exchange,
 i.e. for which the delta distance $\Delta(a, b)$ is minimized across all possible valid choices of $a, b \in p$.
+The local search algorithms terminates when $\nexists (a, b) \mid a, b \in p,\ \Delta(a, b) < 0$.
 
 \section{Branching}
 \label{sec:impl-branching}
 
+\mytodo{Should we enforce strong branching, as is done in @jepsen2014?}
+
 We don't implement any specific branching schemes.
 We rely on the branching schemes already provided from the CPLEX MIP optimizer.
 
-\mytodo{Strong branching employed?}
 
 \section{Cutting-planes separation}
 \label{sec:impl-separation-techniques}
 
-Despite separation of some general families of cutting-planes are already provided
-from modern MIP optimizers such as CPLEX, such as:
-Chvátal-Gomory cuts, mixed integer rounding cuts, disjunctive cuts
-and cover inequalities (see \cref{sec:introduction-to-cplex});
-reporting additional inequalities, which cannot be deduced from the static model,
-can drastically improve the running time of the resolution process.
+Despite CPLEX internally already implements
+the separation of some families of general cutting-planes (see \cref{sec:introduction-to-cplex})
+reporting additional inequalities,
+which cannot be deduced from the static model,
+can drastically improve the running time of the resolution process
+by improving the linear relaxation of the IP model.
 
 The GSECs can be separated for fractional solutions by solving $(s, t)$-min-cuts
 on a flow network where capacities are given from the fractional solution $x^\star$.
@@ -307,11 +310,6 @@ the GSECs must be separated through an exact procedure
 (at least for the integral solutions).
 
 
-\begin{comment}
-\cite{jepsen2014}
-The BAC algorithm is implemented within CPLEX 12 using the callback functions for the cut generation
-from the callable library.
-\end{comment}
 
 \begin{comment}
 \cite{ralphs2003}
