@@ -645,13 +645,13 @@ holds even when $\alpha > \gamma$ is not satisfied
 By picking $\alpha = q(S) = \sum_{i \in S} q_i,\ \beta = \sum_{i \in S} q_i\Expr*{1 - y_i},\ \gamma = Q$,
 we obtain the following linear, but weaker, RCC:
 \begin{equation}
-	\label{eq:rcc-inequality}
+	\label{eq:cptp-rcc-inequality}
 	\sum\limits_{e \in \delta(S)} x_e \ge 2 \Expr*{\ceil*{\frac{q(S)}{Q}} - \frac{\sum\limits_{i \in S} q_i \Expr*{1 - y_i}}{\ExprQr(S)}} \quad \forall S \subseteq V_0,\ |S| \ge 1,
 \end{equation}
 where $\ExprQr(S) = \fmod{q(S)}{Q}$ is the remainder capacity associated
 to an arbitrary set $S \subseteq V$.
 Notice, that \cref{eq:baldacci-rcc-theorem-weaker-bound} guarantees correctness
-of the \cref{eq:rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
+of the \cref{eq:cptp-rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
 Fortunately this is the case for most, if not all, routing problems considered in the literature.
 
 As \textcite{jepsen2014} points out,
@@ -676,12 +676,12 @@ the intersection between a 0-1 knapsack problem and the node-capacitated profita
 
 Consider the capacity inequality:
 \begin{equation}
-	\label{eq:cptpt-weaker-rcc}
+	\label{eq:cptp-weaker-rcc}
 	\sum_{e \in \delta(S)} x_e \ge \frac{2}{Q} \sum_{i \in S} d_i y_i \quad \forall S \subseteq V_0,\ |S| \ge 2,
 \end{equation}
 which is a weaker form of the RCC in \cref{eq:cptp-rcc-inequality-original},
 where ceiling is not performed.
-\Cref{eq:cptpt-weaker-rcc} can be improved to obtain the GLM inequalities,
+\Cref{eq:cptp-weaker-rcc} can be improved to obtain the GLM inequalities,
 by noting that  nodes $j \notin S$ are also visited when the crossing edges $\delta(S)$ are used.
 
 The GLM inequalities can be expressed as \parencite{jepsen2014}:
