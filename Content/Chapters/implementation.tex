@@ -255,24 +255,33 @@ The local search algorithms terminates when $\nexists (a, b) \mid a, b \in p,\ \
 We don't implement any specific branching schemes.
 We rely on the branching schemes already provided from the CPLEX MIP optimizer.
 
-\section{Cutting-planes separation}
+\section{Cutting-planes and Inequalities separation}
 \label{sec:impl-separation-techniques}
 
 Despite CPLEX internally already implements
-the separation of some families of general cutting-planes (see \cref{sec:introduction-to-cplex})
+the separation of some families of general cutting-planes
+(see \cref{sec:introduction-to-cplex}),
 reporting additional inequalities,
 which cannot be deduced from the static model,
 can drastically improve the running time of the resolution process.
-
+Cutting-planes separation is a problem which consists
+in finding (strong) violated inequalities
+so that they can be embedded inside a branch-and-cut framework.
 An effective cutting-planes separation strategy
 is probably the most important and delicate aspect of any branch-and-cut algorithm \parencite{ralphs2003}.
 Cutting-planes improve the linear relaxation
 by "cutting" fractional points from the convex-hull of integer solutions.
+Integral inequalities' separation can be seen as a procedure
+to dynamically generate mandatory constraints
+that would otherwise be impossible to insert statically into a MIP model.
 
-On some cases, exact separation may be computationally very expensive for some family of inequalities.
-In such a case,
-if such inequalities are not strictly required to guarantee the algorithm's correctness,
-a heuristic separation procedure may be devised.
+
+On some cases,
+exact separation may be computationally very expensive
+for some families of inequalities/constraints.
+If computationally expensive inequalities
+are not strictly required to guarantee the algorithm's correctness,
+a heuristic separation procedure may be devised for their inclusion.
 
 \medskip
 
@@ -283,33 +292,38 @@ RCC \labelcref{eq:cptp-rcc-inequality},
 GLM \labelcref{eq:cptp-glm-inequality}
 families of inequalities.
 All these families of inequalities share something in common:
-the determination of a subset $S \subseteq V$.
-A subset $S \subseteq V$ can be determined via an appropriate \textit{labeling algorithm},
+the determination of a subset $S \subseteq V_0$.
+A subset $S \subseteq V_0$ can be determined via an appropriate \textit{labeling algorithm},
 which assigns a label (integer) to each vertex of the network.
-Vertices that share the same label belong to the same set $S \subseteq V$.
+Vertices that share the same label belong to the same set $S \subseteq V_0$.
 
-The exact GSECs separation is mandatory to guarantee the correctness of the approach.
-Their separation must be guaranteed at least for the integral solutions of
-model
+The GSECs are the only constraints which must be obligatorily
+included through an exact separation procedure,
+at least for the integral solutions of model
 \labelcref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
-GSECs's exact integral separation is easily obtained by tracing the connected components
+GSEC's can be separated exactly
+by tracing the \textit{major connected components}
 induced from the integral solution of the model.
 Tracing the connected components can be used to determine subsets
-$S \subset V | \sum_{e \in \delta(S)} x_e = 0$.
-
-For fractional solutions, however the matter is a little-bit more complicated.
+$S \subset V | \sum_{e \in \delta(S)} x_e = 0$,
+which constitutes a valid labeling of the network.
+For fractional solutions, however, their exact separation is more complicated.
 Let $x^\star \in \R^{|E|}$ denote the value of a fractional solution,
 then,
-the GSECs can be separated exactly by solving $(u, v)$-min-cuts
+the GSECs can be separated (exactly) by solving $(u, v)$-min-cuts
 on a flow network where capacities are given from the fractional solutions' value $x^\star$.
-The $(u, v)$-min-cuts seeks for the subset $S \subseteq V$ induced from $(u, v)$
-which minimizes the term $\sum_{e \in \delta(S)} x^\star_e$.
+The $(u, v)$-min-cuts outputs a subset $S \subseteq V$ induced from $(u, v)$
+minimizing the term $\sum_{e \in \delta(S)} x^\star_e$,
+which constitutes a valid labeling of the network.
 
-An exact separation procedure of RCC inequalities is currently not known
-\parencite{jepsen2014}, see discussion in \cref{sec:cptp-rcc}.
-For the GLM fractional separation, \textcite{jepsen2014} proposes
-to use solve a $(u, v=0)$-min-cuts on a flow network where capacities are $u$ dependent,
-see discussion in \cref{sec:cptp-glm}.
+Instead, the exact separation of the RCC and GLM inequalities
+is a different concern, refer to the respective discussion in \cref{sec:cptp-rcc,sec:cptp-glm}.
+For the RCC inequalities,
+no exact separation procedure is currently known \parencite{jepsen2014}.
+For the GLM inequalities,
+a cutting-plane strategy based on solving
+$(u, v=0)$-min-cuts on a flow network with $u$-dependent capacities,
+may be employed \parencite{jepsen2014}.
 
 \medskip
 
@@ -337,17 +351,12 @@ This can be achieved by computing $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
 in a directed flow network where capacities are given exclusively from the
 fractional solution $c_{ij} = x^\star _{\Set*{i, j}}\quad \forall i, j \in V$.
 
-Inequality separation is a problem which consists in finding (strong) violated inequalities so that they can be embedded inside a Branch\&Cut framework.
 Integral inequality separation is concerned in determining violated inequalities for the original IP model.
 Integral inequalities' separation is usually much easier to perform, and can be seen as a procedure to dynamically generate necessary constraints that would otherwise be impossible to insert statically in a MIP model.
 Fractional inequality separation, instead is usually harder to perform, and it is concerned in finding (strong) violated inequalities for fractional solutions originated from the linear relaxation.
 
 In this thesis we are treating a CPTP problem, and more precisely, we are concerned in separating the GSEC, GLM, RCC inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
 This is achieved by finding sets $S \subseteq V_0$, through the usage of appropriate algorithms, that violate any valid inequality.
-
-All the cuts that we implemented, are backed by the same shared separation procedure for both integral solutions and for fractional solutions.
-In the next two sections, we describe the common separation procedure used to find good $S \subseteq V_0$ sets.
-Then for each cut, we describe: how $S$ is used for generating the inequality and when each cut is reported to the MIP solver or when it is, instead, ignored.
 
 \subsection{Integral separation}
 \label{sec:impl-integral-separation}
