@@ -354,8 +354,8 @@ we will discuss the separation of each implemented inequality.
 \label{sec:impl-labeling-integral-solutions}
 
 Our integral labeling algorithm
-is devised to be optimal for the exact separation of all the violated integral GSECs constraints
-for model \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5},
+is devised to be optimal for the exact separation for detecting violated integral GSECs inequalities
+of \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5},
 but the same procedure is shared
 to feed a suboptimal integral separation also for the GLM and RCI inequalities,
 as shown in the block diagram in \cref{fig:integral-separation-block-diagram}.
@@ -412,7 +412,10 @@ A block diagram summarizing the integral separation is provided in \cref{fig:int
 \begin{figure}[ht]
 	\centering
 	\framebox{\includegraphics[width=6cm]{Imgs/integral-separation-block-diagram.cropped.pdf}}
-	\caption{A block diagram representing the structure of the employed integral separation procedure.}
+	\caption{A block diagram representing the structure
+		of the employed separation structure for integral solutions
+		along with the shared labeling algorithm.
+	}
 	\label{fig:integral-separation-block-diagram}
 \end{figure}
 
@@ -505,7 +508,10 @@ Refer to the \urlref{https://github.com/dparo/master-thesis}{Github repository} 
 \begin{figure}[ht]
 	\centering
 	\framebox{\includegraphics[width=8cm]{Imgs/fractional-separation-block-diagram.cropped.pdf}}
-	\caption{A block diagram representing the structure of the employed fractional separation procedure. Recall that fractional separation occurrs only at iterations multiple of $N$. This is done to amortize the cost of the expensive maxflow/mincut procedure.}
+	\caption{A block diagram representing the structure
+		of the employed separation structure for fractional solutions
+		along with the shared labeling algorithm.
+	}
 	\label{fig:fractional-separation-block-diagram}
 \end{figure}
 
