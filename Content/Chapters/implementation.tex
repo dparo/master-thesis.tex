@@ -395,7 +395,8 @@ by a simple DFS traversal, which pseudocode is provided in Algorithm \ref{algo:c
 
 Consider the sets $T_k = \Set*{i \in V \mid cc(i) = k}$ with $k = 0, \dots, n_c$
 computed from the just devised labeling algorithm.
-It is trivial to see that $\sum_{e \in \delta(T_k)} x^\star_e = 0$ for $k = 0, \dots, n_c$.
+Due to the construction of such sets we have that:
+$\sum_{e \in \delta(T_k)} x^\star_e = 0$ for $k = 0, \dots, n_c$.
 
 
 \begin{algorithm}
