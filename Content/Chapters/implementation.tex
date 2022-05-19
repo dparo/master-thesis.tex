@@ -393,15 +393,6 @@ For singletons instead we fix $c(i) = -1  \quad \forall i \in V_0 \mid y^\star_i
 The connected components can be computed
 by a simple DFS traversal, which pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
 
-Then any valid set $S \subseteq V_0$ can be computed in the following way from a MIP integer solution:
-
-\begin{equation}
-	S \subseteq V_0 = \Set* {i \mid cc(i) = k}   \quad \forall k \in C, k > 0
-\end{equation}
-
-which implies that any major connected component that does not contain the depot node, can be used as a valid set $S \subseteq V_0$ for separating inequalities.
-If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution contains a single subtour, and does not violate any GSECs.
-A block diagram summarizing the integral separation is provided in \cref{fig:integral-separation-block-diagram}.
 
 \begin{algorithm}
 	\caption{An algorithm for computing the majoconnected components through a Depth-First Search (DFS) traversal}
@@ -551,6 +542,19 @@ The integral separation procedure is the most important, as this procedure is ne
 Assume that the MIP solver finds an optimal integer solution $x^* \in \Set*{0, 1}, y^* \in \Set*{0, 1}$ that violates a GSEC constraint.
 If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
 In order to detect unconnected subtours, we need first to determine the connected components induced from the $x^*$ solution.
+\end{comment}
+
+\begin{comment}
+[ @dparo ]
+[ As previously extracted from the discussion on integral separation algorithm based on connected components ]
+
+Then any valid set $S \subseteq V_0$ can be computed in the following way from a MIP integer solution:
+\begin{equation}
+	S \subseteq V_0 = \Set* {i \mid cc(i) = k}   \quad \forall k \in C, k > 0
+\end{equation}
+which implies that any major connected component that does not contain the depot node, can be used as a valid set $S \subseteq V_0$ for separating inequalities.
+If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution contains a single subtour, and does not violate any GSECs.
+A block diagram summarizing the integral separation is provided in \cref{fig:integral-separation-block-diagram}.
 \end{comment}
 
 
