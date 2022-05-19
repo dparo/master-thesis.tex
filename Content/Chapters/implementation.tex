@@ -354,7 +354,7 @@ we will discuss the separation of each implemented inequality.
 \label{sec:impl-labeling-integral-solutions}
 
 Our integral labeling algorithm
-is devised to be optimal for the exact separation for detecting violated integral GSECs inequalities
+is devised to be optimal for detecting violated integral GSECs inequalities
 of \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5},
 but the same procedure is shared
 to feed a suboptimal integral separation also for the GLM and RCI inequalities,
@@ -389,13 +389,17 @@ Let $cc(i) \in C$ be an array
 which for each vertex $i \in V$ it encodes to which connected component it belongs to.
 Note that the depot node always belongs to a connected component,
 therefore by definition we fix $cc(0) = 0$.
-For singletons instead we fix $c(i) = -1  \quad \forall i \in V_0 \mid y^\star_i = 0$.
+For singletons instead we fix $cc(i) = -1  \quad \forall i \in V_0 \mid y^\star_i = 0$.
 The connected components can be computed
 by a simple DFS traversal, which pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
 
+Consider the sets $T_k = \Set*{i \in V \mid cc(i) = k}$ with $k = 0, \dots, n_c$
+computed from the just devised labeling algorithm.
+It is trivial to see that $\sum_{e \in \delta(T_k)} x^\star_e = 0$ for $k = 0, \dots, n_c$.
+
 
 \begin{algorithm}
-	\caption{An algorithm for computing the majoconnected components through a Depth-First Search (DFS) traversal}
+	\caption{An algorithm for computing the major connected components through a Depth-First Search (DFS) traversal}
 	\KwData{$x^\star \in \Set*{0, 1}^{|E|},\ y^\star \in \Set*{0, 1}^{|V|}$: current integral solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
 	}
