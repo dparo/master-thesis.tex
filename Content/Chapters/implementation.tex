@@ -353,6 +353,24 @@ we will discuss the separation of each implemented inequality.
 \subsection{Labeling Integral Solutions}
 \label{sec:impl-labeling-integral-solutions}
 
+Our integral labeling algorithm
+is devised to be optimal for the exact separation of all the violated integral GSECs constraints
+for model \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5},
+but the same procedure is shared
+to feed a suboptimal integral separation also for the GLM and RCI inequalities,
+as shown in the block diagram in \cref{fig:integral-separation-block-diagram}.
+
+Let $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$ denote the
+current integral solution of
+\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
+If $x^\star, y^\star$ violates a GSEC constraint,
+it is easy to verify that the solution models at least a spurious unconnected sub-tour that should be removed.
+Unconnected sub-tours can be detected
+by computing the \textit{major connected components}
+through a Depth-First Search (DFS) traversal
+on the network induced from the traversed edges:  $\Set*{e \in E \mid x^\star_e = 1}$.
+
+
 The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
 Assume that the MIP solver finds an optimal integer solution $x^* \in \Set*{0, 1}, y^* \in \Set*{0, 1}$ that violates a GSEC constraint.
 If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
@@ -388,6 +406,8 @@ Then any valid set $S \subseteq V_0$ can be computed in the following way from a
 which implies that any major connected component that does not contain the depot node, can be used as a valid set $S \subseteq V_0$ for separating inequalities.
 If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution contains a single subtour, and does not violate any GSECs.
 A block diagram summarizing the integral separation is provided in \cref{fig:integral-separation-block-diagram}.
+
+
 
 \begin{figure}[ht]
 	\centering
@@ -500,6 +520,7 @@ Refer to the \urlref{https://github.com/dparo/master-thesis}{Github repository} 
 	iteration can influence the convergence and the time spent re-optimizing the LP-problem \cite{jepsen2008branchandcut}.
 \end{quote}
 
+
 Fortunately it is possible to instruct CPLEX to evaluate the cuts.
 Premature branching can be performed if CPLEX deems cut ineffective independently
 from user provided violation threshold.
@@ -509,7 +530,20 @@ from user provided violation threshold.
 \subsubsection{GSEC integral separation}
 \label{sec:impl-gsec-integral-separation}
 
+\begin{comment}
+[ @dparo ]
+[ As previously extracted from the discussion on integral separation algorithm based on connected components ]
+
 This is the most important separation technique, since it is mandatory to achieve feasible solutions for the CPTP problem.
+The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
+Assume that the MIP solver finds an optimal integer solution $x^* \in \Set*{0, 1}, y^* \in \Set*{0, 1}$ that violates a GSEC constraint.
+If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
+In order to detect unconnected subtours, we need first to determine the connected components induced from the $x^*$ solution.
+\end{comment}
+
+
+The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
+
 
 By recalling the GSEC inequality as presented in Equation \eqref{eq:cptp-gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-separation}, and in Algorithm \ref{algo:cc-dfs} we can pick $S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0$.
 Note that using major connected components, i.e. subtours, the set $S$ always satisfies $\SetSize*{S} \ge 2$.
