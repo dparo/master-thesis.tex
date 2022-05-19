@@ -278,45 +278,43 @@ Integral inequalities' separation, instead, can be seen as a procedure
 to dynamically generate mandatory constraints
 that would otherwise be impossible to insert statically into a MIP model.
 
-
-On some cases,
-exact separation may be computationally very expensive
-for some families of inequalities/constraints.
-If computationally expensive inequalities
-are not strictly required to guarantee the algorithm's correctness,
-a heuristic separation procedure may be devised for their inclusion.
+Additional valid inequalities which are non-strictly necessary to guarantee the algorithm's correctness,
+but are computationally expensive to separate exactly,
+may be included through a heuristic separation procedure.
 
 \medskip
 
-In our implementation branch-and-cut algorithm,
-we are concerned in separating the
+In our branch-and-cut algorithm,
+we are concerned in separating only the
 GSECs \labelcref{eq:cptp-gsec-constraints},
-RCC \labelcref{eq:cptp-rcc-inequality},
-GLM \labelcref{eq:cptp-glm-inequality}
+RCC \labelcref{eq:cptp-rcc-inequality}
+and GLM \labelcref{eq:cptp-glm-inequality}
 families of inequalities.
-All these families of inequalities share something in common:
+All these inequalities share something in common:
 the determination of a subset $S \subseteq V_0$.
 A subset $S \subseteq V_0$ can be determined via an appropriate \textit{labeling algorithm},
-which assigns a label (integer) to each vertex of the network.
-Vertices that share the same label belong to the same set $S \subseteq V_0$.
+which determines a partitioning of the network by assigning labels (integer) to each vertex.
 
 The GSECs are the only constraints which must be obligatorily
-included through an exact separation procedure,
-at least for the integral solutions of model
-\labelcref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
+included through an exact separation procedure.
+At a minimum, their inclusion must be devised
+at least for integral solutions of the IP model in
+\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
 GSEC's can be separated exactly
 by tracing the \textit{major connected components}
 induced from the integral solution of the model.
 Tracing the connected components can be used to determine subsets
-$S \subset V | \sum_{e \in \delta(S)} x_e = 0$,
+$T \subset V | \sum_{e \in \delta(T)} x_e = 0$,
 which constitutes a valid labeling of the network.
 For fractional solutions, however, their exact separation is more complicated.
-Let $x^\star \in \R^{|E|}$ denote the value of a fractional solution,
+Let $x^\star \in \R^{|E|}$ denote the value of a fractional solution of
+the linear relaxation in
+\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3},
 then,
 the GSECs can be separated (exactly) by solving $(u, v)$-min-cuts
 on a flow network where capacities are given from the fractional solutions' value $x^\star$.
-The $(u, v)$-min-cuts outputs a subset $S \subseteq V$ induced from $(u, v)$
-minimizing the term $\sum_{e \in \delta(S)} x^\star_e$,
+The $(u, v)$-min-cuts outputs a subset $T \subseteq V$ induced from $(u, v)$
+minimizing the term $\sum_{e \in \delta(T)} x^\star_e$,
 which constitutes a valid labeling of the network for each $u, v \in V,\ u \ne v$.
 
 Instead, the exact separation of the RCC and GLM inequalities
@@ -333,23 +331,26 @@ may be employed \parencite{letchford2006, jepsen2014}.
 In our implementation, with regard to the RCC and GLM inequalities,
 we opted for a different approach compared to the one proposed in \textcite{jepsen2014}.
 We re-use the same integral and fractional labeling algorithms
-employed for the optimal separation of the GSECs inequalities
-also as a sub-optimal (heuristic) separation of the RCC and GLM inequalities.
+already employed for the optimal separation of the GSECs inequalities.
+These two labeling algorithms will be shared between all the three families of inequalities.
 This allows us to limit the programming efforts required to create custom
 separation procedure
 and also to tremendously reduce the computational impact,
 since the same labeling procedure feeds the separation of three different families of inequalities.
 
-GLM separation is sub-optimal because  the capacities
-of the flow network need to also account for the demand of the vertices.
+\medskip
 
-
-
-In this thesis we are treating a CPTP problem, and more precisely, we are concerned in separating the GSEC, GLM, RCC inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
-This is achieved by finding sets $S \subseteq V_0$, through the usage of appropriate algorithms, that violate any valid inequality.
+In the next two sections, \cref{sec:impl-labeling-integral-solutions,sec:impl-labeling-fractional-solutions},
+we will describe the labeling algorithms employed for the integral solutions
+and fractional solutions respectively.
+Note however, that these two labeling algorithms
+are only optimal for the separation of the GSECs inequalities,
+while they behave suboptimally (heuristically) for the separation of the RCC and GLM inequalities.
+In the remaining sections, instead,
+we will discuss the separation of each implemented inequality.
 
 \subsection{Labeling Integral Solutions}
-\label{sec:impl-integral-separation}
+\label{sec:impl-labeling-integral-solutions}
 
 The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
 Assume that the MIP solver finds an optimal integer solution $x^* \in \Set*{0, 1}, y^* \in \Set*{0, 1}$ that violates a GSEC constraint.
@@ -395,7 +396,7 @@ A block diagram summarizing the integral separation is provided in \cref{fig:int
 \end{figure}
 
 \subsection{Labeling Fractional Solutions}
-\label{sec:impl-fractional-separation}
+\label{sec:impl-labeling-fractional-solutions}
 
 Fractional separation is usually much harder and more computationally expensive to perform compared to integral separation.
 A valid set $S \subseteq V_0$ can be separated by solving a max-flow problem between two arbitrary source and sink vertices $s, t \in V,\ s \ne t$ on a fully connected directed graph.
@@ -477,6 +478,9 @@ Good software engineering practices, such as unit testing, can help in spotting 
 A block diagram summarizing the fractional separation is provided in \cref{fig:fractional-separation-block-diagram}.
 In the following sections we describe how we separate each inequality using the computed $S \subseteq V_0$.
 
+For brevity reasons we will not report the pseudocode of the max-flow and Gomory-Hu tree algorithms.
+Refer to the \urlref{https://github.com/dparo/master-thesis}{Github repository} for their implementations.
+
 \begin{figure}[ht]
 	\centering
 	\framebox{\includegraphics[width=8cm]{Imgs/fractional-separation-block-diagram.cropped.pdf}}
@@ -498,6 +502,8 @@ In the following sections we describe how we separate each inequality using the 
 Fortunately it is possible to instruct CPLEX to evaluate the cuts.
 Premature branching can be performed if CPLEX deems cut ineffective independently
 from user provided violation threshold.
+
+
 
 \subsubsection{GSEC integral separation}
 \label{sec:impl-gsec-integral-separation}
