@@ -258,10 +258,10 @@ We rely on the branching schemes already provided from the CPLEX MIP optimizer.
 \section{Cutting-planes and Inequalities separation}
 \label{sec:impl-separation-techniques}
 
-Despite CPLEX internally already implements
+Despite CPLEX already implements internally
 the separation of some families of general cutting-planes
 (see \cref{sec:introduction-to-cplex}),
-reporting additional inequalities,
+generating additional inequalities,
 which cannot be deduced from the static model,
 can drastically improve the running time of the resolution process.
 Cutting-planes separation is a problem which consists
@@ -271,9 +271,10 @@ Cutting-planes improve the linear relaxation
 by "cutting" fractional points from the convex-hull of integer solutions.
 An effective cutting-planes separation strategy
 is probably the most important and delicate aspect of any branch-and-cut algorithm \parencite{ralphs2003}.
-Considering the trade-off between the separation cost
-and the improvements in the linear relaxation,
-is a fundamental factor when evaluating the inclusion of a set of inequalities.
+When evaluating the inclusion of a set of inequalities,
+considering the trade-off between the separation cost
+and the improvements in the linear relaxation
+is a factor of fundamental importance.
 Integral inequalities' separation, instead, can be seen as a procedure
 to dynamically generate mandatory constraints
 that would otherwise be impossible to insert statically into a MIP model.
@@ -295,10 +296,10 @@ the determination of a subset $S \subseteq V_0$.
 A subset $S \subseteq V_0$ can be determined via an appropriate \textit{labeling algorithm},
 which determines a partitioning of the network by assigning labels (integer) to each vertex.
 
-The GSECs are the only constraints which must be obligatorily
+The GSECs are the only constraints in our model which must be obligatorily
 included through an exact separation procedure.
 At a minimum, their inclusion must be devised
-at least for integral solutions of the IP model in
+for integral solutions of the IP model of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
 GSEC's can be separated exactly
 by tracing the \textit{major connected components}
