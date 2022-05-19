@@ -106,13 +106,16 @@ since it is the value used by the modern BPC framework presented in \textcite{sa
 \section{Warm Starting}
 \label{sec:impl-warm-starting}
 
-\textit{Warm starting} is a process which consists in feeding
+\textit{Warm starting} is a technique which consists in feeding
 a MIP optimizer with (good) feasible solutions
 prior to starting the resolution process.
-Having a set of (good) initial feasible solutions,
-can help a modern MIP solver to reach optimality in less time,
-Warm starting, if properly implemented,
-can tremendously reduce the primal-dual bound gap for many problem domains.
+Having a set of (good) initial feasible solutions
+can tremendously reduce the primal-dual bound gap,
+and thus,
+decrease amount of time required to reach optimality,
+Warm starting can be applied to many IP problem domains,
+and it is usually supported by the majors MIP solvers in the market,
+such as CPLEX.
 
 Primal heuristic algorithms provide a fast and sensible approach for warm starting.
 A CPTP problem has many similarities with TSP.
@@ -120,6 +123,8 @@ Therefore,
 TSP's heuristics can be readjusted to work successfully even for the CPTP.
 Much work was dedicated in studying good heuristics for the TSP,
 see \cite{rosenkrantz1977, johnson1997, laporte1992, johnson2007, hoffman2013}.
+
+\medskip
 
 In the remainder of this section,
 we explain the warm starting procedure that we've implemented.
