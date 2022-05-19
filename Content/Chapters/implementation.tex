@@ -53,16 +53,13 @@ including a discussion on the employed separation techniques.
 \label{sec:impl-full-static-model}
 
 
-Our static IP model is based on the CPTP formulation
-of \labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
-by disregarding the GSECs of \cref{eq:cptp-gsec-constraints}.
+Our static IP model is based on a slight variation of the CPTP formulation
+\labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
+by disregarding the GSECs inequalities \labelcref{eq:cptp-gsec-constraints}.
 To guarantee the correctness of the approach,
-the GSECs will be dynamically separated on violation
-during the running-time of the branch-and-cut algorithm,
-as described later in \cref{sec:impl-separation-techniques}.
-Note that to guarantee the correctness of the approach,
-the GSECs must be separated through an exact procedure
-(at least for the integral solutions).
+the GSECs will be exactly separated, during the running-time of the algorithm,
+when violation occurs.
+
 We've implemented the following static Integer Programme (IP) model:
 \begin{align}
 	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                     & \label{eq:cptp-static-model-0}                         \\
@@ -296,6 +293,14 @@ in minimizing only the term $\sum_{e \in \delta(S)} x_e$ as to stress the violat
 This can be achieved by computing $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
 in a directed flow network where capacities are given exclusively from the
 fractional solution $c_{ij} = x^\star _{\Set*{i, j}}\quad \forall i, j \in V$.
+
+
+Their separation must occur through an exact separation procedure
+See later discussion in \cref{sec:impl-separation-techniques}.
+Note that to guarantee the correctness of the approach,
+the GSECs must be separated through an exact procedure
+(at least for the integral solutions).
+
 
 \begin{comment}
 \cite{jepsen2014}
