@@ -350,7 +350,7 @@ while they behave suboptimally (heuristically) for the separation of the RCC and
 In the remaining sections, instead,
 we will discuss the separation of each implemented inequality.
 
-\subsection{Labeling Integral Solutions}
+\subsection{Labeling from Integral Solutions}
 \label{sec:impl-labeling-integral-solutions}
 
 Our integral labeling algorithm
@@ -370,32 +370,28 @@ by computing the \textit{major connected components}
 through a Depth-First Search (DFS) traversal
 on the network induced from the traversed edges:  $\Set*{e \in E \mid x^\star_e = 1}$.
 
+\medskip
 
-The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
-Assume that the MIP solver finds an optimal integer solution $x^* \in \Set*{0, 1}, y^* \in \Set*{0, 1}$ that violates a GSEC constraint.
-If $x^*$ violates at least a GSEC, it is easy to see that the solution models at least a spurious unconnected subtour that needs to be removed.
-In order to detect unconnected subtours, we need first to determine the connected components induced from the $x^*$ solution.
-
-Let $C = \Set*{-1, 0, \dots, n_c - 1}$ be the connected components formed with $n_c \ge 1$.
-A node $i$ is said to belong to a singleton connected components, if the connected component contains only $i$ itself.
-We are only interested in modeling \textbf{major} connected components, i.e. components containing at least two vertices.
-Therefore, we ignore singleton connected components, and we use the sentinel value $-1$ for all the nodes $i$ belonging to singletons.
-Thus, the $n_c$ represents the number of major connected components, i.e. the number of subtours formed in the current integral solution.
-Let $cc(i) \in C$ be an array which for each vertex $i \in V$ it encodes to which connected component it belongs to.
-Note that the depot node always belongs to a connected component, therefore by definition we fix $cc(0) = 0$.
-For singletons instead we fix $c(i) = -1  \quad \forall i \in V_0 \mid y_i = 0$.
-The connected components can be computed by a simple depth first search traversal, for which a pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
-
-\begin{algorithm}
-	\caption{An algorithm for computing the connected components through a DFS traversal}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current integral solution of
-		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
-	}
-	\KwResult{$n_c$: number of subtours formed}
-	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
-	\input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
-	\label{algo:cc-dfs}
-\end{algorithm}
+More formally,
+let $C = \Set*{-1, 0, \dots, n_c - 1}$ denote the set of connected components
+induced from the integral solution $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$.
+A vertex $i \in V$ is said to belong to a singleton connected components,
+if the connected component contains only $i$ itself, namely $y^\star_i = 0$.
+We are only interested in modeling \textbf{major} connected components,
+i.e. components containing at least two vertices.
+We ignore singleton connected components,
+and we associate the sentinel value $-1$ to encode all the vertices $i \in V$ belonging to singletons.
+Therefore, the number $n_c \in \Z$ actually represents the number
+of major connected components, which satisfies $n_c \ge 1$.
+Equivalently,
+$n_c$ represents the number of sub-tours formed in the current integral solution.
+Let $cc(i) \in C$ be an array
+which for each vertex $i \in V$ it encodes to which connected component it belongs to.
+Note that the depot node always belongs to a connected component,
+therefore by definition we fix $cc(0) = 0$.
+For singletons instead we fix $c(i) = -1  \quad \forall i \in V_0 \mid y^\star_i = 0$.
+The connected components can be computed
+by a simple DFS traversal, which pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
 
 Then any valid set $S \subseteq V_0$ can be computed in the following way from a MIP integer solution:
 
@@ -407,6 +403,16 @@ which implies that any major connected component that does not contain the depot
 If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution contains a single subtour, and does not violate any GSECs.
 A block diagram summarizing the integral separation is provided in \cref{fig:integral-separation-block-diagram}.
 
+\begin{algorithm}
+	\caption{An algorithm for computing the majoconnected components through a Depth-First Search (DFS) traversal}
+	\KwData{$x^\star \in \Set*{0, 1}^{|E|},\ y^\star \in \Set*{0, 1}^{|V|}$: current integral solution of
+		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
+	}
+	\KwResult{$n_c$: number of subtours formed}
+	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
+	\input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
+	\label{algo:cc-dfs}
+\end{algorithm}
 
 
 \begin{figure}[ht]
@@ -419,7 +425,7 @@ A block diagram summarizing the integral separation is provided in \cref{fig:int
 	\label{fig:integral-separation-block-diagram}
 \end{figure}
 
-\subsection{Labeling Fractional Solutions}
+\subsection{Labeling from Fractional Solutions}
 \label{sec:impl-labeling-fractional-solutions}
 
 Fractional separation is usually much harder and more computationally expensive to perform compared to integral separation.
