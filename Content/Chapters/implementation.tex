@@ -267,11 +267,14 @@ can drastically improve the running time of the resolution process.
 Cutting-planes separation is a problem which consists
 in finding (strong) violated inequalities
 so that they can be embedded inside a branch-and-cut framework.
-An effective cutting-planes separation strategy
-is probably the most important and delicate aspect of any branch-and-cut algorithm \parencite{ralphs2003}.
 Cutting-planes improve the linear relaxation
 by "cutting" fractional points from the convex-hull of integer solutions.
-Integral inequalities' separation can be seen as a procedure
+An effective cutting-planes separation strategy
+is probably the most important and delicate aspect of any branch-and-cut algorithm \parencite{ralphs2003}.
+Considering the trade-off between the separation cost
+and the improvements in the linear relaxation,
+is a fundamental factor when evaluating the inclusion of a set of inequalities.
+Integral inequalities' separation, instead, can be seen as a procedure
 to dynamically generate mandatory constraints
 that would otherwise be impossible to insert statically into a MIP model.
 
@@ -314,7 +317,7 @@ the GSECs can be separated (exactly) by solving $(u, v)$-min-cuts
 on a flow network where capacities are given from the fractional solutions' value $x^\star$.
 The $(u, v)$-min-cuts outputs a subset $S \subseteq V$ induced from $(u, v)$
 minimizing the term $\sum_{e \in \delta(S)} x^\star_e$,
-which constitutes a valid labeling of the network.
+which constitutes a valid labeling of the network for each $u, v \in V,\ u \ne v$.
 
 Instead, the exact separation of the RCC and GLM inequalities
 is a different concern, refer to the respective discussion in \cref{sec:cptp-rcc,sec:cptp-glm}.
@@ -323,15 +326,15 @@ no exact separation procedure is currently known \parencite{jepsen2014}.
 For the GLM inequalities,
 a cutting-plane strategy based on solving
 $(u, v=0)$-min-cuts on a flow network with $u$-dependent capacities,
-may be employed \parencite{jepsen2014}.
+may be employed \parencite{letchford2006, jepsen2014}.
 
 \medskip
 
-In our implementation, for separating the RCC and GLM inequalities
-we opted for a different approach
-compared to the one proposed in \textcite{jepsen2014}.
-Our implementation employs the same labeling algorithms already employed for the
-GSEC separation, as a sub-optimal heuristic separation of the RCC and GLM inequalities.
+In our implementation, with regard to the RCC and GLM inequalities,
+we opted for a different approach compared to the one proposed in \textcite{jepsen2014}.
+We re-use the same integral and fractional labeling algorithms
+employed for the optimal separation of the GSECs inequalities
+also as a sub-optimal (heuristic) separation of the RCC and GLM inequalities.
 This allows us to limit the programming efforts required to create custom
 separation procedure
 and also to tremendously reduce the computational impact,
@@ -340,25 +343,12 @@ since the same labeling procedure feeds the separation of three different famili
 GLM separation is sub-optimal because  the capacities
 of the flow network need to also account for the demand of the vertices.
 
-GLM inequalities are efficiently separable in
-polynomial time by finding minimum
-$(u, v)$-cuts $\forall u \in V_0,\ v = 0$
-in a directed flow-network with capacities which depend on the vertex $u$
-\parencite{letchford2006, jepsen2014}.
-A simpler approach might consist instead,
-in minimizing only the term $\sum_{e \in \delta(S)} x_e$ as to stress the violation.
-This can be achieved by computing $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
-in a directed flow network where capacities are given exclusively from the
-fractional solution $c_{ij} = x^\star _{\Set*{i, j}}\quad \forall i, j \in V$.
 
-Integral inequality separation is concerned in determining violated inequalities for the original IP model.
-Integral inequalities' separation is usually much easier to perform, and can be seen as a procedure to dynamically generate necessary constraints that would otherwise be impossible to insert statically in a MIP model.
-Fractional inequality separation, instead is usually harder to perform, and it is concerned in finding (strong) violated inequalities for fractional solutions originated from the linear relaxation.
 
 In this thesis we are treating a CPTP problem, and more precisely, we are concerned in separating the GSEC, GLM, RCC inequalities presented in Sections \ref{sec:gsec-inequality}, \ref{sec:additional-valid-inequalities}.
 This is achieved by finding sets $S \subseteq V_0$, through the usage of appropriate algorithms, that violate any valid inequality.
 
-\subsection{Integral separation}
+\subsection{Labeling Integral Solutions}
 \label{sec:impl-integral-separation}
 
 The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
@@ -387,7 +377,7 @@ The connected components can be computed by a simple depth first search traversa
 	\label{algo:cc-dfs}
 \end{algorithm}
 
-Then any valid set $S \in V_0$ can be computed in the following way from a MIP integer solution:
+Then any valid set $S \subseteq V_0$ can be computed in the following way from a MIP integer solution:
 
 \begin{equation}
 	S \subseteq V_0 = \Set* {i \mid cc(i) = k}   \quad \forall k \in C, k > 0
@@ -404,7 +394,7 @@ A block diagram summarizing the integral separation is provided in \cref{fig:int
 	\label{fig:integral-separation-block-diagram}
 \end{figure}
 
-\subsection{Fractional separation}
+\subsection{Labeling Fractional Solutions}
 \label{sec:impl-fractional-separation}
 
 Fractional separation is usually much harder and more computationally expensive to perform compared to integral separation.
