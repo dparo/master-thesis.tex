@@ -424,6 +424,14 @@ $\sum_{e \in \delta(T_k)} x^\star_e = 0$ for $k = 0, \dots, n_c$.
 \subsection{Labeling from Fractional Solutions}
 \label{sec:impl-labeling-fractional-solutions}
 
+Our fractional labeling algorithm is devised to be optimal for
+detecting violated fractional GSECs inequalities
+of \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3},
+but the same procedure is shared
+to feed a suboptimal fractional separation also for the GLM and RCI inequalities,
+as shown in the block diagram in \cref{fig:fractional-separation-block-diagram}.
+
+
 Fractional separation is usually much harder and more computationally expensive to perform compared to integral separation.
 A valid set $S \subseteq V_0$ can be separated by solving a max-flow problem between two arbitrary source and sink vertices $s, t \in V,\ s \ne t$ on a fully connected directed graph.
 Fractional separation is modeled through a directed symmetric flow network, where $x^*_{ij}$, i.e. the current fractional solution, constitutes the capacities of the flow network.
