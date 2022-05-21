@@ -419,7 +419,7 @@ Note that the depot node always belongs to a connected component,
 therefore by definition we fix $cc(0) = 0$.
 For singletons instead we fix $cc(i) = -1  \quad \forall i \in V_0 \mid y^\star_i = 0$.
 The connected components can be computed
-by a simple DFS traversal, which pseudocode is provided in Algorithm \ref{algo:cc-dfs}.
+by a simple DFS traversal, which pseudocode is provided in \cref{algo:cc-dfs}.
 
 Consider the sets $T_k = \Set*{i \in V \mid cc(i) = k}$ with $k = 0, \dots, n_c$
 computed from the just devised labeling algorithm.
@@ -593,10 +593,9 @@ GSECs inequalities which are violated by integral solutions
 must be separated exactly and reported as is
 (without employing violation thresholds) to the MIP optimizer.
 
-Consider the labeling algorithm for integral solutions discussed in \cref{sec:impl-labeling-integral-solutions}.
-The GSEC requires a separation of a subset $S \subseteq V_0$.
+The GSEC requires the separation of a subset $S \subseteq V_0$.
 Let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 1 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
-outputted from the major connected components.
+outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
 By construction $n_c \ge 1,\ 0 \in T_0$.
 Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
 Which implies that,
@@ -610,30 +609,22 @@ which implies that the current integral solution models an optimal solution for 
 Let $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$ denote the
 current integral solution of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
+Recall the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
+it is easy to see that:
+\begin{equation}
+	\sum_{e \in \delta(S)} x^*_{e} = 0, \qquad y_i =  1 \quad \forall i \in S
+\end{equation}
+which implies that \cref{eq:cptp-gsec-constraints} cannot be satisfied by any $i \in S$.
 
+\medskip
 
-
-The integral separation procedure is the most important, as this procedure is necessary to generate GSEC inequalities dynamically, which have the effect of rejecting solutions containing spurious unconnected subtours.
-
-
-By recalling the GSEC inequality as presented in Equation \eqref{eq:cptp-gsec-constraints}, and the connected components as discussed in Section \ref{sec:integral-separation}, and in Algorithm \ref{algo:cc-dfs} we can pick $S \subseteq V_0 = \left\{ i \mid cc(i) = k  \right\}   \quad \forall k \in C, k > 0$.
-Note that using major connected components, i.e. subtours, the set $S$ always satisfies $\SetSize*{S} \ge 2$.
-Since we are dealing with integer CPTP solutions of the form $x^*_{ij},\ y^*_{i} \in \{0, 1\}$ it is easy to see that:
-
-\begin{align}
-	\sum_{(i, j) \in \delta(S)} x^*_{ij} = 0 \\
-	y_i =  1 \quad \forall i \in S
-\end{align}
-
-which imply that the GSEC inequality $\sum_{(i, j) \in \delta(S)} x_{ij} \ge 2 y_i$ cannot be satisfied by any $i \in S$.
 In a single integral separation iteration we can therefore separate:
 \begin{equation}
 	\sum^{n_c}_{k = 1} \SetSize*{ \Set*{ i \mid cc(i) = k \quad \forall i \in V } }
 \end{equation}
-
 violated GSECs inequality, which can be promptly reported to the MIP solver to reject the candidate integral solution.
 
-A complete pseudo-code is provided in Algorithm \ref{algo:gsec-integral-sep}.
+A complete pseudo-code of the GSEC integral separation is provided in \cref{algo:gsec-integral-sep}.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC integral inequalities for the CPTP}
@@ -665,7 +656,7 @@ This fractional separation framework based on max-flow computations, can separat
 
 
 
-By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the discussion about separating fractional $S \subseteq V_0$ in Section \ref{sec:fractional-separation}, it is easy to see that given a fractional solution instance of the form $0 \le x^*_{ij} \le 1,\ 0 \le y^*_{i} \le 1$ we have that:
+By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the discussion about separating fractional $S \subseteq V_0$ in \cref{sec:fractional-separation}, it is easy to see that given a fractional solution instance of the form $0 \le x^*_{ij} \le 1,\ 0 \le y^*_{i} \le 1$ we have that:
 
 \begin{equation}
 	\sum_{(i, j) \in \delta(S)} x^*_{ij} = \maxflow(s, t)
@@ -698,7 +689,7 @@ In our implementation we picked $\varepsilon_{\mt{GSEC}} = \epsGsecFValue$.
 If the GSEC inequality violation does not surpass this tolerance, the GSEC inequality is not generated and reported to the MIP solver.
 On top of that, to further reduce the number of generated GSECs, we report only the single most violated GSEC per set $S \subseteq V_0$ by using the customer $i \in V_0$ that maximizes the $\maxflow(s, t) - 2 y_i$ violation.
 
-The complete pseudocode can be found in Algorithm \ref{algo:gsec-frac-sep}.
+The complete pseudocode can be found in \cref{algo:gsec-frac-sep}.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC fractional inequalities for the CPTP}
@@ -715,7 +706,7 @@ In this section we describe the separation of the RCC inequalities, as they were
 In our work we implemented both the integral and the fractional separation for this family of inequalities.
 However, we will omit the detail of the integral separation in this section, since they follow naturally from ideas explained in previous sections.
 
-The fractional separation of RCC inequalities is not any different from the separation of the GLM fractional inequalities presented in Section \ref{sec:glm-separation}.
+The fractional separation of RCC inequalities is not any different from the separation of the GLM fractional inequalities presented in \cref{sec:glm-separation}.
 The only difference is that the set $S \subseteq V_0$, does not need to satisfy $\SetSize*{S} \ge 2$.
 
 Therefore, a set $\SetSize*{S} \subseteq V_0$ can separate a single RCC cut if the following inequality
@@ -731,7 +722,7 @@ The $\varepsilon_{\mt{RCC}}$ is a constant which denotes the violation tolerance
 In our implementation we picked $\varepsilon_{\mt{RCC}} = \epsRccFValue$.
 We can separate $O(N^2)$ RCC cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
 
-The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:rcc-integral-sep}, \ref{algo:rcc-frac-sep} respectively.
+The complete pseudocode for both the integral and fractional separation can be found in \cref{algo:rcc-integral-sep,algo:rcc-frac-sep} respectively.
 
 \begin{algorithm}
 	\caption{An algorithm for separating RCC integral inequalities for the CPTP}
@@ -760,9 +751,9 @@ The complete pseudocode for both the integral and fractional separation can be f
 In this section we describe the separation of the GLM inequalities, as they were defined in Equation \eqref{eq:glm-inequality}.
 In our work we implemented both the integral and the fractional separation for this family of inequalities.
 However, in this section we will explain only the fractional separation and we will omit the details about integral separation.
-The integral separation follows naturally from adapting the ideas that will here after be presented in this section, and by employing a similar reasoning as was done in Section \ref{sec:gsec-integral-separation}, for the GSEC inequalities (i.e. using the connected components).
+The integral separation follows naturally from adapting the ideas that will here after be presented in this section, and by employing a similar reasoning as was done in \cref{sec:gsec-integral-separation}, for the GSEC inequalities (i.e. using the connected components).
 
-Let $F_1(s, t),\ F_2(s, t)$ be the bipartition induced in solving the min-cut problem as was presented in Section \ref{sec:fractional-separation}.
+Let $F_1(s, t),\ F_2(s, t)$ be the bipartition induced in solving the min-cut problem as was presented in \cref{sec:fractional-separation}.
 Again we showed that we can pick a valid $S \subseteq V_0$ in the following way
 
 \begin{equation}
@@ -790,7 +781,7 @@ The $\varepsilon_{\mt{GLM}}$ is a constant which denotes the violation tolerance
 In our implementation we picked $\varepsilon_{\mt{GLM}} = \epsGlmFValue$.
 We can separate $O(N^2)$ GLM cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
 
-The complete pseudocode for both the integral and fractional separation can be found in Algorithms \ref{algo:glm-integral-sep}, \ref{algo:glm-frac-sep} respectively.
+The complete pseudocode for both the integral and fractional separation can be found in \cref{algo:glm-integral-sep, algo:glm-frac-sep} respectively.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GLM integral inequalities for the CPTP}
