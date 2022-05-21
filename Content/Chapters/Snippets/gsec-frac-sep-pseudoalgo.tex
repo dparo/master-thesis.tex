@@ -1,5 +1,8 @@
 \Proc{\textit{gsec\_frac\_sep}($\maxflow(u, v)$, $F_1(u, v)$, $F_2(u, v)$, $x^\star$, $y^\star$)}{
+	\Const sense $\gets$ '$\ge$'\;
+	\Const rhs $\gets$ $0$\;
 	\Const $\varepsilon_{\mt{GSEC}} \gets \epsGsecFValue$\;
+
 	\Let $S$\;
 	\uIf{$0 \notin F_1(u, v)$}{
 		$S \gets F_1(u, v)$\;
@@ -31,6 +34,6 @@
 		value[nnz] $\gets$ $-2.0$\;
 		nnz $\gets$ nnz + $1$\;
 		\Comment{Reject and report cut to MIP}
-		mip\_add\_user\_cut(nnz, index, value)\;
+		mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
 	}
 }

@@ -1,4 +1,7 @@
 \Proc{\textit{gsec\_integral\_sep}($n_c$, $cc$, $x^\star$, $y^\star$)}{
+	\Const sense $\gets$ '$\ge$'\;
+	\Const rhs $\gets$ $0$\;
+
 	\For{$k \gets 1$ \KwTo $n_c$}{
 		\Let $S \gets  \Set* {i \mid cc[i] = k}$\;
 		\Assert{$|S| \ge 2$}\;
@@ -13,7 +16,7 @@
 			index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
 			value[nnz] $\gets$ $-2.0$\;
 			\Comment{Reject and report cut to MIP}
-			mip\_add\_user\_cut(nnz, index, value)\;
+			mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
 		}
 	}
 }

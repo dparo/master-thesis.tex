@@ -1,4 +1,6 @@
 \Proc{\textit{glm\_frac\_sep}($\maxflow(u, v)$, $F_1(u, v)$, $F_2(u, v)$, $x^\star$, $y^\star$)}{
+	\Const sense $\gets$ '$\ge$'\;
+	\Const rhs $\gets$ $0$\;
 	\Const $\varepsilon_{\mt{GLM}} \gets \epsGlmFValue$\;
 	\Let $S$\;
 	\uIf{$0 \notin F_1(u, v)$}{
@@ -27,7 +29,7 @@
 		}
 		\If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
 			\Comment{Reject and report cut to MIP}
-			mip\_add\_user\_cut(nnz, index, value)\;
+			mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
 		}
 	}
 }

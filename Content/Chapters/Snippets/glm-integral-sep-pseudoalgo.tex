@@ -1,4 +1,6 @@
 \Proc{\textit{glm\_integral\_sep}($n_c$, $cc$, $x^\star$, $y^\star$)}{
+	\Const sense $\gets$ '$\ge$'\;
+	\Const rhs $\gets$ $0$\;
 	\Const $\varepsilon_{\mt{GLM}} \gets \epsGlmIValue$\;
 
 	\For{$c \gets 1$ \KwTo $n_c$}{
@@ -23,7 +25,7 @@
 			}
 			\If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
 				\Comment{Reject and report cut to MIP}
-				mip\_add\_user\_cut(nnz, index, value)\;
+				mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
 			}
 		}
 	}
