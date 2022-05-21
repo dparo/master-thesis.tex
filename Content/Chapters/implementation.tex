@@ -283,6 +283,32 @@ Additional valid inequalities which are non-strictly necessary to guarantee the 
 but are computationally expensive to separate exactly,
 may be included through a heuristic separation procedure.
 
+Another important factor to take into consideration when implementing
+efficient cutting-planes procedures lies in the parametrization settings
+of the violated inequalities.
+The generation and number of cutting-planes alone (without considering the separation running time),
+can highly influence the computation time of the BAC algorithm.
+When reporting violated inequalities to the MIP optimizer,
+it is usually good practice to define a violation tolerance threshold,
+to limit the number of violated inequalities taken into consideration.
+Namely, inequalities which are "sufficiently violated" are generated and reported
+to the MIP optimizer.
+A low violation threshold results in better dual bounds and fewer branch nodes,
+but may slower the convergence in each node.
+In the opposite way, a high violation threshold results in more branch nodes,
+but faster convergence speed \parencite{jepsen2008branchandcut}.
+
+Modern MIP optimizers, such as CPLEX, regardless of the violation threshold
+employed in the separation procedure,
+can filter each user-provided cuts by scoring them.
+Premature branching may occur, regardless of the existence of violated inequalities,
+if CPLEX deems these cuts ineffective (tailing off condition).
+Scoring cuts costs even more computation time,
+for this reason,
+it is possible to disable user-cuts filtering.
+However, in such case if an effective tailing condition is required,
+it must be implemented by the user inside the separation procedure.
+
 \medskip
 
 In our branch-and-cut algorithm,
@@ -313,7 +339,7 @@ the linear relaxation in
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3},
 then,
 the GSECs can be separated (exactly) by solving $(u, v)$-min-cuts
-on a flow network where capacities are given from the fractional solutions' value $x^\star$.
+on a flow neSo che vieni qua, devi fare anche tu le tue cose e non è il posto miglioretwork where capacities are given from the fractional solutions' value $x^\star$.
 The $(u, v)$-min-cuts outputs a subset $T \subseteq V$ induced from $(u, v)$
 minimizing the term $\sum_{e \in \delta(T)} x^\star_e$,
 which constitutes a valid labeling of the network for each $u, v \in V,\ u \ne v$.
@@ -338,6 +364,8 @@ This allows us to limit the programming efforts required to create custom
 separation procedure
 and also to tremendously reduce the computational impact,
 since the same labeling procedures feed the separation of three different families of inequalities.
+The labeling algorithms, and the separation procedures of each cuttin-plane,
+is implemented in user-provided callbacks using the \textit{CPLEX generic callback API}.
 
 \medskip
 
@@ -550,19 +578,6 @@ no max-flow is performed and therefore no set $S \subseteq V_0$ is separated.
 
 \subsection{GSEC separation}
 \label{sec:impl-gsec-separation}
-
-\begin{quote}
-	The setting of the parameters for generation of violated generalized subtour elimination constraints
-	(6) can have a huge influence on the computational time for the BAC algorithm. A low threshold on
-	violation will result in good lower bounds and fewer branch nodes but a slower convergence in each
-	node, while the opposite is true for a high threshold. Also the number of violated cuts added in each
-	iteration can influence the convergence and the time spent re-optimizing the LP-problem \cite{jepsen2008branchandcut}.
-\end{quote}
-
-
-Fortunately it is possible to instruct CPLEX to evaluate the cuts.
-Premature branching can be performed if CPLEX deems cut ineffective independently
-from user provided violation threshold.
 
 
 
