@@ -23,7 +23,7 @@ For an introduction to CPLEX refer to \cref{sec:introduction-to-cplex}.
 
 Our branch-and-cut implementation heavily relies on the CPLEX optimizer
 to solve the associated MIP model.
-The cutting-planes separation was implemented using the CPLEX generic callback functions,
+The cutting-planes separation was implemented using the \textit{CPLEX generic callback functions},
 which have the benefit of not disabling the \textit{Dynamic Search} algorithm,
 i.e. the proprietary advanced branch-and-cut algorithm employed internally inside CPLEX,
 see discussion in \cref{sec:introduction-to-cplex}.
