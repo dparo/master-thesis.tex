@@ -423,9 +423,12 @@ by a simple DFS traversal, which pseudocode is provided in Algorithm \ref{algo:c
 
 Consider the sets $T_k = \Set*{i \in V \mid cc(i) = k}$ with $k = 0, \dots, n_c$
 computed from the just devised labeling algorithm.
-Due to the construction of such sets we have that:
-$\sum_{e \in \delta(T_k)} x^\star_e = 0$ for $k = 0, \dots, n_c$
-and $\exists i \in T_k \mid y^\star_i = 1$ for $k = 0, \dots, n_c$.
+Due to the construction of such sets,
+by letting $k = 0, \dots, n_c$,
+it holds that:
+$|T_k| \ge 2$,
+$\sum_{e \in \delta(T_k)} x^\star_e = 0$
+and $\exists i \in T_k \mid y^\star_i = 1$.
 Therefore, this approach ensures correctness of the whole branch-and-cut procedure.
 
 
@@ -576,12 +579,11 @@ Namely, fractional separations iterations which are not multiple of $N$ become a
 no max-flow is performed and therefore no set $S \subseteq V_0$ is separated.
 \end{comment}
 
-\subsection{GSEC separation}
+\subsection{GSEC Separation}
 \label{sec:impl-gsec-separation}
 
 
-
-\subsubsection{GSEC integral separation}
+\subsubsection{GSEC Integral Separation}
 \label{sec:impl-gsec-integral-separation}
 
 \begin{comment}
@@ -642,7 +644,11 @@ A complete pseudo-code is provided in Algorithm \ref{algo:gsec-integral-sep}.
 	\input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
-\subsubsection{GSEC fractional separation}
+
+
+
+
+\subsubsection{GSEC Fractional Separation}
 \label{sec:impl-gsec-fractional-separation}
 
 Assuming we have already computed $F_1(u, v), F_2(u, v)$, a valid $S \subseteq V_0$ can then be picked such that:
