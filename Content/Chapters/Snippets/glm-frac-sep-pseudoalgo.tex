@@ -1,10 +1,10 @@
-\Proc{\textit{glm\_frac\_sep}($\maxflow(s, t)$, $F_1(s, t)$, $F_2(s, t)$, $x^*$, $y^*$)}{
+\Proc{\textit{glm\_frac\_sep}($\maxflow(u, v)$, $F_1(u, v)$, $F_2(u, v)$, $x^*$, $y^*$)}{
 	\Const $\varepsilon_{\mt{GLM}} \gets \epsGlmFValue$\;
 	\Let $S$\;
-	\uIf{$0 \notin F_1(s, t)$}{
-		$S \gets F_1(s, t)$\;
+	\uIf{$0 \notin F_1(u, v)$}{
+		$S \gets F_1(u, v)$\;
 	}\Else{
-		$S \gets F_2(s, t)$\;
+		$S \gets F_2(u, v)$\;
 	}
 
 	\If{$|S| \ge 2$}{

@@ -696,7 +696,7 @@ A complete pseudocode of the GSEC fractional separation procedure is provided in
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC fractional inequalities for the CPTP}
 	\label{algo:gsec-frac-sep}
-	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+	\KwData{$\maxflow(u, v), F_1(u, v), F_2(u, v)$: maxflow and bipartitions induced from $(u, t)$-min-cut, see \cref{sec:impl-labeling-fractional-solutions}}
 	\KwData{$x^\star \in \R^{|E|},\ y^\star \in \R^{|V|}$: current fractional solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}
 	}
@@ -742,7 +742,7 @@ The complete pseudocode for both the integral and fractional separation can be f
 \begin{algorithm}
 	\caption{An algorithm for separating RCC fractional inequalities for the CPTP}
 	\label{algo:rcc-frac-sep}
-	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+	\KwData{$\maxflow(u, v), F_1(u, v), F_2(u, v)$: maxflow and bipartitions induced from $(u, t)$-min-cut, see \cref{sec:impl-labeling-fractional-solutions}}
 	\KwData{$x^\star \in \R^{|E|},\ y^\star \in \R^{|V|}$: current fractional solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}
 	}
@@ -801,7 +801,7 @@ The complete pseudocode for both the integral and fractional separation can be f
 \begin{algorithm}
 	\caption{An algorithm for separating GLM fractional inequalities for the CPTP}
 	\label{algo:glm-frac-sep}
-	\KwData{$\maxflow(s, t), F_1(s, t), F_2(s, t)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
+	\KwData{$\maxflow(u, v), F_1(u, v), F_2(u, v)$: maxflow and bipartitions induced from an arbitrary $s \ne t, s \in V, t \in V$ pair}
 	\KwData{$x^\star \in \R^{|E|},\ y^\star \in \R^{|V|}$: current fractional solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}
 	}

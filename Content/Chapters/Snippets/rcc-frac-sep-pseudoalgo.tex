@@ -1,18 +1,18 @@
-\Proc{\textit{rcc\_frac\_sep}($n_c$, $cc$, $x^*$, $y^*$)}{
+\Proc{\textit{rcc\_frac\_sep}($\maxflow(u, v)$, $F_1(u, v)$, $F_2(u, v)$, $x^*$, $y^*$)}{
 	\Const $\varepsilon_{\mt{RCI}} \gets \epsRccFValue$\;
 
 	\For{$c \gets 1$ \KwTo $n_c$}{
 		\Let $S$\;
-		\uIf{$0 \notin F_1(s, t)$}{
-			$S \gets F_1(s, t)$\;
+		\uIf{$0 \notin F_1(u, v)$}{
+			$S \gets F_1(u, v)$\;
 		}\Else{
-			$S \gets F_2(s, t)$\;
+			$S \gets F_2(u, v)$\;
 		}
 		\Let $Q_S$ $\gets \sum_{i \in S} q_i$\;
 		\Let $S_S$ $\gets \sum_{i \in S} y^*_i \cdot q_i$\;
 		\Let $Q_R$ $\gets$ $\mod(Q_S, Q)$\;
 		\If{$Q_R > 0$ \And $|S| \ge 1$}{
-			\If{$\maxflow(s, t) -2 S_S / Q_R$ $<$ $2 \ceil*{Q_S / Q} - 2 Q_S / Q_R$ - $\varepsilon_{\mt{RCI}}$}{
+			\If{$\maxflow(u, v) -2 S_S / Q_R$ $<$ $2 \ceil*{Q_S / Q} - 2 Q_S / Q_R$ - $\varepsilon_{\mt{RCI}}$}{
 				\Comment{Build the cut}
 				\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
 				\For{$i \in V \mid i \in S$}{

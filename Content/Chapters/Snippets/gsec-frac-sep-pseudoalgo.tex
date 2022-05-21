@@ -1,18 +1,18 @@
-\Proc{\textit{gsec\_frac\_sep}($\maxflow(s, t)$, $F_1(s, t)$, $F_2(s, t)$, $x^*$, $y^*$)}{
+\Proc{\textit{gsec\_frac\_sep}($\maxflow(u, v)$, $F_1(u, v)$, $F_2(u, v)$, $x^*$, $y^*$)}{
 	\Const $\varepsilon_{\mt{GSEC}} \gets \epsGsecFValue$\;
 	\Let $S$\;
-	\uIf{$0 \notin F_1(s, t)$}{
-		$S \gets F_1(s, t)$\;
+	\uIf{$0 \notin F_1(u, v)$}{
+		$S \gets F_1(u, v)$\;
 	}\Else{
-		$S \gets F_2(s, t)$\;
+		$S \gets F_2(u, v)$\;
 	}
 
 	\Comment{Scan for most violated customer}
 	\Let $c \gets -1$, $m \gets \infty$\;
 	\For{$i \in V \mid i \in S$}{
-		\Let $v \gets \maxflow(s, t) - 2 y^*_i$\;
+		\Let $v \gets \maxflow(u, v) - 2 y^*_i$\;
 
-		\If{$\Expr*{\maxflow(s, t) < 2 y^*_i - \varepsilon_{\mt{GSEC}}}$ \And $v < m$}{
+		\If{$\Expr*{\maxflow(u, v) < 2 y^*_i - \varepsilon_{\mt{GSEC}}}$ \And $v < m$}{
 			$c \gets i$\;
 			$m \gets v$\;
 		}
