@@ -21,12 +21,10 @@
 	\If{$c \ge 0$ \And $|S| \ge 2$}{
 		\Comment{Build the cut}
 		\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
-		\For{$i \in V \mid i \in S$}{
-			\For{$j \in V \mid j \notin S$}{
-				index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
-				value[nnz] $\gets$ $1.0$\;
-				nnz $\gets$ nnz + $1$\;
-			}
+		\For{$e = \Set*{i, j} \in E \mid i \in S,\ j \notin S$}{
+			index[nnz] $\gets$ x\_mip\_var\_idx($e$)\;
+			value[nnz] $\gets$ $1.0$\;
+			nnz $\gets$ nnz + $1$\;
 		}
 
 		index[nnz] $\gets$ y\_mip\_var\_idx($c$)\;
