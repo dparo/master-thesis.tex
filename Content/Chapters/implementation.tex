@@ -455,7 +455,7 @@ It is known that solving a maxflow problem guarantees the following two properti
 \end{enumerate}
 Therefore the following result holds:
 \begin{align}
-	\sum_{(i, j) \in \delta(F_1(u, v))} f_{ij} & = \sum_{(i, j) \in \delta(F_1(u, v))} x_{\Set*{i, j}} = \maxflow(u, v) \\
+	\sum_{(i, j) \in \delta(F_1(u, v))} f_{ij} & = \sum_{(i, j) \in \delta(F_1(u, v))} x^\star_{\Set*{i, j}} = \maxflow(u, v) \\
 	\sum_{(i, j) \in \delta(F_2(u, v))} f_{ij} & = 0,
 \end{align}
 where $f_{ij}$ denotes the flow along the directed arcs $(i, j),\ i, j \in V$ in the corresponding flow network.
@@ -463,7 +463,7 @@ where $f_{ij}$ denotes the flow along the directed arcs $(i, j),\ i, j \in V$ in
 It is important to note that,
 since we are dealing with a \textbf{symmetrical} flow network,
 solving the maxflow problem between pairs $(u, v)$ and pair $(u, v)$ will output the same maxflow value,
-i.e. $\maxflow(s, t) = \maxflow(t, s)$.
+i.e. $\maxflow(u, v) = \maxflow(v, u)$.
 Although, and this is the more important aspect,
 the induced bipartitions in the general case are not guaranteed to be symmetric.
 Namely, in the general case we have that: $F_1(u, v) \ne F_2(u, v)$ and $F_2(u, v) \ne F_1(u, v)$.
@@ -489,33 +489,46 @@ and produces $F_1(0, 4) = \{ 0\},\ F_2(0, 4) = \{ 1, 2, 3, 4\}$, $F_1(4, 0) = \{
 which clearly represent a non symmetric coloring.
 This behavior is a direct consequence that flow networks don't guarantee unique min-cuts.
 
-In this thesis, we used the push relabel max flow algorithm first developed in \cite{goldberg1997}, which is usually faster than more classical approaches such as the Ford-Fulkerson max-flow algorithm.
-The push relabel max flow algorithm runs in $O(N^4)$ time, and when combined with an exhaustive enumeration over all possible choices of $s, t$, can take up to $O(N^6)$ time.
+\medskip
 
-The Gomory-Hu tree, first presented in \cite{gomory1961}, provides a way to compute the all pairs $(s, t)$ max-flows using only $N$ main max-flow computations.
-A Gomory-Hu tree can be seen as a data structure that represents a simpler reduced flow network, where max-flow computations become trivially solvable through a single iteration of the Ford-Fulkerson algorithm in $\Theta(N^2)$.
-Combining Gomory-Hu trees and the push relabel max flow algorithm, an exhaustive enumeration of all possible $(s, t)$ vertices takes up to $O(N^5)$ time to build the tree, and further $\Theta(N^4)$ to query for all the possible $F_1(s, t), F_2(s, t)$ bipartitions.
+In this thesis,
+we used the push relabel max flow algorithm first developed in \cite{goldberg1997},
+which in practice it is usually faster than more classical approaches such as the Ford-Fulkerson max-flow algorithm.
+The push relabel max flow algorithm runs in $O(N^4)$ time,
+and when combined with an exhaustive enumeration over all possible choices of $u, v \in V,\ u \ne v$,
+can take up to $O(N^6)$ time.
 
-In this implementation we employed the usage of both the push relabel algorithm, the Gomory-Hu tree and full enumeration of all possible $(s, t)$ vertices.
-Since running this full enumeration over each fractional separation, turned out to be quite costly, we decided to amortize the cost over multiple iterations.
-Namely, fractional separations iterations which are not multiple of $N$ become a no-op, no max-flow is performed, and therefore no set $S \subseteq V_0$ is separated.
+The Gomory-Hu tree, first presented in \cite{gomory1961},
+provides a way to compute the all pairs $(u, v)$ max-flows using only $N$ main max-flow computations.
+A Gomory-Hu tree can be seen as a data structure that represents a simpler reduced flow network,
+where max-flow computations become trivially solvable
+through a single iteration of the Ford-Fulkerson algorithm in $\Theta(N^2)$.
+Combining Gomory-Hu trees and the push relabel max flow algorithm,
+an exhaustive enumeration of all possible $(u, v)$ vertices takes up to $O(N^5)$ time to build the tree
+and further $\Theta(N^4)$ to query for all the possible $F_1(u, v), F_2(u, v)$ bipartitions.
 
-While there may be other ways to separate sets $S \subseteq V_0$, the described approach works very well for the inequalities considered in this thesis.
-This is very convenient because a single separation procedure for $S \subseteq V_0$ can be shared across all the inequalities, thus reducing computation time.
-Other kinds of inequalities, which are not considered in this thesis, may benefit from other more elaborate separation techniques.
+In our implementation
+we exploited the Gomory-Hu tree to provide full enumeration of all possible $(u, v)$ maxflows.
+For brevity reasons we will not list the pseudocode of the max-flow and Gomory-Hu tree algorithms.
+Refer to the \urlref{https://github.com/dparo/master-thesis}{Github repository} for their respective implementation.
 
-For conciseness reasons, we will not report the pseudocode of
-the max-flow and Gomory-Hu tree algorithms.
-We conclude the section by pointing out that writing fast and correct max-flow algorithms that operate with floating point arithmetic can be difficult and error-prone, since most operations become non-exact.
+\medskip
+
+We conclude the section by providing an implementation tip.
+Writing fast and correct max-flow algorithms that operate directly with floating point arithmetic
+can be difficult and error-prone due to accumulation of accuracies errors.
 Any trivial implementation may "get stuck" in massively long loops pushing atomically small quantity of flows.
 Careful attention must be paid when developing one such algorithm.
 Good software engineering practices, such as unit testing, can help in spotting problematic implementations.
 
-A block diagram summarizing the fractional separation is provided in \cref{fig:fractional-separation-block-diagram}.
-In the following sections we describe how we separate each inequality using the computed $S \subseteq V_0$.
+A simpler approach consists in implementing a maxflow algorithm that operates with integer arithmetic.
+By exploiting that $x^\star$ is bounded in the $[0, 1]$ range,
+we can multiply the fractional solution value $x^\star$ by a big-constant $M \in \R$ (e.g. $M = 10^6$)
+and truncate its value when defining the capacities of the flow network.
+The value $\maxflow(u, v)$ then needs to be remapped on the original scale
+by dividing it by $M$.
+For simplicity and stability, in our maxflow implementation we opted for the latter approach.
 
-For brevity reasons we will not report the pseudocode of the max-flow and Gomory-Hu tree algorithms.
-Refer to the \urlref{https://github.com/dparo/master-thesis}{Github repository} for their implementations.
 
 \begin{figure}[ht]
 	\centering
@@ -526,6 +539,14 @@ Refer to the \urlref{https://github.com/dparo/master-thesis}{Github repository} 
 	}
 	\label{fig:fractional-separation-block-diagram}
 \end{figure}
+
+\begin{comment}
+[@dparo: Old Gomoru HU Tree, It was slow and required amortization to speed up the BAC procedure]
+Since running this full enumeration over each fractional separation,
+turned out to be quite costly, we decided to amortize the cost over multiple iterations.
+Namely, fractional separations iterations which are not multiple of $N$ become a no-op,
+no max-flow is performed and therefore no set $S \subseteq V_0$ is separated.
+\end{comment}
 
 \subsection{GSEC separation}
 \label{sec:impl-gsec-separation}
