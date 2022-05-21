@@ -1,4 +1,4 @@
-\Proc{\textit{glm\_integral\_sep}($n_c$, $cc$, $x^*$, $y^*$)}{
+\Proc{\textit{glm\_integral\_sep}($n_c$, $cc$, $x^\star$, $y^\star$)}{
 	\Const $\varepsilon_{\mt{GLM}} \gets \epsGlmIValue$\;
 
 	\For{$c \gets 1$ \KwTo $n_c$}{
@@ -11,7 +11,7 @@
 				\For{$j \in V \mid j \notin S$}{
 					index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
 					value[nnz] $\gets$ $1 - 2 q_j / Q$\;
-					lhs $\gets$ lhs + $x^*_{ij} \cdot (1 - 2 q_j / Q)$\;
+					lhs $\gets$ lhs + $x^\star_{ij} \cdot (1 - 2 q_j / Q)$\;
 					nnz $\gets$ nnz + $1$\;
 				}
 			}

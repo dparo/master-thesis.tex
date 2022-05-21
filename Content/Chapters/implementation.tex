@@ -612,7 +612,7 @@ current integral solution of
 Recall the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
 it is easy to verify that:
 \begin{equation}
-	\sum_{e \in \delta(S)} x^*_{e} = 0, \qquad y_i =  1 \quad \forall i \in S
+	\sum_{e \in \delta(S)} x^\star_{e} = 0, \qquad y_i =  1 \quad \forall i \in S
 \end{equation}
 which implies that \cref{eq:cptp-gsec-constraints} cannot be satisfied by any $i \in S$.
 
@@ -670,10 +670,10 @@ Let $x^\star \in \R^{|E|},\ y \in \R^{|V|}$ denote the
 current fractional solution of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}.
 Recall the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
-it is easy to verify that $\sum_{e \in \delta(S)} x^*_{ij} = \maxflow(u, v)$
+it is easy to verify that $\sum_{e \in \delta(S)} x^\star_{ij} = \maxflow(u, v)$
 due to the symmetry property of the flow network.
 
-Therefore, any $i \in S$ that violates $\maxflow(s, t) \ge 2 y_i$
+Therefore, any $i \in S$ that violates $\maxflow(u, v) \ge 2 y_i$
 can be used to separate a violated GSEC inequality.
 With such approach t is possible to separate $O(N^3)$ GSECs per fractional solution.
 We noticed that, generating and reporting all this violated GSECs inequalities
@@ -686,7 +686,7 @@ associated to the customer $i \in V_0$ that maximizes the $\maxflow(u, v) - 2 y_
 On top of that, to limit the number of weak GSEC inequalities that are reported to the MIP optimizer,
 we define a violation threshold $\varepsilon_{\mt{GSEC}}$ and report the associated cut only if:
 \begin{equation}
-	\maxflow(s, t) \ge 2 y_i - \varepsilon_{\mt{GSEC}}
+	\maxflow(u, v) \ge 2 y_i - \varepsilon_{\mt{GSEC}}
 \end{equation}
 is violated.
 In our implementation we picked $\varepsilon_{\mt{GSEC}} = \epsGsecFValue$.
@@ -731,9 +731,9 @@ The complete pseudocode for both the integral and fractional separation can be f
 \begin{algorithm}
 	\caption{An algorithm for separating RCC integral inequalities for the CPTP}
 	\label{algo:rcc-integral-sep}
-	\KwResult{$n_c$: number of subtours formed}
-	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current integral solution of
+	\KwResult{$n_c$: number of major connected components}
+	\KwData{$cc[i] \in C$: connected component $\forall i \in V$, see \cref{sec:impl-labeling-integral-solutions}}
+	\KwData{$x^\star \in \Set*{0, 1}^{|E|},\ y^\star \in \Set*{0, 1}^{|V|}$: current integral solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
 	}
 	\input{Content/Chapters/Snippets/rcc-integral-sep-pseudoalgo.tex}
@@ -757,14 +757,14 @@ In our work we implemented both the integral and the fractional separation for t
 However, in this section we will explain only the fractional separation and we will omit the details about integral separation.
 The integral separation follows naturally from adapting the ideas that will here after be presented in this section, and by employing a similar reasoning as was done in \cref{sec:gsec-integral-separation}, for the GSEC inequalities (i.e. using the connected components).
 
-Let $F_1(s, t),\ F_2(s, t)$ be the bipartition induced in solving the min-cut problem as was presented in \cref{sec:fractional-separation}.
+Let $F_1(u, v),\ F_2(u, v)$ be the bipartition induced in solving the min-cut problem as was presented in \cref{sec:fractional-separation}.
 Again we showed that we can pick a valid $S \subseteq V_0$ in the following way
 
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
-		F_1(s, t), & \texttt{if } 0 \notin F_1 \\
-		F_2(s, t), & \texttt{otherwise}
+		F_1(u, v), & \texttt{if } 0 \notin F_1 \\
+		F_2(u, v), & \texttt{otherwise}
 	\end{cases}
 \end{equation}
 
@@ -790,9 +790,9 @@ The complete pseudocode for both the integral and fractional separation can be f
 \begin{algorithm}
 	\caption{An algorithm for separating GLM integral inequalities for the CPTP}
 	\label{algo:glm-integral-sep}
-	\KwResult{$n_c$: number of subtours formed}
-	\KwData{$cc[i] \in C$: connected component of $\forall i \in V$}
-	\KwData{$x^*, y^* \in \{0, 1\}$: current integral solution of
+	\KwResult{$n_c$: number of major connected components}
+	\KwData{$cc[i] \in C$: connected component $\forall i \in V$, see \cref{sec:impl-labeling-integral-solutions}}
+	\KwData{$x^\star \in \Set*{0, 1}^{|E|},\ y^\star \in \Set*{0, 1}^{|V|}$: current integral solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
 	}
 	\input{Content/Chapters/Snippets/glm-integral-sep-pseudoalgo.tex}

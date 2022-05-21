@@ -1,4 +1,4 @@
-\Proc{\textit{cc\_dfs}($x^*$, $y^*$)}{
+\Proc{\textit{cc\_dfs}($x^\star$, $y^\star$)}{
 	\Let $cc[i] \gets -1 \quad \forall i \in V$\;
 	\Let $nc \gets 0$\;
 	\For{$i\gets0$ \KwTo $N$}{
@@ -9,7 +9,7 @@
 			\Comment{Traverse the sub-tour}
 			\Do{$u \ge 0$}{
 				\Let $v \gets -1$\;
-				\For{$j \in V \mid e = \Set*{u, j} \in E,\ cc[j] < 0,\ x^*_{e} = 1$}{
+				\For{$j \in V \mid e = \Set*{u, j} \in E,\ cc[j] < 0,\ x^\star_{e} = 1$}{
 					\Comment{The body of this loop will execute only once}
 					$cc[j] = n_c$\;
 					$v \gets j$\;
