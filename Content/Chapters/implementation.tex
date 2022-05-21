@@ -486,8 +486,8 @@ It is known that solving a maxflow problem guarantees the following two properti
 \end{enumerate}
 Therefore the following result holds:
 \begin{align}
-	\sum_{(i, j) \in \delta(F_1(u, v))} f_{ij} & = \sum_{(i, j) \in \delta(F_1(u, v))} x^\star_{\Set*{i, j}} = \maxflow(u, v) \\
-	\sum_{(i, j) \in \delta(F_2(u, v))} f_{ij} & = 0,
+	\sum_{(i, j) \in \deltaplus(F_1(u, v))} f_{ij}  & = \sum_{(i, j) \in \deltaplus(F_1(u, v))} x^\star_{\Set*{i, j}} & = \maxflow(u, v) \\
+	\sum_{(i, j) \in \deltaminus(F_1(u, v))} f_{ij} & = \sum_{(i, j) \in \deltaplus(F_2(u, v))} f_{ij}                & = 0,
 \end{align}
 where $f_{ij}$ denotes the flow along the directed arcs $(i, j),\ i, j \in V$ in the corresponding flow network.
 
@@ -610,7 +610,7 @@ Let $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$ denote the
 current integral solution of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
 Recall the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
-it is easy to see that:
+it is easy to verify that:
 \begin{equation}
 	\sum_{e \in \delta(S)} x^*_{e} = 0, \qquad y_i =  1 \quad \forall i \in S
 \end{equation}
@@ -624,7 +624,7 @@ In a single integral separation iteration we can therefore separate:
 \end{equation}
 violated GSECs inequality, which can be promptly reported to the MIP solver to reject the candidate integral solution.
 
-A complete pseudo-code of the GSEC integral separation is provided in \cref{algo:gsec-integral-sep}.
+A complete pseudocode of the GSEC integral separation procedure is provided in \cref{algo:gsec-integral-sep}.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC integral inequalities for the CPTP}
@@ -644,52 +644,54 @@ A complete pseudo-code of the GSEC integral separation is provided in \cref{algo
 \subsubsection{GSEC Fractional Separation}
 \label{sec:impl-gsec-fractional-separation}
 
-Assuming we have already computed $F_1(u, v), F_2(u, v)$, a valid $S \subseteq V_0$ can then be picked such that:
+In our implementation, GSECs separation for integral solutions is always exhaustively applied.
+The separation of GSEC inequalities for fractional solutions,
+while it is non-strictly required for our implementation,
+can dramatically reduce the number of branch nodes if properly applied.
+
+Let $\maxflow(u, v),\ F_1(u, v),\ F_2(u, v)$ denote the maxflow value and bipartitions
+produced from the labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
+A valid $S \subseteq V_0$ for separating GSEC inequalities from fractional solution can be picked such that:
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
 		F_1(u, v), & \texttt{if } 0 \notin F_1(u, v) \\
 		F_2(u, v), & \texttt{otherwise}
-	\end{cases}
+	\end{cases},
+	\qquad
+	|S| \ge 2
 \end{equation}
-This fractional separation framework based on max-flow computations, can separate up to $N^2 - N$ different $S \subseteq V_0$ sets, one for each possible choice of $u, v \in V, u \ne v$.
+Such approach can feed up to
+$N^2 - N$ different sets $S \subseteq V_0$,
+one for each possible pair $\Tuple*{u, v} \in V^2,\ u \ne v$
 
 
+Let $x^\star \in \R^{|E|},\ y \in \R^{|V|}$ denote the
+current fractional solution of
+\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}.
+Recall the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
+it is easy to verify that $\sum_{e \in \delta(S)} x^*_{ij} = \maxflow(u, v)$
+due to the symmetry property of the flow network.
 
-By recalling the GSEC inequality as presented in Equation \eqref{eq:gsec-constraints}, and the discussion about separating fractional $S \subseteq V_0$ in \cref{sec:fractional-separation}, it is easy to see that given a fractional solution instance of the form $0 \le x^*_{ij} \le 1,\ 0 \le y^*_{i} \le 1$ we have that:
-
-\begin{equation}
-	\sum_{(i, j) \in \delta(S)} x^*_{ij} = \maxflow(s, t)
-\end{equation}
-
-where the $\maxflow(s, t)$ denotes the maximum flow computed in the fractional separation of $S \subseteq V_0$.
-Therefore, if $\SetSize*{S} \ge 2$, any $i \in S$ that violates
-
-\begin{equation}
-	\maxflow(s, t) \ge 2 y_i
-\end{equation}
-
+Therefore, any $i \in S$ that violates $\maxflow(s, t) \ge 2 y_i$
 can be used to separate a violated GSEC inequality.
-Recall that the number of sets $S \subseteq V_0$ in a fractional iteration is in the order of $\Theta(N^2)$, it is possible to separate $O(N^3)$ GSECs per separation.
-We noticed that, generating and reporting all the violated GSECs inequalities across al fractional separation iterations led to a slow down of the MIP solver, which was flooded with weak GSEC inequalities.
+With such approach t is possible to separate $O(N^3)$ GSECs per fractional solution.
+We noticed that, generating and reporting all this violated GSECs inequalities
+led to a slow-down of the MIP optimizer.
 
-Therefore, in our implementation we took a slightly different approach, by relaxing the conditions in which GSEC inequalities are reported to the MIP.
-It is important to note that relaxing the conditions in which the GSEC fractional inequalities are reported, may lead to situations in which certain indispensible inequalities fall through without ever being handled in the fractional separation procedure.
-But this situation is of a little importance to us, the remaining GSEC constraints which are not caught in the fractional separation, will eventually be handled by the complete integral separation procedure.
-
-In our implementation a GSEC inequality is separated for $S \subseteq V_0,\ \SetSize*{S} \ge 2$ only if
-
+\medskip
+In our implementation we opted for a different approach by relaxing the conditions at which these cuts are reported.
+For each subset $S \subseteq V_0,\ |S| \ge 2$, we report only the single most violated GSEC
+associated to the customer $i \in V_0$ that maximizes the $\maxflow(u, v) - 2 y_i$ violation.
+On top of that, to limit the number of weak GSEC inequalities that are reported to the MIP optimizer,
+we define a violation threshold $\varepsilon_{\mt{GSEC}}$ and report the associated cut only if:
 \begin{equation}
 	\maxflow(s, t) \ge 2 y_i - \varepsilon_{\mt{GSEC}}
 \end{equation}
-
 is violated.
-The $\varepsilon_{\mt{GSEC}}$ is a constant which denotes the violation tolerance for the GSEC fractional separation.
 In our implementation we picked $\varepsilon_{\mt{GSEC}} = \epsGsecFValue$.
-If the GSEC inequality violation does not surpass this tolerance, the GSEC inequality is not generated and reported to the MIP solver.
-On top of that, to further reduce the number of generated GSECs, we report only the single most violated GSEC per set $S \subseteq V_0$ by using the customer $i \in V_0$ that maximizes the $\maxflow(s, t) - 2 y_i$ violation.
 
-The complete pseudocode can be found in \cref{algo:gsec-frac-sep}.
+A complete pseudocode of the GSEC fractional separation procedure is provided in \cref{algo:gsec-frac-sep}.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC fractional inequalities for the CPTP}
