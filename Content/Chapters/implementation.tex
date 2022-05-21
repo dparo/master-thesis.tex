@@ -586,37 +586,6 @@ no max-flow is performed and therefore no set $S \subseteq V_0$ is separated.
 \subsubsection{GSEC Integral Separation}
 \label{sec:impl-gsec-integral-separation}
 
-\begin{comment}
-[ @dparo ]
-[ As previously extracted from the discussion on integral separation algorithm based on connected components ]
-
-This is the most important separation technique,
-since it is mandatory to achieve feasible solutions for the CPTP problem.
-The integral separation procedure is the most important,
-as this procedure is necessary to generate GSEC inequalities dynamically,
-which have the effect of rejecting solutions containing spurious unconnected subtours.
-Assume that the MIP solver finds an optimal integer solution
-$x^* \in \Set*{0, 1}, y^* \in \Set*{0, 1}$ that violates a GSEC constraint.
-If $x^*$ violates at least a GSEC, it is easy to see that the solution models
-at least a spurious unconnected subtour that needs to be removed.
-In order to detect unconnected subtours,
-we need first to determine the connected components induced from the $x^*$ solution.
-\end{comment}
-
-\begin{comment}
-[ @dparo ]
-[ As previously extracted from the discussion on integral separation algorithm based on connected components ]
-
-Then any valid set $S \subseteq V_0$ can be computed in the following way from a MIP integer solution:
-\begin{equation}
-	S \subseteq V_0 = \Set* {i \mid cc(i) = k}   \quad \forall k \in C, k > 0
-\end{equation}
-which implies that any major connected component that does not contain the depot node,
-can be used as a valid set $S \subseteq V_0$ for separating inequalities.
-If $n_c = 1$ then no $S \subseteq V_0$ can be separated for this integral solution, which in our case simply means that the solution contains a single subtour, and does not violate any GSECs.
-A block diagram summarizing the integral separation is provided in \cref{fig:integral-separation-block-diagram}.
-\end{comment}
-
 The GSEC integral separation procedure is the most important
 separation procedure in our implementation,
 since it is mandatory to ensure the correctness of the branch-and-cut algorithm.
