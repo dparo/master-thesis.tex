@@ -385,7 +385,7 @@ Our integral labeling algorithm
 is devised to be optimal for detecting violated integral GSECs inequalities
 of \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5},
 but the same procedure is shared
-to feed a suboptimal integral separation also for the GLM and RCI inequalities,
+to feed a suboptimal integral separation also for the GLM and RCC inequalities,
 as shown in the block diagram in \cref{fig:integral-separation-block-diagram}.
 
 Let $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$ denote the
@@ -459,7 +459,7 @@ Our fractional labeling algorithm is devised to be optimal for
 detecting violated fractional GSECs inequalities
 of \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3},
 but the same procedure is shared
-to feed a suboptimal fractional separation also for the GLM and RCI inequalities,
+to feed a suboptimal fractional separation also for the GLM and RCC inequalities,
 as shown in the block diagram in \cref{fig:fractional-separation-block-diagram}.
 This algorithm is inherently more difficult, and computationally expensive,
 compared to the integral labeling algorithm.
@@ -589,7 +589,7 @@ GSECs inequalities which are violated by integral solutions
 must be separated exactly and reported as is
 (without employing violation thresholds) to the MIP optimizer.
 
-The GSEC requires the identification of a subset $S \subseteq V_0,\ |S| \ge 2$.
+The GSEC inequalities require for the identification of a subset $S \subseteq V_0,\ |S| \ge 2$.
 Let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 1 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
 outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
 By construction $n_c \ge 1,\ 0 \in T_0$.
@@ -633,14 +633,13 @@ A complete pseudocode of the GSEC integral separation procedure is provided in \
 \subsubsection{GSEC Fractional Separation}
 \label{sec:impl-gsec-fractional-separation}
 
-In our implementation, GSECs separation for integral solutions is always exhaustively applied.
 The separation of GSEC inequalities for fractional solutions,
 while it is non-strictly required for our implementation,
-can dramatically reduce the number of branch nodes if properly applied.
+can dramatically reduce the number of branch nodes.
 
 Let $\maxflow(u, v),\ F_1(u, v),\ F_2(u, v)$ denote the maxflow value and bipartitions
 produced from the labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
-A valid $S \subseteq V_0$ for separating GSEC inequalities from fractional solution can be picked such that:
+A valid $S \subseteq V_0, |S| \ge 2$ for separating GSEC inequalities from fractional solution can be picked such that:
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
@@ -648,7 +647,7 @@ A valid $S \subseteq V_0$ for separating GSEC inequalities from fractional solut
 		F_2(u, v), & \texttt{otherwise}
 	\end{cases},
 	\qquad
-	|S| \ge 2
+	|S| \ge 2.
 \end{equation}
 Such approach can feed up to
 $N^2 - N$ different sets $S \subseteq V_0$,
@@ -659,12 +658,13 @@ current fractional solution of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}.
 Recall the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
 it is easy to verify that $\sum_{e \in \delta(S)} x^\star_{ij} = \maxflow(u, v)$
-due to the symmetry property of the flow network.
+holds due to the symmetry property of the flow network.
 
 Therefore, any $i \in S$ that violates $\maxflow(u, v) \ge 2 y_i$
 can be used to separate a violated GSEC inequality.
 With such approach t is possible to separate $O(N^3)$ GSECs per fractional solution.
-We noticed that, generating and reporting all this violated GSECs inequalities
+We noticed, through a quick empirical evaluation, that
+generating and reporting all the encountered violated GSECs inequalities
 led to a slow-down of the MIP optimizer.
 
 \medskip
@@ -693,6 +693,20 @@ A complete pseudocode of the GSEC fractional separation procedure is provided in
 
 \subsection{RCC separation}
 \label{sec:impl-rcc-separation}
+
+The RCC inequalities, defined in \cref{eq:cptp-rcc-inequality},
+require for the identification of a subset $S \subseteq V_0, |S| \ge 1$.
+Such inequalities can be rewritten in the following form:
+\begin{equation}
+	\ExprCptpFlowExiting{S} -2 \ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{\ExprQr(S)}}    \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{Q_{\mathrm{R}}(S)} \right) - \varepsilon_{\mt{RCC}}
+\end{equation}
+
+We first describe the separation of the RCC inequalities for integral solutions.
+Such separation procedure follows roughly the same reasoning
+employed for the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
+Namely, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 1 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
+outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
+Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
 
 In this section we describe the separation of the RCC inequalities, as they were defined in Equation \eqref{eq:cptp-rcc-inequality}.
 In our work we implemented both the integral and the fractional separation for this family of inequalities.
