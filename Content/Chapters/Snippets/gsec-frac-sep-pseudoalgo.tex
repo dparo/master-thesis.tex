@@ -10,7 +10,7 @@
 		$S \gets F_2(u, v)$\;
 	}
 
-	\Comment{Scan for most violated customer}
+	\Comment{Scan for the most violated customer}
 	\Let $c \gets -1$, $m \gets \infty$\;
 	\For{$i \in V \mid i \in S$}{
 		\Let $v \gets \maxflow(u, v) - 2 y^*_i$\;

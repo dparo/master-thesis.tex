@@ -431,7 +431,6 @@ $\sum_{e \in \delta(T_k)} x^\star_e = 0$
 and $\exists i \in T_k \mid y^\star_i = 1$.
 Therefore, this approach ensures correctness of the whole branch-and-cut procedure.
 
-
 \begin{algorithm}
 	\caption{An algorithm for computing the major connected components through a Depth-First Search (DFS) traversal}
 	\KwData{$x^\star \in \Set*{0, 1}^{|E|},\ y^\star \in \Set*{0, 1}^{|V|}$: current integral solution of
@@ -442,7 +441,6 @@ Therefore, this approach ensures correctness of the whole branch-and-cut procedu
 	\input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
 	\label{algo:cc-dfs}
 \end{algorithm}
-
 
 \begin{figure}[ht]
 	\centering
@@ -560,7 +558,6 @@ The value $\maxflow(u, v)$ then needs to be remapped on the original scale
 by dividing it by $M$.
 For simplicity and stability, in our maxflow implementation we opted for the latter approach.
 
-
 \begin{figure}[ht]
 	\centering
 	\framebox{\includegraphics[width=8cm]{Imgs/fractional-separation-block-diagram.cropped.pdf}}
@@ -581,7 +578,6 @@ no max-flow is performed and therefore no set $S \subseteq V_0$ is separated.
 
 \subsection{GSEC Separation}
 \label{sec:impl-gsec-separation}
-
 
 \subsubsection{GSEC Integral Separation}
 \label{sec:impl-gsec-integral-separation}
@@ -604,7 +600,6 @@ can be used as a valid set $S \subseteq V_0$ for separating GSEC inequalities fr
 If $n_c = 1$ then no $S \subseteq V_0$ can be separated,
 which implies that the current integral solution models an optimal solution for the whole CPTP formulation
 \labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}.
-
 
 Let $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$ denote the
 current integral solution of
@@ -635,10 +630,6 @@ A complete pseudocode of the GSEC integral separation procedure is provided in \
 	\input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
-
-
-
-
 \subsubsection{GSEC Fractional Separation}
 \label{sec:impl-gsec-fractional-separation}
 
@@ -662,7 +653,6 @@ A valid $S \subseteq V_0$ for separating GSEC inequalities from fractional solut
 Such approach can feed up to
 $N^2 - N$ different sets $S \subseteq V_0$,
 one for each possible pair $\Tuple*{u, v} \in V^2,\ u \ne v$
-
 
 Let $x^\star \in \R^{|E|},\ y \in \R^{|V|}$ denote the
 current fractional solution of
