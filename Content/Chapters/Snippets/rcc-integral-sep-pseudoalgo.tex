@@ -1,27 +1,25 @@
 \Proc{\textit{rcc\_integral\_sep}($n_c$, $cc$, $x^\star$, $y^\star$)}{
 	\Const sense $\gets$ '$\ge$'\;
-	\Const rhs $\gets$ $0$\;
-	\Const $\varepsilon_{\mt{RCI}} \gets \epsGlmIValue$\;
 
-	\For{$c \gets 1$ \KwTo $n_c$}{
-		\Let $S \gets  \Set* {i \mid cc[i] = c}$\;
-		\Let $Q_S$ $\gets \sum_{i \in S} q_i$\;
-		\Let $S_S$ $\gets \sum_{i \in S} y^*_i \cdot q_i$\;
-		\Let $Q_R$ $\gets$ $\mod(Q_S, Q)$\;
+	\For{$k \gets 1$ \KwTo $n_c$}{
+		\Const $S \gets  \Set* {i \mid cc[i] = k}$\;
+		\Const $Q_S$ $\gets \sum\limits_{i \in S} q_i$\;
+		\Const $Q_R$ $\gets$ $\mod(Q_S, Q)$\;
+		\Const rhs $\gets$ $2 \Expr*{\ceil*{\frac{Q_S}{Q}} - \frac{Q_S}{Q_R}}$\;
+
 		\If{$Q_R > 0$ \And $|S| \ge 1$}{
-			\If{$-2 S_S / Q_R$ $<$ $2 \ceil*{Q_S / Q} - 2 Q_S / Q_R$ - $\varepsilon_{\mt{RCI}}$}{
+			\If{$-2 \sum\limits_{i \in S} \frac{q_i}{Q_R} y^*_i  < $ rhs}{
 				\Comment{Build the cut}
 				\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
-				\For{$i \in V \mid i \in S$}{
+				\For{$e = \Set*{i, j} \in E \mid i \in S,\ j \notin S$}{
+					index[nnz] $\gets$ x\_mip\_var\_idx($e$)\;
+					value[nnz] $\gets$ $1$\;
+					nnz $\gets$ nnz + $1$\;
+				}
+				\For{$i \in S$}{
 					index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
 					value[nnz] $\gets$ $-2 q_i / Q_R$\;
 					nnz $\gets$ nnz + $1$\;
-
-					\For{$j \in V \mid j \notin S$}{
-						index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
-						value[nnz] $\gets$ $1$\;
-						nnz $\gets$ nnz + $1$\;
-					}
 				}
 				\Comment{Reject and report cut to MIP}
 				mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
