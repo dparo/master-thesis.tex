@@ -1,32 +1,28 @@
 \Proc{\textit{glm\_integral\_sep}($n_c$, $cc$, $x^\star$, $y^\star$)}{
 	\Const sense $\gets$ '$\ge$'\;
 	\Const rhs $\gets$ $0$\;
-	\Const $\varepsilon_{\mt{GLM}} \gets \epsGlmIValue$\;
 
-	\For{$c \gets 1$ \KwTo $n_c$}{
-		\Let $S \gets  \Set* {i \mid cc[i] = c}$\;
-		\If{$|S| \ge 2$}{
-			\Comment{Build the cut}
-			\Let lhs $\gets 0$\;
-			\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
-			\For{$i \in V \mid i \in S$}{
-				\For{$j \in V \mid j \notin S$}{
-					index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
-					value[nnz] $\gets$ $1 - 2 q_j / Q$\;
-					lhs $\gets$ lhs + $x^\star_{ij} \cdot (1 - 2 q_j / Q)$\;
-					nnz $\gets$ nnz + $1$\;
-				}
-			}
-			\For{$i \in V \mid i \in S$}{
-				index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
-				value[nnz] $\gets$ $-2 q_i / Q$\;
-				lhs $\gets$ lhs + $y^*_{i} \cdot (2 q_i / Q)$\;
-				nnz $\gets$ nnz + $1$\;
-			}
-			\If{\Not lhs $\ge$ $-\varepsilon_{\mt{GLM}}$}{
-				\Comment{Reject and report cut to MIP}
-				mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
-			}
+	\For{$k \gets 1$ \KwTo $n_c$}{
+		\Let $S \gets  \Set* {i \mid cc[i] = k}$\;
+		\Assert{$|S| \ge 2$}\;
+		\Comment{Build the cut}
+		\Let lhs $\gets 0$\;
+		\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+		\For{$e = \Set*{i, j} \in E \mid i \in S,\ j \notin S$}{
+			index[nnz] $\gets$ x\_mip\_var\_idx($e$)\;
+			value[nnz] $\gets$ $1 - 2 q_j / Q$\;
+			lhs $\gets$ lhs + $x^\star_{ij} \cdot (1 - 2 q_j / Q)$\;
+			nnz $\gets$ nnz + $1$\;
+		}
+		\For{$i \in S$}{
+			index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
+			value[nnz] $\gets$ $-2 q_i / Q$\;
+			lhs $\gets$ lhs + $y^*_{i} \cdot (2 q_i / Q)$\;
+			nnz $\gets$ nnz + $1$\;
+		}
+		\If{\Not lhs $\ge$ rhs $-\varepsilon_{\mt{GLM}}$}{
+			\Comment{Reject and report cut to MIP}
+			mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
 		}
 	}
 }
