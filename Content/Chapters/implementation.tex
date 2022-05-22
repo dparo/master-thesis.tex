@@ -590,7 +590,7 @@ must be separated exactly and reported as is
 (without employing violation thresholds) to the MIP optimizer.
 
 The GSEC inequalities require for the identification of a subset $S \subseteq V_0,\ |S| \ge 2$.
-Let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 1 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
+Let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
 outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
 By construction $n_c \ge 1,\ 0 \in T_0$.
 Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
@@ -704,25 +704,26 @@ Such inequalities can be rewritten in the following form:
 We first describe the separation of the RCC inequalities for integral solutions.
 Such separation procedure follows roughly the same reasoning
 employed for the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
-Namely, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 1 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
+Namely, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
 outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
 Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
 After picking the appropriate subset $S$ we test for the violation of the inequality.
-Only if the associate RCC inequality is violated it is reported to the MIP optimizer.
+Only if the associated RCC inequality is violated it is reported to the MIP optimizer.
 A complete pseudocode is provided in \cref{algo:rcc-integral-sep}.
 
-Now we describe the separation of the RCC inequalities for fractional solutions.
-SUch separation procedure also follows roughly the same reasoning
+Next we describe the separation of the RCC inequalities for fractional solutions.
+Such separation procedure also follows roughly the same reasoning
 for the GSEC fractional separation discussed in \cref{sec:impl-gsec-fractional-separation}.
 Let $\maxflow(u, v),\ F_1(u, v),\ F_2(u, v)$ denote the maxflow value and bipartitions
 produced from the labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
-A valid $S \subseteq V_0, |S| \ge 2$ for separating GSEC inequalities from fractional solution can be picked such that:
+A valid $S \subseteq V_0, |S| \ge 2$ for separating RCC inequalities
+from fractional solution can be picked such that:
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
 		F_1(u, v), & \texttt{if } 0 \notin F_1(u, v) \\
 		F_2(u, v), & \texttt{otherwise}
-	\end{cases},
+	\end{cases}.
 \end{equation}
 After picking the appropriate subset $S$ we test for violation of the inequality,
 but as is the case for fractional separation,
@@ -755,40 +756,50 @@ A complete pseudocode is provided in \cref{algo:rcc-frac-sep}.
 \subsection{GLM separation}
 \label{sec:impl-glm-separation}
 
-In this section we describe the separation of the GLM inequalities, as they were defined in Equation \eqref{eq:glm-inequality}.
-In our work we implemented both the integral and the fractional separation for this family of inequalities.
-However, in this section we will explain only the fractional separation and we will omit the details about integral separation.
-The integral separation follows naturally from adapting the ideas that will here after be presented in this section, and by employing a similar reasoning as was done in \cref{sec:gsec-integral-separation}, for the GSEC inequalities (i.e. using the connected components).
+The GLM inequalities, defined in \cref{eq:cptp-glm-inequality},
+require for the identification of a subset $S \subseteq V_0, |S| \ge 2$.
+Such inequalities can be rewritten in the following form:
+\begin{equation}
+	\sum\limits_{
+		\EqStackTwo{e = \Set*{i,j} \in \delta(S)}{i \in S,\ j \notin S}
+	} x_e \Expr*{1 - 2 \frac{q_j}{Q}}
+	- \sum\limits_{i \in S} \frac{2 q_i}{Q} y_i
+	\ge 0 \quad \forall S \subseteq V_0,\ |S| \ge 2
+	.
+\end{equation}
 
-Let $F_1(u, v),\ F_2(u, v)$ be the bipartition induced in solving the min-cut problem as was presented in \cref{sec:fractional-separation}.
-Again we showed that we can pick a valid $S \subseteq V_0$ in the following way
+We first describe the separation of the GLM inequalities for integral solutions.
+Such separation procedure follows roughly the same reasoning
+employed for the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
+Namely, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
+outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
+Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
+After picking the appropriate subset $S$ we test for the violation of the inequality.
+Only if the associated GLM inequality is violated it is reported to the MIP optimizer.
+A complete pseudocode is provided in \cref{algo:glm-integral-sep}.
 
+Next we describe the separation of the GLM inequalities for fractional solutions.
+Such separation procedure also follows roughly the same reasoning
+for the GSEC fractional separation discussed in \cref{sec:impl-gsec-fractional-separation}.
+Let $\maxflow(u, v),\ F_1(u, v),\ F_2(u, v)$ denote the maxflow value and bipartitions
+produced from the labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
+A valid $S \subseteq V_0, |S| \ge 2$ for separating GLM inequalities
+from fractional solution can be picked such that:
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
-		F_1(u, v), & \texttt{if } 0 \notin F_1 \\
+		F_1(u, v), & \texttt{if } 0 \notin F_1(u, v) \\
 		F_2(u, v), & \texttt{otherwise}
-	\end{cases}
+	\end{cases},
+	\qquad
+	|S| \ge 2.
 \end{equation}
-
-In case of the integral separation the same reasoning apply here, but instead of using the min-cut bipartition, we use the connected components array to find a valid $S \subseteq V_0$.
-
-We need to count the number of vertices $i$ in $S$ to verify that indeed $\SetSize*{S} \ge 2$.
-If $\SetSize*{S} < 2$, no GLM inequalities can be separated.
-Otherwise a single GLM cut can be separated if the following inequality
-
-\begin{equation}
-	\begin{split}
-		\ExprCptpFlowExitingWithWeight{S}{\Expr*{1 - 2 \frac{q_j}{Q}}} - 2 	\ExprCptpServedDemandWithWeight{S}{i}{\frac{q_i}{Q}} \ge - \varepsilon_{\mt{GLM}}
-	\end{split}
-\end{equation}
-
-is violated.
-The $\varepsilon_{\mt{GLM}}$ is a constant which denotes the violation tolerance for the GLM fractional separation.
-In our implementation we picked $\varepsilon_{\mt{GLM}} = \epsGlmFValue$.
-We can separate $O(N^2)$ GLM cuts since the number of set $S \subseteq V_0$ is in the order of $\Theta(N^2)$ per fractional separation iteration.
-
-The complete pseudocode for both the integral and fractional separation can be found in \cref{algo:glm-integral-sep, algo:glm-frac-sep} respectively.
+After picking the appropriate subset $S$ we test for violation of the inequality,
+but as is the case for fractional separation,
+we employ a non-zero violation threshold $\varepsilon_{\mt{GLM}}$.
+In our implementation we set $\varepsilon_{\mt{GLM}} = \epsGlmFValue$.
+With such an approach we can separate $O(N^2)$ GLMs per fractional solution.
+A complete pseudocode is provided in \cref{algo:glm-frac-sep}.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GLM integral inequalities for the CPTP}
