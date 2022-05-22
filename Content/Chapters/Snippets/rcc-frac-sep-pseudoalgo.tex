@@ -1,36 +1,33 @@
 \Proc{\textit{rcc\_frac\_sep}($\maxflow(u, v)$, $F_1(u, v)$, $F_2(u, v)$, $x^\star$, $y^\star$)}{
 	\Const sense $\gets$ '$\ge$'\;
-	\Const rhs $\gets$ $0$\;
-	\Const $\varepsilon_{\mt{RCI}} \gets \epsRccFValue$\;
+	\Const $\varepsilon_{\mt{RCC}} \gets \epsRccFValue$\;
 
-	\For{$c \gets 1$ \KwTo $n_c$}{
-		\Let $S$\;
-		\uIf{$0 \notin F_1(u, v)$}{
-			$S \gets F_1(u, v)$\;
-		}\Else{
-			$S \gets F_2(u, v)$\;
-		}
-		\Let $Q_S$ $\gets \sum_{i \in S} q_i$\;
-		\Let $S_S$ $\gets \sum_{i \in S} y^*_i \cdot q_i$\;
-		\Let $Q_R$ $\gets$ $\mod(Q_S, Q)$\;
-		\If{$Q_R > 0$ \And $|S| \ge 1$}{
-			\If{$\maxflow(u, v) -2 S_S / Q_R$ $<$ $2 \ceil*{Q_S / Q} - 2 Q_S / Q_R$ - $\varepsilon_{\mt{RCI}}$}{
-				\Comment{Build the cut}
-				\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
-				\For{$i \in V \mid i \in S$}{
-					index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
-					value[nnz] $\gets$ $-2 q_i / Q_R$\;
-					nnz $\gets$ nnz + $1$\;
+	\Let $S$\;
+	\uIf{$0 \notin F_1(u, v)$}{
+		$S \gets F_1(u, v)$\;
+	}\Else{
+		$S \gets F_2(u, v)$\;
+	}
+	\Const $Q_S$ $\gets \sum\limits_{i \in S} q_i$\;
+	\Const $Q_R$ $\gets$ $\mod(Q_S, Q)$\;
+	\Const rhs $\gets$ $2 \Expr*{\ceil*{\frac{Q_S}{Q}} - \frac{Q_S}{Q_R}}$\;
 
-					\For{$j \in V \mid j \notin S$}{
-						index[nnz] $\gets$ x\_mip\_var\_idx($i$, $j$)\;
-						value[nnz] $\gets$ $1$\;
-						nnz $\gets$ nnz + $1$\;
-					}
-				}
-				\Comment{Reject and report cut to MIP}
-				mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
+	\If{$Q_R > 0$ \And $|S| \ge 1$}{
+		\If{$\maxflow(u, v) -2 \sum\limits_{i \in S} \frac{q_i}{Q_R} y^*_i  < $ rhs - $\varepsilon_{\mt{RCC}}$}{
+			\Comment{Build the cut}
+			\Let nnz $\gets$ 0, index $\gets$ [], value $\gets$ []\;
+			\For{$e = \Set*{i, j} \in E \mid i \in S,\ j \notin S$}{
+				index[nnz] $\gets$ x\_mip\_var\_idx($e$)\;
+				value[nnz] $\gets$ $1$\;
+				nnz $\gets$ nnz + $1$\;
 			}
+			\For{$i \in S$}{
+				index[nnz] $\gets$ y\_mip\_var\_idx($i$)\;
+				value[nnz] $\gets$ $-2 q_i / Q_R$\;
+				nnz $\gets$ nnz + $1$\;
+			}
+			\Comment{Reject and report cut to MIP}
+			mip\_add\_user\_cut(sense, rhs, nnz, index, value)\;
 		}
 	}
 }
