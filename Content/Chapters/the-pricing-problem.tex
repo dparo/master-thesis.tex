@@ -1,11 +1,11 @@
 \chapter{The Pricing Problem}
 \label{sec:the-pricing-problem}
 
-As we've discussed in \cref{sec:intro-branch-and-price},
+As it was already discussed in \cref{sec:intro-branch-and-price},
 the Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
 appears as the pricing sub-problem in column generation schemes
 for vehicle routing problems.
-Therefore, its study is of fundamental importance in order to
+Therefore, its study is of fundamental importance to
 engineer efficient branch-and-price frameworks.
 We refer the reader to \cref{sec:intro-solving-the-pricing-problem}
 for a literature review on the importance and methodologies
@@ -17,7 +17,7 @@ of pricing for the vehicle routing problem.
 The ESPPRC asks for the determination of a shortest path (or route)
 between a starting and destination vertex over a directed weighted network
 subject to additional resource restrictions.
-The general definition of the ESPPRC allows for multiple resources definition
+The general version of the ESPPRC allows for multiple resources definition
 with different semantics, for example: time, capacity, gasoline, etc.
 The resources are usually monotically increasing quantities which
 increase as the route traverses new edges or vertices.
@@ -141,7 +141,7 @@ Despite their contribution needs to be revisited given the modern advances on bo
 their results proved that a branch-and-cut approach could complement
 the dynamic programming algorithm for pricing.
 In conclusion, there might value revisiting and
-expanding the research on CPTP branch-and-cut based pricers.
+expanding the research branch-and-cut based pricers based on the CPTP formulation.
 
 \section{The Elementary Shortest Path Problem with Capacity Constraints}
 \label{sec:the-elementary-shortest-path-problem-with-capacity-constraints}
@@ -655,7 +655,7 @@ of the \cref{eq:cptp-rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_
 Fortunately this is the case for most, if not all, routing problems considered in the literature.
 
 As \textcite{jepsen2014} points out,
-no exact separation procedures are currently known RCC inequalities,
+no exact separation procedure is currently known for the RCC inequalities,
 for this reason,
 they suggest using the sets identified by the separation of the multistar inequalities,
 such as the GLM separation procedure.
@@ -672,7 +672,7 @@ the GLM were further generalized to the so-called Knapsack Large Multistar (KLM)
 \textcite{letchford2006} study the effectiveness of the multistar family of cuts
 when applied to the vehicle routing problems.
 The multistar cuts represent a set of inequalities that are related to
-the intersection between a 0-1 knapsack problem and the node-capacitated profitable tour problem (CPTP).
+the intersection between a 0--1 knapsack problem and the node-capacitated profitable tour problem (CPTP).
 
 Consider the capacity inequality:
 \begin{equation}

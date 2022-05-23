@@ -5,11 +5,11 @@ This chapter will present the empirical results
 of the branch-and-cut algorithm,
 whose implementation was discussed in \cref{sec:implementation-chapter}.
 We will evaluate its performance as a pricer for the CVRP,
-by comparing its performance with
-the state-of-the-art labeling algorithm based on dynamic programming.
+by comparing it with
+the state-of-the-art labeling algorithm based on dynamic programming
+discussed in the works of \textcite{pessoa2020generic, sadykov2021bucket}.
 
 \medskip
-
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
@@ -61,8 +61,7 @@ and finally set M \parencite{christofides1979vehicle}.
 The reader who's interested in knowing how such instances were obtained in the first
 place, can refer to either the CVRPLIB website or to the work of \textcite{uchoa2017}.
 
-\medskip
-\mytodo{Put all the employed CVRP instances in tables. Similar as it is done in \cite{uchoa2017}}
+\mytodo{(Optional) Put all the employed CVRP instances inside a table. Similar as it is done in \cite{uchoa2017}}
 
 \medskip
 
@@ -358,18 +357,17 @@ The ground truth optimal, as extracted from the dataset, is used instead as the 
 \section{Empirical Results}
 \label{sec:results-empirical-results}
 
-\mytodo{Tell that we've used only the last 10 pricing iterations for comparison}
+\mytodo{Describe that only the last 10 pricing instances were used for comparison}
 
 \mytodo{Describe operating system, processor speed, etc}
 
+\mytodo{Introduce common issues in performance evaluation of chaotic systems. Solution through randomized runs with different starting seeds}
+
+\mytodo{Report timelimit, seed values. num threads of the MIP optimizer}
+
 \mytodo{Spam this section with performance profiles}
 
-\mytodo{Report timelimit and seed values}
-
-\mytodo{Write out the number of threads the MIP optimizer runs with}
-
-\mytodo{Number of seeds and performance evaluation of chaotic systems}
-
+\begin{comment}
 Each performance profile follows the syntax:
 \begin{center}
 	\begin{LVerbatim}
@@ -380,11 +378,12 @@ where \texttt{<FAMILY>} denotes the CVRP instances family (i.e. E, F, etc) and \
 The term \texttt{last-10} is used to denote that the performance profile uses only the last 10 pricing iterations for performing the comparison.
 
 At the time of writing, only the following scaling factors were tested: $s = 1.0,\ s = 2.0,\ s = 4.0$.
+\end{comment}
 
-\section{Discussion}
+\section{Discussion of the Empirical Results}
 \label{sec:results-discussion}
 
-\mytodo{Complete this section after populating the Empirical Results with the appropriate perf-profiles}
+\mytodo{Discuss the performance profiles here}
 
 \begin{comment}
 \mytodo{Include the F-n135 grep result to talk about the difficulty of this instance and related ones}
