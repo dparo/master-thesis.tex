@@ -291,15 +291,15 @@ can highly influence the computation time of the BAC algorithm.
 When reporting violated inequalities to the MIP optimizer,
 it is usually good practice to define a violation tolerance threshold,
 to limit the number of violated inequalities taken into consideration.
-Namely, inequalities which are "sufficiently violated" are generated and reported
+Namely, inequalities which are not "sufficiently violated" aren't generated nor reported
 to the MIP optimizer.
 A low violation threshold results in better dual bounds and fewer branch nodes,
 but may slower the convergence in each node.
 In the opposite way, a high violation threshold results in more branch nodes,
-but faster convergence speed \parencite{jepsen2008branchandcut}.
+but faster convergence speed in each node \parencite{jepsen2008branchandcut}.
 
 Modern MIP optimizers, such as CPLEX, regardless of the violation threshold
-employed in the separation procedure,
+employed by the separation procedure,
 can filter each user-provided cuts by scoring them.
 Premature branching may occur, regardless of the existence of violated inequalities,
 if CPLEX deems these cuts ineffective (tailing off condition).
@@ -308,6 +308,9 @@ for this reason,
 it is possible to disable user-cuts filtering.
 However, in such case if an effective tailing condition is required,
 it must be implemented by the user inside the separation procedure.
+
+In our implementation, all cutting-planes reported to CPLEX are subject to filtering
+and the ultimate choice of whether to include the generated cutting-planes is left to the MIP optimizer.
 
 \medskip
 
@@ -339,7 +342,7 @@ the linear relaxation in
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3},
 then,
 the GSECs can be separated (exactly) by solving $(u, v)$-min-cuts
-on a flow neSo che vieni qua, devi fare anche tu le tue cose e non è il posto miglioretwork where capacities are given from the fractional solutions' value $x^\star$.
+on a flow network where capacities are given from the fractional solutions' value $x^\star$.
 The $(u, v)$-min-cuts outputs a subset $T \subseteq V$ induced from $(u, v)$
 minimizing the term $\sum_{e \in \delta(T)} x^\star_e$,
 which constitutes a valid labeling of the network for each $u, v \in V,\ u \ne v$.
@@ -428,8 +431,8 @@ by letting $k = 0, \dots, n_c$,
 it holds that:
 $|T_k| \ge 2$,
 $\sum_{e \in \delta(T_k)} x^\star_e = 0$
-and $\exists i \in T_k \mid y^\star_i = 1$.
-Therefore, this approach ensures correctness of the whole branch-and-cut procedure.
+and $\exists i \in T_k \mid y^\star_i = 1$,
+thus ensuring the correctness of the whole branch-and-cut procedure.
 
 \begin{algorithm}
 	\caption{An algorithm for computing the major connected components through a Depth-First Search (DFS) traversal}
@@ -476,7 +479,7 @@ outputs a maxflow $\maxflow(u, v)$ and a bipartition, also called "binary colori
 of the set $V$,
 namely two complementary sets $F_1(u, v),\ F_2(u, v)$
 such that $F_1(u, v) \cup F_2(u, v) = V$, $F_1 \cap F_2 = \emptyset$ and $u \in F_1(u, v),\ t \in F_2(u, v)$.
-The quantity $\delta(F_1(u, v))$ constitutes the min-cut induced from solving the max-flow problem over $(u, v)$.
+The quantity $\deltaplus(F_1(u, v))$ constitutes the min-cut induced from solving the max-flow problem over $(u, v)$.
 It is known that solving a maxflow problem guarantees the following two properties:
 \begin{enumerate}
 	\item Arcs $\{ (i, j) \mid i \in F_1(u, v),\ j \in F_2(u, v) \}$ are saturated
@@ -495,7 +498,7 @@ solving the maxflow problem between pairs $(u, v)$ and pair $(u, v)$ will output
 i.e. $\maxflow(u, v) = \maxflow(v, u)$.
 Although, and this is the more important aspect,
 the induced bipartitions in the general case are not guaranteed to be symmetric.
-Namely, in the general case we have that: $F_1(u, v) \ne F_2(u, v)$ and $F_2(u, v) \ne F_1(u, v)$.
+Namely, in the general case we have that: $F_1(u, v) \ne F_2(v, u)$ and $F_2(u, v) \ne F_1(v, u)$.
 To see this is the case, this simple flow network:
 \begin{center}
 	\begin{tikzpicture}[node distance={20mm}, main/.style = {draw, circle, fill=black!10!white}]
@@ -507,7 +510,7 @@ To see this is the case, this simple flow network:
 		\node[main] (3) [right of = 2] {$3$};
 		\node[main] (4) [right of = 3] {$4$};
 
-		\draw (0) --  (1) node [midway, yshift=2mm] {$0$};
+		\draw (0) -- (1) node [midway, yshift=2mm] {$0$};
 		\draw (1) --  (2) node [midway, yshift=2mm] {$10$};
 		\draw (2) --  (3) node [midway, yshift=2mm] {$10$};
 		\draw (3) --  (4) node [midway, yshift=2mm] {$0$};
@@ -532,7 +535,7 @@ provides a way to compute the all pairs $(u, v)$ max-flows using only $N$ main m
 A Gomory-Hu tree can be seen as a data structure that represents a simpler reduced flow network,
 where max-flow computations become trivially solvable
 through a single iteration of the Ford-Fulkerson algorithm in $\Theta(N^2)$.
-Combining Gomory-Hu trees and the push relabel max flow algorithm,
+Combining the Gomory-Hu tree and the push relabel max flow algorithm,
 an exhaustive enumeration of all possible $(u, v)$ vertices takes up to $O(N^5)$ time to build the tree
 and further $\Theta(N^4)$ to query for all the possible $F_1(u, v), F_2(u, v)$ bipartitions.
 
@@ -706,7 +709,7 @@ Such separation procedure follows roughly the same reasoning
 employed for the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
 Namely, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
 outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
-Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
+Then a valid subset $S \subseteq V_0,\ |S| \ge 1$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
 After picking the appropriate subset $S$ we test for the violation of the inequality.
 Only if the associated RCC inequality is violated it is reported to the MIP optimizer.
 A complete pseudocode is provided in \cref{algo:rcc-integral-sep}.
@@ -773,7 +776,7 @@ Such separation procedure follows roughly the same reasoning
 employed for the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
 Namely, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
 outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
-Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
+Then a valid subset $S \subseteq V_0,\ |S| \ge 2$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
 After picking the appropriate subset $S$ we test for the violation of the inequality.
 Only if the associated GLM inequality is violated it is reported to the MIP optimizer.
 A complete pseudocode is provided in \cref{algo:glm-integral-sep}.
