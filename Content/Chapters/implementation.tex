@@ -287,7 +287,8 @@ Another important factor to take into consideration when implementing
 efficient cutting-planes procedures lies in the parametrization settings
 of the violated inequalities.
 The generation and number of cutting-planes alone (without considering the separation running time),
-can highly influence the computation time of the BAC algorithm.
+can highly influence both the computation time and memory consumption of the BAC algorithm.
+In order to reduce memory consumption, sparse/compact inequalities are usually preferred whenever possible.
 When reporting violated inequalities to the MIP optimizer,
 it is usually good practice to define a violation tolerance threshold,
 to limit the number of violated inequalities taken into consideration.
