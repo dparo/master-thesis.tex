@@ -52,7 +52,7 @@ and then for each vertex visited twice of more, the associated bound
 on the $y_i$ is strengthened.
 
 Try out different extended formulations (polynomial number of constraints)
-by redjusting the formulations originally developed for the TSP:
+by readjusting the formulations originally developed for the TSP:
 the sequential style formulations (MTZ) presented in \textcite{miller1960},
 the single commodity flow style (FLOW-1) presented i n \textcite{gavish1978travelling},
 or the multi-commodity flow style formulation (MCF) presented in \textcite{wong1980integer,claus1984new}.
@@ -64,6 +64,11 @@ to be unsatisfactory when applied to the ESPP (without resource constraints).
 Therefore, an hybrid approach between an exteded formulation
 and coupled with an effective GSEC separation procedure may improve
 the effectiveness of the branch-and-cut pricer.
+
+Create effective preprocessing algorithms to reduce the search space
+that need to be explored from the branch-and-cut algorithm.
+Develop an effective (meta-)heuristic algorithm on the dual problem,
+to feed the branch-and-cut algorithm with a initial good dual bound.
 
 \medskip
 
