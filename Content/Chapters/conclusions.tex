@@ -51,6 +51,20 @@ relaxing the bounds on the $y_i$ MIP variables,
 and then for each vertex visited twice of more, the associated bound
 on the $y_i$ is strengthened.
 
+Try out different extended formulations (polynomial number of constraints)
+such as sequential style formulations (MTZ)
+\textcite{miller1960}, single commodity flow style (FLOW-1)
+\textcite{gavish1978travelling}, or the multi-commodity flow style formulation (MCF)
+\textcite{wong1980integer,claus1984new}.
+Despite trying different formulations may seem a good candidate for improving
+the performance of the branch-and-cut pricer,
+it has to be noted that in the work of \textcite{taccari2016},
+these extended formulations have been shown empirically
+to be unsatisfactory when applied to the ESPP (without resource constraints).
+Therefore, an hybrid approach between an exteded formulation
+and coupled with an effective GSEC separation procedure may improve
+the effectiveness of the branch-and-cut pricer.
+
 \medskip
 
 We noticed many branch-and-bound nodes being generated,
@@ -63,11 +77,9 @@ Heuristic algorithm to solve max-flow???
 Possibly improve converge speed by using heuristic patching at each
 node of the branch-and-bound tree.
 
-
 Furthers study, develop new (strong) cutting-planes approaches,
 that achieve a good trade off between their separation and gain
 in the dual-bound improvement.
-
 
 Extend the branch-and-cut algorithm
 to the general ESPPRC.
@@ -81,12 +93,10 @@ see \textcite{jepsen2008branchandcut}.
 Branch-and-cut algorithms issue, for some instances,
 memory exhaustion of the host machine is a big concern in using such approach.
 
-
 Note that the separation of additional valid inequalities do not
 necessarily need an exact separation procedure.
 For these reasons, heuristic separation procedures for the GLM and RCC
 cuts may provide a faster convergence of the solution approach.
-
 
 \begin{quote}
 	\cite{jepsen2014}
