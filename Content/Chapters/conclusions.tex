@@ -68,7 +68,15 @@ the effectiveness of the branch-and-cut pricer.
 Create effective preprocessing algorithms to reduce the search space
 that need to be explored from the branch-and-cut algorithm.
 Develop an effective (meta-)heuristic algorithm on the dual problem,
-to feed the branch-and-cut algorithm with a initial good dual bound.
+to feed the branch-and-cut algorithm with an initial good dual bound.
+
+Improve the running time of the GSEC separation by employing an heuristic
+Dijkstra algorithm in the support graph induced from the non-zero fractional solutions $x^\star_e > 0 \quad \forall e \in E$.
+The min-cut and Gomory-Hu tree algorithms may be employed only if the first approach
+doesn't find any violated inequality.
+
+Develop novel and effective cutting planes for the CPTP problem by taking
+insipiration from similar problem domains.
 
 \medskip
 
