@@ -362,6 +362,11 @@ while offloading much of the search-space complexity to an exponential number of
 The SP formulation can be viewed as a Dantzig-Wolfe decomposition \parencite{dantzig1960}
 and commodity aggregation \parencite{desaulniers1998}
 of the three-index arc flow formulation.
+The Dantzig-Wolfe reformulation approach is an application of a
+decomposition principle where one chooses to solve many smaller sizes
+structured sub-problems instead of being confronted to
+the original problem resolution complexity are beyond what can be
+solved in reasonable time \parencite{vanderbeck2005}.
 Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes.
 Let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is selected.
 Let $a_{ip}, a_{ep} \in \Z$ be "static encodings" (integer coefficients)
@@ -427,6 +432,8 @@ since their definitions are captured within the definition of the set $P$ itself
 In the next sections we will introduce
 the branch-and-price (BAP) framework and the Column Generation (CG) approach,
 key components employed in contemporary CVRP solvers.
+Refer to \textcite{vanderbeck2005, lubbecke2005} for a review on column generation
+approaches to solve generic MIP problems.
 
 
 \section{Branch and Price}
@@ -687,6 +694,20 @@ we will mostly concentrate on branching and cut generation schemes
 which make use of \textbf{robust} inequalities.
 Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
 
+
+\begin{comment}
+    \textcite{lubbecke2005}
+The purpose of the RMP (as is the purpose of subgradient algorithms in Lagrangian relaxation) is to
+provide dual variables: To be transferred to the subproblem, and to control our stopping criterion. In
+the end only, we have to recover from the RMP a primal feasible solution to the compact formulation.
+Primal methods, like column generation, maintain primal feasibility and work towards dual feasi-
+bility. It is therefore only natural to monitor the dual solution in the course of the algorithm. In our
+opinion, the dual point of view reveals most valuable insight into the algorithm’s functioning. We call
+the polyhedron associated with the dual of the RMP the dual polyhedron. A dual solution to the RMP
+needs not be unique, e.g., if the primal is degenerate. This is significant inasmuch the dual solution di-
+rectly influences the selection of new columns. Since a dual basic solution corresponds to an extreme
+point of the optimal face, it may be a bad representative of all the dual solutions obtainable.
+\end{comment}
 
 \subsubsection{Branching}
 \label{sec:bap-branching}
@@ -1006,7 +1027,7 @@ algorithm for pricing elementary routes.
 Nonetheless, some contributions have been made to improve its overall running time.
 Some major ones can be attributed to:
 (i) bidirectional search proposed in \textcite{righini2006},
-(ii) decremental state space relaxation proposed independently in
+(ii) decremental state space relaxation (DSSR) proposed independently in
 \textcite{boland2006, righini2008} under different names.
 The decremental state space relaxation is an iterative
 approach where elementarity is iteratively inserted on demand.
@@ -1136,11 +1157,13 @@ Therefore, some dual variables stabilization techniques
 have been proposed to fix this problem and
 to reduce the number of pricing iterations required
 by the column generation algorithm (see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018automation}).
+Refer to \textcite{vanderbeck2005} for a general introductory
+discussion on stabilization techniques for column generation.
 Also employing the SC formulation in place of the SP formulation,
 the dual variables have been shown to be typically more stable \parencite{rousseau2007, feillet2010}.
 
 We conclude the section by pointing out two additional surveys
-that discuss the labeling algorithm for solving the Shorstest Path
+that discuss the labeling algorithm for solving the Shortest Path
 Problem with Resource Constraints (SPPRC): references \textcite{irnich2005, pugliese2010, pugliese2013}.
 
 
@@ -1286,6 +1309,19 @@ of cvrp and vrptw. The algorithms from these two phases are also used
 on several other variants of the Vehicle Routing Problem. The third phase
 was started in the middle of the 2000s and the algorithms from this phase
 are currently the best overall performing algorithms.
+\end{comment}
+
+
+\begin{comment}
+    \textcite{irnich2005}
+4.1.1 Label Setting and Label Correcting Algorithms
+The defining property of a
+label setting algorithm is that those labels chosen to be extended (in the path extension step)
+are kept until the end of the labeling process. They will not be identified as discardable in
+subsequent calls of the dominance algorithm. Labeling algorithms that do not guarantee
+this behavior are called label correcting algorithms. The general ideas of label setting as
+well as label correcting algorithms in the context of the one-dimensional shortest path
+problem (SPP) are, for instance, explained in the book of Ahuja et al. (1993).
 \end{comment}
 
 \section{Thesis Contributions}
