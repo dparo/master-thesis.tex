@@ -55,7 +55,8 @@ However, rounding introduces problems in comparing heuristic contributions, see 
 To evaluate the performance of our pricer we used some of the most historic
 and commonly known
 CVRP instances:
-set A, B, P \parencite{augerat1995}, set E \parencite{christofides1969},
+set A, B, P \parencite{augerat1995},
+set E \parencite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic},
 set F \parencite{fisher1994}
 and finally set M \parencite{christofides1979vehicle}.
 The reader who's interested in knowing how such instances were obtained in the first
@@ -174,6 +175,46 @@ place, can refer to either the CVRPLIB website or to the work of \textcite{uchoa
 	\caption{Instances of the set B employed for the empirical evaluation.
 		These instances were originally proposed in \textcite{augerat1995}
 		where the node locations are generated at random on a square grid \parencite{uchoa2017}.
+	}
+\end{table*}
+
+\begin{table*}[ht]
+	\centering
+	% Place caption here to get a caption above the table
+	\begin{tabular}[t]{lccc}
+		\toprule
+		\textbf{Instance} & $K$ & $Q$  & \textbf{Optimal Value} \\
+		\midrule
+		P-n16-k8          & 8   & 35   & 450                    \\
+		P-n19-k2          & 2   & 160  & 212                    \\
+		P-n20-k2          & 2   & 160  & 216                    \\
+		P-n21-k2          & 2   & 160  & 211                    \\
+		P-n22-k2          & 2   & 160  & 216                    \\
+		P-n22-k8          & 8   & 3000 & 603                    \\
+		P-n23-k8          & 8   & 40   & 529                    \\
+		P-n40-k5          & 5   & 140  & 458                    \\
+		P-n45-k5          & 5   & 150  & 510                    \\
+		P-n50-k7          & 7   & 150  & 554                    \\
+		P-n50-k8          & 8   & 120  & 631                    \\
+		P-n50-k10         & 10  & 100  & 696                    \\
+		P-n51-k10         & 10  & 80   & 741                    \\
+		P-n55-k7          & 7   & 170  & 568                    \\
+		P-n55-k8          & 8   & 160  & 588                    \\
+		P-n55-k10         & 10  & 115  & 694                    \\
+		P-n55-k15         & 15  & 70   & 989                    \\
+		P-n60-k10         & 10  & 120  & 744                    \\
+		P-n60-k15         & 15  & 80   & 968                    \\
+		P-n65-k10         & 10  & 130  & 792                    \\
+		P-n70-k10         & 10  & 135  & 827                    \\
+		P-n76-k4          & 4   & 350  & 593                    \\
+		P-n76-k5          & 5   & 280  & 627                    \\
+		P-n101-k4         & 4   & 400  & 681                    \\
+		\bottomrule
+	\end{tabular}
+	\label{tbl:cvrp-instance-family-A}
+	\caption{Instances of the set P employed for the empirical evaluation.
+		These instances were originally proposed in \textcite{augerat1995}
+		obtained from modifying the capacities of some instances of the A, B and E sets \parencite{uchoa2017}.
 	}
 \end{table*}
 
