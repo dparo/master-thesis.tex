@@ -380,6 +380,16 @@ The term \texttt{last-10} is used to denote that the performance profile uses on
 At the time of writing, only the following scaling factors were tested: $s = 1.0,\ s = 2.0,\ s = 4.0$.
 \end{comment}
 
+\begin{comment}
+[@dparo: Old Gomoru HU Tree, It was slow and required amortization to speed up the BAC procedure]
+In this implementation we employed the usage of both the push relabel algorithm,
+the Gomory-Hu tree and full enumeration of all possible $(s, t)$ vertices.
+Since running this full enumeration over each fractional separation,
+turned out to be quite costly, we decided to amortize the cost over multiple iterations.
+Namely, fractional separations iterations which are not multiple of $N$ become a no-op,
+no max-flow is performed and therefore no set $S \subseteq V_0$ is separated.
+\end{comment}
+
 \section{Discussion of the Empirical Results}
 \label{sec:results-discussion}
 

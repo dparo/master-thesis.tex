@@ -573,14 +573,6 @@ For simplicity and stability, in our maxflow implementation we opted for the lat
 	\label{fig:fractional-separation-block-diagram}
 \end{figure}
 
-\begin{comment}
-[@dparo: Old Gomoru HU Tree, It was slow and required amortization to speed up the BAC procedure]
-Since running this full enumeration over each fractional separation,
-turned out to be quite costly, we decided to amortize the cost over multiple iterations.
-Namely, fractional separations iterations which are not multiple of $N$ become a no-op,
-no max-flow is performed and therefore no set $S \subseteq V_0$ is separated.
-\end{comment}
-
 \subsection{GSEC Separation}
 \label{sec:impl-gsec-separation}
 
