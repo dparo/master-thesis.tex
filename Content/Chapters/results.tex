@@ -63,6 +63,120 @@ place, can refer to either the CVRPLIB website or to the work of \textcite{uchoa
 
 \mytodo{(Optional) Put all the employed CVRP instances inside a table. Similar as it is done in \cite{uchoa2017}}
 
+\begin{table*}[ht]
+	\centering
+	% Place caption here to get a caption above the table
+	\begin{tabular}[t]{lccc}
+		\toprule
+		\textbf{Instance} & $K$ & $Q$ & \textbf{Optimal Value} \\
+		\midrule
+		E-n51-k5          & 5   & 160 & 521                    \\
+		E-n76-k7          & 7   & 220 & 682                    \\
+		E-n76-k8          & 8   & 180 & 735                    \\
+		E-n76-k10         & 10  & 140 & 830                    \\
+		E-n76-k14         & 14  & 100 & 1021                   \\
+		E-n101-k8         & 8   & 200 & 815                    \\
+		E-n101-k14        & 14  & 112 & 1067                   \\
+		\bottomrule
+	\end{tabular}
+	\label{tbl:cvrp-instance-family-E}
+	\caption{Instances of the set E employed for the empirical evaluation.
+		These instances were originally proposed in \textcite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic}
+		where the node locations were generated at random from a uniform distribution \parencite{uchoa2017}.
+	}
+\end{table*}
+
+\begin{table*}[ht]
+	\centering
+	% Place caption here to get a caption above the table
+	\begin{tabular}[t]{lccc}
+		\toprule
+		\textbf{Instance} & $K$ & $Q$   & \textbf{Optimal Value} \\
+		\midrule
+		F-n45-k4          & 4   & 2010  & 724                    \\
+		F-n72-k4          & 4   & 30000 & 237                    \\
+		F-n135-k7         & 7   & 2210  & 1162                   \\
+		\bottomrule
+	\end{tabular}
+	\label{tbl:cvrp-instance-family-F}
+	\caption{Instances of the set F employed for the empirical evaluation.
+		These instances were originally proposed in \textcite{fisher1994},
+		and they come from an actual distribution problem involving grocery deliveries in Ontario \parencite{uchoa2017}.
+	}
+\end{table*}
+
+\begin{table*}[ht]
+	\centering
+	% Place caption here to get a caption above the table
+	\begin{tabular}[t]{lccc}
+		\toprule
+		\textbf{Instance} & $K$ & $Q$ & \textbf{Optimal Value} \\
+		\midrule
+		A-n37-k5          & 5   & 100 & 669                    \\
+		A-n37-k6          & 6   & 100 & 949                    \\
+		A-n38-k5          & 5   & 100 & 730                    \\
+		A-n39-k5          & 5   & 100 & 822                    \\
+		A-n39-k6          & 6   & 100 & 831                    \\
+		A-n44-k6          & 6   & 100 & 937                    \\
+		A-n45-k6          & 6   & 100 & 944                    \\
+		A-n45-k7          & 7   & 100 & 1146                   \\
+		A-n46-k7          & 7   & 100 & 914                    \\
+		A-n48-k7          & 7   & 100 & 1073                   \\
+		A-n53-k7          & 7   & 100 & 1010                   \\
+		A-n54-k7          & 7   & 100 & 1167                   \\
+		A-n55-k9          & 9   & 100 & 1073                   \\
+		A-n60-k9          & 9   & 100 & 1354                   \\
+		A-n61-k9          & 9   & 100 & 1034                   \\
+		A-n62-k8          & 8   & 100 & 1288                   \\
+		A-n63-k9          & 9   & 100 & 1616                   \\
+		A-n64-k9          & 9   & 100 & 1401                   \\
+		A-n65-k9          & 9   & 100 & 1174                   \\
+		A-n69-k9          & 9   & 100 & 1159                   \\
+		A-n80-k10         & 10  & 100 & 1763                   \\
+		\bottomrule
+	\end{tabular}
+	\label{tbl:cvrp-instance-family-A}
+	\caption{Instances of the set A employed for the empirical evaluation.
+		These instances were originally proposed in \textcite{augerat1995}
+		where the node locations are generated at random on a square grid \parencite{uchoa2017}.
+	}
+\end{table*}
+
+\begin{table*}[ht]
+	\centering
+	% Place caption here to get a caption above the table
+	\begin{tabular}[t]{lccc}
+		\toprule
+		\textbf{Instance} & $K$ & $Q$ & \textbf{Optimal Value} \\
+		\midrule
+		B-n38-k6          & 6   & 100 & 805                    \\
+		B-n39-k5          & 5   & 100 & 549                    \\
+		B-n41-k6          & 6   & 100 & 829                    \\
+		B-n43-k6          & 6   & 100 & 742                    \\
+		B-n44-k7          & 7   & 100 & 909                    \\
+		B-n45-k6          & 6   & 100 & 678                    \\
+		B-n50-k7          & 7   & 100 & 741                    \\
+		B-n50-k8          & 8   & 100 & 1312                   \\
+		B-n51-k7          & 7   & 100 & 1032                   \\
+		B-n52-k7          & 7   & 100 & 747                    \\
+		B-n56-k7          & 7   & 100 & 707                    \\
+		B-n57-k7          & 7   & 100 & 1153                   \\
+		B-n57-k9          & 9   & 100 & 1598                   \\
+		B-n63-k10         & 10  & 100 & 1496                   \\
+		B-n64-k9          & 9   & 100 & 861                    \\
+		B-n66-k9          & 9   & 100 & 1316                   \\
+		B-n67-k10         & 10  & 100 & 1032                   \\
+		B-n68-k9          & 9   & 100 & 1272                   \\
+		B-n78-k10         & 10  & 100 & 1221                   \\
+		\bottomrule
+	\end{tabular}
+	\label{tbl:cvrp-instance-family-A}
+	\caption{Instances of the set B employed for the empirical evaluation.
+		These instances were originally proposed in \textcite{augerat1995}
+		where the node locations are generated at random on a square grid \parencite{uchoa2017}.
+	}
+\end{table*}
+
 \medskip
 
 We've generated new artificial instances from the presented sets.
@@ -81,7 +195,7 @@ We've inflated the total number of available CVRP instances
 by using the following relationship:
 
 $$
-	Q^\prime = Q \times s, \quad k^\prime = \ceil*{\frac{k}{s}}
+	Q^\prime = Q \times s, \quad K^\prime = \ceil*{\frac{K}{s}}
 $$
 
 The inflation is done for each unmodified CVRP instance and using
