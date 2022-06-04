@@ -20,7 +20,7 @@ on column generation and branch-and-price algorithms.
 Other more useful more in-depth references about column generation can be found in \textcite{desrosiers2005, lubbecke2005}.
 For a more problem-independent introduction in branch-price-and-cut frameworks refer to \textcite{desrosiers2011}.
 
-\subsection{Column generation and the Pricing Problem}
+\section{Column generation and the Pricing Problem}
 \label{sec:column-generation-and-pricing-problem}
 
 Consider the \textbf{Master Problem} (MP) defined
@@ -170,8 +170,8 @@ where finding good reduced cost columns is surprisingly easy.
 
 In this thesis, we will mostly analyze the CVRP problem under the SP formulation.
 
-\subsection{Branching, Route Enumeration and Cut Generation}
-\label{sec:intro-branching-and-cut-generation-within-bap-frameworks}
+\section{Branching, Route Enumeration and Cut Generation}
+\label{sec:branching-and-cut-generation-within-bap-frameworks}
 
 In order to satisfy the integrality constraints for the SP formulation,
 solving the RMP at the root node is almost always not enough.
@@ -268,7 +268,7 @@ rectly influences the selection of new columns. Since a dual basic solution corr
 point of the optimal face, it may be a bad representative of all the dual solutions obtainable.
 \end{comment}
 
-\subsubsection{Branching}
+\subsection{Branching}
 \label{sec:bap-branching}
 
 In this section we will introduce branching for the SP formulation,
@@ -360,7 +360,7 @@ Reduction rules may be viewed as a special case of branching
 with a single descendant node.
 Reducing the set of edges to consider may filter a good portion of the search-space.
 
-\subsubsection{Families of Cuts}
+\subsection{Families of Cuts}
 \label{sec:families-of-cuts}
 
 In this section we will introduce the families of inequalities
@@ -495,8 +495,8 @@ refer to \textcite{desaulniers2011}.
 For a more complete survey on the various non-robust cutting-planes
 proposed over the years for the CVRP refer to \textcite{costa2019}.
 
-\subsection{Solving the Pricing Problem}
-\label{sec:intro-solving-the-pricing-problem}
+\section{Solving the Pricing Problem}
+\label{sec:solving-the-pricing-problem}
 
 The Pricing Problem (PP) asks for the determination of an elementary shortest path,
 subject to resource constraints,

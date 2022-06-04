@@ -7,7 +7,7 @@ appears as the pricing sub-problem in column generation schemes
 for vehicle routing problems.
 Therefore, its study is of fundamental importance to
 engineer efficient branch-and-price frameworks.
-We refer the reader to \cref{sec:intro-solving-the-pricing-problem}
+We refer the reader to \cref{sec:solving-the-pricing-problem}
 for a literature review on the importance and methodologies
 for solving the pricing problem.
 
@@ -151,7 +151,7 @@ This section is dedicated to the discussion of the
 Elementary Shortest Path Problem with Capacity Constraints (ESPPCC)
 in the context of pricing for the CVRP.
 While we have already glimpsed at the general ESPPRC case of this problem in
-\cref{sec:column-generation-and-pricing-problem,sec:intro-solving-the-pricing-problem},
+\cref{sec:column-generation-and-pricing-problem,sec:solving-the-pricing-problem},
 we've never provided a formal description of the mathematical model.
 In this section we consider the basic version of the ESPPCC,
 i.e. non-robust inequalities at the RMP level are not considered.
@@ -179,7 +179,7 @@ contrary to the elementarity version,
 can be solved in pseudo-polynomial time with a much faster dynamic programming algorithm \parencite{desrochers1992}.
 Unfortunately,
 relaxing the elementarity condition leads to slower column generation and worsening of dual bounds,
-see previous discussion in \cref{sec:intro-solving-the-pricing-problem}.
+see previous discussion in \cref{sec:solving-the-pricing-problem}.
 
 \medskip
 
@@ -274,7 +274,7 @@ through the following relationship:
 Additional usage of robust inequalities (cuts or branching) manifest
 additional negative term contributions, through additional dual variables,
 directly to the reduced arc cost $\bar{c}_{ij}$.
-See previous discussion in \cref{sec:intro-branching-and-cut-generation-within-bap-frameworks}.
+See previous discussion in \cref{sec:branching-and-cut-generation-within-bap-frameworks}.
 
 A feasible path solution to the ESPPCC is a sequence $p = \Tuple*{p_0, p_1, \dots, p_s, p_{u+1}}$
 with $p_0 = s, \ p_{u + 1} = t$
@@ -438,7 +438,7 @@ while permitting the situation depicted in \cref{fig:espprc-example-non-elementa
 Modeling the pricing as an SPPCC, can greatly reduce
 the column generation running time, at the cost
 of generating significantly weaker dual bound improvements.
-Refer back to the discussion in \cref{sec:intro-solving-the-pricing-problem}
+Refer back to the discussion in \cref{sec:solving-the-pricing-problem}
 for more details.
 
 Additional valid inequalities and a branch-and-cut framework
