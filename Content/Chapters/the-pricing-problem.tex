@@ -1,7 +1,7 @@
 \chapter{The Pricing Problem}
 \label{sec:the-pricing-problem}
 
-As it was already discussed in \cref{sec:intro-branch-and-price},
+As it was already discussed in \cref{sec:branch-and-price},
 the Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
 appears as the pricing sub-problem in column generation schemes
 for vehicle routing problems.
@@ -53,12 +53,12 @@ we will introduce the CPTP along with an IP formulation and additional valid ine
 We will study the basic version of these two problems, namely
 non-robust inequalities altering the structure of the problem, are not considered.
 However, before diving directly to the discussion of these two problems,
-we will first dedicate the next section (\labelcref{sec:the-pricing-problem-literature-review})
+we will first dedicate the next section (\labelcref{sec:bac-approaches-for-the-pricing-problem})
 to review the few past contributions regarding
 the usage of branch-and-cut approaches for pricing.
 
-\subsection{Literature Review on Branch-and-Cut approaches applied to the Pricing Problem}
-\label{sec:the-pricing-problem-literature-review}
+\section{Literature Review on Branch-and-Cut approaches applied to the Pricing Problem}
+\label{sec:bac-approaches-for-the-pricing-problem}
 
 Label-correcting dynamic programming approaches
 dominate as the main approach to solve the (E)SPPRC in the context of pricing,
@@ -213,7 +213,7 @@ in our presentation we have preferred instead to re-adjust the more-general
 \textbf{directed} symmetric network based ESPPRC formulation
 provided in the works of \textcite{beasley1989, toth2002, toth2014}.
 For this reason we need to readjust/extend the
-mathematical notation that was originally provided for the undirected CVRP in \cref{sec:intro-cvrp-mathematical-notation}.
+mathematical notation that was originally provided for the undirected CVRP in \cref{sec:cvrp-mathematical-notation}.
 
 \medskip
 
@@ -518,7 +518,7 @@ where they laid the foundational framework for the CPTP.
 
 We provide a CPTP formulation, which closely follows the formulation provided in \textcite{jepsen2014}.
 In terms of mathematical notation, we will use and extend the original
-mathematical constructs introduced in \cref{sec:intro-cvrp-mathematical-notation} for the CVRP.
+mathematical constructs introduced in \cref{sec:cvrp-mathematical-notation} for the CVRP.
 
 Let $p_i \in \R,\ p \ge 0$ denote the profit associated in visiting a vertex $i \in V$.
 The profit function is directly linked to the dual variables $\pi \in \R^N$ associated to
@@ -614,7 +614,7 @@ Refer to the implementation details of \cref{sec:impl-separation-techniques}.
 
 The Rounded Capacity Constraints, RCC for short, were first presented
 for the CVRP  in \textcite{laporte1983}
-and were already presented in \cref{sec:intro-cvrp-two-index-flow-formulation}.
+and were already presented in \cref{sec:cvrp-two-index-flow-formulation}.
 
 Recall that $q(S) = \sum_{i \in S} q_i$ represents
 the total demand in serving all vertices in set $S \subseteq V$.

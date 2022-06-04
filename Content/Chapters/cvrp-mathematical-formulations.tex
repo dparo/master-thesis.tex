@@ -1,7 +1,7 @@
 \chapter{Mathematical formulations for the CVRP}
 \label{sec:cvrp-mathematical-formulations}
 
-In this section we present the CVRP through some very well known mathematical formulations.
+In this chapter we present the CVRP through some very well known mathematical formulations.
 These mathematical formulations are expressed through (Mixed) Integer Programming (MIP, IP)
 models.
 We present three total mathematical models:
@@ -26,8 +26,8 @@ state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020
 Another, less common formulation, based on a two-commodity flow description
 can be found in \textcite{baldacci2004}.
 
-\subsection{Mathematical notation}
-\label{sec:intro-cvrp-mathematical-notation}
+\section{Mathematical notation}
+\label{sec:cvrp-mathematical-notation}
 
 Before presenting each formulation we first need to define some basic notation
 and mathematical quantities that will be used throughout the remainder of the thesis.
@@ -88,8 +88,8 @@ Some variants of the basic version of the CVRP, not considered in this thesis, a
 or consider a heterogeneous fleet characterized by different capacities $Q_1, \dots, Q_k$.
 In the remainder of this section we introduce the two most common IP mathematical formulations for the classical version of the CVRP.
 
-\subsection{The two-index arc flow formulation}
-\label{sec:intro-cvrp-two-index-flow-formulation}
+\section{The two-index arc flow formulation}
+\label{sec:cvrp-two-index-flow-formulation}
 
 The two-index arc flow formulation (2F) was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
 and later generalized to the undirected case in \cite{laporte1986}.
@@ -175,8 +175,8 @@ to ensure the correctness of the optimal solution.
 \textcite{lysgaard2003cvrpsep} implements efficient
 heuristics for separating the CCC of \cref{eq:two-index-flow-ccc}.
 
-\subsection{The three-index arc flow formulation}
-\label{sec:intro-cvrp-three-index-flow-formulation}
+\section{The three-index arc flow formulation}
+\label{sec:cvrp-three-index-flow-formulation}
 
 When modeling more "colorful" variations of the CVRP,
 the two-index arc flow model falls short in providing sufficient descriptive power.
@@ -244,8 +244,8 @@ When modeling homogeneous fleets CVRPs the 3F model suffers from a multiplicity 
 In fact, since all the vehicles share the same capacity,
 new feasible solutions can be obtained through symmetry by simply permuting the identity $k \in \mcK$ of each truck.
 
-\subsection{The Set Partitioning (SP) formulation}
-\label{sec:intro-set-partition-formulation}
+\section{The Set Partitioning (SP) formulation}
+\label{sec:set-partitionining-formulation}
 
 The Set Partitioning (SP) formulation,
 sometimes also called Path Flow formulation,
