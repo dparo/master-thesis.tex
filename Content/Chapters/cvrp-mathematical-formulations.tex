@@ -1,0 +1,328 @@
+\chapter{Mathematical formulations for the CVRP}
+\label{sec:cvrp-mathematical-formulations}
+
+In this section we present the CVRP through some very well known mathematical formulations.
+These mathematical formulations are expressed through (Mixed) Integer Programming (MIP, IP)
+models.
+We present three total mathematical models:
+
+\begin{enumerate}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
+
+	\item The two-index arc flow formulation \parencite{laporte1983, laporte1985, laporte1986}.
+	\item The three-index arc flow formulation \parencite{golden1977}.
+	\item The Set Partitioning (SP) formulation \parencite{balinski1964}.
+\end{enumerate}
+
+The first two formulations, traditionally designed
+for branch-and-cut (\textbf{BAC}) algorithms, employ a polynomial number of variables
+but use an exponential number of constraints.
+The latter formulation, instead, makes use of a polynomial number of constraints,
+but uses an exponential number of variables.
+Despite the SP formulation being older, in later years thanks to algorithmic advances
+and the development of efficient branch-and-price (\textbf{BAP}) frameworks, it has become the de facto
+state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020}).
+Another, less common formulation, based on a two-commodity flow description
+can be found in \textcite{baldacci2004}.
+
+\subsection{Mathematical notation}
+\label{sec:intro-cvrp-mathematical-notation}
+
+Before presenting each formulation we first need to define some basic notation
+and mathematical quantities that will be used throughout the remainder of the thesis.
+
+The CVRP is traditionally described as a node routing problem modeled through a symmetric and complete graph theoretical problem,
+where: (i) the vertices of the network represent the customers and the depot,
+(ii) the edges represent road interconnections.
+Let $G = \Tuple*{V, E}$ denote a \textbf{complete undirected network}, where $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
+$E = \Set*{e = \Set*{i, j} = \Set*{j, i} \mid \allowbreak i,j \in V, \allowbreak i \ne j}$ the set of undirected edges,
+and $N$ the total number of nodes in the network.
+The value $0 \in V$ is used to denote the depot node.
+The edge set $E$ has size $|E|$, which can be computed through combinatorial enumeration: $|E| = \frac{N (N+1)}{2}$.
+For convenience, we define $V_0 = V \setminus \Set*{0}$ to express the set of customers,
+and $N_0 = N - 1$ to denote the total number of customers.
+Let $\delta(S)$ with $S \subseteq V$ denote the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
+More formally we can express $\delta(S)$ as $\delta(S) = \Set*{ e = \Set*{i, j} = \Set*{j, i} \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
+For brevity, we also define $\delta(i) = \delta(\Set*{i})$ to denote the set of edges incident to node $i \in V$.
+We also define $E(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in E \mid i, j \in S}$ to denote the set of edges having both end points in set $S \subseteq V$.
+
+Let $q_{i} \in \R,\ q_{i} \ge 0 \quad \forall i \in V$ denote the demand function, which represent the required demand that need to be served for vertex $i \in V$.
+For convenience, we fix a fictitious demand for the depot: $q_0 = 0$.
+Given a set $S \subseteq V$, we define $q(S) = \sum_{i \in S} q_i$ as the total demand of the set $S \subseteq V$.
+Let $c_{ij} \in \R, c_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
+The loop arcs $\Set*{i, i} \notin E$ in CVRP are traditionally not allowed, thus we fix $c_{ii} = \infty$.
+We assume a Euclidean CVRP problem, i.e. the distance function is symmetric $c_e = c_{ij} = c_{ji}$ and satisfies the triangle inequality $c_{ij} \le c_{ih} + c_{hj}$.
+We are also given the total number of identical trucks $K \in \N_+$ and an upper bound $Q \in \R_+$ representing the capacity of each truck.
+For convenience of notation, we also define $\mcK = \Set*{1, \dots, K}$ to denote the set of trucks.
+Given a set $S \subseteq V_0$, we denote by $r(S)$ as the minimum number of vehicles required to serve all customers $i \in S$.
+The value of $r(S)$ can be obtained by solving an NP-hard Bin Packing Problem associated with the CVRP and set $S$.
+As we will see later, it is often simpler to link $r(S)$ to the trivial lower bound of the Bin Packing Problem \parencite{martello1990}:
+
+\begin{equation}
+	r(S) \ge \ceil*{\frac{q(S)}{Q}}
+\end{equation}
+
+A route $p$ is a loop-back sequence $p = \Tuple*{p_0, p_1, \dots, p_u, p_{u + 1}}$,
+with $p_0 = p_{u + 1} = 0$
+in which $\Set*{p_1, \dots, p_u} \subseteq V_0$ customers are visited.
+The route $p$ has a travel cost of $c_p = c(p) = \sum_{i=0}^{u} c_{p_i,p_{i+1}}$
+with resource consumption $q_p = q(p) = \sum_{i=0}^{u} q_{i}$.
+A feasible solution to a CVRP problem consists of \textbf{exactly} $K$ routes (or circuits)
+associated with each vehicle starting and ending at the depot node.
+The traditional definition of CVRP requires full use of the total number of available vehicles $K$,
+however,
+this requirement can lead to suboptimal solutions with respect to using fewer vehicles for some cases.
+In classic CVRP, each customer is visited exactly once (elementarity condition),
+and the sum of the customer demands visited in each tour does not exceed the vehicle capacity $q(p) \le Q$.
+An optimal solution to the CVRP is a feasible solution which minimizes the sum of the overall edge weights across all the tours.
+
+\medskip
+
+The TSP can be considered a special case of CVRP where $Q \ge q(V)$ and $K = 1$.
+Therefore, all the relaxations and many results obtained for the TSP are valid, or at least extendable, to the CVRP.
+
+\medskip
+
+Some variants of the basic version of the CVRP, not considered in this thesis, allows using only a subset of the total available vehicles,
+or consider a heterogeneous fleet characterized by different capacities $Q_1, \dots, Q_k$.
+In the remainder of this section we introduce the two most common IP mathematical formulations for the classical version of the CVRP.
+
+\subsection{The two-index arc flow formulation}
+\label{sec:intro-cvrp-two-index-flow-formulation}
+
+The two-index arc flow formulation (2F) was first presented in \cite{laporte1983, laporte1985} for the symmetric case,
+and later generalized to the undirected case in \cite{laporte1986}.
+
+The two-index arc flow formulation is traditionally tackled with branch-and-cut frameworks.
+We define a set of integer variables $x_e \in \Set*{0, 1, 2}$ to indicate the number of times
+a vehicle traverses edge $e = \Set*{i, j} = \Set*{j, i} \in E$ in the optimal solution.
+There are $O(N^2)$ number of integer variables in the model.
+The two-index arc flow formulation can be described as an Integer Programme (IP):
+
+\begin{align}
+	\min_{x} \quad z_\mt{2F}(x) & = \sum_{e \in E} c_e x_e \label{eq:two-index-flow-obj-func}                                                                                        \\
+	                            & \sum_{e \in \delta(i)} x_e = 2                              & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer}    \\
+	                            & \sum_{e \in \delta(0)} x_e = 2 K                            & \label{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}                     \\
+	                            & \sum_{e \in \delta(S)} x_e \ge 2 r(S)                       & \quad \forall S \subseteq V_0,\ |S| \ge 1 \label{eq:two-index-flow-ccc}              \\
+	                            & x_e                   \in \Set*{0, 1, 2}                    & \quad \forall e \in \delta(0) \label{eq:two-index-flow-x-mip-var-bounds-depot}       \\
+	                            & x_e                   \in \Set*{0, 1}                       & \quad \forall e \in E \setminus \delta(0) \label{eq:two-index-flow-x-mip-var-bounds}
+\end{align}
+
+where $z_\mt{2F}(x)$, as defined in \eqref{eq:two-index-flow-obj-func}, is the objective function meant to minimize the overall routing cost (travel time).
+Constraint \eqref{eq:two-index-flow-two-edges-incident-per-customer} is the degree constraint which imposes flow conservation: exactly two incident edges must be picked for each customer.
+Constraint \eqref{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}, is the degree constraint at the depot, it forces that exactly $2K$ incident edges at the depot are picked, thus forcing exactly $K$ routes to be constructed.
+Constraints \eqref{eq:two-index-flow-x-mip-var-bounds-depot} and \eqref{eq:two-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
+except for all edges incident at the depot.
+The edge-case modeled in constraint \eqref{eq:two-index-flow-x-mip-var-bounds-depot} is necessary to allow single-customer routes.
+Constraint \eqref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Constraints (CCC), also called Rounded Capacity Constraints (RCC), they function both:
+(i) as Subtour Elimination Constraints (SECs), by imposing connectivity of the solution by avoiding the formation of spurious unconnected subtours,
+and (ii) as a capacity constraint, by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
+Recall that, $r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$,
+also, $r(S)$ always satisfies $r(S) \ge 1$ for non-trivial CVRP instances: $q(S) > 0$.
+
+It was shown in \textcite{martello1990knapsack, cornuejols1993}, that it is possible to replace $r(S)$ in constraint
+\eqref{eq:two-index-flow-ccc}, with the much simpler Bin Packing Problem lower bound $\ceil*{q(S) / Q}$
+thus obtaining the following inequality:
+
+\begin{equation}
+	\label{eq:two-index-flow-ccc-bpp-lb}
+	\sum_{e \in \delta(S)} x_e \ge 2 \ceil*{\frac{q(S)}{Q}}   \quad \forall S \subseteq V_0, |S| \ge 1
+\end{equation}
+
+The looser inequality of \cref{eq:two-index-flow-ccc-bpp-lb} is sufficient to optimally solve
+the two-index arc flow formulation.
+Although, a better lower bound for the Bin Packing Problem can improve the linear
+relaxation, thus reducing the number of branching occurrences.
+
+The CCC constraints in \cref{eq:two-index-flow-ccc}, may be transformed in the so called Generalized Subtour Elimination Constraints (GSEC) \parencite{laporte1985},
+by means of the degree constraints of \cref{eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
+
+\begin{equation}\label{eq:cvrp-2flow-gsec}
+	\sum_{e \in E(S)} x_{ij} \le |S| - r(S) \quad \forall S \subseteq V_0,\ |S| \ge 1
+\end{equation}
+
+where, again, $r(S)$ may be replaced by the trivial Bin Packing Problem lower bound $\ceil*{q(S) / Q}$.
+
+The GSEC avoid the formation of spurious unconnected subtours and impose that at least $r(S)$ edges leave set $S$.
+The number of GSEC (or CCC) inequalities appear in exponential number in the two-index formulation model,
+thus making a direct solution of the linear relaxation impractical.
+To overcome this issue, it is possible to avoid adding the GSEC inequalities statically in the model.
+Instead, an appropriate cutting-plane algorithm and separation procedure may be employed to generate dynamically
+only the necessary (violated) GSECs constraints
+during the running time of the branch-and-cut algorithm,
+
+Another approach is to avoid the usage of the exponential number of SECS entirely.
+This is the approach taken by the so-called compact models (see \cite{miller1960, christofides1979vehicle, desrochers1991}).
+These models make use of a polynomial number of constraints.
+Unfortunately these compact formulations are known to produce significantly weaker linear relaxations.
+In fact, it has been mathematically proven,
+that the SECs are very strong for the TSP: they are facet-defining for the polytope;
+i.e. they uniquely characterize the convex-hull \parencite{grotschel1975}.
+However, similar mathematical proofs cannot be extended to the CVRP,
+since due to the more complex structure of this generalized problem,
+little satisfactory results have been obtained in studying the polyhedral characteristics
+for even the standard variation of the VRP, see \textcite{campos1991, cornuejols1993}.
+
+Unfortunately, as it was proven in \textcite{augerat1995} the separation problem
+for the capacity cut constraints is NP-complete, thus limiting the applicability
+of this formulation for solving the CVRP.
+For this reason, some authors \parencite{augerat1995, augerat1998, ralphs2003} designed
+several fractional separation heuristics for the CCC.
+However,
+an exact CCC separation is required for integral solutions
+to ensure the correctness of the optimal solution.
+\textcite{lysgaard2003cvrpsep} implements efficient
+heuristics for separating the CCC of \cref{eq:two-index-flow-ccc}.
+
+\subsection{The three-index arc flow formulation}
+\label{sec:intro-cvrp-three-index-flow-formulation}
+
+When modeling more "colorful" variations of the CVRP,
+the two-index arc flow model falls short in providing sufficient descriptive power.
+For example,
+the simple CVRP variant where the fleet of trucks is heterogeneous
+and characterized by capacities $Q_1, \dots, Q_K$,
+cannot be described with the two-index arc flow formulation,
+since there's no clear one-to-one mapping on which truck crosses an edge $e \in E$.
+
+The three-index arc flow formulation (3F),
+first presented in \textcite{golden1977},
+fixes this issue.
+The 3F formulation makes use $O(N^2 K + N K)$ integer variables.
+A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e = \Set*{i, j} \in E,\ k \in \mcK$
+is used to encode the number of times a truck $k$ traverses an edge $e \in E$.
+Another set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$
+is used to model whether truck $k$ covers a node $i \in V$.
+
+The three-index arc flow formulation can be described as an Integer Programme (IP):
+
+\begin{align}
+	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} c_{e} x_{ek} \label{eq:three-index-flow-obj-func}                                                                                                                           \\
+	                                  & \sum_{k \in \mcK} y_{ik} = 1                                                         & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited}  \\
+	                                  & \sum_{k \in \mcK} y_{0k} = K                                                         & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                               \\
+	                                  & \sum_{e \in \delta(i)} x_{ek} = 2 y_{ik}                                             & \quad \forall i \in V,\ \forall k \in \mcK \label{eq:three-index-flow-force-visited-customer-if-flow}                   \\
+	                                  & \sum_{i \in V} q_i y_{ik} \le Q                                                      & \quad \forall k \in \mcK \label{eq:three-index-flow-force-resource-upper-bound}                                         \\
+	                                  & \sum_{e \in \delta(S)} x_{ek} \ge 2 y_{hk}                                           & \quad \forall h \in S,\ \forall S \subseteq V_0,\ |S| \ge 2,\ \forall k \in \mcK \label{eq:three-index-flow-secv1}      \\
+	                                  & x_{ek}                   \in \Set*{0, 1, 2}                                          & \quad \forall e \in \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds-depot}       \\
+	                                  & x_{ek}                   \in \Set*{0, 1}                                             & \quad \forall e \in E \setminus \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds} \\
+	                                  & y_{ik}                    \in \Set*{0, 1}                                            & \quad \forall i \in V,\ \forall k \in \mcK  \label{eq:three-index-flow-y-mip-var-bounds}
+\end{align}
+
+where $z_\mt{3F}(x, y)$, as defined in \eqref{eq:three-index-flow-obj-func}, is the objective function to be minimized (i.e. the overall travel distance).
+Constraint \eqref{eq:three-index-flow-all-customers-visited} forces all customers to be served exactly once.
+Constraint \eqref{eq:three-index-flow-tour-starts-and-ends-at-depot} forces all the truck tours to start at the depot and end at the same spot.
+Constraint \eqref{eq:three-index-flow-force-visited-customer-if-flow} binds the $y_{ik}$ variables to the corresponding $x_{ijk}$ variables, by ensuring that if a truck's route passes through a vertex, then the corresponding node is marked as visited.
+Constraint \eqref{eq:three-index-flow-force-resource-upper-bound} is the capacity upper bound constraint and it ensures that the demand served by each truck does not exceed the truck capacity.
+Constraints \eqref{eq:three-index-flow-secv1} are the Generalized Subtour Elimination Constraints (GSECs), they impose the connectivity of the route and are used to avoid the formation of spurious unconnected subtours.
+Constraints \eqref{eq:three-index-flow-x-mip-var-bounds-depot} and \eqref{eq:three-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
+except for all edges incident at the depot.
+The edge-case modeled in constraint \eqref{eq:three-index-flow-x-mip-var-bounds-depot}
+is necessary to allow single-customer routes.
+Finally, constraint \eqref{eq:three-index-flow-y-mip-var-bounds}
+bounds and forces integrality for the $y_{ik}$ binary variables.
+
+Constraint \eqref{eq:three-index-flow-secv1} may be replaced in an equivalent form
+with traditional (non generalized) TSP subtour elimination constraints (see \textcite{fisher1981}):
+
+\begin{equation}\label{eq:three-index-flow-secv2}
+	\sum_{e \in E(S)} x_{ek} \le |S| - 1 \quad \forall S \subseteq V_0, |S| \ge 2,\ \forall k \in \mcK
+\end{equation}
+
+Since the number of (G)SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
+
+The three-index arc flow model generalizes the two-index version.
+In fact, the two-index arc flow model may be viewed as a special case of the three-index by aggregating
+all $x_{ek}$ into a single variable $x_e$:
+
+\begin{equation}
+	x_e = \sum_{k \in \mcK} x_{ek} \quad \forall e \in E
+\end{equation}
+
+However, the three-index arc flow formulation suffers a major downside compared to the two-index version.
+When modeling homogeneous fleets CVRPs the 3F model suffers from a multiplicity of the solution space.
+In fact, since all the vehicles share the same capacity,
+new feasible solutions can be obtained through symmetry by simply permuting the identity $k \in \mcK$ of each truck.
+
+\subsection{The Set Partitioning (SP) formulation}
+\label{sec:intro-set-partition-formulation}
+
+The Set Partitioning (SP) formulation,
+sometimes also called Path Flow formulation,
+is an extended formulation, which was originally presented in \textcite{balinski1964}.
+It works substantially differently from the two/three-index arc flow formulation
+or many other commonly encountered IP models.
+The SP formulation uses a very small number of constraints
+while offloading much of the search-space complexity to an exponential number of binary variables.
+
+The SP formulation can be viewed as a Dantzig-Wolfe decomposition \parencite{dantzig1960}
+and commodity aggregation \parencite{desaulniers1998}
+of the three-index arc flow formulation.
+The Dantzig-Wolfe reformulation approach is an application of a
+decomposition principle where one chooses to solve many smaller sizes
+structured sub-problems instead of being confronted to
+the original problem resolution complexity are beyond what can be
+solved in reasonable time \parencite{vanderbeck2005}.
+Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes.
+Let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is selected.
+Let $a_{ip}, a_{ep} \in \Z$ be "static encodings" (integer coefficients)
+for a route $p \in P$ that respectively count
+the number of times vertex $i \in V$ or an edge $e \in E$ is covered.
+
+We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$,
+which can be trivially computed in $O(N)$.
+The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included in the optimal solution.
+
+The SP formulation is described through an Integer Programme (IP):
+
+\begin{align}
+	\min_{\lambda} \quad z_\mt{SP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:set-partitioning-obj-func}                                                                                                                                           \\
+	                                        & \sum_{p \in P} \lambda_{p} = K\label{eq:set-partitioning-K-routes}                                                                                                                                             \\
+	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1                                 & \quad \forall i \in V_0                                              \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
+	                                        & \lambda_p                    \in \Set*{0, 1}                         & \quad \forall p \in P \label{eq:set-partitioning-lambda-mip-var-bounds}
+\end{align}
+
+where, $z_\mt{SP}(\lambda)$, as defined in \eqref{eq:set-partitioning-obj-func} is the objective function to be minimized (i.e. the overall travel distance).
+Constraint \eqref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be covered by exactly one route.
+Constraint \eqref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are selected.
+Finally, constraint \eqref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for binary variables $\lambda_p \ \forall p \in P$.
+
+As one may guess,
+due the exponential number of binary variables,
+the SP formulation cannot be instantiated nor directly solved.
+However,
+a variant of the SP formulation can be tackled efficiently by Column Generation (CG) approaches
+embedded inside a branch-and-price (BAP) framework.
+Branch-and-price frameworks and column generation have been applied
+with high success to the vehicle routing problems.
+
+As, \textcite{toth2002} point out, if the distance matrix satisfies the triangle inequality,
+than it is possible to rewrite the SP formulation into a totally equivalent Set Covering (SC) formulation
+by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route} in favor of the simpler inequality:
+
+\begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
+	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0
+\end{equation}
+
+The set of feasible paths $p \in P$ in the SC formulation
+become all non-elementary routes that respect the vehicle capacity.
+Under the triangle inequality assumption,
+any feasible solution for the SP formulation is also feasible for the SC formulation.
+Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
+
+\medskip
+
+The SP formulation has two main advantages.
+First, its linear relaxation provides excellent lower bounds \parencite{bramel1997},
+compared to the two or three arc flow formulation.
+Second, it can handle many VRP variants,
+even described through very complex constraints,
+since their definitions are captured within the definition of the set $P$ itself.
+
+\medskip
+
+In the next sections we will introduce
+the branch-and-price (BAP) framework and the Column Generation (CG) approach,
+key components employed in contemporary CVRP solvers.
+Refer to \textcite{vanderbeck2005, lubbecke2005} for a review on column generation
+approaches to solve generic MIP problems.

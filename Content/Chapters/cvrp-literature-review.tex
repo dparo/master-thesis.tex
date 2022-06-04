@@ -1,0 +1,151 @@
+\chapter{Literature Review on CVRP exact methods}
+\label{sec:intro-literature-review}
+
+\textcite{dantzig1959},
+the pioneers of the contemporary vehicle routing problem,
+introduce for the first the CVRP problem to the masses.
+A few years later, \textcite{clarke1964} proposes
+an effective greedy heuristic algorithm for tackling the CVRP.
+The presentation of this new problem led to a whole new branch
+of scientific research within the operations research community.
+In the last 60 years, a huge number of contributors in
+the operations research community have studied and proposed many
+mathematical models and algorithms, both exact and (meta-)heuristic,
+for solving the VRP.
+
+Up to the late 1980s, the exact approaches for tackling the CVRP was
+based on tree-search algorithms employing branch-and-bound schemes
+(see \textcite{pierce1969, christofides1969, christofides1981exact, laporte1986}),
+sometimes employing Lagrangian duality relaxation (see \textcite{fisher1994, miller1995}),
+or additive bounding procedures (see \textcite{fischetti1994a, hadjiconstantinou1995}).
+
+From the 1980s to the first 2000s, some authors applied branch-and-cut
+algorithms to the VRP.
+\textcite{laporte1983, laporte1985}, propose the two-index arc flow formulation
+and a branch-and-cut algorithm to solve it.
+Later \textcite{augerat1995approche}, proposed a branch-and-cut scheme
+integrating additional valid inequalities.
+Later, \textcite{lysgaard2004},
+proposed a branch-and-cut framework and
+a set of improved separation procedures for
+the valid inequalities that were known at the time.
+Other notable branch-and-cut-price based contributions
+can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004}.
+\citeauthor{baldacci2004} was able to solve a
+135 customers-sized problem from the F family of routing instances \textcite{fisher1994}
+for the first time.
+
+Regardless, these new works based on branch-and-cut frameworks, showed that CVRP instances
+with even a few customers (less than 100) proved
+to be very challenging to solve exactly.
+
+One of the very few first attempts at applying
+the SP formulation and a column generation scheme can
+be attributed to \textcite{desrosiers1984, agarwal1989setpartitioningbased}.
+These authors, showed that the column generation scheme proved
+very satisfactory to solve the VRPTW under tight constraints,
+but at that time, did not achieve satisfactory results for the CVRP.
+Therefore, until the first 2000s, the branch-and-cut approaches
+were deemed to be the best approach for solving the CVRP.
+
+In \citeyear{desrochers1992}, \citeauthor{desrochers1992}
+proposed the dynamic programming based label correcting algorithm for the SPPRC,
+and devised it inside a branch-and-price scheme to tackle the VRPTW.
+This labeling algorithm still constitutes the major core ingredient
+of modern BPC schemes to efficiently solve the pricing problem.
+\textcite{kohl1999}, later generalized in \cite{desaulniers2008}, introduce the
+2-paths inequalities, and were one of the first attempts to integrate
+cutting-planes within a BAP framework for solving the CVRP.
+
+One of the major breakthrough in column generation and VRP research
+was obtained in \textcite{fukasawa2006}, which were the
+first authors to propose a branch-price-and-cut (BPC) algorithm,
+embedding a powerful robust-cuts based cutting-plane approach
+typically found in BAC algorithms.
+\citeauthor{fukasawa2006} integrated the cutting-planes proposed in \cite{lysgaard2004},
+and the column generation considered only q-routes with $k$-cycles elimination.
+\textcite{fukasawa2006} was able to solve all CVRP instances up to approximately 100 customers.
+Since the work of \citeauthor{fukasawa2006} until now, column generation
+and the label-setting algorithm have been the de-facto procedures
+of modern and efficient VRP solvers.
+
+Later, \textcite{baldacci2008}, proposed a slightly different approach w.r.t. \textcite{fukasawa2006}.
+They employ a column generation considering elementary routes and additional inequalities.
+\citeauthor{baldacci2008} employed a bounding procedure to quickly
+improve the dual bound while also reducing the number
+of pricing iterations and the number of columns to take into consideration.
+Instead of branching, they employed full enumeration of the candidate
+routes and use a MIP package to solve the associated problem at the root node.
+\textcite{pessoa2008} improves over the work of \textcite{fukasawa2006}
+by integrating the work of \textcite{baldacci2008}
+through an hybridization between traditional branching and enumeration.
+\textcite{contardo2011} instead it takes a different approach.
+It considers q-routes with 2-cycle eliminations, and non-robust
+k-CECs cuts are used to enforce elementarity.
+
+\textcite{baldacci2011} propose the ng-routes, a very effective
+partial (soft) elementarity constraint employed in modern VRP solvers,
+that trade-offs the elementarity condition (i.e. good dual bound in pricing)
+for a simpler pricer problem.
+\textcite{ropke2012} revisits the work \citeauthor{fukasawa2006} and applies
+the ng-routes relaxation and strong branching schemes.
+
+\textcite{contardo2014} improve over \textcite{contardo2011}
+by proposing an effective enumeration scheme and employed
+q-routes with 2-cycle elimination, ng-routes with ng-set size 8,
+non-robust k-CECs cuts to avoid larger cycles
+and the decremental state space relaxation technique.
+With this approach they were able to solve CVRP instances made of 151 customers.
+
+\textcite{martinelli2014} extends the decremental state space relaxation
+to handle ng-sets.
+In their approach the size of the ng-sets size
+is enlarged dynamically in order to seek for more effective dual bounds.
+
+Another modern BCP algorithm was proposed in \textcite{pecin2017improved}.
+By using a bidirectional label setting algorithm,
+lm-SRCs cuts, modern dual smoothing and enumeration approaches
+and the ng-routes relaxation, they were able to solve CVRP instances made of 200 customers
+and also some instances up to 360 customers.
+\textcite{pecin2017new} extends the work of \textcite{pecin2017improved} to the VRPTW variant.
+At the day of writing, \textcite{pessoa2018enhanced, pessoa2020generic} are the current state-of-the-art
+BCP frameworks based on column generation with ng-routes relaxation
+for solving the CVRP problem.
+\textcite{pessoa2020generic} was able to solve to optimality six opened
+CVRP instances of up to 548 customers from the instances of family set X \parencite{uchoa2017}.
+
+Thanks to the major advancements on the past decades
+on exact BPC algorithms
+have led to exact solutions of CVRP problems composed of
+more than 300 customers \parencite{costa2019}.
+
+\begin{comment}
+\cite{jepsen_branch-and-cut_2011}
+
+Before 1980 very few exact algorithms for cvrp and vrptw had been
+proposed, but in the early 1980s two new exact methods where proposed.
+From this point the history of exact methods for cvrp and vrptw can
+be divided into three phases. The first phase was the introduction of the
+Set Partition and the development of Branch-and-Cut-and-Price (bp) algo-
+rithms using a relaxed pricing problem. The second was the development of
+Branch-and-Cut (bac) algorithms. In the current phase the pricing problem
+is no longer relaxed and cuts in the master problem of the Branch-and-Cut-
+and-Price algorithms is used. The first two phases where started at the same
+point in time and there is still development on the algorithms in the context
+of cvrp and vrptw. The algorithms from these two phases are also used
+on several other variants of the Vehicle Routing Problem. The third phase
+was started in the middle of the 2000s and the algorithms from this phase
+are currently the best overall performing algorithms.
+\end{comment}
+
+\begin{comment}
+\textcite{irnich2005}
+4.1.1 Label Setting and Label Correcting Algorithms
+The defining property of a
+label setting algorithm is that those labels chosen to be extended (in the path extension step)
+are kept until the end of the labeling process. They will not be identified as discardable in
+subsequent calls of the dominance algorithm. Labeling algorithms that do not guarantee
+this behavior are called label correcting algorithms. The general ideas of label setting as
+well as label correcting algorithms in the context of the one-dimensional shortest path
+problem (SPP) are, for instance, explained in the book of Ahuja et al. (1993).
+\end{comment}
