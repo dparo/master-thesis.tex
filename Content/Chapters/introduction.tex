@@ -19,21 +19,21 @@ where a homogeneous fleet composed of a fixed number of trucks, subject to capac
 need to serve customer demands of a single good (i.e. delivery of gasoline to gas stations).
 Given as input: a weighted graph representing the road network,
 the customer demands and the vehicle capacity,
-the problem consists in determining a set of routes, one for each vehicle,
+the problem consists in determining a set of non-oriented routes, one for each vehicle,
 of minimal overall travel distance starting and ending at the depot.
 The set of routes need to serve all the customers in the road network exactly once and no more
-\parencite{toth2014}.
+while satisfying the vehicle capacity bound \parencite{toth2014}.
 A diagram showing an example of a CVRP problem along with one of its feasible solution
 is provided in \Cref{fig:cvrp-optimal-solution-example}.
 
-\begin{figure}[ht]
+\begin{figure}[t]
 	\centering
 	\includegraphics[width=12cm]{Imgs/P-n40-k5-solution.out.cropped.pdf}
 	\caption{An example of a feasible solution to a CVRP problem (instance named P-n40-k5).
-		There are 39 customers to be served and 5 available trucks with capacity $140$ each. Each color
-		represents a different route taken by each truck and the colored dots
-		represents the customers served on each route.
-		The larger black dot represents the central facility (the depot).
+		There are 39 customers to be served and $5$ available trucks with capacity $140$ each.
+		Each color in the picture represents a different route traveled by each truck.
+		The colored dots, instead, represent the customers served by each truck in its respective route.
+		The larger black dot at the center represents the depot, i.e. the point where each route starts and must end.
 		Credits: \url{http://vrp.galgos.inf.puc-rio.br/index.php/en/plotted-instances?data=P-n40-k5}.
 	}
 	\label{fig:cvrp-optimal-solution-example}
