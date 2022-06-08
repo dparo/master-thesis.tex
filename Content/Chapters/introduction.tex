@@ -6,9 +6,9 @@
 
 The Capacitated Vehicle Routing Problem (\textbf{CVRP}), first presented in \textcite{dantzig1959}
 under the name of "truck dispatching problem",
-is one of the most studied combinatorial optimization routing problem.
-The CVRP is an NP-hard (in the strong sense) problem which can be considered a generalization
-of the well-known Travelling Salesman Problem (TSP).
+is one of the most studied combinatorial optimization routing problems.
+The CVRP is an NP-hard (in the strong sense) problem
+that can be considered a generalization of the well-known Travelling Salesman Problem (TSP).
 The TSP \parencite{flood1956}
 is an NP-hard \parencite{garey1976planar} ubiquitous combinatorial optimization problem in the operations research field,
 that asks for the determination of a Hamiltonian circuit of minimum cost
@@ -21,18 +21,19 @@ Given as input: a weighted graph representing the road network,
 the customer demands and the vehicle capacity,
 the problem consists in determining a set of non-oriented routes, one for each vehicle,
 of minimal overall travel distance starting and ending at the depot.
-The set of routes need to serve all the customers in the road network exactly once and no more
+The set of routes needs to serve all the customers in the road network exactly once and no more
 while satisfying the vehicle capacity bound \parencite{toth2014}.
-A diagram showing an example of a CVRP problem along with one of its feasible solution
+A diagram showing an example of a CVRP problem along with its optimal solution
 is provided in \Cref{fig:cvrp-optimal-solution-example}.
 
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=12cm]{Imgs/P-n40-k5-solution.out.cropped.pdf}
-	\caption{An example of a feasible solution to a CVRP problem (instance named P-n40-k5).
+	\caption{An example of a optimal solution to a CVRP problem (instance named P-n40-k5).
 		There are 39 customers to be served and $5$ available trucks with capacity $140$ each.
 		Each color in the picture represents a different route traveled by each truck.
 		The colored dots, instead, represent the customers served by each truck in its respective route.
+		For cleanliness of the picture, the customer demands are not depicted.
 		The larger black dot at the center represents the depot, i.e. the point where each route starts and must end.
 		Credits: \url{http://vrp.galgos.inf.puc-rio.br/index.php/en/plotted-instances?data=P-n40-k5}.
 	}
@@ -41,59 +42,51 @@ is provided in \Cref{fig:cvrp-optimal-solution-example}.
 
 Studying effective solution methods for the CVRP may lead to tremendous real-world economic
 savings for the management of the provision of goods or services in a distribution system.
-Optimal delivery planning can reduce the overall transportation and good costs while
+Optimal delivery planning can reduce the overall transportation and goods cost while
 also reducing the waiting time experienced by the customers.
-Therefore, studying optimal efficient algorithms and mathematical models for
+Therefore, studying efficient exact algorithms and mathematical models for
 solving and describing real-world distribution problems,
 becomes of vital importance
 for the operational management of a cost-efficient planning process \parencite{toth2002,toth2014}.
 
-The CVRP belongs to the wider class of problems known as the Vehicle Routing Problems (VRPs).
-There are many variations of VRPs proposed in the literature such as
+The CVRP belongs to the broader class of problems known as the Vehicle Routing Problems (VRPs).
+There are many variations of VRPs proposed in the literature, such as
 the Vehicle Routing Problem with Time Windows (VRPTW), and many others.
-In the VRPTW \parencite{schrage1981} the vehicles are subject to capacity constraints and
-each customer is associated with a time window slot in which it can be served,
+In the VRPTW \parencite{schrage1981}, the vehicles are subject to capacity constraints
+and must serve each customer within a time window slot.
 Nonetheless, CVRP is the simpler VRP variant to describe,
 and yet to this day, it remains the most central and studied routing problem.
-For a more complete taxonomy on the many VRP variants refer to \textcite{eksioglu2009, braekers2016}.
+For a comprehensive taxonomy of the many VRP variants, refer to \textcite{eksioglu2009, braekers2016}.
 
-While effective (meta)heuristic algorithms have been proposed and applied
+While effective (meta-)heuristic algorithms have been proposed and applied
 successfully to many VRP variants to obtain good-enough solutions
-in reduced computation time, in this thesis we are mainly concerned
+in reduced computation time, in this thesis, we are mainly concerned
 with exact algorithms for solving the CVRP.
-Major contributions employing heuristics for the VRP can be found, among others, in
+We can find major contributions employing heuristics for the VRP, among others, in
 \textcite{clarke1964, desrochers1989matching, paessens1988savings, foster1976integer}.
-Metaheuristics approaches for the VRP can be found, among others, in
-\textcite{gendreau1994tabu, cordeau2012parallel, toth2003granular, li2005very, pisinger2007, kytojoki2007efficient, nagata2009,vidal2012, subramanian2013}.
-For a more complete survey on (meta)heuristics for the VRP refer to
+Meta-heuristics approaches for the VRP can be found in
+\textcite{gendreau1994tabu, cordeau2012parallel, toth2003granular, li2005very, pisinger2007, kytojoki2007efficient, nagata2009,vidal2012, subramanian2013},
+just to name a few.
+For a more complete survey on (meta-)heuristics for the VRP, refer to
 \textcite{golden1998impact,gendreau2002metaheuristics,gendreau2008,laporte2014chapter,elshaer2020taxonomic}.
 Exact algorithms are usually slower than (meta-)heuristics, but given
 enough computation time, they can produce a proven optimal solution.
-This is achieved by closing the primal-dual bound gap of the objective function.
+They achieve this by closing the primal-dual bound gap of the objective function.
 
 \medskip
 
-For a fairly complete survey regarding the entire VRP class, we highly suggest
-the fairly complete book \citetitle{toth2014} of \textcite{toth2014}.
+For a complete overview/survey on the CVRP and VRPTW problems,
+along with other common VRP variants,
+we highly suggest the book "\citetitle{toth2014}" of \textcite{toth2014}.
 This book served as a good reference and played a central role
-in laying out this introductory chapter.
-Other surveys on the matter can be found in the works of \textcite{cordeau2007, baldacci2012, caceres-cruz2015, costa2019}.
-
-\medskip
-
-CVRP is usually defined more rigorously through an Integer Programming (IP) formulation.
-The IP formulation is a mathematical optimization tool
-which can describe combinatorial optimization problems
-through the usage of constraints, usually defined through linear inequalities.
-The constraints limit the solution space of the optimization problem.
-IP formulations also list a set of decision variables and a linear objective function to be optimized.
-In the next section we will provide a more rigorous mathematical
-description of the CVRP, and we will present its most commonly employed IP formulations.
+in laying out the basic foundations of the first chapters of this thesis.
+We also gathered additional details from other VRP surveys from the additional works of
+\textcite{cordeau2007, baldacci2012, caceres-cruz2015, costa2019}.
 
 \section{Thesis Contributions}
 \label{sec:intro-thesis-contributions}
 
-\mytodo{Review this section heavily.}
+\mytodo{Rewrite/Review this section.}
 
 One of the major problems of contemporary CVRP solvers
 is that they are usually developed and tuned through the usage
