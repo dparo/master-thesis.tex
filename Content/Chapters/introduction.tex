@@ -149,4 +149,35 @@ made BAC approaches completely obsolete.
 \section{Outline}
 \label{sec:intro-outline}
 
-\mytodo{Introduce the outline of the thesis}
+In this section, we outline the contents of this work.
+The thesis' contents can be subdivided into three major parts that we here list.
+
+The first part provides introductory technical material
+regarding the CVRP and contemporary resolution methods for this problem.
+\Cref{sec:cvrp-mathematical-formulations} presents the CVRP formally
+through multiple mathematically rigorous integer programming models.
+\Cref{sec:intro-literature-review} summarizes the notable contributions
+of the operations research practitioners regarding CVRP's exact approaches.
+\Cref{sec:branch-and-price} presents the branch-and-price (BPC) algorithm
+along with column generation and the pricing sub-problem.
+Current state-of-the-art exact algorithms for solving routing problems
+are all BPC-based.
+The research in the last years has empirically proved that
+BPC algorithms work remarkably well in this domain.
+
+In the second part of the thesis,
+we will discuss more thoroughly the pricing sub-problem
+along with our branch-and-cut (BAC) pricer implementation.
+The pricing sub-problem is a combinatorial optimization problem
+induced when solving a CVRP through a BPC approach.
+\Cref{sec:the-pricing-problem} presents and discusses the pricing sub-problem
+through multiple mathematically rigorous integer programming models.
+\Cref{sec:implementation-chapter} presents the implementation details of our proposed branch-and-cut pricer.
+
+The third part of the thesis evaluates the competitiveness of the proposed BAC framework
+in solving the pricing sub-problem.
+We assess its performance and compare it against modern state-of-the-art solutions.
+In \cref{sec:results} we present the evaluation setup, we list the instances employed,
+and finally, we present the empirical results along with a discussion.
+Lastly, in \cref{sec:conclusions-and-future-work} we summarize the work, review the results,
+and provide helpful tips while discussing possible implementation improvements.
