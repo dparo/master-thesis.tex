@@ -114,7 +114,7 @@ or consider a heterogeneous fleet characterized by different capacities $Q_1, \d
 In the remainder of this section,
 we introduce the two most common IP mathematical formulations for the classical version of the CVRP.
 
-\section{The two-index arc flow formulation}
+\section{The two-index arc flow (2F) formulation}
 \label{sec:cvrp-two-index-flow-formulation}
 
 The two-index arc flow formulation (2F)
@@ -199,28 +199,27 @@ and to ensure the correctness of the approach.
 \textcite{lysgaard2003cvrpsep} implements efficient
 heuristics for separating the CCC of \cref{eq:two-index-flow-ccc}.
 
-\section{The three-index arc flow formulation}
+\section{The three-index arc flow (3F) formulation}
 \label{sec:cvrp-three-index-flow-formulation}
 
-When modeling more "colorful" variations of the CVRP,
-the two-index arc flow model falls short in providing sufficient descriptive power.
+When it comes to modeling more "colorful" CVRP variants,
+the two-index arc flow (2F) model lacks sufficient descriptive power.
 For example,
 the simple CVRP variant where the fleet of trucks is heterogeneous
 and characterized by capacities $Q_1, \dots, Q_K$,
-cannot be described with the two-index arc flow formulation,
+cannot be described with the 2F formulation,
 since there's no clear one-to-one mapping on which truck crosses an edge $e \in E$.
 
 The three-index arc flow formulation (3F),
 first presented in \textcite{golden1977},
 fixes this issue.
-The 3F formulation makes use $O(N^2 K + N K)$ integer variables.
-A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e = \Set*{i, j} \in E,\ k \in \mcK$
+The 3F formulation makes use $O(N^2 K + N K)$ integer decision variables.
+A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e \in E,\ k \in \mcK$
 is used to encode the number of times a truck $k$ traverses an edge $e \in E$.
-Another set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$
+A new set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$
 is used to model whether truck $k$ covers a node $i \in V$.
 
 The three-index arc flow formulation can be described as an Integer Programme (IP):
-
 \begin{align}
 	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} c_{e} x_{ek} \label{eq:three-index-flow-obj-func}                                                                                                                           \\
 	                                  & \sum_{k \in \mcK} y_{ik} = 1                                                         & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited}  \\
@@ -232,14 +231,13 @@ The three-index arc flow formulation can be described as an Integer Programme (I
 	                                  & x_{ek}                   \in \Set*{0, 1}                                             & \quad \forall e \in E \setminus \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds} \\
 	                                  & y_{ik}                    \in \Set*{0, 1}                                            & \quad \forall i \in V,\ \forall k \in \mcK  \label{eq:three-index-flow-y-mip-var-bounds}
 \end{align}
-
 where $z_\mt{3F}(x, y)$, as defined in \labelcref{eq:three-index-flow-obj-func}, is the objective function to be minimized (i.e. the overall travel distance).
 Constraint \labelcref{eq:three-index-flow-all-customers-visited} forces all customers to be served exactly once.
 Constraint \labelcref{eq:three-index-flow-tour-starts-and-ends-at-depot} forces all the truck tours to start at the depot and end at the same spot.
 Constraint \labelcref{eq:three-index-flow-force-visited-customer-if-flow} binds the $y_{ik}$ variables to the corresponding $x_{ijk}$ variables, by ensuring that if a truck's route passes through a vertex, then the corresponding node is marked as visited.
 Constraint \labelcref{eq:three-index-flow-force-resource-upper-bound} is the capacity upper bound constraint and it ensures that the demand served by each truck does not exceed the truck capacity.
 Constraints \labelcref{eq:three-index-flow-secv1} are the Generalized Subtour Elimination Constraints (GSECs), they impose the connectivity of the route and are used to avoid the formation of spurious unconnected subtours.
-Constraints \labelcref{eq:three-index-flow-x-mip-var-bounds-depot, eq:three-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
+Constraints \labelcref{eq:three-index-flow-x-mip-var-bounds-depot,eq:three-index-flow-x-mip-var-bounds} forces each edge to be traversed at most once,
 except for all edges incident at the depot.
 The edge-case modeled in constraint \labelcref{eq:three-index-flow-x-mip-var-bounds-depot}
 is necessary to allow single-customer routes.
@@ -247,26 +245,26 @@ Finally, constraint \labelcref{eq:three-index-flow-y-mip-var-bounds}
 bounds and forces integrality for the $y_{ik}$ binary variables.
 
 Constraint \labelcref{eq:three-index-flow-secv1} may be replaced in an equivalent form
-with traditional (non generalized) TSP subtour elimination constraints (see \textcite{fisher1981}):
-
+with traditional (non generalized) TSP subtour elimination constraints (see \cite{fisher1981}):
 \begin{equation}\label{eq:three-index-flow-secv2}
-	\sum_{e \in E(S)} x_{ek} \le |S| - 1 \quad \forall S \subseteq V_0, |S| \ge 2,\ \forall k \in \mcK
+	\sum_{e \in E(S)} x_{ek} \le |S| - 1 \quad \forall S \subseteq V_0, |S| \ge 2,\ \forall k \in \mcK.
 \end{equation}
+Since \cref{eq:three-index-flow-secv1}, or equivalently \cref{eq:three-index-flow-secv2},
+are exponential in the number of nodes $N$,
+they are usually not inserted statically in the model
+but are instead generated lazily within the running time of the resolution process.
 
-Since the number of (G)SECs is exponential in the number of nodes $N$, they are usually not inserted statically in the model but are generated lazily within the running time of the resolution process.
-
-The three-index arc flow model generalizes the two-index version.
-In fact, the two-index arc flow model may be viewed as a special case of the three-index by aggregating
+The three-index arc flow (3F) model generalizes the two-index (2F) version.
+The 2F formulation may be viewed as a special case of the 3F formulation by aggregating
 all $x_{ek}$ into a single variable $x_e$:
-
 \begin{equation}
-	x_e = \sum_{k \in \mcK} x_{ek} \quad \forall e \in E
+	x_e = \sum_{k \in \mcK} x_{ek} \quad \forall e \in E.
 \end{equation}
-
 However, the three-index arc flow formulation suffers a major downside compared to the two-index version.
-When modeling homogeneous fleets CVRPs the 3F model suffers from a multiplicity of the solution space.
+When modeling homogeneous fleets CVRPs, the 3F model suffers from a multiplicity of the solution space.
 In fact, since all the vehicles share the same capacity,
-new feasible solutions can be obtained through symmetry by simply permuting the identity $k \in \mcK$ of each truck.
+distinct feasible solutions can be obtained through symmetry
+by simply permuting the identity $k \in \mcK$ of each truck.
 
 \section{The Set Partitioning (SP) formulation}
 \label{sec:set-partitionining-formulation}
@@ -342,11 +340,3 @@ compared to the two or three arc flow formulation.
 Second, it can handle many VRP variants,
 even described through very complex constraints,
 since their definitions are captured within the definition of the set $P$ itself.
-
-\medskip
-
-In the next sections we will introduce
-the branch-and-price (BAP) framework and the Column Generation (CG) approach,
-key components employed in contemporary CVRP solvers.
-Refer to \textcite{vanderbeck2005, lubbecke2005} for a review on column generation
-approaches to solve generic MIP problems.
