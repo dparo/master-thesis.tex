@@ -271,72 +271,79 @@ by simply permuting the identity $k \in \mcK$ of each truck.
 
 The Set Partitioning (SP) formulation,
 sometimes also called Path Flow formulation,
-is an extended formulation, which was originally presented in \textcite{balinski1964}.
-It works substantially differently from the two/three-index arc flow formulation
-or many other commonly encountered IP models.
-The SP formulation uses a very small number of constraints
-while offloading much of the search-space complexity to an exponential number of binary variables.
+is an extended formulation originally presented in \textcite{balinski1964}.
+It operates differently from the two/three-index arc flow formulation or many further commonly encountered IP models.
+The SP formulation uses a tiny number of constraints
+while offloading much of the search-space complexity into an exponential number of binary variables.
 
 The SP formulation can be viewed as a Dantzig-Wolfe decomposition \parencite{dantzig1960}
 and commodity aggregation \parencite{desaulniers1998}
 of the three-index arc flow formulation.
 The Dantzig-Wolfe reformulation approach is an application of a
-decomposition principle where one chooses to solve many smaller sizes
-structured sub-problems instead of being confronted to
-the original problem resolution complexity are beyond what can be
-solved in reasonable time \parencite{vanderbeck2005}.
-Let $P = \Set*{p \mid p\ \text{is a single-truck feasible route}}$ be the set of all feasible routes.
+decomposition principle in which one addresses numerous smaller structured sub-problems
+rather than being confronted with the original problem.
+This approach is helpful, especially when the
+original problem's resolution complexity
+is beyond can be solved in a reasonable amount of time \parencite{vanderbeck2005}.
+
+Let $P = \Set*{p \mid p\ \text{is a single-truck elementary feasible route}}$ be the set of all feasible routes.
 Let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is selected.
 Let $a_{ip}, a_{ep} \in \Z$ be "static encodings" (integer coefficients)
 for a route $p \in P$ that respectively count
 the number of times vertex $i \in V$ or an edge $e \in E$ is covered.
+Any $p \in P$ is feasible if it satisfies the following two conditions:
+$a_{ip} \in \Set*{0, 1}$ and $q(p) \le Q$.
 
 We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$,
 which can be trivially computed in $O(N)$.
 The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included in the optimal solution.
 
 The SP formulation is described through an Integer Programme (IP):
-
 \begin{align}
 	\min_{\lambda} \quad z_\mt{SP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:set-partitioning-obj-func}                                                                                                                                           \\
 	                                        & \sum_{p \in P} \lambda_{p} = K\label{eq:set-partitioning-K-routes}                                                                                                                                             \\
 	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1                                 & \quad \forall i \in V_0                                              \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
 	                                        & \lambda_p                    \in \Set*{0, 1}                         & \quad \forall p \in P \label{eq:set-partitioning-lambda-mip-var-bounds}
 \end{align}
-
 where, $z_\mt{SP}(\lambda)$, as defined in \labelcref{eq:set-partitioning-obj-func} is the objective function to be minimized (i.e. the overall travel distance).
 Constraint \labelcref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be covered by exactly one route.
 Constraint \labelcref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are selected.
 Finally, constraint \labelcref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for binary variables $\lambda_p \ \forall p \in P$.
 
-As one may guess,
-due the exponential number of binary variables,
-the SP formulation cannot be instantiated nor directly solved.
-However,
-a variant of the SP formulation can be tackled efficiently by Column Generation (CG) approaches
-embedded inside a branch-and-price (BAP) framework.
+The set of feasible routes $P$ may also be extended to include non-elementary routes
+without affecting the correctness of the approach.
+Thanks to \cref{eq:set-partitioning-customers-visited-by-exactly-one-route}
+any route $p \in P$ which does not satisfy $a_{ip} \in \Set*{0, 1}$
+will not belong to any optimal solution
+regardless of whether the extension is applied or not.
+
+As one might expect, the SP formulation
+cannot be instantiated or directly solved
+because of the exponential number of binary variables.
+A variant of the SP formulation, on the other hand,
+can be efficiently addressed by Column Generation (CG) approaches
+embedded within a branch-and-price (BAP) framework.
 Branch-and-price frameworks and column generation have been applied
-with high success to the vehicle routing problems.
+with notable success to vehicle routing problems.
+Refer to \cref{sec:branch-and-price} for a discussion on
+column generation and BAP frameworks applied to the CVRP.
 
-As, \textcite{toth2002} point out, if the distance matrix satisfies the triangle inequality,
-than it is possible to rewrite the SP formulation into a totally equivalent Set Covering (SC) formulation
-by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route} in favor of the simpler inequality:
-
+As \textcite{toth2002} point out if the distance matrix satisfies the triangle inequality,
+then it is possible to rewrite the SP formulation into an equivalent Set Covering (SC) formulation
+by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route}
+in favor of the simpler inequality:
 \begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
-	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0
+	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0.
 \end{equation}
-
-The set of feasible paths $p \in P$ in the SC formulation
-become all non-elementary routes that respect the vehicle capacity.
 Under the triangle inequality assumption,
 any feasible solution for the SP formulation is also feasible for the SC formulation.
 Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
 
 \medskip
 
-The SP formulation has two main advantages.
+The SP/SC formulation has two main advantages compared to the formulations presented in previous sections.
 First, its linear relaxation provides excellent lower bounds \parencite{bramel1997},
 compared to the two or three arc flow formulation.
-Second, it can handle many VRP variants,
+Second, it can handle many VRP variants (and more)
 even described through very complex constraints,
 since their definitions are captured within the definition of the set $P$ itself.
