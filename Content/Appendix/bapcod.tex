@@ -22,13 +22,13 @@ While it is technically possible to enable robust branching and cut-generation,
 we instead opted to disable these two features entirely.
 To stress the labeling algorithm it is simply enough to evaluate
 the column generation iterations issued at the root node of branch-and-bound tree
-free of additional cutting-planes.
+free of additional cutting planes.
 The ng-sets augmentation is enabled and the ng-set maximum
 set size is raised as high as possible.
 On top of that, the tailing off condition for the VRPSolver pricer was disabled.
 This is done to stress as much as possible the pricer to produce
 dual bounds as close as possible to the elementary bound, and to
-improve the obtained dual bound at the end of the root node of the search-tree.
+improve the obtained dual bound at the end of the root node of the search tree.
 The labeling algorithm of the VRPSolver extension is able to produce multiple
 routes per pricing iteration as to feed the BPC with more diversified paths.
 Since our pricer always outputs a single column (the optimal column),
@@ -108,7 +108,7 @@ These parameters control the column generation framework.
 \end{itemize}
 
 \section{Cut Generation parameters}
-These parameters control the cutting-planes and their generation.
+These parameters control the cutting planes and their generation.
 We've opted to completely disable cut generation.
 
 \begin{itemize}
@@ -120,7 +120,7 @@ We've opted to completely disable cut generation.
 	      Explicit usage of user-defined cuts must be explicitly requested for usage
 	      by registering the associated functors.
 	      We don't explicitly register any user-defined cut in the implemented model.
-	      As a natural consequence all cutting-planes are disabled, including the separation of the RCC inequalities of \cref{eq:two-index-flow-ccc}.
+	      As a natural consequence all cutting planes are disabled, including the separation of the RCC inequalities of \cref{eq:two-index-flow-ccc}.
 	\item \texttt{MaxNbOfCutGeneratedAtEachIter = 0}.
 	      Sets the maximum number of core cuts added per cut round to $0$,
 	      effectively further enforcing the deactivation of the core cuts generation.

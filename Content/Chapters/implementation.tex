@@ -23,7 +23,7 @@ For an introduction to CPLEX refer to \cref{sec:introduction-to-cplex}.
 
 Our branch-and-cut implementation heavily relies on the CPLEX optimizer
 to solve the associated MIP model.
-The cutting-planes separation was implemented using the \textit{CPLEX generic callback functions},
+The cutting planes separation was implemented using the \textit{CPLEX generic callback functions},
 which have the benefit of not disabling the \textit{Dynamic Search} algorithm,
 i.e. the proprietary advanced branch-and-cut algorithm employed internally inside CPLEX,
 see discussion in \cref{sec:introduction-to-cplex}.
@@ -46,7 +46,7 @@ We quickly summarize the outline of this chapter.
 \Cref{sec:impl-warm-starting} describes the implemented primal heuristics
 that were used to warm start the CPLEX optimizer.
 \Cref{sec:impl-branching} discusses the implemented branching scheme.
-Finally, \cref{sec:impl-separation-techniques} describes the implemented cutting-planes strategies,
+Finally, \cref{sec:impl-separation-techniques} describes the implemented cutting planes strategies,
 including a discussion on the employed separation techniques.
 
 \section{Full static model}
@@ -256,21 +256,21 @@ The local search algorithms terminates when $\nexists (a, b) \mid a, b \in p,\ \
 We don't implement any specific branching schemes.
 We rely on the branching schemes already provided from the CPLEX MIP optimizer.
 
-\section{Cutting-planes and Inequalities separation}
+\section{Cutting planes and Inequalities separation}
 \label{sec:impl-separation-techniques}
 
 Despite CPLEX already implements internally
-the separation of some families of general cutting-planes
+the separation of some families of general cutting planes
 (see \cref{sec:introduction-to-cplex}),
 generating additional inequalities,
 which cannot be deduced from the static model,
 can drastically improve the running time of the resolution process.
-Cutting-planes separation is a problem which consists
+Cutting planes separation is a problem which consists
 in finding (strong) violated inequalities
 so that they can be embedded inside a branch-and-cut framework.
-Cutting-planes improve the linear relaxation
+Cutting planes improve the linear relaxation
 by "cutting" fractional points from the convex-hull of integer solutions.
-An effective cutting-planes separation strategy
+An effective cutting planes separation strategy
 is probably the most important and delicate aspect of any branch-and-cut algorithm \parencite{ralphs2003}.
 When evaluating the inclusion of a set of inequalities,
 considering the trade-off between the separation cost
@@ -285,9 +285,9 @@ but are computationally expensive to separate exactly,
 may be included through a heuristic separation procedure.
 
 Another important factor to take into consideration when implementing
-efficient cutting-planes procedures lies in the parametrization settings
+efficient cutting planes procedures lies in the parametrization settings
 of the violated inequalities.
-The generation and number of cutting-planes alone (without considering the separation running time),
+The generation and number of cutting planes alone (without considering the separation running time),
 can highly influence both the computation time and memory consumption of the BAC algorithm.
 In order to reduce memory consumption, sparse/compact inequalities are usually preferred whenever possible.
 When reporting violated inequalities to the MIP optimizer,
@@ -311,8 +311,8 @@ it is possible to disable user-cuts filtering.
 However, in such case if an effective tailing condition is required,
 it must be implemented by the user inside the separation procedure.
 
-In our implementation, all cutting-planes reported to CPLEX are subject to filtering
-and the ultimate choice of whether to include the generated cutting-planes is left to the MIP optimizer.
+In our implementation, all cutting planes reported to CPLEX are subject to filtering
+and the ultimate choice of whether to include the generated cutting planes is left to the MIP optimizer.
 
 \medskip
 

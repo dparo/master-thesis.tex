@@ -38,6 +38,10 @@ state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020
 Another, less common formulation, based on a two-commodity flow description
 can be found in \textcite{baldacci2004}.
 
+While the first two formulations won't be the primary focus of this thesis,
+they are still essential to understand some necessary details.
+In this thesis, we will predominantly concentrate our efforts
+on the SP formulation, see later discussion in \cref{sec:branch-and-price}.
 Before presenting each formulation, we first define some basic notation
 and mathematical quantities in \cref{sec:cvrp-mathematical-notation}.
 We will use these quantities and these notations throughout the rest of the thesis.
@@ -333,10 +337,20 @@ then it is possible to rewrite the SP formulation into an equivalent Set Coverin
 by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route}
 in favor of the simpler inequality:
 \begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
-	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0.
+	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0,
 \end{equation}
+therefore the SC formulation may be expressed as an Integer Programme (IP):
+\begin{align}
+	\min_{\lambda} \quad z_\mt{SC}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:set-covering-obj-func}                                                                                                                                       \\
+	                                        & \sum_{p \in P} \lambda_{p} = K \label{eq:set-covering-K-routes}                                                                                                                                        \\
+	                                        & \sum_{p \in P}  a_{ip} \lambda_p \ge 1                           & \quad \forall i \in V_0                                              \label{eq:set-covering-customers-visited-by-exactly-one-route} \\
+	                                        & \lambda_p                    \in \Set*{0, 1}                     & \quad \forall p \in P \label{eq:set-covering-lambda-mip-var-bounds}.
+\end{align}
 Under the triangle inequality assumption,
-any feasible solution for the SP formulation is also feasible for the SC formulation.
+any feasible solution for the SP formulation
+\labelcref{eq:mp-obj-func,eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes,eq:mp-lambda-mip-var-bounds}
+is also feasible for the SC formulation
+\labelcref{eq:set-covering-obj-func,eq:set-covering-K-routes,eq:set-covering-customers-visited-by-exactly-one-route,eq:set-covering-lambda-mip-var-bounds}.
 Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
 
 \medskip
