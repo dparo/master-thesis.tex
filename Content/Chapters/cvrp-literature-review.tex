@@ -63,7 +63,7 @@ first authors to propose a branch-price-and-cut (BPC) algorithm,
 embedding a powerful robust-cuts based cutting-plane approach
 typically found in BAC algorithms.
 \citeauthor{fukasawa2006} integrated the cutting planes proposed in \cite{lysgaard2004},
-and the column generation considered only q-routes with $k$-cycles elimination.
+and the column generation considered only $q$-routes with $k$-cycles elimination.
 \textcite{fukasawa2006} was able to solve all CVRP instances up to approximately 100 customers.
 Since the work of \citeauthor{fukasawa2006} until now, column generation
 and the label-setting algorithm have been the de-facto procedures
@@ -80,7 +80,7 @@ routes and use a MIP package to solve the associated problem at the root node.
 by integrating the work of \textcite{baldacci2008}
 through an hybridization between traditional branching and enumeration.
 \textcite{contardo2011} instead it takes a different approach.
-It considers q-routes with 2-cycle eliminations, and non-robust
+It considers $q$-routes with 2-cycle eliminations, and non-robust
 k-CECs cuts are used to enforce elementarity.
 
 \textcite{baldacci2011} propose the ng-routes, a very effective
@@ -92,7 +92,7 @@ the ng-routes relaxation and strong branching schemes.
 
 \textcite{contardo2014} improve over \textcite{contardo2011}
 by proposing an effective enumeration scheme and employed
-q-routes with 2-cycle elimination, ng-routes with ng-set size 8,
+$q$-routes with 2-cycle elimination, ng-routes with ng-set size 8,
 non-robust k-CECs cuts to avoid larger cycles
 and the decremental state space relaxation technique.
 With this approach they were able to solve CVRP instances made of 151 customers.

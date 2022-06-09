@@ -513,50 +513,54 @@ the ESPPRC is an NP-hard problem.
 The $q$-routes \parencite{christofides1981exact}
 are routes $p$ with total resource consumption $q(p) \le Q$
 that do not necessarily satisfy the elementarity condition and may thus contain cycles.
-In $q$-routes each additional visit to already covered customers
-stills counts to the total consumption of the resource.
+In the $q$-routes relaxation, each additional visit to already covered customers
+counts toward the total resource consumption.
 In the original definition of $q$-routes cycles of two vertices are prohibited.
 The $q$-routes with $k$-cycle elimination
 are a natural extension of the $q$-routes
 in which multiple visits to the same vertex are allowed only
 if at least $k$ other vertices are covered in between.
 
-It was observed that extending the set of feasible paths $P$ in
-the SP formulation to include also the q-routes could lead to a
-more tractable pricing problem, by making it weakly NP-hard
-and thus solvable through a pseudo-polynomial algorithm \parencite{desrochers1988, irnich2005}.
-Notice that the q-routes violates the SP constraint of \cref{eq:set-partitioning-customers-visited-by-exactly-one-route},
+It was discovered that broadening the set of feasible paths $P$
+in the SP formulation to include $q$-routes could result
+in a more tractable pricing problem
+by making it weakly NP-hard
+and thus solvable via a pseudo-polynomial algorithm \parencite{desrochers1988, irnich2005}.
+Notice that the $q$-routes violates the SP constraints
+\labelcref{eq:set-partitioning-customers-visited-by-exactly-one-route},
 thus, they won't be part of a CVRP optimal solution.
 Many efficient algorithms for the VRP
 rely on the solution of SPPRC subproblems which
-make use of q-routes  \parencite{desrochers1992, feillet2004, fukasawa2006,contardo2011}.
-This enlargement of the set of feasible paths $P$,
-while still valid,
-it has the unfortunate downside
-of obtaining significantly worse dual bounds for the linear relaxations \parencite{feillet2004}.
-Therefore, the choice for the set of feasible paths $P$ plays an important
-role in trading off efficiency at the pricing stage with
-overall quality of the dual bounds.
+make use of $q$-routes  \parencite{desrochers1992, feillet2004, fukasawa2006,contardo2011}.
+While this expansion of the set of feasible paths $P$ is still valid,
+it has the unfortunate side effect of yielding significantly
+worse dual bounds for the linear relaxations \parencite{feillet2004}.
+As a result,
+the definition of the set of feasible paths $P$
+is critical in balancing efficiency at the pricing stage
+with the overall quality of the dual bounds.
 
 The label-correcting algorithm was first proposed in \textcite{desrochers1992}
-for the VRPTW Set Covering (SC) formulation
-to tackle the pricing problem modeled through a SPPRC.
-The label-correcting algorithm, which at the time was able to generate only q-routes,
-is a dynamic programming algorithm
-which works by label construction, propagation and correction from node to node.
-The principle of this algorithm is to associate with each possible partial
-path a label indicating the current resource consumption over the path.
-The dominance rules in the label-correcting algorithm allows
-to efficiently prune the search space by ignoring dominated labels, thus speeding
-up the resolution process tremendously.
+for solving an SPPRC pricing sub-problem induced from the Set Covering (SC) formulation of VRPTW.
+The label-correcting algorithm,
+which could only generate $q$-routes at the time,
+is a dynamic programming algorithm that works through
+label construction, propagation, and correction from node to node.
+Each partial path is tracked by the algorithm using labels.
+Each label encodes the current partial resource consumption, among other things.
+The algorithm’s dominance rules allow it to efficiently prune the search space
+by ignoring dominated labels, thus vastly speeding up the resolution process.
 The label-correcting algorithm
-is a natural extension of the Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
-a common algorithm present in the "tool belt" of all operations research practitioners.
-Its running time complexity for pricing q-routes is $O(N^2 Q)$ operations.
-The label-correcting algorithm tends to have shortcomings when the
-produced routes visit a high number of nodes,
-i.e. when the vehicle capacity is not particularly stringent.
-This results in a large amount of processed labels that require processing \parencite{jepsen2008branchandcut}.
+is a natural extension of the traditional Bellman-Ford algorithm \parencite{bellman1958, fordjr1956}.
+The Bellman-Ford algorithm is commonly known
+by all operations research practitioners and it is used to compute
+resource-unconstrained shortest paths on a negative-cycles-free network.
+The running time complexity of the label-correcting algorithm
+for pricing $q$-routes is $O(N^2 Q)$ operations.
+As the big-O notation indicates,
+this approach has flaws when the constructed routes visit a large number of nodes,
+i.e. when vehicle capacity is not particularly stringent,
+consequently tremendously increasing the number of processed labels \parencite{jepsen2008branchandcut}.
 
 The label-correcting algorithm, was later extended to handle
 elementary paths in \textcite{feillet2004},
