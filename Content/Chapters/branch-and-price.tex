@@ -357,129 +357,133 @@ to eliminate some edges $e \in E \mid \hat{c}_e \ge \bar{z} - \ubar{z}$ \parenci
 Reduction rules can be regarded as a subset of branching with a single descendant node.
 Reduction rules may crop a good portion of the search space.
 
-\subsection{Families of Cutting Planes}
-\label{sec:families-of-cutting-planes}
+\subsection{Cutting Planes}
+\label{sec:bap-cutting-planes}
 
-In this section we will introduce the families of inequalities
+In this section we will introduce plentiful families of inequalities
 which can be used for cut generation for respectively
-the two-index vehicle flow formulation
-and the SP formulation.
-For an introduction to cutting planes for BAP algorithms, see \textcite{desaulniers2011}.
+the 2F formulation
+\labelcref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds}
+and the SP formulation
+\labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}.
+See \textcite{desaulniers2011} for a general framework
+on cutting planes for CG algorithms for arbitrary integer programs.
 
 While the 2F formulation is not the primary focus of this thesis,
-presenting and studying valid inequalities for such formulation
-will be important for the sub-problem induced in the column generation phase.
-In fact, many 2F valid inequalities, if properly reformulated
-can be applied to the ESPPRC.
-The very few first attempts in proposing valid inequalities
-to improve the linear relaxation for the 2F were obtained by
-generalizing the constraints for the traditional TSP problem, see \textcite{naddef1993}.
-\citeauthor{naddef1993} showed that its is possible to re-adapt
-every valid inequality obtained for the TSP to the CVRP,
-by putting them into a proper tight triangular form.
-As an example,
-the comb inequalities were re-adapted from the TSP to the CVRP \parencite{chvatal1973,grotschel1979,augerat1995approche}.
+presenting and studying valid inequalities for such a formulation
+will be important for the sub-problem induced during the column generation phase.
+Many 2F valid inequalities can be applied to the ESPPRC if properly rewritten.
+The early attempts to propose valid inequalities to improve the linear relaxation
+for the 2F problem were obtained by generalizing the constraints
+for the traditional TSP problem, see \textcite{naddef1993}.
+\citeauthor{naddef1993} demonstrated that by putting any valid inequality obtained for the TSP
+into a proper tight triangular form, it is possible to re-adapt it to the CVRP.
+The comb inequalities, for example,
+were re-adapted from the TSP to the CVRP \parencite{chvatal1973,grotschel1979,augerat1995approche}.
 
-Families of valid inequalities for the 2F CVRP formulation
-can be separated in different families \parencite{toth2014}.
-We highlight two main families: the capacity constraints and the multistar inequalities.
+Valid inequalities for the 2F CVRP formulation can be classified into several groups \parencite{toth2014}.
+We concentrate on the following groups: capacity constraints and multistar inequalities.
 
 The \textbf{capacity constraints} are inequalities which can be expressed in the form
 $\sum_{e \in \delta(S)} x_e \ge 2 r(S) \quad \forall S \subseteq V_0, |S| \ge 2$.
-Depending on how $r(S)$ is computed, this set of constraints take different names.
+This set of constraints may have different names depending on how $r(S)$ is defined.
 If $r(S) = \sum_{i \in S} q_i / Q$, we obtain the so-called Fractional Capacity Constraints (FCC).
 Instead, if we use the typical Bin Packing Problem (BPP) lower bound, $r(S) = \ceil*{\sum_{i \in S} q_i / Q}$, we obtain the so-called Rounded Capacity Constraints (RCC).
 The RCC were first presented in \textcite{laporte1983} for the CVRP 2F formulation.
 
-The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990} for the CVRP with unit demands,
-extended to the generic CVRP in \textcite{gouveia1995, achuthan1998},
-and later generalized in the so called Generalized Large Multistart (GLM) for the CVRP in \textcite{letchford2002,letchford2006}.
+The \textbf{multistar inequalities} were initially proposed in \textcite{araque1990}
+for the \textit{CVRP with unit demands},
+then extended to the generic CVRP in \textcite{gouveia1995, achuthan1998},
+and finally generalized in the so called Generalized Large Multistart (GLM)
+for the CVRP in \textcite{letchford2002,letchford2006}.
 Given two disjoint sets of customers $A, B \subseteq V_0 \mid A \cap B = \emptyset$,
 and $\alpha, \beta, \gamma \in \R$,
-a multistar inequality is described in the 2F formulation through a
-template of the form:
-
+a multistar inequality is described in the 2F formulation using the following template:
 \begin{equation}
-	\alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma
+	\alpha \sum_{e \in E(A)} x_e + \beta \sum_{e \in \Expr*{\delta(A) \cap \delta(B)}} x_e \le \gamma.
 \end{equation}
-
-The multistar inequality were first applied successfully within a branch-and-cut framework
-in \textcite{araqueg1994}.
-\textcite{letchford2006} proves that GLMs are implied by the SP model,
+\textcite{araqueg1994} were the first to successfully apply multistar inequalities
+within a branch-and-cut framework.
+\textcite{letchford2006} demonstrates that GLMs are implied by the SP model,
 even if the set of feasible paths $P$ is relaxed to contain non-elementary routes.
 
 \medskip
 
-We will terminate the remainder of this section with the introduction
-of the families of inequalities which can be used for cut generation
-for the SP formulation.
-Despite the SP formulation generally provides better dual bounds
-compared to other CVRP formulations,
+We will terminate the remainder of this section
+by introducing some families of inequalities
+serviceable to improve the linear relaxation for the SP formulation
+\labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}.
+Despite the SP formulation generally delivers better dual bounds
+compared to other CVRP formulations (see discussion in \cref{sec:set-partitionining-formulation}),
 these bounds may still be too weak to obtain an efficient algorithm.
 Thus, it is common practice to introduce cutting-plane approaches
-in modern branch-and-price based VRP solvers.
+in modern BAP-based VRP solvers.
 
-Cutting-planes involving edge-flow variables only, are by nature
-robust.
-Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
-they can trivially be extended to a robust inequality for the SP formulation:
-
+Cutting planes that only involve edge-flow variables are by nature robust.
+Because the RCC inequalities only involve the edges
+$e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
+they trivially can be extended to a robust inequality for the SP formulation:
 \begin{equation}
-	\sum_{p \in P} \sum_{e \in \delta(S)}  a_{ep} \lambda_p \ge r(S)
+	\sum_{p \in P} \sum_{e \in \delta(S)}  a_{ep} \lambda_p \ge r(S),
 \end{equation}
-
 where $\sum_{e \in \delta(S)} a_{ep}$ counts the number of times a route $p \in P$
-enters or leaves a set $S$ and $r(S)$ represents the number of truck needed
-to serve each customer $i \in S$.
-\textcite{lysgaard2003cvrpsep} proposes a heuristic procedure implementation
+enters or leaves a set $S$
+and $r(S)$ represents the number of trucks needed to serve each customer $i \in S$.
+\textcite{lysgaard2003cvrpsep} proposes a heuristic algorithm
 for efficiently separating the RCC inequalities.
 
 \medskip
 
-Robust cuts are quite effective at closing the integrality gap, but alone may not
-be sufficient for some harder VRP instances,
-therefore some researchers tried to apply non-robust cuts to the CVRP with good success.
-In order to use them effectively, their separation must be carefully
-planned out, by taking into account the aggravation of the pricing problem.
-While in this thesis we will mostly avoid this type of inequalities,
-it is nonetheless important to acknowledge and understand their contributions.
-Non-robust cuts have been traditionally handled by extending the
+Robust cuts are moderately effective at closing the integrality gap,
+but they may not be sufficient for some complicated VRP instances.
+Consequently, some researchers attempted to apply non-robust cuts to the CVRP with promising success.
+Non-robust cuts must be separated carefully to use them effectively.
+Taking into account the aggravation of the pricing problem during the separation
+of non-robust cuts is of vital importance for the overall performance of the BAP scheme.
+While we will mostly avoid non-robust cuts in this thesis,
+it is noteworthy to acknowledge their significance within a BAP framework.
+
+Traditionally, these types of cutting planes have been handled by extending the
 dynamic programming labeling algorithm
-through the addition of fictitious resources and through modifications to the dominance rules.
+through the addition of fictitious resources and modifications to the dominance rules.
+See discussion in \cref{sec:solving-the-pricing-problem} for more details.
 
 \medskip
 
-Major contributions in the non-robust cutting planes domain are:
-
+Major contributions in the non-robust cutting planes domain for the VRP are:
 \begin{enumerate}
 	\setlength{\itemsep}{0pt}
 	\setlength{\parskip}{0pt}
 
-	\item \textbf{Strong/Strengthened Capacity Cuts (SCCs)} proposed in \textcite{baldacci2008},
-	      which can be considered a non-robust tighter version of the RCCs.
+	\item \textbf{Strengthened Capacity Cuts (SCCs)}, sometimes also called \textit{Strong Capacity Cuts}
+	      were first proposed in \textcite{baldacci2008},.
+	      These cutting planes can be considered a non-robust tighter version of the RCCs.
 	      Compared to RCCs, they are not affected by routes entering set $S \subseteq V_0$ more than once.
 	\item \textbf{Extended Capacity Cuts (ECCs)} proposed in \textcite{pessoa2008, pessoa2009}
-	      are another proposed generalization of the RCCs.
-	\item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008subsetrow}, a non-robust
-	      inequality obtained as a subset of the  Chv\'atal-Gomory rank-1 cuts \parencite{chvatal1973}
+	      are another pertinent generalization of the RCCs.
+	\item \textbf{Subset Row Cuts (SRCs)} proposed in \textcite{jepsen2008subsetrow},
+	      are non-robust inequalities obtained as a subset of the
+	      Chv\'atal-Gomory rank-1 cuts \parencite{chvatal1973}
 	      applied to a subset $C \subseteq V_0$ of customers.
 	      Their separation is NP-hard.
-	      Therefore, Typically the subset $C$ is separated through enumeration
-	      and for computational tractability and restricting the evaluation $\forall C \subseteq V_0 \mid |C| \le 5$.
+	      Therefore, the subset $C$ is typically separated through enumeration
+	      and for computational tractability the evaluation is restricted solely to $\forall C \subseteq V_0$
+	      that satisfy $|C| \le 5$.
 	      3-SRCs, namely SRCs where $|C| = 3$, were applied successfully in many works \parencite{desaulniers2008, jepsen2011, baldacci2011, contardo2014, pecin2017improved}.
 	      The SRCs were later generalized to a more general Chv\'atal-Gomory Rank-1 cuts (R1Cs) in \textcite{petersen2008}.
-	      R1Cs are potentially very strong, but they make the pricing subproblems significantly harder.
-	      \textcite{baldacci2011} proposes a weakened variant of the 3-SRCs inequalities.
+	      R1Cs have the potential to be extremely powerful, but they make pricing subproblems significantly more difficult.
+	      \textcite{baldacci2011} propose a weakened variant of the 3-SRCs inequalities.
 	\item \textbf{Limited Memory Subset Row Cuts (lm-SRCs)} proposed in \textcite{pecin2017improved},
-	      are a dynamically controlled weakening of the SRCs that leads far less impact to
-	      the PP.
-	      Later, \textcite{pecin2017limited} extends this concept to the Limited Memory Rank-1 Cuts (lm-R1Cs).
-	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011, contardo2014}, they can be considered
+	      are a dynamically controlled weakening of the SRCs that has far less computational impact on the PP.
+	      Later, \textcite{pecin2017limited} extend this reasoning
+	      and develop the so-called Limited Memory Rank-1 Cuts (lm-R1Cs).
+	\item \textbf{Strong Degree Cuts (SDCs)} proposed in \textcite{contardo2011, contardo2014},
+	      are cutting planes which can be considered
 	      a specialized version of the SCCs.
 	      They can enforce partial route elementarity in the RMP formulation
 	      and are redundant when the pricer always outputs elementary paths.
 	      SDCs can be used to achieve the elementarity bound in the case
-	      the pricer produces 1non-elementary routes \parencite{contardo2014}.
+	      the pricer produces non-elementary routes \parencite{contardo2014}.
 	\item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
 	      are a weakened form of the SDCs, which forbids
 	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
@@ -488,8 +492,6 @@ Major contributions in the non-robust cutting planes domain are:
 	\item \textbf{Clique inequalities} readjusted for the VRPTW problem domain in \textcite{spoorendonk2010clique}.
 \end{enumerate}
 
-For more details about cutting planes in BPC frameworks,
-refer to \textcite{desaulniers2011}.
 For a more complete survey on the various non-robust cutting planes
 proposed over the years for the CVRP refer to \textcite{costa2019}.
 
