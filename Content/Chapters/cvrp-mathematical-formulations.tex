@@ -131,12 +131,12 @@ a vehicle traverses each edge $e \in E$ in the optimal solution.
 There are $O(N^2)$ number of integer variables in the model.
 The two-index arc flow formulation can be described as an Integer Programme (IP):
 \begin{align}
-	\min_{x} \quad z_\mt{2F}(x) & = \sum_{e \in E} c_e x_e \label{eq:two-index-flow-obj-func}                                                                                        \\
-	                            & \sum_{e \in \delta(i)} x_e = 2                              & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer}    \\
-	                            & \sum_{e \in \delta(0)} x_e = 2 K                            & \label{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}                     \\
-	                            & \sum_{e \in \delta(S)} x_e \ge 2 r(S)                       & \quad \forall S \subseteq V_0,\ |S| \ge 1 \label{eq:two-index-flow-ccc}              \\
-	                            & x_e                   \in \Set*{0, 1, 2}                    & \quad \forall e \in \delta(0) \label{eq:two-index-flow-x-mip-var-bounds-depot}       \\
-	                            & x_e                   \in \Set*{0, 1}                       & \quad \forall e \in E \setminus \delta(0) \label{eq:two-index-flow-x-mip-var-bounds}
+	\min_{x} \quad z_\mt{2F}(x) & = \sum_{e \in E} c_e x_e                 & \label{eq:two-index-flow-obj-func}                                                   \\
+	                            & \sum_{e \in \delta(i)} x_e = 2           & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer}    \\
+	                            & \sum_{e \in \delta(0)} x_e = 2 K         & \label{eq:two-index-flow-two-k-edges-incident-in-the-depot-node}                     \\
+	                            & \sum_{e \in \delta(S)} x_e \ge 2 r(S)    & \quad \forall S \subseteq V_0,\ |S| \ge 1 \label{eq:two-index-flow-ccc}              \\
+	                            & x_e                   \in \Set*{0, 1, 2} & \quad \forall e \in \delta(0) \label{eq:two-index-flow-x-mip-var-bounds-depot}       \\
+	                            & x_e                   \in \Set*{0, 1}    & \quad \forall e \in E \setminus \delta(0) \label{eq:two-index-flow-x-mip-var-bounds}
 \end{align}
 where $z_\mt{2F}(x)$, as defined in \labelcref{eq:two-index-flow-obj-func}, is the objective function meant to minimize the overall routing cost (travel time).
 Constraint \labelcref{eq:two-index-flow-two-edges-incident-per-customer} is the degree constraint which imposes flow conservation: exactly two incident edges must be picked for each customer.
@@ -225,15 +225,15 @@ is used to model whether truck $k$ covers a node $i \in V$.
 
 The three-index arc flow formulation can be described as an Integer Programme (IP):
 \begin{align}
-	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} c_{e} x_{ek} \label{eq:three-index-flow-obj-func}                                                                                                                           \\
-	                                  & \sum_{k \in \mcK} y_{ik} = 1                                                         & \quad \forall i \in V_0                                              \label{eq:three-index-flow-all-customers-visited}  \\
-	                                  & \sum_{k \in \mcK} y_{0k} = K                                                         & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                               \\
-	                                  & \sum_{e \in \delta(i)} x_{ek} = 2 y_{ik}                                             & \quad \forall i \in V,\ \forall k \in \mcK \label{eq:three-index-flow-force-visited-customer-if-flow}                   \\
-	                                  & \sum_{i \in V} q_i y_{ik} \le Q                                                      & \quad \forall k \in \mcK \label{eq:three-index-flow-force-resource-upper-bound}                                         \\
-	                                  & \sum_{e \in \delta(S)} x_{ek} \ge 2 y_{hk}                                           & \quad \forall h \in S,\ \forall S \subseteq V_0,\ |S| \ge 2,\ \forall k \in \mcK \label{eq:three-index-flow-secv1}      \\
-	                                  & x_{ek}                   \in \Set*{0, 1, 2}                                          & \quad \forall e \in \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds-depot}       \\
-	                                  & x_{ek}                   \in \Set*{0, 1}                                             & \quad \forall e \in E \setminus \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds} \\
-	                                  & y_{ik}                    \in \Set*{0, 1}                                            & \quad \forall i \in V,\ \forall k \in \mcK  \label{eq:three-index-flow-y-mip-var-bounds}
+	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} c_{e} x_{ek} & \label{eq:three-index-flow-obj-func}                                                                                    \\
+	                                  & \sum_{k \in \mcK} y_{ik} = 1                    & \quad \forall i \in V_0 \label{eq:three-index-flow-all-customers-visited}                                               \\
+	                                  & \sum_{k \in \mcK} y_{0k} = K                    & \label{eq:three-index-flow-tour-starts-and-ends-at-depot}                                                               \\
+	                                  & \sum_{e \in \delta(i)} x_{ek} = 2 y_{ik}        & \quad \forall i \in V,\ \forall k \in \mcK \label{eq:three-index-flow-force-visited-customer-if-flow}                   \\
+	                                  & \sum_{i \in V} q_i y_{ik} \le Q                 & \quad \forall k \in \mcK \label{eq:three-index-flow-force-resource-upper-bound}                                         \\
+	                                  & \sum_{e \in \delta(S)} x_{ek} \ge 2 y_{hk}      & \quad \forall h \in S,\ \forall S \subseteq V_0,\ |S| \ge 2,\ \forall k \in \mcK \label{eq:three-index-flow-secv1}      \\
+	                                  & x_{ek}                   \in \Set*{0, 1, 2}     & \quad \forall e \in \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds-depot}       \\
+	                                  & x_{ek}                   \in \Set*{0, 1}        & \quad \forall e \in E \setminus \delta(0),\ \forall k \in \mcK             \label{eq:three-index-flow-x-mip-var-bounds} \\
+	                                  & y_{ik}                    \in \Set*{0, 1}       & \quad \forall i \in V,\ \forall k \in \mcK  \label{eq:three-index-flow-y-mip-var-bounds}
 \end{align}
 where $z_\mt{3F}(x, y)$, as defined in \labelcref{eq:three-index-flow-obj-func}, is the objective function to be minimized (i.e. the overall travel distance).
 Constraint \labelcref{eq:three-index-flow-all-customers-visited} forces all customers to be served exactly once.
@@ -304,10 +304,10 @@ The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included
 
 The SP formulation is described through an Integer Programme (IP):
 \begin{align}
-	\min_{\lambda} \quad z_\mt{SP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:set-partitioning-obj-func}                                                                                                                                           \\
-	                                        & \sum_{p \in P} \lambda_{p} = K\label{eq:set-partitioning-K-routes}                                                                                                                                             \\
-	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1                                 & \quad \forall i \in V_0                                              \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
-	                                        & \lambda_p                    \in \Set*{0, 1}                         & \quad \forall p \in P \label{eq:set-partitioning-lambda-mip-var-bounds}
+	\min_{\lambda} \quad z_\mt{SP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p              & \label{eq:set-partitioning-obj-func}                                                       \\
+	                                        & \sum_{p \in P} \lambda_{p} = K               & \label{eq:set-partitioning-K-routes}                                                       \\
+	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1         & \quad \forall i \in V_0 \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
+	                                        & \lambda_p                    \in \Set*{0, 1} & \quad \forall p \in P \label{eq:set-partitioning-lambda-mip-var-bounds}
 \end{align}
 where, $z_\mt{SP}(\lambda)$, as defined in \labelcref{eq:set-partitioning-obj-func} is the objective function to be minimized (i.e. the overall travel distance).
 Constraint \labelcref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be covered by exactly one route.
@@ -341,10 +341,10 @@ in favor of the simpler inequality:
 \end{equation}
 therefore the SC formulation may be expressed as an Integer Programme (IP):
 \begin{align}
-	\min_{\lambda} \quad z_\mt{SC}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:set-covering-obj-func}                                                                                                                                       \\
-	                                        & \sum_{p \in P} \lambda_{p} = K \label{eq:set-covering-K-routes}                                                                                                                                        \\
-	                                        & \sum_{p \in P}  a_{ip} \lambda_p \ge 1                           & \quad \forall i \in V_0                                              \label{eq:set-covering-customers-visited-by-exactly-one-route} \\
-	                                        & \lambda_p                    \in \Set*{0, 1}                     & \quad \forall p \in P \label{eq:set-covering-lambda-mip-var-bounds}.
+	\min_{\lambda} \quad z_\mt{SC}(\lambda) & = \sum_{p \in P}  c_p \lambda_p              & \label{eq:set-covering-obj-func}                                                       \\
+	                                        & \sum_{p \in P} \lambda_{p} = K               & \label{eq:set-covering-K-routes}                                                       \\
+	                                        & \sum_{p \in P}  a_{ip} \lambda_p \ge 1       & \quad \forall i \in V_0 \label{eq:set-covering-customers-visited-by-exactly-one-route} \\
+	                                        & \lambda_p                    \in \Set*{0, 1} & \quad \forall p \in P \label{eq:set-covering-lambda-mip-var-bounds}.
 \end{align}
 Under the triangle inequality assumption,
 any feasible solution for the SP formulation

@@ -35,13 +35,13 @@ and the pricing problem, two vital pieces in branch-and-price frameworks.
 
 Consider the \textbf{Master Problem} (MP) defined
 as the linear relaxation of the SP formulation
-\labelcref{eq:mp-obj-func,eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes,eq:mp-lambda-mip-var-bounds}
+\labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}
 obtained by relaxing the integrality constraints:
 \begin{align}
-	\min_{\lambda} \quad z_\mt{MP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p \label{eq:mp-obj-func}                                                                                                                             \\
-	                                        & \sum_{p \in P} \lambda_{p} = K\label{eq:mp-K-routes}                                                                                                                               \\
-	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1                   & \quad \forall i \in V_0                                              \label{eq:mp-customers-visited-by-exactly-one-route} \\
-	                                        & 0 \le \lambda_p \le 1                                  & \quad \forall p \in P \label{eq:mp-lambda-mip-var-bounds}.
+	\min_{\lambda} \quad z_\mt{MP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p      & \label{eq:mp-obj-func}                                                                                                    \\
+	                                        & \sum_{p \in P} \lambda_{p} = K       & \label{eq:mp-K-routes}                                                                                                    \\
+	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1 & \quad \forall i \in V_0                                              \label{eq:mp-customers-visited-by-exactly-one-route} \\
+	                                        & 0 \le \lambda_p \le 1                & \quad \forall p \in P \label{eq:mp-lambda-mip-var-bounds}.
 \end{align}
 The constraint $\lambda_p \le 1$ in \cref{eq:mp-lambda-mip-var-bounds}
 is implied from \cref{eq:mp-customers-visited-by-exactly-one-route} and can thus be removed.
@@ -53,10 +53,10 @@ The dual problem associated with
 \labelcref{eq:mp-obj-func,eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes,eq:mp-lambda-mip-var-bounds}
 is:
 \begin{align}
-	\max_{\pi} \quad z_\mt{DMP}(\pi) & =  K \pi_0 + \sum_{i \in V_0} \pi_i \label{eq:dmp-obj-func}                                                       \\
-	                                 & \pi_0 + \sum_{i \in V_0} a_{ip} \pi_i \le c_p               & \quad \forall p \in P \label{eq:dmp-constraint1}    \\
-	                                 & \pi_0 \in \R                                                & \label{eq:dmp-constraint2}                          \\
-	                                 & \pi_i \in \R                                                & \quad \forall i \in V_0 \label{eq:dmp-constraint3},
+	\max_{\pi} \quad z_\mt{DMP}(\pi) & =  K \pi_0 + \sum_{i \in V_0} \pi_i           & \label{eq:dmp-obj-func}                             \\
+	                                 & \pi_0 + \sum_{i \in V_0} a_{ip} \pi_i \le c_p & \quad \forall p \in P \label{eq:dmp-constraint1}    \\
+	                                 & \pi_0 \in \R                                  & \label{eq:dmp-constraint2}                          \\
+	                                 & \pi_i \in \R                                  & \quad \forall i \in V_0 \label{eq:dmp-constraint3},
 \end{align}
 where $\pi_0 \in \R, \pi_i \in \R \quad \forall i \in V_0$ represents the dual variables
 associated respectively with constraints \labelcref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
@@ -81,10 +81,10 @@ due to the enormous size of the set of routes $P$.
 Therefore, in BAP frameworks we consider only a small subset of columns $\mcP \subseteq P$,
 obtaining the following linear program:
 \begin{align}
-	\min_{\lambda} \quad z_\mt{RMP}(\lambda) & = \sum_{p \in \mcP}  c_p \lambda_p \label{eq:rmp-obj-func}                                                                                                                              \\
-	                                         & \sum_{p \in \mcP} \lambda_{p} = K\label{eq:rmp-K-routes}                                                                                                                                \\
-	                                         & \sum_{p \in \mcP}  a_{ip} \lambda_p = 1                    & \quad \forall i \in V_0                                              \label{eq:rmp-customers-visited-by-exactly-one-route} \\
-	                                         & \lambda_p \ge 0                                            & \quad \forall p \in \mcP \label{eq:rmp-lambda-mip-var-bounds},
+	\min_{\lambda} \quad z_\mt{RMP}(\lambda) & = \sum_{p \in \mcP}  c_p \lambda_p      & \label{eq:rmp-obj-func}                                                                                                    \\
+	                                         & \sum_{p \in \mcP} \lambda_{p} = K       & \label{eq:rmp-K-routes}                                                                                                    \\
+	                                         & \sum_{p \in \mcP}  a_{ip} \lambda_p = 1 & \quad \forall i \in V_0                                              \label{eq:rmp-customers-visited-by-exactly-one-route} \\
+	                                         & \lambda_p \ge 0                         & \quad \forall p \in \mcP \label{eq:rmp-lambda-mip-var-bounds},
 \end{align}
 which takes the name of \textbf{Restricted Master Problem} (RMP).
 
@@ -101,6 +101,8 @@ Notice that $\bar{c}_p$ can also be expressed as $\bar{c}_p = c_p - \pi_0 - \sum
 For convenience,
 we define $\bar{c}_{e} = c_{e} - \frac{\pi_i + \pi_j}{2}$
 as the reduced cost of an edge $e\in E$.
+The purpose of the RMP is to provide dual variables
+to be transferred to the pricing sub-problem \textcite{lubbecke2005}.
 
 Any $p \in P$ which satisfies $\bar{c}_p < 0$ is a valid column which can enter the basis of the RMP.
 The BAP solver must intelligently manage the set $\mcP \subseteq P$ that it stores within a pool.
@@ -184,61 +186,66 @@ where finding reduced cost columns is effortless.
 \section{Branching, Route Enumeration and Cut Generation}
 \label{sec:branching-and-cut-generation-within-bap-frameworks}
 
-In order to satisfy the integrality constraints for the SP formulation,
-solving the RMP at the root node is almost always not enough.
-The CG algorithm may in fact terminate with a non-zero duality gap.
+Solving the RMP at the root node rarely suffices to satisfy the integrality constraints for the SP formulation
+\labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}
+The CG algorithm may conclude with a non-zero duality gap.
 Therefore,
-a search tree and a branching scheme is employed
+a search tree and a branching scheme is utilized
 to seek for the optimal integral solution $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in P$.
-
-Although non strictly-necessary, modern BAP also use
-cut generation procedures to efficiently improve the dual bound and the convergence speed.
-Modern BAP frameworks
-are in fact a hybridization between a BAP and a BAC framework,
-making them a branch-price-and-cut (BPC) frameworks.
-Some notable works integrating cutting planes and proposing
-a BCP approach for the VRP can be found \textcite{fukasawa2006, ropke2012}.
-Refer to \textcite{sadykov2019modern} for a discussion of the state-of-the-art
-components that are part of modern branch-and-price frameworks.
+Modern BAP frameworks use additional cutting planes to enhance the dual bounds and the convergence speed.
+The so-called branch-price-and-cut (BPC) frameworks
+incorporate the common elements of both BAP and BAC frameworks.
+\textcite{fukasawa2006, ropke2012} are two notable works that integrate
+cutting planes and propose a BCP approach for the VRP.
+For a discussion of the state-of-the-art components
+that are part of modern branch-and-price frameworks, see  \textcite{sadykov2019modern}.
 
 \medskip
 
-It is important to note however that branching is not a strictly required operation.
-Route enumeration is another technique that can be used in place of branching
-for obtaining integral solutions which was first proposed for the CVRP in \textcite{baldacci2008}.
-In route enumeration, all elementary routes that may belong to the VRP optimal solution are enumerated,
-and an SP formulation containing all these enumerated routes are solved through a MIP.
-Route enumeration is obtained through a labeling algorithm similar to the one employed in the pricing problems.
-The problem of this approach is the possibly huge number of routes that needs to be enumerated,
-and this quantity is highly linked to the tightness of the duality gap,
-and with the average length of a tour $N / K$.
-Route enumeration is an operation that takes exponential space complexity,
-but it can drastically improve the performance of the BPC on some instances.
-The major contributions employing route enumeration in place of branching can be found in
-\textcite{baldacci2008,baldacci2011}.
+However, it's important to note that branching isn't a rigidly required operation.
+\textit{Route enumeration} (RE), first proposed for the CVRP in \textcite{baldacci2008},
+is another technique that can be used in place of branching for obtaining integral solutions.
+All elementary routes that may belong to the VRP optimal solution are enumerated
+and inserted into a complete SP formulation.
+The SP formulation is then solved through a conventional MIP optimizer.
+Enumeration is realized via a dynamic programming labeling algorithm similar
+to the one employed for the PP (see later discussion in \cref{sec:solving-the-pricing-problem}).
+The issue with RE is the potentially large number of routes that needs enumeration.
+This number is directly proportional
+to the tightness of the duality gap
+and the average length of a tour $N / K$ \parencite{toth2014}.
+Route enumeration is an operation that requires exponential space complexity,
+but it can drastically improve the performance of the BPC in some circumstances.
+\textcite{baldacci2008,baldacci2011} are two considerable contributions
+that employ exclusively RE and no branching.
 
-Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration
+Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration (RE)
 (see \cite{pessoa2008, pessoa2009,contardo2014,pecin2017improved,pecin2017new,pessoa2020}).
-After the convergence of the column generation, route enumeration is attempted.
-If the number of enumerated routes starts to exceed a maximum limit, enumeration
-is preemptively aborted and conventional branching is applied.
-Once the primal-dual bound gap $\bar{z} - \ubar{z}$ reaches desirable levels, the route enumeration
-procedure will enumerate all routes under the maximum limit.
-At the point the associated RMP formulation can be solved efficiently through a MIP.
+Route enumeration is attempted after the column generation has converged.
+Enumeration is preemptively aborted
+if the number of enumerated routes exceeds a maximum limit,
+and conventional branching is instead applied.
+The RE strategy will ultimately enumerate
+all routes under the maximum limit
+once the primal-dual bound gap $\bar{z} - \ubar{z}$ reaches decent levels.
+The associated RMP formulation can now be efficiently
+solved through a conventional MIP optimizer.
 
-We will not concentrate much of our attention on route enumeration in this
-thesis, since their presence doesn't influence the pricing problem.
-Nonetheless, it's important to know about its existence and role within
-the branch-and-price frameworks.
+In this thesis,
+we will not focus extensively on route enumeration
+because its presence has no impact on the pricing problem.
+Nonetheless, it's pivotal to acknowledge its existence
+and role within a branch-and-price framework.
 
 \medskip
 
-Branching and cut generation in BCP frameworks are more delicate operations
-compared to more traditional BAC frameworks due to the presence of the pricing problem.
-As classified in \textcite{dearagao2003},
-depending on the branching and cut generation schemes employed,
-two classes of inequalities are possible:
-\textbf{robust} versus \textbf{non-robust} inequalities.
+Due to the PP's existence,
+branching and cut generation in BCP frameworks are more delicate operations
+than in traditional BAC frameworks.
+According to \textcite{dearagao2003},
+there are two types of inequalities that can occur
+depending on the branching and cut generation schemes utilized:
+\textbf{robust} and \textbf{non-robust} inequalities.
 
 A \textbf{robust} inequality is an inequality
 which can be safely added to the RMP
@@ -248,36 +255,22 @@ robust inequalities do not require explicit modeling in the PP formulation
 and instead manifest their contribution directly in the reduced cost edges $\bar{c}_e$.
 An oracle, therefore,
 after the introduction of a robust inequality in the RMP,
-needs to solve the same ESPPRC problem but with slightly different weights associated on each edge.
+needs to solve the same ESPPRC problem
+but with slightly different weights associated with each edge.
 
-A \textbf{non-robust} inequality, instead,
-is much harder to handle since it changes the structure of the set of feasible paths $P$.
-Non-robust inequalities may in general have great potential at reducing the integrality gap
-but,
-unfortunately, require explicit modeling and support from the oracle.
-These types of inequalities can drastically complicate the pricing problem,
-trading better dual bound improvements for increased column generation times.
-Therefore, their usage must be assessed on a case-by-case basis \parencite{desaulniers2011}.
-Non-robust inequalities may present themselves both in the branching and cut-generation phases.
+A \textbf{non-robust} inequality, on the other hand,
+is significantly harder to cope with
+because it influences the structure of the set of possible paths $P$.
+In general,
+non-robust inequalities have an enriched potential to lower the integrality gap,
+but they require explicit modeling and oracle support.
+These inequalities can significantly complicate the PP
+by exchanging better dual-bound improvements for longer column generation times.
+As a result, their inclusion should be evaluated on an individual basis \parencite{desaulniers2011}.
+Non-robust inequalities can arise during both the branching and cut-generation phases.
 
-In this thesis
-we will mostly concentrate on branching and cut generation schemes
-which make use of \textbf{robust} inequalities.
-Refer to \textcite{desaulniers2011} for an introduction in cutting planes for BAP algorithms.
-
-\begin{comment}
-\textcite{lubbecke2005}
-The purpose of the RMP (as is the purpose of subgradient algorithms in Lagrangian relaxation) is to
-provide dual variables: To be transferred to the subproblem, and to control our stopping criterion. In
-the end only, we have to recover from the RMP a primal feasible solution to the compact formulation.
-Primal methods, like column generation, maintain primal feasibility and work towards dual feasi-
-bility. It is therefore only natural to monitor the dual solution in the course of the algorithm. In our
-opinion, the dual point of view reveals most valuable insight into the algorithm’s functioning. We call
-the polyhedron associated with the dual of the RMP the dual polyhedron. A dual solution to the RMP
-needs not be unique, e.g., if the primal is degenerate. This is significant inasmuch the dual solution di-
-rectly influences the selection of new columns. Since a dual basic solution corresponds to an extreme
-point of the optimal face, it may be a bad representative of all the dual solutions obtainable.
-\end{comment}
+These work's contributions will predominantly focus
+on \textbf{robust inequalities} exclusively.
 
 \subsection{Branching}
 \label{sec:bap-branching}
@@ -378,6 +371,7 @@ In this section we will introduce the families of inequalities
 which can be used for cut generation for respectively
 the two-index vehicle flow formulation
 and the SP formulation.
+For an introduction to cutting planes for BAP algorithms, see \textcite{desaulniers2011}.
 
 While the 2F formulation is not the primary focus of this thesis,
 presenting and studying valid inequalities for such formulation
