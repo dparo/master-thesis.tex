@@ -452,15 +452,15 @@ Second, at each pricing invocation we record the dual variables $\pi \in \R^N$ o
 to later be dumped into a dedicated file.
 
 Due to \bapcod's implementation details, the reduced cost of an
-edge does not follow the simple relationship $\bar{c_{ij}} = c_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V,\ i \ne j$.
+edge does not follow the simple relationship $\bar{c}_{ij} = c_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V,\ i \ne j$.
 The dual variable $\pi_0 \in R$ can be retrieved from the user by accessing a field
 of the master problem formulation.
 The remaining dual variables $\pi_i \quad \forall i \in V_0$ must instead be computed
-from the reduced cost of each edge $\bar{c_{ij}}$.
+from the reduced cost of each edge $\bar{c}_{ij}$.
 \bapcod, internally, uses the following relationship to encode the reduced cost of an edge:
 
 \begin{equation}
-	\bar{c_{ij}} = \begin{cases}
+	\bar{c}_{ij} = \begin{cases}
 		c_{ij} - \frac{\pi_{j}}{2}       & \texttt{if } i = 0, j \in V_0       \\
 		c_{ij} - \frac{\pi_i + \pi_j}{2} & \texttt{if } i, j \in V_0,\ i \ne j
 	\end{cases}

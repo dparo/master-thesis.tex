@@ -275,53 +275,47 @@ on \textbf{robust inequalities} exclusively.
 \subsection{Branching}
 \label{sec:bap-branching}
 
-In this section we will introduce branching for the SP formulation,
+In this section, we will introduce branching for the SP formulation,
 under the assumption that a branch-and-price scheme is employed
 for solving the CVRP.
 
 At first glance,
 it might seem reasonable to branch directly on the $\lambda_p$ variables of the SP formulation.
-Unfortunately, such form of branching has two main problems \parencite{vanderbeck2010reformulation}.
-First, it is non-robust and leads to a harder pricing problem: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
-Second, it produces a highly unbalanced tree.
+Unfortunately, such branching has two significant drawbacks \parencite{vanderbeck2010reformulation}.
+For starters,
+it is not robust and leads to a harder PP: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
+Second, it results in an utterly unbalanced tree.
 
-Most of the branching approaches studied in the literature for the CVRP involve
-mere extension of branching schemes used traditionally for the TSP.
-In fact, one of the most simple branching scheme,
-yet one of the most effective,
-involves \textbf{branching on edges}.
-The branching on edges scheme was first proposed for the CVRP in \textcite{christofides1969},
-and later re-adapted in different forms in \textcite{fisher1994, miller1995}.
-The arc flows can be easily computed from the master problem as:
-
+A vast bulk of CVRP branching approaches investigated in the literature are
+merely extensions of TSP branching schemes.
+\textit{Branching on edge},
+first applied to the CVRP in \textcite{christofides1969},
+is one of the most basic branching schemes, but it is also one of the most effective.
+The branching on edges scheme was refined in diverse forms in \textcite{fisher1994, miller1995}.
+The edge flow decision variables can be calculated from the MP by noting that:
 \begin{equation}
-	x_e = \sum_{p \in P} a_{ep} \lambda_p  \quad \forall e \in E
+	x_e = \sum_{p \in P} a_{ep} \lambda_p  \quad \forall e \in E,
 \end{equation}
+where $a_{ep}$ represents the number of times route $p \in P$ crosses an edge $e \in E$.
 
-where $a_{ep}$ represents the number of times route $p \in P$ crossed edge $e \in E$.
-
-Given a candidate fractional solution $\lambda^\star_p \quad \forall p \in \mcP$
-and a valid edge $e$ to branch on, $e \mid x_e \notin \Set*{0, 1, 2}$,
+Given a candidate fractional solution $0 \le \lambda^\star_p \le 1 \quad \forall p \in \mcP$
+and a valid edge $e \in E$ to branch on, $e \mid x_e \notin \Set*{0, 1, 2}$,
 it is possible to generate two descendant nodes in the search tree
 to continue scanning for integral solutions:
-
-\begin{equation}\label{eq:sp-branching-on-arcs}
+\begin{equation}\label{eq:sp-branching-on-edges}
 	x_e \le \floor*{\sum_{p \in \mcP} a_{ep} \lambda^\star_p}, \quad
-	x_e > \ceil*{\sum_{p \in \mcP} a_{ep} \lambda^\star_p}
+	x_e > \ceil*{\sum_{p \in \mcP} a_{ep} \lambda^\star_p}.
 \end{equation}
 
-Branching on arcs is an approach which is both: extremely simple and robust.
-Let $\omega_e \in \R$ represent the dual variable associated to
-edge $e \in E$ and to
-one of the branching polarity in \cref{eq:sp-branching-on-arcs},
-then, after branching,
-the new reduced cost $\bar{c}_e$ for an arc $e \in E$ becomes:
-
+Branching on edges is an approach that is both extremely simple and robust.
+Let $\omega_e \in \R$ denote the dual variable associated with edge $e \in E$
+and one of the branching polarities in \cref{eq:sp-branching-on-edges},
+then the new reduced cost $\bar{c}_e$ for an edge $e \in E$ after branching is:
 \begin{equation}
-	\bar{c}_e = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e
+	\bar{c}_e = c_e - \frac{\pi_i + \pi_j}{2} - \omega_e,
 \end{equation}
-
-where again $\pi \in \R^N$ represents the dual variables associated with \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
+where $\pi \in \R^N$ represents the dual variables associated with
+\cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
 
 Branching on edges has the disadvantage of achieving only local changes
 to the fractional solution.
@@ -335,37 +329,36 @@ an arbitrary set $S \subseteq V_0$ with two descendant nodes:
 \end{equation}
 \textcite{pecin2017improved} apply a similar branching approach.
 
-\textit{Ryan and Foster branching} \parencite{ryan1981integer} is another possible branching rule.
-This non-robust branching rule makes the pricing sub-problem much harder,
-but it has the main benefit to lead to more balanced search trees.
+\textit{Ryan and Foster branching} \parencite{ryan1981integer}
+is another viable branching rule which is unfortunately non-robust.
+\textit{Ryan and Foster branching} complicates the pricing subproblem,
+but it has the primary benefit of resulting in more balanced search trees.
 \textit{Branching over the accumulated resource consumption}, proposed in \textcite{gelinas1995new},
-is another commonly employed branching rule, which has the main benefit of not complicating
-the pricing difficulty.
+is another viable branching rule that,
+unlike the previous one, it does not raise the pricing difficulty.
 
-\textit{Strong branching}, a commonly employed branching technique,
-evaluates each possible branching candidates
+\textit{Strong branching} is a commonly employed strategy,
+which evaluates individually potential branching candidates
 by measuring their impact based on some scoring function.
-The idea is to select either the branching candidate that
-would heuristically lead to the best dual bound improvement
-or that it is heuristically known to lead to a more balanced search tree.
+The goal is to choose either the branching candidate
+that heuristically leads to the best dual bound improvement
+or the branching candidate that heuristically leads to a more balanced search tree.
 Strong branching can reduce the size of the search tree
 at the expense of a slower branching candidate evaluation.
-\textcite{fukasawa2006, pecin2017limited, pecin2017new} applied strong branching
-to the vehicle routing problems.
+\textcite{fukasawa2006, pecin2017limited, pecin2017new} are all approaches
+that opted for the strong branching technique for solving the VRP.
 
 \medskip
 
-Reduction rules may be employed to remove some arcs
-which can be proved to not belong to an optimal solution.
-\textit{Variable fixing} may be used as a reduction rule by exploiting
-the usage of a dual bound $\bar{z}$ and primal bound $\ubar{z}$ to eliminate some
-arcs $e \in E \mid \hat{c_e} \ge \bar{z} - \ubar{z}$ \parencite{hadjar2006, irnich2010}.
-Reduction rules may be viewed as a special case of branching
-with a single descendant node.
-Reducing the set of edges to consider may filter a good portion of the search-space.
+Reduction rules can remove edges verified to not belong to an optimal solution.
+\textit{Variable fixing} can be used as a reduction rule
+by utilizing a dual bound $\bar{z}$ and primal bound $\ubar{z}$
+to eliminate some edges $e \in E \mid \hat{c}_e \ge \bar{z} - \ubar{z}$ \parencite{hadjar2006, irnich2010}.
+Reduction rules can be regarded as a subset of branching with a single descendant node.
+Reduction rules may crop a good portion of the search space.
 
-\subsection{Families of Cuts}
-\label{sec:families-of-cuts}
+\subsection{Families of Cutting Planes}
+\label{sec:families-of-cutting-planes}
 
 In this section we will introduce the families of inequalities
 which can be used for cut generation for respectively
@@ -426,7 +419,7 @@ these bounds may still be too weak to obtain an efficient algorithm.
 Thus, it is common practice to introduce cutting-plane approaches
 in modern branch-and-price based VRP solvers.
 
-Cutting-planes involving arc-flow variables only, are by nature
+Cutting-planes involving edge-flow variables only, are by nature
 robust.
 Since the RCC inequalities involve only the edges $e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
 they can trivially be extended to a robust inequality for the SP formulation:
