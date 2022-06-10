@@ -4,67 +4,74 @@
 \urlref{https://www.ibm.com/analytics/cplex-optimizer}{IBM ILOG CPLEX Optimizer},
 CPLEX for short,
 is a commercial optimization software package for solving problems expressed as either:
-linear programs, mixed-integer programs, quadratic programs, or quadratic constrained programs.
-ILOG CPLEX was bought from IBM in 2009 and is currently maintained by IBM.
-CPLEX comes in different flavors as either an independent executable or as a callable library.
+linear programs, mixed-integer programs, quadratic programs, or quadratically constrained programs.
+ILOG CPLEX was purchased by IBM in 2009 and is still maintained by IBM.
+CPLEX is available in two flavors: a standalone executable and a callable library.
 The executable can solve problems defined interactively or defined inside a custom file format.
 The CPLEX Callable library is a C dynamic library linkable with custom user code.
-CPLEX also comes with bindings for different languages such as C++, Java, Python, and more.
+CPLEX also includes language bindings for C++, Java, Python, and other popular programming languages.
 CPLEX uses the simplex algorithm (both primal and dual)
 and an advanced proprietary algorithm based on a branch-and-cut technique called \textit{Dynamic Search}.
 CPLEX applies pre-processing at the root to improve the formulation and reduce the problem size.
-It also features a probing technique to analyze logical implications by fixing binary variables to either $0$ or $1$.
-It applies several heuristics at each node: Diving heuristic, Local Branching \parencite{fischetti2003}, Feasibility pump \parencite{fischetti2005}, Relaxation Induced Neighborhood \parencite{danna2005}, Evolutionary genetic algorithms for polishing the solutions \parencite{rothberg2007}, and more.
+It also features a probing technique for analyzing logical implications by setting binary variables to $0$ or $1$.
+It applies several heuristics at each node of the tree: diving heuristics, Local Branching (LB) \parencite{fischetti2003}, Feasibility pump \parencite{fischetti2005}, Relaxation Induced Neighborhood \parencite{danna2005}, Evolutionary genetic algorithms for polishing the solutions \parencite{rothberg2007}, and more.
 CPLEX includes efficient implementations of several cut templates.
 Among the most notable: Gomory cuts \parencite{chvatal1973}, Knapsack covers \parencite{letchford2020lifting}, GUB covers \parencite{wolsey1990valid}, Local Branching \parencite{fischetti2003}, Flow covers \parencite{padberg1985valid}, Clique covers \parencite{brigham1983clique}, 0-1 half cuts \parencite{caprara1996}, and more.
-Moreover, the node-selection and branching decision strategies in CPLEX are top notch.
+Moreover, the node-selection and branching decision strategies in CPLEX are top-notch.
 The node-selection and branching decision strategies
 are the most delicate component of a branch-and-cut algorithm
-because they can substantially alter the whole running time of the procedure \parencite{lodi2013a}.
+because they can substantially alter the whole running time of the procedure \parencite{lodi2013performance}.
 They received many years of development and tuning to make them top-notch.
-For more details about CPLEX refer to \textcite{lima2010, lodi2013}.
+For more details about CPLEX refer to \textcite{lima2010, lodi2013heuristic}.
 
-MIP solvers are quite general
-and can be employed to solve a variety of problems from different fields \parencite{bixby2007progress}.
+MIP solvers are rather general and can be used to solve a wide range of problems from various fields \parencite{bixby2007progress}.
 MIP models are, in spirit, a way to mathematically program a solver to achieve the desired solution.
-A MIP solver can solve a mixed integer linear programming formulation
+A MIP solver can solve a mixed-integer linear programming formulation
 expressed as \parencite{wolsey1999integer}:
-
 \begin{align}
 	 & \max_{x, y} & c^T x + d^T y                                 \\
 	 & \text{s.t.} & A x + B y \le b  \label{eq:general-mip-bound} \\
 	 &             & x \in \R^n                                    \\
-	 &             & y \in \Z_{+}^k
+	 &             & y \in \Z_{+}^k,
 \end{align}
-
 where $A \in \R^{m \times n}, B \in \R^{m \times k}$ are matrices and
 $c \in \R^n, d \in R^k, b \in \R^m$ are vector coefficients.
 The bound in \cref{eq:general-mip-bound} can also be rewritten in equality and/or greater form.
 
 MIP programs are solvable in various ways,
-but the most typical one is to use the simplex algorithm
-(for solving the continuous relaxation)
-and to employ a branch-and-cut algorithm (to handle the integrality constraints).
+but the most common is to use the simplex algorithm (for solving the continuous relaxation)
+and a branch-and-cut algorithm (to handle the integrality constraints).
 The branch-and-cut algorithm,
 first introduced in \textcite{padberg1991},
 is a hybridization between a cutting plane method
 and a branch-and-bound procedure \parencite{land2010}.
-Branch-and-bound is a divide-and-conquer algorithm
-that builds a search tree to explore the solution space.
+The branch-and-bound algorithm is a divide-and-conquer algorithm
+that manipulates a search tree to explore the solution space.
 Each node of the tree represents a sub-problem of the feasible region.
-The continuous relaxation is solvable in polynomial time,
-even though the simplex algorithm,
-which works well in practice, can, in the worst case, take exponential running time.
+The continuous relaxation was proven to be solvable in polynomial time in \textcite {khachiyan1979polynomial}.
+Even though the simplex algorithm works well in practice,
+it could rarely take an exponential amount of time to complete.
+Regardless, the simplex algorithm works flawlessly in practice.
 
-MIP solvers are exact by nature: given enough running time, they can compute a proven optimal solution by exhibiting both a lower bound and an upper bound to the objective function.
-They tend to be less effective than an ad-hoc heuristic algorithm since they work with a generic abstract mathematical model and cannot foresee all the nuances that the model itself represents.
-As \textcite{bixby1999} says, MIP modeling is a powerful and convenient technique but wasn't very applicable 40 or so years ago due to limited hardware and less efficient implementations.
-Thanks to advances in processor speed, the development of faster and smarter algorithms, embedded heuristics, preprocessing, postprocessing, and polishing techniques, MIP models are nowadays quite manageable and solvable in a reasonable time on consumer hardware.
+MIP solvers are exact by nature: given enough running time,
+they can compute a proven optimal solution by exhibiting both a lower and upper bound
+to the objective function.
+They tend to be less effective than an ad-hoc heuristic algorithms
+since they work with a generic abstract mathematical model
+and cannot anticipate all the nuances that the model itself represents.
+As \textcite{bixby1999} points out,
+MIP modeling is a powerful and convenient technique that wasn't practical 40 years ago due
+to limited hardware and inadequate implementations.
+MIP models are now quite manageable and solvable in a reasonable time on consumer hardware,
+thanks to numerous reasons:
+advances in processor speed, the development of faster algorithms,
+embedded heuristics, better preprocessing, post-processing, and polishing techniques.
 
-Unfortunately, MIP solvers are usually quite complicated.
-Lots of research and development is spent on creating an efficient MIP solver.
-Unlike a simple heuristic which implementation spans a few lines of code, a MIP solver cannot be developed in "house" using limited resources within a reasonable time.
-Most efficient MIP solvers on the market have licenses costing in the range of tens of thousands of dollars.
+Unfortunately, MIP solvers are frequently quite complex.
+Lots of efforts are needed to develop an efficient MIP solver.
+Unlike a simple heuristic whose implementation spans a few lines of code,
+a MIP solver cannot be developed in "house" using limited resources within a reasonable time.
+The most efficient MIP solvers on the market have licenses that cost tens of thousands of dollars.
 
 Fortunately, CPLEX is available freely through an academic license at this
 \urlref{https://www.ibm.com/support/knowledgecenter/SSSA5P\_12.5.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/preface/preface\_synopsis.html}{URL}.
