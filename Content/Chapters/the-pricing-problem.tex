@@ -429,8 +429,7 @@ As a result, we will not spend any more time discussing the ESPPCC.
 
 The Capacitated Profitable Tour Problem, abbreviated as CPTP,
 belongs to the group of the so-called
-Travelling Salesman Problems with Profits (TSPP) (see \cite{feillet2005}),
-and therefore presents many similarities with other
+Travelling Salesman Problems with Profits (TSPP) (see \cite{feillet2005}) and thus share many similarities with other
 studied optimization problems such as:
 (i) the Orienteering Problem (OP) \parencite{golden1987, laporte1990}
 (ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995},
@@ -440,56 +439,47 @@ Refer to \textcite{letchford2013} for the Steiner extension of these problems.
 
 The OP, an NP-hard problem \parencite{laporte1990}, asks for a route serving
 a subset of customers with associated profits.
-In OP, the route length is bounded in terms of number of vertices visited,
-whereas in CPTP the route is bounded in terms of the accumulated demand served.
-Using the reduction to Hamiltonian circuit problem
-employed to prove that the OP is NP-hard \parencite{laporte1990},
-the same reasoning can be applied to conclude that CPTP is also NP-hard.
-The OP may be regarded as a special case of an edge-capacitated CPTP with unit demands.
+In the OP, the route length is limited by the number of vertices visited,
+whereas, in CPTP,
+the route length is constrained by the accumulated demand served.
+We can conclude that CPTP is NP-hard by applying the same reasoning
+to prove that the OP is NP-hard in \textcite{laporte1990}.
+The OP is equivalent to an edge-capacitated CPTP with unit demands.
+For contributions introducing BAC frameworks and valid inequalities for the OP,
+see \textcite{fischetti1998, gendreau1998}.
+Many of these inequalities (but not all) extend to the CPTP as shown in \textcite{jepsen2014}.
 
-Refer to \textcite{fischetti1998, gendreau1998} for contributions
-exposing BAC frameworks and valid inequalities for the OP.
-Many of such inequalities (but not all) are also valid for the CPTP \parencite{jepsen2014}.
-We will introduce the CPTP in the context of pricing for the CVRP.
-We will study the basic version of the CPTP,
-i.e. we will not consider additional non-robust inequalities
-at the RMP level that could change the structure of the problem.
+The CPTP is a special case of ESPPCC where the source and sink vertices coincide.
+The CPTP, like the ESPPCC, can model the pricing sub-problem
+In contrast to the more general ESPPRC formulation, the CPTP is much easier to describe.
+However, because of its narrower scope, it is a problem that receives far less attention in the literature.
+To our knowledge, the few contributions to studying the CPTP in the context of pricing
+for the CVRP are \textcite{bixby1999, jepsen2011,jepsen2014}.
+in the column generation employed in solving the CVRP.
+In this section, we consider the basic version of the CPTP,
+not considering non-robust inequalities at the RMP level.
 
 \medskip
 
 In more detail,
 the CPTP is a combinatorial optimization delivery problem,
 in which,
-given as input a set of customers
-defined over a fully connected undirected network, the goal resides in finding
-a resource constrained elementary tour (or circuit) starting from a common point called the depot,
+given as input a fully connected undirected network where vertices represent the customers,
+the goal resides in finding a resource-constrained elementary tour (or circuit)
+starting from a common point called the depot,
 that minimizes the overall travel distance while maximizing
-the profits associated in serving only a subset of the customers.
-The profit value is gained only when serving occurs.
-The elementarity constraint dictates that no vertex
-can be visited twice or more, thus implying that the earnable profit
-per customer is available only once.
+the profits associated with serving only a subset of the customers.
+Each customer's profit lowers the tour cost only if the corresponding node is visited.
+Because of the elementarity constraint,
+vertices cannot be visited multiple times,
+implying that the earnable profit per customer is only available once.
+The profit is encoded at the node level in the traditional CPTP formulation \parencite{jepsen2014}
+rather than being included directly in the definition of the reduced cost variable
+$\bar{c}_{ij} \quad \forall i, j \in V_0 \cup \Set*{0}$ as it is in the ESPPCC.
 
-The CPTP shows up naturally as a sub-problem
-in the column generation approach employed in solving the CVRP.
-It is an important special case of the
-ESPPCC when the source and sink vertices encode the same node (the depot node).
-In the traditional CPTP formulation \parencite{jepsen2014},
-the profit is encoded at the node level
-instead of being included directly in the definition
-of the reduced cost variable $\bar{c}_{ij} \quad \forall i, j \in V_0 \cup \Set*{0}$
-as it is done in the ESPPCC.
-Contrary to the formulation of the more general ESPPRC,
-the CPTP is much easier to describe.
-However, due to its narrower scope,
-it is a problem which is far less addressed in the literature.
-To the best of our knowledge, the few contributions studying the CPTP
-in the context of pricing for the CVRP can be found in \textcite{bixby1999, jepsen2011,jepsen2014}.
-
-The presentation of this section,
-along with the implementation discussed in \cref{sec:implementation-chapter}
-owes a lot to the original efforts of \textcite{jepsen2014},
-where they laid the foundational framework for the CPTP.
+The presentation of this section, as well as the implementation discussed
+in \cref{sec:implementation-chapter},
+owes a lot to the original efforts of \textcite{jepsen2014}.
 
 \subsection{Integer Programming formulation}
 \label{sec:cptp-integer-programming-formulation}
