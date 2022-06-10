@@ -1,61 +1,58 @@
 \chapter{The Pricing Problem}
 \label{sec:the-pricing-problem}
 
-As it was already discussed in \cref{sec:branch-and-price},
-the Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+The Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
 appears as the pricing sub-problem in column generation schemes
-for vehicle routing problems.
-Therefore, its study is of fundamental importance to
-engineer efficient branch-and-price frameworks.
-We refer the reader to \cref{sec:solving-the-pricing-problem}
-for a literature review on the importance and methodologies
-for solving the pricing problem.
+for vehicle routing problems, as previously discussed in \cref{sec:branch-and-price}.
+As a result, comprehending it is crucial for developing efficient branch-and-price frameworks.
+For a literature review on the importance and methodologies
+for solving the pricing problem,
+we refer the reader to  \cref{sec:solving-the-pricing-problem}.
 
-While the ESPPRC can be seldom studied as a standalone problem,
-in this work we are mainly interested at it from the perspective
-of pricing for the vehicle routing problem.
-The ESPPRC asks for the determination of a shortest path (or route)
-between a starting and destination vertex over a directed weighted network
-subject to additional resource restrictions.
-The general version of the ESPPRC allows for multiple resources definition
-with different semantics, for example: time, capacity, gasoline, etc.
-The resources are usually monotically increasing quantities which
-increase as the route traverses new edges or vertices \parencite{irnich2005, irnich2007resource}.
-Resource consumption bounds can be given at different level of scopes which
-can be classified as: at the global scope, at the vertex level scope, or at the arc level scope.
+While the ESPPRC can be studied independently,
+we are primarily interested in it in this work from the perspective of pricing for the VRP.
+The ESPPRC requests the shortest path (or route)
+between a starting and destination vertex on a directed weighted network,
+subject to additional resource constraints.
+The standard version of the ESPPRC allows for the definition of multiple resource
+s with different semantics, such as time, capacity, gasoline, and more.
+The resources are typically monotonically increasing quantities
+that increase as the route passes through new edges or vertices \parencite{irnich2005, irnich2007resource}.
+Resource consumption can be bounded at various levels of scope,
+such as global scope, vertex scope, or arc scope.
 
-The Elementary Shortest Path Problem with Capacity Constraints (ESPPCC) is a special
-case of ESPPRC characterized by a single resource, the amount of goods,
-which is bounded by a global quantity $Q \in \R$, the vehicle capacity.
-The ESPPCC can be used to model the pricing sub-problem in column
+The Elementary Shortest Path Problem with Capacity Constraints (ESPPCC)
+is a subset of the ESPPRC characterized by a single resource: the number of goods.
+A global-scoped threshold $Q \in \R_{+}$, the vehicle capacity,
+limits the number of goods served during a route.
+The ESPPCC can be used to model the pricing sub-problem in the column
 generation schemes for the Capacitated Vehicle Routing Problem (CVRP).
 
-In this work, we will mostly focus our attention to the ESPPCC pricing sub-problem.
-It is important to acknowledge however, that the
-more general ESPPRC is required to model more complex scenarios,
-such as for example, the pricing sub-problem induced
-from the Vehicle Routing Problem with Time Windows (VRPTW).
+We will concentrate on the ESPPCC pricing sub-problem in this work.
+However,
+it is crucial to acknowledge that the more general ESPPRC is required to model more complex scenarios,
+such as the pricing sub-problem induced by the Vehicle Routing Problem with Time Windows (VRPTW).
 
-The Capacitated Profitable Tour Problem (CPTP) is a combinatorial optimization problem
-which, alike the ESPPCC,
-can be effectively used to model the pricing sub-problem
-induced from the CVRP.
-The CPTP asks for a minimum cost circuit subject to capacity restrictions,
-and can be seen as a special case of ESPPCC where the starting
+The Capacitated Profitable Tour Problem (CPTP)
+is a combinatorial optimization problem that, like the ESPPCC,
+can effectively model the CVRP pricing sub-problem.
+The CPTP asks for a minimum cost circuit subject to capacity constraints
+and can be regarded as a specific case of ESPPCC where the starting
 and destination vertices coincide.
 
 \medskip
 
-We will formally introduce, discuss and provide an IP formulation
-for the ESPPCC in \cref{sec:the-elementary-shortest-path-problem-with-capacity-constraints}.
-In \cref{sec:the-capacitated-profitable-tour-problem}, instead,
-we will introduce the CPTP along with an IP formulation and additional valid inequalities.
-We will study the basic version of these two problems, namely
-non-robust inequalities altering the structure of the problem, are not considered.
-However, before diving directly to the discussion of these two problems,
-we will first dedicate the next section (\labelcref{sec:bac-approaches-for-the-pricing-problem})
-to review the few past contributions regarding
-the usage of branch-and-cut approaches for pricing.
+In \cref{sec:the-elementary-shortest-path-problem-with-capacity-constraints}
+we will formally introduce, discuss, and provide an IP formulation for the ESPPCC.
+Similarly, in \cref{sec:the-capacitated-profitable-tour-problem},
+we will introduce the CPTP and provide an IP formulation and extra valid inequalities.
+We will study the basic version of these two problems,
+which means that we will not consider non-robust inequalities
+that can change the structure of these problems.
+However, before delving into the discussion of these two problems,
+we will first devote the following section (\labelcref{sec:bac-approaches-for-the-pricing-problem})
+to a review of the few previous contributions regarding
+the use of branch-and-cut approaches for pricing.
 
 \section{Literature Review on Branch-and-Cut approaches applied to the Pricing Problem}
 \label{sec:bac-approaches-for-the-pricing-problem}
@@ -67,6 +64,7 @@ The label correcting algorithm is a natural extension of the Bellman–Ford algo
 a common algorithm present in the "toolbelt" of all operations research practitioners,
 which computes shortest paths from a source vertex to all other vertices,
 by taking also in consideration additional path constraints.
+See previous discussion in \cref{sec:solving-the-pricing-problem}.
 
 To the best of our knowledge,
 branch-and-cut approaches for tackling the (E)SPPRC have been barely covered.
