@@ -504,8 +504,10 @@ over a directed network formulation where the cost of each edge
 is dualized.
 In the ESPPRC problem, the elementarity condition imposes
 that the optimal route may visit the same vertex at most once.
-For convenience we define as \textit{Shortest Path Problem with Resource Constraints} (SPPRC )
-as the non-elementary version of the ESPPRC.
+For convenience we define as \textit{Shortest Path Problem with Resource Constraints} (SPPRC)
+as the non-elementary version of the ESPPRC and the abbreviation RCSP
+to denote a \textit{resource constrained shortest path}.
+Sometimes SPPRC is also abbreviated as RCSPP: \textit{Resource Constrained Shortest Path Problem}.
 As it was claimed in \textcite{dror1994},
 since the underlying network may contain negative cost cycles,
 the ESPPRC is an NP-hard problem.
@@ -552,8 +554,9 @@ Each partial path is tracked by the algorithm using labels.
 Each label encodes the current partial resource consumption, among other things.
 The algorithm’s dominance rules allow it to efficiently prune the search space
 by ignoring dominated labels, thus vastly speeding up the resolution process.
-The label-correcting algorithm
-is a natural extension of the traditional Bellman-Ford algorithm \parencite{bellman1958, fordjr1956}.
+The label-correcting algorithm is a natural extension of
+the traditional Bellman-Ford algorithm \parencite{bellman1958, fordjr1956},
+but it takes additional path constraints into account.
 The Bellman-Ford algorithm is commonly known
 by all operations research practitioners
 and it is used to compute resource-unconstrained shortest paths

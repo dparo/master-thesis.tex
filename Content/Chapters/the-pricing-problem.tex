@@ -58,89 +58,78 @@ the use of branch-and-cut approaches for pricing.
 \label{sec:bac-approaches-for-the-pricing-problem}
 
 Label-correcting dynamic programming approaches
-dominate as the main approach to solve the (E)SPPRC in the context of pricing,
+dominate as the primary approach to solve the (E)SPPRC in the context of pricing,
 see \cite{desrochers1992, feillet2004, righini2004, righini2006, boland2006, righini2008, pugliese2010, baldacci2011, lozano2013, lozano2016, sadykov2021bucket}.
-The label correcting algorithm is a natural extension of the Bellman–Ford algorithm \parencite{bellman1958, fordjr1956},
-a common algorithm present in the "toolbelt" of all operations research practitioners,
-which computes shortest paths from a source vertex to all other vertices,
-by taking also in consideration additional path constraints.
-See previous discussion in \cref{sec:solving-the-pricing-problem}.
+For a more complete discussion, see \cref{sec:solving-the-pricing-problem}.
 
-To the best of our knowledge,
-branch-and-cut approaches for tackling the (E)SPPRC have been barely covered.
+To our knowledge, branch-and-cut approaches for tackling the (E)SPPRC have received little attention.
 The few branch-and-cut contributions that we are aware of are:
 \textcite{jepsen2008branchandcut} for the ESPPCC,
 \textcite{jepsen2011,jepsen2014} to the CPTP,
 \textcite{taccari2016, drexl2014} for the related non-resource constrained ESPP,
 \textcite{horvath2016} for the (non-elementary) RCSP.
-Branch-and-cut solutions for the general ESPPRC version have not been covered.
-This situation can probably be attributed to the
-inherent difficulties associated in modeling
-resource constraints with non-global bounds \parencite{jepsen2008branchandcut},
-such as the time window constraints .
-First, non-global bounds on the resources make mandatory the usage of
-a directed network based IP model,
-which is twice times larger than an undirected equivalent solution.
-Second, the non-globally bounded resource constraints may be only modeled as
-big-M constraints, which are known to be inherently computationally unstable \parencite{jepsen2008branchandcut}.
+
+To our knowledge,
+no branch-and-cut contributions exist for the general ESPPRC version in the literature.
+This situation is likely due to the inherent difficulties
+associated with modeling resource constraints with non-global bounds,
+such as time window constraints \parencite{jepsen2008branchandcut}.
+First, non-global resource bounds necessitate the usage
+of directed network-based IP models,
+which are twice as large as an undirected equivalent solution.
+Second, non-globally bounded resource constraints
+can only be modeled as big-M constraints,
+which are known to be inherently computationally unstable \parencite{jepsen2008branchandcut}.
 
 \medskip
 
-\textcite{jepsen2008branchandcut} provides an IP mathematical model
+\textcite{jepsen2008branchandcut} provide an IP mathematical model
 for the ESPPCC over an undirected network, along with additional valid inequalities.
-In their work they empirically evaluate the effectiveness of their
+In their work, they empirically evaluate the effectiveness of their
 branch-and-cut framework in the context of pricing for the CVRP.
 
-\textcite{jepsen2014} study the CPTP problem in the context of pricing for the CVRP.
-Their work originate from the initial efforts of \textcite{jepsen2008branchandcut}.
-The work of \citeauthor{jepsen2014} provides a first tutorial/survey/framework
-and foundational theory for further development of the CPTP as, either
-an independent problem or in the context of pricing.
-They focus on the development of a model, additional valid inequalities and
-a branch-and-cut algorithm for solving it.
-They readjust many inequalities from related problems
-and discuss their efficient separation.
+\textcite{jepsen2014} investigates the CPTP problem in the context of pricing for the CVRP.
+Their work stems from the initial efforts of \textcite{jepsen2008branchandcut}.
+\citeauthor{jepsen2014} provide a first tutorial/survey/framework and foundational theory
+for further development of the CPTP as a standalone problem or in the context of pricing.
+In addition to discussing valid inequalities and their efficient separation,
+they propose a model and a branch-and-cut algorithm for solving the CPTP.
 
-\textcite{jepsen2014} study the competitiveness of their approach
-along with the usefulness of the valid inequalities through a computational study.
-Their results show that the CPTP based branch-and-cut framework
-was not competitive w.r.t. to dynamic programming
-in solving the pricing induced from the column generation for CVRPs.
-However, their results showed that the branch-and-cut algorithm
-was able to solve some bigger ESPPCC/CPTP instances where the
-dynamic programming solution suffered.
-Their results show that:
+\textcite{jepsen2014} conduct a computational study
+to assess the competitiveness of their approach
+and the usefulness of the employed cutting planes.
+Their findings showed that the CPTP-based branch-and-cut framework
+was not competitive in solving the CVRP's PP.
+Overall, the dynamic programming algorithm appeared to perform vastly better.
+Nonetheless, their findings revealed that the branch-and-cut algorithm
+solved some larger problem instances in which the labeling algorithm failed to provide a solution.
+More specifically, their results showed that:
 \begin{enumerate}
 	\setlength{\itemsep}{0pt}
 	\setlength{\parskip}{0pt}
 
-	\item \label{itm:cptp-branch-and-cut-better-p1} The branch-and-cut
-	      algorithm seemed to help in solving some standalone CPTP instances characterized
-	      by a huge number of customers (approximately more than 200),
+	\item \label{itm:cptp-branch-and-cut-better-p1} The branch-and-cut algorithm
+	      appeared to solve some standalone CPTP instances characterized
+	      by numerous customers (approximately 200),
 	      where the labeling algorithm ran out of available computation time.
-	\item \label{itm:cptp-branch-and-cut-better-p2} The branch-and-cut algorithm
-	      performed much better w.r.t. the labeling algorithm when the
-	      weights of the associated ESPPCC network were highly negative.
-	\item \label{itm:cptp-branch-and-cut-better-p3} The branch-and-cut framework had a tendency
-	      to perform worse when the optimal objective value of the problem was very close to the zero
-	      threshold.
+	\item \label{itm:cptp-branch-and-cut-better-p2} When the weights of the associated
+	      ESPPCC/CPTP network were highly negative,
+	      the branch-and-cut algorithm outperformed the labeling algorithm significantly.
+	\item \label{itm:cptp-branch-and-cut-better-p3} When the optimal objective value
+	      of the problem was very close to the zero threshold,
+	      the branch-and-cut framework performed worse.
 \end{enumerate}
-The result \labelcref{itm:cptp-branch-and-cut-better-p1} is obtained for standalone
-CPTP solutions and thus may not be relevant in the context of pricing.
-Result \labelcref{itm:cptp-branch-and-cut-better-p2} is of little-interest
-in the context of pricing
-since highly negative weights network are usually solved through heuristics regardless.
-The result \labelcref{itm:cptp-branch-and-cut-better-p3}, which is not in favor for a
-branch-and-cut based pricing solution,
-can probably be attributed to the fact that labeling algorithms
-are usually optimized to cut off huge portions of the solution space when
-the objective function has optimal values very close to the zero threshold.
+The \cref{itm:cptp-branch-and-cut-better-p1} is obtained for standalone CPTP instances
+and may thus be irrelevant in the pricing context.
+With regard to pricing, \cref{itm:cptp-branch-and-cut-better-p2} is of little interest
+because highly negative weights networks are usually solved through heuristics regardless.
+The \labelcref{itm:cptp-branch-and-cut-better-p3} is probably due to the fact
+that labeling algorithms are usually optimized to cut off extensive portions of the solution space
+when the optimal value resides very close to the zero threshold.
 
-Despite their contribution needs to be revisited given the modern advances on both sides,
-their results proved that a branch-and-cut approach could complement
-the dynamic programming algorithm for pricing.
-In conclusion, there might value revisiting and
-expanding the research branch-and-cut based pricers based on the CPTP formulation.
+Despite their contribution ought to be revisited in light of recent advances on both sides,
+their findings demonstrated that a branch-and-cut approach
+could supplement the dynamic programming algorithm for pricing.
 
 \section{The Elementary Shortest Path Problem with Capacity Constraints}
 \label{sec:the-elementary-shortest-path-problem-with-capacity-constraints}
