@@ -21,7 +21,7 @@ that increase as the route passes through new edges or vertices \parencite{irnic
 Resource consumption can be bounded at various levels of scope,
 such as global scope, vertex scope, or arc scope.
 
-The Elementary Shortest Path Problem with Capacity Constraints (ESPPCC)
+The \textit{Elementary Shortest Path Problem with Capacity Constraints} (ESPPCC)
 is a subset of the ESPPRC characterized by a single resource: the number of goods.
 A global-scoped threshold $Q \in \R_{+}$, the vehicle capacity,
 limits the number of goods served during a route.
@@ -134,62 +134,54 @@ could supplement the dynamic programming algorithm for pricing.
 \section{The Elementary Shortest Path Problem with Capacity Constraints}
 \label{sec:the-elementary-shortest-path-problem-with-capacity-constraints}
 
-This section is dedicated to the discussion of the
-Elementary Shortest Path Problem with Capacity Constraints (ESPPCC)
+This section will go over the \textit{Elementary Shortest Path Problem with Capacity Constraints} (ESPPCC)
 in the context of pricing for the CVRP.
-While we have already glimpsed at the general ESPPRC case of this problem in
-\cref{sec:column-generation-and-pricing-problem,sec:solving-the-pricing-problem},
-we've never provided a formal description of the mathematical model.
-In this section we consider the basic version of the ESPPCC,
-i.e. non-robust inequalities at the RMP level are not considered.
-In case non-robust inequalities are employed,
-ESPPCC does not suffice in modeling the pricing problem.
-A slight variation of the ESPPCC characterized by additional constraints
-becomes mandatory to ensure correctness of the column generation approach.
+We've already seen the general ESPPRC case of this problem in
+\cref{sec:column-generation-and-pricing-problem,sec:solving-the-pricing-problem}
+but we've never provided a formal description of the mathematical model.
+In this section, we consider the basic version of the ESPPCC,
+not considering non-robust inequalities at the RMP level.
+When non-robust inequalities are used, ESPPCC is insufficient for modeling the pricing problem.
+To ensure the correctness of the column generation approach,
+a slight variation of the ESPPCC with additional constraints is required.
 
 The ESPPCC asks for the determination of the shortest path on a weighted network
 between two vertices $s, t$
 subject to a single global resource restriction characterized
-by the amount of goods available for serving.
-In the ESPPCC problem,
-the elementarity condition imposes that no optimal path may
-cover the same vertices two or more times.
-The ESPPCC's underlying network may in the general case,
-contain negative cost cycles.
-The presence of negative cost cycles makes solving such problem NP-hard \parencite{dror1994}.
+by the number of goods available for serving $Q \in \R_{+}$.
+The elementarity condition in the ESPPCC problem requires that
+no optimal path pass through the same vertices two or more times.
+In general, the ESPPCC's underlying network may contain negative cost cycles.
+The presence of negative cost cycles makes solving such a problem NP-hard \parencite{dror1994}.
 A dynamic programming algorithm
 to tackle the elementary version of the problem
 was proposed in \textcite{feillet2004}.
-However, in the context of pricing, the problem has been traditionally relaxed into a SPPRC.
-The SPPRC,
-contrary to the elementarity version,
-can be solved in pseudo-polynomial time with a much faster dynamic programming algorithm \parencite{desrochers1992}.
-Unfortunately,
-relaxing the elementarity condition leads to slower column generation and worsening of dual bounds,
-see previous discussion in \cref{sec:solving-the-pricing-problem}.
+In the context of pricing, however, the problem has traditionally been resolved through an SPPRC.
+Unlike its elementarity version, the SPPRC can be solved in pseudo-polynomial time
+using a much faster dynamic programming algorithm, see \textcite{desrochers1992}.
+Unfortunately, relaxing the elementarity condition
+slows down column generation and worsens dual bounds,
+as discussed previously in \cref{sec:solving-the-pricing-problem}.
 
 \medskip
 
-In the case that the ESPPCC's weighted network contains no non-negative
-cost cycles, the elementarity condition maybe safely dropped \parencite{beasley1989}.
+If the weighted network of the ESPPCC contains no negative-cost cycles,
+we can safely ignore the elementarity restriction without affecting the correctness \parencite{beasley1989}.
 A sufficient but not-necessary condition is when the reduced cost variables
 are all positive: $\bar{c}_{ij} \ge 0 \quad \forall i, j \in V_0 \cup \Set*{s, t}$.
-In such case, an optimal solution of the associated non-elementary SPPRC problem
+In this case, an optimal solution to the associated non-elementary SPPRC
 is an optimal solution to the original elementary version of the problem \parencite{beasley1989}.
-The associated SPPRC can be solved efficiently in pseudo-polynomial time.
-Initial contributions for tackling the ESPPCC exploited this property.
-The resource consumption constraint was relaxed through a Lagrangean relaxation
-approach.
-Through the usage of a branch-and-bound scheme and an off-the-shelf
-standard shortest path algorithm, e.g. Dijkstra \parencite{sniedovich2006dijkstra},
-they obtained feasible dual solutions over strictly positive weighted networks.
-See the contributions of
-\textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous},
-just to name a few.
-But as pointed out in \textcite{righini2004},
-Lagrangian relaxation is effective only when the dualized variables
-are positive for a good portion of the Lagrange multipliers search space,
-which limit the effectiveness of these approaches in the context of pricing.
+The associated SPPRC can then be solved efficiently in pseudo-polynomial time.
+Initial contributions for tackling the ESPPCC exploited such property.
+The resource consumptions were relaxed through a Lagrangian method.
+They obtained feasible dual solutions over strictly positive weighted networks
+using a branch-and-bound scheme and an off-the-shelf standard shortest path algorithm,
+such as Dijkstra \parencite{sniedovich2006dijkstra}.
+To name a few, see the contributions of \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous}.
+However, as noted in \textcite{righini2004},
+Lagrangian relaxation is only effective when the dualized variables are positive
+for a significant portion of the Lagrange multipliers search space,
+limiting the effectiveness of these approaches in the context of pricing.
 
 \subsection{Integer Programming Formulation}
 \label{sec:espprc-integer-programming-formulation}
