@@ -494,16 +494,16 @@ where they laid the foundational framework for the CPTP.
 \subsection{Integer Programming formulation}
 \label{sec:cptp-integer-programming-formulation}
 
-We provide a CPTP formulation, which closely follows the formulation provided in \textcite{jepsen2014}.
+We present a CPTP formulation that closely resembles the formulation provided in \textcite{jepsen2014}.
 In terms of mathematical notation, we will use and extend the original
-mathematical constructs introduced in \cref{sec:cvrp-mathematical-notation} for the CVRP.
+mathematical constructs introduced for the CVRP in \cref{sec:cvrp-mathematical-notation}.
 
-Let $p_i \in \R,\ p \ge 0$ denote the profit associated in visiting a vertex $i \in V$.
-The profit function is directly linked to the dual variables $\pi \in \R^N$ associated to
+Let $p_i \in \R$ denote the profit associated in visiting a vertex $i \in V$.
+The profit function is directly related to the dual variables $\pi \in \R^N$ associated to
 the RMP's constraints of \cref{eq:mp-K-routes,eq:mp-customers-visited-by-exactly-one-route}.
 Namely, $p_i = \pi_i \quad \forall i \in V$.
 
-Let $x_{e}$, $y_{i} \in \Set*{0, 1}$ be two sets of binary variables which respectively
+Let $x_{e}$, $y_{i} \in \Set*{0, 1}$ be two sets of binary decision variables which respectively
 model whether an undirected edge $e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
 We can provide a formal mathematical description of the CPTP through an Integer Programme (IP) formulation:
 \begin{align}
@@ -527,10 +527,9 @@ then the number of incident edges in that node sums to $2$, otherwise to $0$.
 Constraint \labelcref{eq:cptp-gsec-constraints}
 are the so-called Generalized Subtour Elimination Constraints (GSECs),
 which avoid the formation of spurious tours in unconnected regions of the network.
-There is an exponential number of GSECs,
-therefore for performance reasons,
-these constraints cannot be inserted statically in a MIP solver,
-and must instead be separated exactly at least for integral solutions.
+Because there are an exponential number of GSECs,
+these constraints cannot be inserted statically in a MIP solver
+and must instead be separated exactly, at least for integral solutions.
 Constraints \labelcref{eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds} respectively
 impose bounds and integrality conditions
 on the number of traversal for edges $e \in E$ and vertices $i \in V$.
@@ -543,7 +542,7 @@ can also be rewritten in a different form \parencite{wolsey2020integer}:
 	\sum\limits_{e \in E(S)} x_e \le \sum\limits_{i \in S \setminus \Set*{j}} y_i \quad \forall j \in S,\ \forall S \subseteq V_0,\ |S| \ge 2.
 \end{equation}
 Depending on the size of the subset $S \subseteq V_0, S \ge 2$,
-\cref{eq:cptp-gsec-constraints-v2} may be sparser than \cref{eq:cptp-gsec-constraints}.
+\labelcref{eq:cptp-gsec-constraints-v2} may be sparser than \labelcref{eq:cptp-gsec-constraints}.
 Equivalently, the constraint of \cref{eq:cptp-resource-upper-bound-constraint}
 can be defined at the edge level:
 \begin{equation}
@@ -556,7 +555,8 @@ Note that model
 does not permit for single-customer routes.
 Instead of modifying the formulation to allow for this edge case,
 it may be simpler to leave the model unchanged.
-By employing a brute-force algorithm in $\Theta(N)$ time we can scan for improving single-customer solutions.
+By employing a brute-force algorithm in $\Theta(N)$ time,
+we scan for improving single-customer solutions.
 After the resolution of the IP model,
 we check for improving single-customer solutions and,
 if any exist,
@@ -565,51 +565,50 @@ we update the incumbent as appropriate.
 \section{Additional Valid Inequalities}
 \label{sec:cptp-additional-valid-inequalities}
 
-In this section we present additional valid inequalities for the CPTP problem.
-While these additional inequalities are not strictly necessary
+We present additional valid inequalities for the CPTP problem in this section.
+While these additional inequalities are not strictly required
 to ensure the correctness of the solution approach,
-when embedded inside an efficient branch-and-cut framework,
-through efficient separation techniques,
-can massively strengthen the linear relaxation and thus speed up the resolution process.
+they can massively strengthen the linear relaxation
+and thus speed up the resolution process when embedded within an efficient branch-and-cut framework.
+However, devising efficient separation algorithms is critical to make such inequalities efficacious.
 
-The inequalities that we present follow closely the presentation provided in \textcite{jepsen2014}.
-Refer to the \textcite{jepsen2014} for a more complete set of valid inequalities.
-In this thesis we will concentrate mainly on two additional valid inequalities:
-the Rounded Capacity Constraints (RCC) discussed in \cref{sec:cptp-rcc},
+The inequalities presented here closely follow the presentation provided in \textcite{jepsen2014}.
+For a complete list of CPTP valid inequalities compared to what we could give, see \textcite{jepsen2014}.
+We will focus primarily on two valid inequalities in this thesis:
+the Rounded Capacity Constraints (RCC) discussed in \cref{sec:cptp-rcc}
 and the Generalized Large Multistars (GLM) discussed in \cref{sec:cptp-glm}.
-We have concentrated our attentions on only these two sets of inequalities
-for two main reasons.
-First, the work of \textcite{jepsen2014} showed that these two inequalities are the most frequently
-separated, suggesting that their inclusion would likely speed up the resolution process.
-Second,
-they can be effectively separated through the same single procedure
-shared also with the GSECs inequalities separation.
-Thus reducing the implementation effort required for their inclusion.
-Refer to the implementation details of \cref{sec:impl-separation-techniques}.
+We have focused solely on these two sets of inequalities for two reasons.
+First, \textcite{jepsen2014} found that these two inequalities
+are the most frequently separated,
+implying that including them would likely speed up the resolution process.
+Second, they can be reasonably separated utilizing
+the same separation procedure employed for the GSEC inequalities.
+See implementation details later in \cref{sec:impl-separation-techniques}.
 
 \subsection{Rounded Capacity Constraints (RCC)}
 \label{sec:cptp-rcc}
 
-The Rounded Capacity Constraints, RCC for short, were first presented
-for the CVRP  in \textcite{laporte1983}
-and were already presented in \cref{sec:cvrp-two-index-flow-formulation}.
+The Rounded Capacity Constraints, or RCC for short,
+were introduced for the CVRP in \textcite{laporte1983}
+and were previously introduced in \cref{sec:cvrp-two-index-flow-formulation}.
 
 Recall that $q(S) = \sum_{i \in S} q_i$ represents
 the total demand in serving all vertices in set $S \subseteq V$.
-The RCC constraints function as a capacity constraint
-by imposing that any customer set $S \subseteq V_0$ is crossed by a number of edges
-not smaller by the number of trucks that would be necessary to serve all customers in $S \subseteq V_0$.
-The RCC can be extended to the CPTP problem \parencite{jepsen2014}:
+The RCC constraints act as a capacity constraint
+by requiring that any customer set $S \subseteq V_0$ be crossed by
+a number of edges that is not less than the required trucks amount
+to serve all customers in $S \subseteq V_0$.
+\textcite{jepsen2014} extend the RCC inequalities to the CPTP:
 \begin{equation}
 	\label{eq:cptp-rcc-inequality-original}
 	\ExprCptpFlowExiting{S} \ge 2 \ceil*{\frac{\sum\limits_{i \in S} q_i y_i}{Q}} \quad \forall S \subseteq V_0,\ |S| \ge 1.
 \end{equation}
-\Cref{eq:cptp-rcc-inequality-original}
-is very similar to the CVRP's RCC of \cref{eq:two-index-flow-ccc-bpp-lb},
+\Cref{eq:cptp-rcc-inequality-original} is very similar
+to the CVRP's RCC of \cref{eq:two-index-flow-ccc-bpp-lb},
 except that the right-hand side is composed of model's variables instead of constants.
 Notice that such approach is correct since $\sum_{e \in \delta(S)} x_e \in \Z_+$.
-Unfortunately, the ceil function is a non-linear operation and therefore
-such constraint cannot be inserted in most MIP solvers.
+Unfortunately, because the ceil function is a non-linear operation,
+such a constraint cannot be reported to most MIP solvers.
 
 Fortunately, \textcite{baldacci2007capacitated} provides a way to
 combat this undesirable aspect at the cost of obtaining a looser bound of the RCC.
@@ -619,7 +618,7 @@ $\fmod{\alpha}{\gamma} \ne 0$, the following result holds:
 	\label{eq:baldacci-rcc-theorem-weaker-bound}
 	\ceil*{\frac{\alpha - \beta}{\gamma}} \ge \ceil*{\frac{\alpha}{\gamma}} - \frac{\beta}{\fmod{\alpha}{\gamma}}.
 \end{equation}
-\textcite{jepsen2014} claims that \cref{eq:baldacci-rcc-theorem-weaker-bound}
+\textcite{jepsen2014} claim that \cref{eq:baldacci-rcc-theorem-weaker-bound}
 holds even when $\alpha > \gamma$ is not satisfied
 (unfortunately the authors don't provide further explanations on why this is the case).
 
@@ -633,7 +632,7 @@ where $\ExprQr(S) = \fmod{q(S)}{Q}$ is the remainder capacity associated
 to an arbitrary set $S \subseteq V$.
 Notice, that \cref{eq:baldacci-rcc-theorem-weaker-bound} guarantees correctness
 of the \cref{eq:cptp-rcc-inequality} only if $q_i \in Z_+ \quad \forall i \in V_0$ holds.
-Fortunately this is the case for most, if not all, routing problems considered in the literature.
+Fortunately, this is true for the vast majority of the routing problems considered in the literature.
 
 As \textcite{jepsen2014} points out,
 no exact separation procedure is currently known for the RCC inequalities,
@@ -646,24 +645,24 @@ See the next \cref{sec:cptp-glm}.
 \label{sec:cptp-glm}
 
 The Generalized Large Multistar inequalities,
-GLM for short,
+or GLMs for short,
 were first proposed in \textcite{gouveia1995} for the CVRP.
-In \textcite{letchford2002}
-the GLM were further generalized to the so-called Knapsack Large Multistar (KLM) inequalities.
-\textcite{letchford2006} study the effectiveness of the multistar family of cuts
-when applied to the vehicle routing problems.
-The multistar cuts represent a set of inequalities that are related to
-the intersection between a 0--1 knapsack problem and the node-capacitated profitable tour problem (CPTP).
+The GLMs were further generalized
+to the so-called Knapsack Large Multistar (KLM) inequalities in \textcite{letchford2002}.
+\textcite{letchford2006} investigates the effectiveness of the multistar family of cuts
+when applied to vehicle routing problems.
+The multistar cuts are a collection of inequalities
+related to the intersection  of the 0--1 knapsack and the CPTP polytopes.
 
 Consider the capacity inequality:
 \begin{equation}
 	\label{eq:cptp-weaker-rcc}
 	\sum_{e \in \delta(S)} x_e \ge \frac{2}{Q} \sum_{i \in S} d_i y_i \quad \forall S \subseteq V_0,\ |S| \ge 2,
 \end{equation}
-which is a weaker form of the RCC in \cref{eq:cptp-rcc-inequality-original},
-where ceiling is not performed.
-\Cref{eq:cptp-weaker-rcc} can be improved to obtain the GLM inequalities,
-by noting that  nodes $j \notin S$ are also visited when the crossing edges $\delta(S)$ are used.
+which is a weaker version of the RCC in \cref{eq:cptp-rcc-inequality-original},
+where the ceiling is not applied.
+\Cref{eq:cptp-weaker-rcc} can be improved to obtain the GLM inequalities
+by noting that nodes $j \notin S$ are also visited when the crossing edges $\delta(S)$ are used.
 
 The GLM inequalities can be expressed as \parencite{jepsen2014}:
 \begin{equation}
@@ -677,19 +676,19 @@ The GLM inequalities can be expressed as \parencite{jepsen2014}:
 
 The general idea behind multistar inequalities is the following.
 The vehicle must have sufficient capacity to serve
-all the customers covered by $S$
+all of the customers covered by $S$
 and all other customers outside $S$
-which are connected to nodes in $S$ through a crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$.
+who are connected to nodes in $S$ through a crossing edge $e = \Set*{i, j},\ i \in S,\ j \notin S$.
 The "capacity" in GLM is measured in terms of the number of vehicles,
-which is obtained from dividing by $Q$ the demand of the set $S$ plus
-any customer visited directly from the set $S$ itself.
+which is found by dividing by $Q$ the corresponding demand.
 GLM inequalities are efficiently separable with
-an exact polynomial time procedure by finding minimum
+an exact polynomial-time procedure by finding minimum
 $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
-in a directed flow-network with capacities which depend on the vertex $u$
+in a directed flow network with capacities that depend on the vertex $u$
 \parencite{letchford2006, jepsen2014}.
-A simpler approach consists instead of using a heuristic approach
+A simpler approach is to use a heuristic approach
 by minimizing only the term $\sum_{e \in \delta(S)} x_e$ as to stress the violation.
 This can be achieved by computing $(u, v)$-cuts $\forall u \in V_0,\ v = 0$
 in a directed flow network where capacities are given exclusively from the
-fractional solution $x^\star _{\Set*{i, j}}\quad \forall i, j \in V$.
+fractional solution $x^\star_{\Set*{i, j}} \quad \forall i, j \in V$.
+See implementation details later in \cref{sec:impl-separation-techniques}.
