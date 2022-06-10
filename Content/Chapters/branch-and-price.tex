@@ -504,6 +504,8 @@ over a directed network formulation where the cost of each edge
 is dualized.
 In the ESPPRC problem, the elementarity condition imposes
 that the optimal route may visit the same vertex at most once.
+For convenience we define as \textit{Shortest Path Problem with Resource Constraints} (SPPRC )
+as the non-elementary version of the ESPPRC.
 As it was claimed in \textcite{dror1994},
 since the underlying network may contain negative cost cycles,
 the ESPPRC is an NP-hard problem.
@@ -553,164 +555,137 @@ by ignoring dominated labels, thus vastly speeding up the resolution process.
 The label-correcting algorithm
 is a natural extension of the traditional Bellman-Ford algorithm \parencite{bellman1958, fordjr1956}.
 The Bellman-Ford algorithm is commonly known
-by all operations research practitioners and it is used to compute
-resource-unconstrained shortest paths on a negative-cycles-free network.
+by all operations research practitioners
+and it is used to compute resource-unconstrained shortest paths
+on a negative-cycles-free network.
 The running time complexity of the label-correcting algorithm
 for pricing $q$-routes is $O(N^2 Q)$ operations.
 As the big-O notation indicates,
-this approach has flaws when the constructed routes visit a large number of nodes,
+this approach has flaws when the constructed routes visit numerous nodes,
 i.e. when vehicle capacity is not particularly stringent,
 consequently tremendously increasing the number of processed labels \parencite{jepsen2008branchandcut}.
 
-The label-correcting algorithm, was later extended to handle
-elementary paths in \textcite{feillet2004},
-where they propose using an additional resource for each node
-to handle the elementarity condition.
-As the authors point out, this new algorithm has a two-fold benefit.
-First, the duality gap obtained at the linear relaxation is substantially better
-compared to considering just the q-routes.
-Second, it might enable certain classes of problems where relying
-on column generation schemes based on q-routes is simply not an option.
-The running time complexity of the new extended algorithm for pricing elementary routes
-is $O(2^N Q)$ operations,
-thus limiting its applicability on bigger problems.
-Later, \textcite{righini2006} improves the dynamic programming
-algorithm for pricing elementary routes.
+\textcite{feillet2004} extends the label-correcting algorithm
+to handle elementary paths by introducing additional fictitious resources for each node.
+As the authors point out, this new algorithm has two advantages.
+First, the duality gap obtained at the linear relaxation is significantly better
+than when treating $q$-routes.
+Second, it may allow for the resolution of certain problem classes
+where relying on column generation schemes based on $q$-routes is hardly an option.
+The extended algorithm of \citeauthor{feillet2004} for pricing elementary routes
+has a running time complexity of $O(2^N Q)$ operations,
+limiting its applicability to larger problems.
+\textcite{righini2006} later improve the dynamic programming algorithm  of \citeauthor{feillet2004}.
 
-Nonetheless, some contributions have been made to improve its overall running time.
-Some major ones can be attributed to:
-(i) bidirectional search proposed in \textcite{righini2006},
-(ii) decremental state space relaxation (DSSR) proposed independently in
+Nonetheless, some improvements have been made to the overall running time
+of the label-correcting algorithm for pricing elementary routes.
+Some major contributions in this domain can be attributed to:
+(i) \textit{bidirectional search} proposed in \textcite{righini2006},
+(ii) \textit{decremental state space relaxation} (DSSR) proposed independently in
 \textcite{boland2006, righini2008} under different names.
-The decremental state space relaxation is an iterative
-approach where elementarity is iteratively inserted on demand.
-In this approach the label-correcting algorithms
-is first asked to generate q-routes, then for each vertex that is visited
+The \textit{decremental state-space relaxation} (DSSR)
+is an approach where elementarity impositions are included lazily
+during the running time of the column generation phase.
+In DSSR, the label-correcting algorithm
+is first asked to generate $q$-routes, then for each vertex that is visited
 twice or more, elementarity is enforced at the pricer stage
 and the procedure is repeated.
-The first BCP algorithm, using full elementarity routes
+The first BCP algorithm based on full elementarity routes
 was proposed in \cite{chabrier2006}, but unfortunately,
-applying arbitrary $k$-cycle elimination to the pricing problem,
-have since not been studied in more depth.
-
-\medskip
-
+applying arbitrary $k$-cycle elimination to the pricing problem
+has not been thoroughly researched since.
 Despite arbitrary $k$-cycle elimination can also
-be enforced through the usage of non-robust cuts,
-\citeauthor{feillet2004} showed that their elimination
+be enforced by using non-robust cuts (see discussion in \cref{sec:bap-cutting-planes}),
+\citeauthor{feillet2004} demonstrated that avoiding such cycles
 within the column generation procedure supplied
 substantially better dual bounds at the cost
 of increasing the running time of the pricing problem.
-Inspired from these works, given the complexity
-of the ESPPRC, many authors have investigated the usage
-of a controlled \textbf{partial elementarity} condition.
-The idea of partial elementarity consists in obtaining
-dual bounds as close as possible to the elementary route bound,
-while still keeping the pricing problem manageable \parencite{contardo2015}.
-
-Initial efforts, have studied the usage of $q$-routes with
-$k$-cycle elimination with $k \ge 3$ within the labeling algorithm \parencite{irnich2006, fukasawa2006}.
-\textcite{fukasawa2006} test the $q$-routes with $4$-cycle elimination
-and they show that such an approach leads
-to a very slow pricing problem while
-producing dual bounds very far from the elementary bound.
-\textcite{desaulniers2008}, instead, take a different approach.
-They introduce a custom concept of "partial elementarity"
-which is achieved by enforcing the elementarity condition
-only to a small predetermined subset of the customers.
-
-One of the major innovations in the contemporary pricing efficiency
-can be attributed to the ng-routes relaxation developed in \textcite{baldacci2011}.
-\citeauthor{baldacci2011} noticed that in most of the cases,
-$q$-routes cycles appeared to use only edges of small costs
-and were confined into relatively small clusters of the graph.
-They define the concept of ng-set $N_i$ for a vertex $i$
-which encodes the $|N_i|$ closest neighbors of the vertex $i \in V$.
-The quantities $|N_i|$ may be raised on demand to achieve better dual bounds,
-but it has to be noted that raising them lead to an exponential increase in complexity
-in the pricing.
-The ng-sets may be determined a priori but also dynamically as it is done in \textcite{roberti2014}.
-The ng-routes allows cycles over a vertex $i \in V$ only if the route
-passes through a vertex $j \in V \mid i \notin N_j$.
-In the ng-routes relaxation,
-dominance is verified through the usage of a limited-memory set
-that changes as the route gets extended.
-The limited memory, by its nature,
-"forgets" old covered vertices,
-which may then be subsequently revisited
-as the generated path lengthens.
-This new novel relaxation can be easily incorporated within the
-dynamic programming labeling algorithm.
-The ng-routes relaxation may be seen
-as a more versatile, and more dynamic form of $q$-routes
-with $k$-cycle elimination.
-They employ a different definition of the cycles' length.
-This definition provides a better measure of a cycle's impact,
-and may be regarded as the main culprit of the efficiency of
-this relaxation.
-In ng-routes cycles's length are measured in terms of distances,
-whereas in the $k$-cycle elimination they're measured
-in terms of customers \parencite{contardo2014}.
-This novel relaxation achieves a bound very close to the elementary bound while
-not being detrimental for the pricing problem.
-On top of that, one can control
-the amount of elementarity by choosing the appropriate neighborhood set size $|N_i|$
-value  depending on the circumstances.
-
-\begin{comment}
-\parencite{condardo2014}
-Irnich and Villeneuve [15] used this observation to develop the so-called SPPRC
-with k-cycle elimination (k-cyc-SPPRC),
-in which short cycles
-(in terms of the number of customers visited between two consecutive appearances of a given node)
-are forbidden whereas long cycles (in terms of the same number) are still allowed.
-The advantage of the ng-SPPRC with respect to k-cyc-SPPRC is how the length of a cycle is defined.
-Indeed, the number of
-customers between two appearances of a node may not be the right criterion,
-the length of the cycle in terms of distance
-being a better measure of the impact of a cycle in the linear relaxation lower bound.
-The ng-SPPRC thus forbids cycles that
-are short with respect to the time consumption regardless of
-the number of nodes between two appearances of a given customer.
-\end{comment}
 
 \medskip
 
-We conclude this section by mentioning other contributions
-which are linked with the pricing problem.
+Given the complexity of the ESPPRC,
+many authors inspired by these works have investigated using
+some form of controlled \textbf{partial elementarity} condition.
+The idea behind partial elementarity is to obtain dual bounds
+as close to the elementary route bound as possible
+while still keeping the pricing problem manageable\parencite{contardo2015}.
 
-\textcite{fukasawa2006} modify the label-correcting
-algorithm to employ it as a fast pricing heuristic.
-Heuristics can substantially improve the speed of the column generation process
-as the exact pricing stage is called only when the pricing heuristic
-fails at determining a valid reduced cost route.
-\textcite{desaulniers2008} and \textcite{archetti2011} propose a tabu search
-meta-heuristic approach to generate routes with negative reduced costs.
+\textcite{irnich2006, fukasawa2006} have investigated the usage of
+$q$-routes with $k$-cycle elimination with $k \ge 3$ within the labeling algorithm.
+\textcite{fukasawa2006} tests the $q$-routes with $4$-cycle elimination
+and shows that such an approach leads to a substantially slower pricing problem
+with dual bounds that are extremely far from the elementary bound.
+Instead, \textcite{desaulniers2008} takes a totally different approach.
+They introduce a new concept of "partial elementarity"
+obtained by enforcing the elementarity condition
+only on a small predetermined subset of customers.
 
-\textcite{lozano2013} proposes the so-called pulse algorithm
-to solve the SPPRC, and in \textcite{lozano2016} the pulse algorithm
-is extended to handle elementary paths.
+The \textit{ng-routes relaxation} developed in \textcite{baldacci2011}
+is credited as one of the radical innovations in modern pricing efficiency.
+\citeauthor{baldacci2011} observed that in most cases,
+$q$-routes cycles emerged to use only low-cost edges
+and were confined to comparatively small clusters of the graph.
+They define the concept of \textit{ng-set} $N_i$ for a vertex $i$
+which encodes the $|N_i|$ closest neighbors of the vertex $i \in V$.
+The quantities $|N i|$ can be increased on-demand to achieve better dual bounds,
+but doing so leads to an exponential increase in pricing complexity.
+The ng-sets can be determined a priori or dynamically, as shown in \textcite{roberti2014}.
+The ng-routes permits cycles over a vertex $i \in V$ only if the route
+passes through a vertex $j \in V \mid i \notin N_j$.
+The new novel relaxation of \citeauthor{baldacci2011}
+is simple to incorporate into the dynamic programming labeling algorithm.
+Dominance is verified through a limited-memory set
+that changes as the route get extended.
+The limited memory, by its nature,
+"forgets" old covered vertices,
+which can then be subsequently revisited
+as the generated path gets longer.
+The ng-routes relaxation can be considered a more versatile and dynamic version
+of $q$-routes with $k$-cycle elimination.
+They use a different definition of cycle length.
+This definition provides a better measure of a cycle's impact
+and may be regarded as the primary cause of this relaxation's efficiency.
+The ng-routes relaxation measures cycle lengths in terms of travel or time distances.
+In contrast, in classical $k$-cycle relaxation,
+they are measured in terms of customers visited \parencite{contardo2014}.
+This new novel relaxation achieves a bound that is very close to the elementary bound
+while not being detrimental to the pricing problem.
+Furthermore, depending on the circumstances,
+the amount of elementarity can be controlled by selecting the appropriate
+neighborhood set size $|N i|$.
 
-\textcite{desaulniers2019} propose a new paradigm called \textit{selective pricing},
-where they propose an early abortion of the column generation procedure,
-when there's proof that no reduced-cost elementary routes,
-even if the relaxed ESPRCC still admits reduced-cost relaxed routes.
-This approach allows to discard some non-elementary routes
-in the labeling algorithm even if they are not dominated.
+\medskip
 
-It has been empirically seen that
+We conclude this section by mentioning a few final contributions
+that are related to the pricing problem.
+
+\textcite{fukasawa2006} modifies the label-correcting algorithm
+to employ it as a fast pricing heuristic.
+Heuristics can significantly speed up the column generation process.
+The invocation of the exact pricer occurs solely when the pricing heuristic
+fails to determine a valid reduced-cost route.
+\textcite{desaulniers2008, archetti2011} propose a meta-heuristic based on tabu search
+to generate routes with a negative reduced cost.
+
+\textcite{lozano2013} propose the \textit{pulse algorithm} to solve the SPPRC.
+\textcite{lozano2016} extend the pulse algorithm to handle elementary paths.
+
+\textcite{desaulniers2019} propose a new paradigm called \textit{selective pricing} for the ng-SPPRC.
+The column generation procedure is preemptively aborted in selective pricing
+if there is proof that no reduced-cost elementary routes exist,
+regardless of whether the ng-SPPRC admits reduced-cost ng-routes.
+This method allows for rejecting some non-elementary routes even when they are not dominated.
+
+The dual variables $\pi \in R^N$ tend to oscillate from one iteration to the next
 as the average number of customers per route $N / K$ increases,
-the dual variables $\pi \in R^N$ tend to oscillate from one iteration to another,
-hurting the convergence speed of the column generation algorithm \parencite{toth2014}.
-Therefore, some dual variables stabilization techniques
-have been proposed to fix this problem and
-to reduce the number of pricing iterations required
-by the column generation algorithm (see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018automation}).
-Refer to \textcite{vanderbeck2005} for a general introductory
-discussion on stabilization techniques for column generation.
-Also employing the SC formulation in place of the SP formulation,
-the dual variables have been shown to be typically more stable \parencite{rousseau2007, feillet2010}.
+slowing the convergence speed of the column generation algorithm \parencite{toth2014}.
+As a result, some dual variable stabilization techniques were proposed to address this issue
+and reduce the number of pricing iterations required by the column generation algorithm
+(see \cite{dumerle1999, rousseau2007, pessoa2013, pessoa2018automation}).
+For a general introductory discussion on column generation stabilization techniques, see \textcite{vanderbeck2005}.
+When the SC formulation is used instead of the SP formulation,
+the dual variables are typically more stable \parencite{rousseau2007, feillet2010}.
 
-We conclude the section by pointing out two additional surveys
-that discuss the labeling algorithm for solving the Shortest Path
-Problem with Resource Constraints (SPPRC): references \textcite{irnich2005, pugliese2010, pugliese2013}.
+We conclude the section by mentioning two more surveys that
+discuss the labeling algorithm for solving the
+Shortest Path Problem with Resource Constraints (SPPRC):  \textcite{irnich2005, pugliese2010, pugliese2013}.
