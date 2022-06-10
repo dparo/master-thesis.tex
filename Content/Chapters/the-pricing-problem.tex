@@ -171,13 +171,14 @@ A sufficient but not-necessary condition is when the reduced cost variables
 are all positive: $\bar{c}_{ij} \ge 0 \quad \forall i, j \in V_0 \cup \Set*{s, t}$.
 In this case, an optimal solution to the associated non-elementary SPPRC
 is an optimal solution to the original elementary version of the problem \parencite{beasley1989}.
-The associated SPPRC can then be solved efficiently in pseudo-polynomial time.
+The associated SPPRC can then be solved trivially in pseudo-polynomial time.
 Initial contributions for tackling the ESPPCC exploited such property.
 The resource consumptions were relaxed through a Lagrangian method.
 They obtained feasible dual solutions over strictly positive weighted networks
 using a branch-and-bound scheme and an off-the-shelf standard shortest path algorithm,
 such as Dijkstra \parencite{sniedovich2006dijkstra}.
 To name a few, see the contributions of \textcite{beasley1989, dumitrescu2003improved, carlyle2008, muhandiramge2009simultaneous}.
+
 However, as noted in \textcite{righini2004},
 Lagrangian relaxation is only effective when the dualized variables are positive
 for a significant portion of the Lagrange multipliers search space,
@@ -187,21 +188,21 @@ limiting the effectiveness of these approaches in the context of pricing.
 \label{sec:espprc-integer-programming-formulation}
 
 While \textcite{jepsen2008branchandcut} provides
-an \textbf{undirected} symmetric network based formulation for the ESPPCC,
-in our presentation we have preferred instead to re-adjust the more-general
-\textbf{directed} symmetric network based ESPPRC formulation
+an \textbf{undirected} symmetric network-based formulation for the ESPPCC,
+in our presentation, we chose to re-adjust the more-general
+\textbf{directed} symmetric network-based ESPPRC formulation
 provided in the works of \textcite{beasley1989, toth2002, toth2014}.
-For this reason we need to readjust/extend the
-mathematical notation that was originally provided for the undirected CVRP in \cref{sec:cvrp-mathematical-notation}.
+As a result, we must readjust/extend the mathematical notation
+provided for the undirected CVRP in \cref{sec:cvrp-mathematical-notation}.
 
 \medskip
 
-The ESPPCC network is characterized by $N^\prime = N_0 + 2$ nodes,
-where $N_0$, denotes the total number of customers in the original CVRP problem.
-Two additional vertices $s = 0, t = N^\prime - 1$ are used to represent respectively the source and sink vertices.
-These two together model a dissection of the depot node.
-All the customers are edge-connected in both directions with one another.
-Similarly, the source and sink vertex do not share direct connections together.
+The ESPPCC network is made up of $N^\prime = N_0 + 2$ nodes,
+where $N_0$ represents the total number of customers in the original CVRP problem.
+Two additional vertices $s = 0, t = N^\prime - 1$ represent the source and sink vertices,
+which together form a dissection of the depot node.
+All the customers are edge-connected in both directions with each other.
+Similarly, the source and sink vertex do not share direct connections.
 
 More formally, the ESPPCC is defined over a directed symmetric network
 $G^\prime = \Tuple*{V^\prime, A^\prime}$,
@@ -217,8 +218,8 @@ The edges set $A^\prime$ can be expressed as:
 	\end{aligned}
 \end{equation}
 The edge set $A^\prime$ has size $|A^\prime| = N^\prime(N^\prime - 1) + 2(N^\prime - 1)$.
-In accordance to the CVRP problem,
-we associate a resource consumption, or vertex demand,
+Following the CVRP,
+we associate a resource consumption or vertex demand,
 to each node of the network: $q_i \quad \forall i \in V^\prime$.
 The resource consumption semantics associated with each customer
 $i \in V_0$ remains unaltered  from the CVRP, while for the source and sink vertices
@@ -250,8 +251,8 @@ through the following relationship:
 		\infty                           & \quad \texttt{otherwise}
 	\end{cases}
 \end{equation}
-Additional usage of robust inequalities (cuts or branching) manifest
-additional negative term contributions, through additional dual variables,
+Additional robust inequalities (cuts or branching) manifest
+supplementary negative term contributions, through further dual variables,
 directly to the reduced arc cost $\bar{c}_{ij}$.
 See previous discussion in \cref{sec:branching-and-cut-generation-within-bap-frameworks}.
 
@@ -280,9 +281,9 @@ biasing the reduced cost of a feasible route $p$.
 \medskip
 
 We are now ready to provide a ESPPCC formal description through an Integer Programme (IP).
-Let $x_{ij} \in \Set*{0, 1} \quad \Tuple*{i, j} \in A^\prime$ be a new set of binary variables:
+Let $x_{ij} \in \Set*{0, 1} \quad \Tuple*{i, j} \in A^\prime$ be a new set of binary decision variables:
 $x_{ij} = 1$ if arc $\Tuple*{i, j} \in A^\prime$ is picked by the optimal path.
-We can provide a formal mathematical formulation of the ESPPCC as an Integer Programme (IP):
+We provide a formal mathematical formulation of the ESPPCC as an Integer Programme (IP):
 \begin{align}
 	\min_{x} \quad z_\mt{ESPPCC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c}_{ij} x_{ij}                                                     \label{eq:espprc-obj-function}                                                                \\
 	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q  \label{eq:espprc-resource-upper-bound-constraint}                                             \\
@@ -308,7 +309,7 @@ the same vertices, such as the situation depicted in \cref{fig:espprc-example-no
 Constraint \labelcref{eq:espprc-x-mip-var-bounds} imposes integrality
 and forces each arc $\Tuple*{i, j} \in A^\prime$ to be traversed at most once.
 
-Notice that, due to the flow conservation constraint and to the bounds on the binary varibles of
+Notice that, due to the flow conservation constraint and to the bounds on the binary variables of
 \cref{eq:espprc-flow-conservation-constraint-customers,eq:espprc-x-mip-var-bounds},
 we have that the following equality holds:
 \begin{equation}
@@ -322,7 +323,7 @@ Regardless of a constant factor of $2$,
 the quantity $\ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i}$
 can be used to determine the number of times a  customer $i \in V_0$ is visited.
 
-The resource consumption constraint of \Cref{eq:espprc-resource-upper-bound-constraint} is
+The resource consumption constraint of \cref{eq:espprc-resource-upper-bound-constraint} is
 expressed at the vertex level.
 Equivalently, it is possible to express the same constraint by considering the resource consumption
 at the arc level:
@@ -414,16 +415,14 @@ where $M \in \R_+$ denotes an arbitrary large positive constant.
 \Cref{eq:espprc-relaxed-elementarity} avoids the situation depicted
 in \cref{fig:espprc-example-with-spurious-subtours}
 while permitting the situation depicted in \cref{fig:espprc-example-non-elementary-solution}.
-Modeling the pricing as an SPPCC, can greatly reduce
-the column generation running time, at the cost
-of generating significantly weaker dual bound improvements.
-Refer back to the discussion in \cref{sec:solving-the-pricing-problem}
-for more details.
+Modeling the pricing as an SPPCC can significantly reduce column generation running time
+but at the expense of significantly weaker dual-bound improvements.
+For more information, refer to the discussion in \cref{sec:solving-the-pricing-problem}.
 
-Additional valid inequalities and a branch-and-cut framework
-for the ESPPCC was provided in the work of \textcite{jepsen2008branchandcut}.
-In this thesis we are mainly concerned with the CPTP in the context of pricing.
-Therefore we will not spend more efforts in discussing the ESPPCC.
+Valid inequalities and a branch-and-cut framework for the ESPPCC
+are discussed in the work of \textcite{jepsen2008branchandcut}.
+The CPTP in the context of pricing is the primary focus of this thesis.
+As a result, we will not spend any more time discussing the ESPPCC.
 
 \section{The Capacitated Profitable Tour Problem}
 \label{sec:the-capacitated-profitable-tour-problem}
