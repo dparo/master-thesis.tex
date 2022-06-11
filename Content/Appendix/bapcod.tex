@@ -42,53 +42,56 @@ We disabled such a feature to produce a fair comparison because our BAC framewor
 can only output a single column per pricing iteration.
 
 \section{Misc parameters}
-These parameters are used to control various miscellaneous aspects of \bapcod{},
-such as the logging verbosity.
-They have limited importance, but can be quite useful for debugging purposes
-and for understanding what's going within the guts of the BPC algorithm.
+
+These parameters control numerous aspects of \bapcod{}, such as the logging verbosity.
+These aren't especially significant parameters,
+but they can help with debugging/understanding what's going on inside the BPC algorithm's guts.
 
 \begin{itemize}
 	\item \texttt{DEFAULTPRINTLEVEL = 0}.
-	      Controls the verbosity of the logging system of \bapcod{} by setting it to a relatively quiet level.
-	      This value achieves a good trade off between the amount of information which is emitted
-	      and the amount of characters printed per second.
+	      Controls the verbosity of the \bapcod{}'s logging system by setting it to a low level.
+	      This value strikes an acceptable balance between the amount
+	      of information emitted and the number of characters printed per second.
 	\item \texttt{printMasterPrimalSols = 2}.
 	      By setting this parameter to 2, \bapcod{} will print the fractional solution after each column generation convergence.
 	      Useful for debugging.
 \end{itemize}
 
 \section{Core parameters}
-These parameters are used to control the general behavior of the BPC algorithm,
-such as total running time, which pricer to use, enabling specific
-components and performing validation checks.
+
+These parameters govern the BPC algorithm's overall behavior,
+such as total running time, which pricer to use, enabling specific components
+and performing validation checks.
 
 \begin{itemize}
 	\item \texttt{GlobalTimeLimit = 3600}.
-	      Sets the maximum allowed solving time to one hour.
-	      This timelimit is global and it affects the whole BPC algorithm, from the starting
-	      to the resolution process at the root node until an integral optimal solution is found.
+	      The maximum allowed solving time is set to one hour.
+	      This global timelimit affects the entire BPC algorithm
+	      from the beginning to the resolution process at the root node
+	      until the discovery of an integral optimal solution.
 	\item \texttt{colGenSubProbSolMode = 3}.
-	      Tells \bapcod{} to use the custom user-provided pricing functor.
-	      In our case, the pricing functor is a stubbed implementation which wraps the original \vrpsolver{} extension pricing functor
-	      and times it (see previous discussions in \Cref{sec:results-evaluation-process}).
-	      By instead, setting this parameter to the value \texttt{2},
-	      it is possible to tell \bapcod{} to use the default generic MIP pricer to solve the sub-problems.
+	      Tells \bapcod{} to use the user-supplied custom pricing functor.
+	      In our case, the pricing functor is a stubbed implementation that wraps
+	      the original \vrpsolver{} extension pricing functor
+	      and times it
+	      (see previous discussions in \Cref{sec:results-evaluation-process}).
+	      Instead, by setting this parameter to the value \texttt{2},
+	      we can instruct \bapcod{} to use the default generic MIP pricer for solving the pricing sub-problems.
 	\item \texttt{ApplyPreprocessing = true}.
-	      Tells \bapcod{} to apply pre-processing to adjust bounds and remove redundant constraints.
-	      Since this feature can improve the model without altering the pricing sub-problem,
-	      it is left enabled.
+	      Tells \bapcod{} to utilize pre-processing to adjust bounds and remove redundant constraints.
+	      We enabled this feature because it can potentially improve the model
+	      without affecting the pricing sub-problem.
 	\item \texttt{PreprocessVariablesLocalBounds = false}.
-	      Prevents \bapcod{} from changing the variable bounds of sub-problems after pre-processing.
-	      Since our pricer does not support changing the bounds of the variables,
-	      we disable this feature.
+	      Ensures that \bapcod{} does not change the variable bounds of sub-problems after pre-processing.
+	      We disable this feature because our pricer does not support modifying variables' bounds.
 	\item \texttt{CheckSpOracleFeasibility = false}.
-	      This feature can be used for debugging and can be useful when developing custom pricing functors.
-	      When this parameter is set to true, it allows to use an expensive MIP resolution process
-	      to verify the correctness of the pricer algorithm.
-	      The MIP is employed to check whether the produced columns satisfy all the master problem constraints.
-	      In our case it is disabled.
+	      This feature is helpful for debugging and when developing custom pricing functors.
+	      When this parameter is set to \texttt{true},
+	      an expensive MIP resolution process validates the pricer algorithm's correctness.
+	      The MIP determines whether the generated columns satisfy all the MP's constraints.
+	      It is disabled in our case.
 	\item \texttt{CheckOracleOptimality = false}.
-	      Similar to the \texttt{CheckSpOracleFeasibility} parameter, but also verifies the optimality of the generated columns.
+	      Similar to the \texttt{CheckSpOracleFeasibility} parameter but it also verifies the optimality of the generated columns.
 \end{itemize}
 
 \section{Column Generation parameters}
@@ -97,110 +100,127 @@ These parameters control the column generation framework.
 
 \begin{itemize}
 	\item \texttt{GenerateProperColumns = false}.
-	      When this parameter is set to true, \bapcod{} will error-out if the pricer produces any non-proper column,
-	      i.e. a column dishonoring the sub-problem variable bounds.
-	      In our case we set this parameter to false,
-	      because from our experiments it didn't seem to cooperate with the \vrpsolver{} pricing functor.
+	      When this parameter is set to \texttt{true},
+	      \bapcod{} will throw an error if the pricer produces a non-proper column,
+	      that is, a column that violates the sub-problem variable bounds.
+	      In our case, we set this parameter to \texttt{false}
+	      because it did not appear to cooperate with the \vrpsolver{} pricing functor in our tests.
 	\item \texttt{MaxNbOfStagesInColGenProcedure = 3}.
-	      Sets the number of stages the pricer is allowed to use.
-	      When the stage iteration is greater than 1, the pricer is allowed to use
-	      progressively lighter heuristics for determining columns.
-	      When the stage iteration reaches stage 0, the pricing problem should be solved exactly.
-	      \bapcod{} automatically switches to a lower stage when the previous stage converges (i.e. fails to find any reduced cost column).
-	      The technical document suggests to set this parameter to $3$ when the \vrpsolver{} extension is in use.
-	      The \vrpsolver{} extension implements two heuristic stages by using a modification of the bidirectional label setting algorithm,
-	      see the \textit{Pricing heuristics} and \textit{Column and cut generation} sections of \textcite{sadykov2021bucket}.
+	      Sets the number of stages that the pricer may use.
+	      When the stage iteration is greater than one,
+	      the pricer is permitted to use progressively lighter heuristics for column determination.
+	      The pricing problem should be solved exactly when the stage iteration reaches stage zero.
+	      When the previous stage converges,
+	      namely when it ails to find any reduced cost column,
+	      \bapcod{} automatically lowers the current stage number.
+	      When using the \vrpsolver{} extension,
+	      the technical documentation recommends setting this parameter to \texttt{3}.
+	      The \vrpsolver{} extension implements two heuristic stages using
+	      a modified bidirectional labeling algorithm.
+	      See the \textit{Pricing heuristics} and \textit{Column and cut generation} sections of \textcite{sadykov2021bucket}.
 	\item \texttt{ReducedCostFixingThreshold = 0.0}.
-	      Tells \bapcod{} to not apply reduced cost fixing.
+	      Setting it to zero disables reduced cost fixing.
 \end{itemize}
 
 \section{Cut Generation parameters}
-These parameters control the cutting planes and their generation.
-We've opted to completely disable cut generation.
+These parameters govern the generation of cutting planes.
+We've decided to turn off cut generation entirely in the BPC framework.
 
 \begin{itemize}
 	\item \texttt{MasterCuttingPlanesDepthLimit = -1}.
-	      When this parameter is set to $-1$, it disables cut generation of core cuts
-	      (i.e. the cuts natively supported within the BPC framework).
-	      The cut generation of user-defined cuts
-	      is not effected by this parameter, and therefore these kinds of cuts must be disabled manually.
-	      Explicit usage of user-defined cuts must be explicitly requested for usage
+	      When this parameter is set to \texttt{-1}, core cut generation is disabled.
+	      Core cuts are problem-independent cutting planes generated directly from the BPC algorithm.
+	      Because this parameter does not affect user-defined cuts, they must be disabled manually.
+	      Explicit usage of user-defined cuts is requested explicitly
 	      by registering the associated functors.
-	      We don't explicitly register any user-defined cut in the implemented model.
-	      As a natural consequence all cutting planes are disabled, including the separation of the RCC inequalities of \cref{eq:two-index-flow-ccc}.
+	      Consequentially in our \bapcod{} model, we do not register any additional user-defined cuts.
+	      As a result, all cutting planes,
+	      including the separation of the RCC inequalities \cref{eq:two-index-flow-ccc},
+	      are disabled.
 	\item \texttt{MaxNbOfCutGeneratedAtEachIter = 0}.
-	      Sets the maximum number of core cuts added per cut round to $0$,
-	      effectively further enforcing the deactivation of the core cuts generation.
+	      Sets the maximum number of core cuts added per cut round to zero,
+	      effectively enforcing the core cuts generation's deactivation.
 \end{itemize}
 
 \section{Branching parameters}
-These parameters control the branching scheme and branching priorities performed by the BPC algorithm.
-We've opted to completely disabled any form of branching.
+These parameters govern the BPC algorithm's branching scheme and branching priorities.
+We've decided to turn off all forms of branching.
 
 \begin{itemize}
 	\item \texttt{StrongBranchingPhaseOne=""}, \texttt{StrongBranchingPhaseTwo=""}, \texttt{StrongBranchingPhaseThree=""}, \texttt{StrongBranchingPhaseFour=""}
-	      These parameters control the strong branching behaviour of \bapcod{}, which is composed of multiple phases.
-	      By setting each parameter to the empty string, we effectively disable strong branching for each phase.
+	      These parameters govern the strong branching behavior of \bapcod{},
+	      comprised of several phases.
+	      We disable each phase's strong branching
+	      by setting the corresponding parameter to an empty string.
 	\item \texttt{SimplifiedStrongBranchingParameterisation = false}.
-	      When this parameter is set to true, \bapcod{} populates the parameters \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour}
-	      with sane default values, thus effectively enabling branching.
-	      Since populating these parameters would effectively re-enable branching, we set \texttt{SimplifiedStrongBranchingParameterisation} to false.
+	      When this parameter is set to true, \bapcod{} populates the parameters
+	      \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour}
+	      with sane default values.
+	      We set \texttt{SimplifiedStrongBranchingParameterisation} to \texttt{false}
+	      because populating these aforementioned parameters would effectively re-enable branching.
 \end{itemize}
 
 \section{\vrpsolver{} extension parameters}
 
-These parameters affect the labeling algorithm, the ng-sets size,
-the route enumeration procedure and some other minor aspects of the \vrpsolver{} extension.
-We recall that the \vrpsolver{} extension was introduced in \textcite{pessoa2020generic},
-where it became one of the state-of-the-art approaches for tackling routing-like problems.
+These settings affect the labeling algorithm, the size of the ng-sets, the route enumeration procedure
+and a few other minor aspects of the \vrpsolver{} extension.
+Recall that the \vrpsolver{} extension was introduced in \textcite{pessoa2020generic},
+where it quickly became one of the most advanced strategies for solving routing-like problems.
+Refer to the scientific paper of \textcite{pessoa2020generic} for additional details.
 
 \begin{itemize}
 	\item \texttt{RCSPuseBidirectionalSearch = 2}.
-	      This parameter, referred as $\phi^\mt{bidir}$ in the scientific paper,
-	      tells the RCSP pricer to use the bidirectional search for solving the pricing problem.
+	      This parameter, known as $\phi^\mt{bidir}$ in the scientific paper,
+	      instructs the RCSP pricer to use bidirectional search to solve the pricing problem.
 	\item \texttt{RCSPapplyReducedCostFixing = 1}.
-	      This parameter, referred as $\phi^\mt{elim}$ in the scientific paper,
-	      tells the pricer to employ the default standard bucket arc elimination discussed in \textcite{sadykov2021bucket}.
+	      This parameter, known as $\phi^\mt{elim}$ in the scientific paper,
+	      instructs the pricer to use the standard bucket arc elimination
+	      discussed in \textcite{sadykov2021bucket}.
 	\item \texttt{RCSPmaxNumOfColsPerExactIteration = 1}, \texttt{RCSPmaxNumOfColsPerIteration = 1}.
-	      These parameters, reffered respectively as $\gamma^\mt{exact}, \gamma^\mt{heur}$ in the scientific paper,
-	      control the number of generated columns per iteration by the pricer respectively
-	      for the heuristic stages
-	      and for the exact stage.
-	      Since our pricer is able to produce a single column per pricing iteration, in order to achieve a fair comparison,
-	      we set the label setting algorithm to always generate a single route per pricing iteration.
+	      These parameters, known as $\gamma^\mt{exact}, \gamma^\mt{heur}$  in the scientific paper,
+	      control the number of generated columns per iteration for the heuristic and exact stages, respectively.
+	      Because our pricer can only output a single column per pricing iteration,
+	      we force the labeling algorithm to operate similarly to ensure a fair comparison.
 	\item \texttt{RCSPallowRoutesWithSameVerticesSet = false}.
-	      This parameter tells the labeling algorithm whether outputting multiple routes passing the same set of vertices are allowed.
-	      When disabled,
-	      it can allow the pricer to generate a more diverse set of routes
-	      at the cost of increasing the pricing running time.
-	      Since we're forcing the labeling algorithm to generate a single route regardless, this parameter should have no effect.
+	      This parameter tells the labeling algorithm whether it is permissible
+	      to output multiple routes that pass through the same vertices.
+	      When disabled, it allows the pricer to generate more diversified paths
+	      at the expense of increasing the pricing run time.
+	      This parameter has no effect because we're forcing the labeling algorithm
+	      to output a single route regardless.
 	\item \texttt{RCSPmaxNumOfEnumSolutionsForMIP = 1}.
-	      This parameter, referred as $\omega^\mt{MIP}$ in the scientific paper,
-	      controls the route enumeration threshold \parencite{baldacci2008},
-	      at which the number of enumerated paths can trigger a direct solve of the SP formulation through a MIP.
-	      Since we are interested in measuring the pricing complexity, it makes sense to disable the route enumeration feature.
-	      We can disable such feature by setting the corresponding parameter to $1$.
+	      This parameter, known as $omegamtMIP$ in the scientific paper,
+	      controls the \textit{route enumeration} \parencite{baldacci2008} threshold,
+	      at which the number of enumerated paths
+	      can directly trigger a solution of the SP formulation via a MIP optimizer.
+	      Because we want to measure pricing complexity,
+	      we disable the route enumeration feature by setting the corresponding parameter to \texttt{1}.
 	\item \texttt{RCSPstopCutGenTimeThresholdInPricing = 1e21}, \texttt{RCSPhardTimeThresholdInPricing = 1e21}.
-	      These parameters, referred respectively as $\tau^\mt{soft}, \tau^\mt{hard}$ in the scientific paper,
-	      control respectively the soft and hard time threshold for the exact pricing stage.
-	      These thresholds impact the tailing-off condition of the pricer, namely, if the running time of the pricer exceeds one of these thresholds, column generation is preemptively interrupted in favor of cut generation or branching.
-	      We're interested in measuring the performance of the label setting algorithm even when it is struggling, therefore we set those parameters to high values to disable the tailing off condition.
+	      These parameters, known as $\tau^\mt{soft}$ and  $\tau^\mt{hard}$ in the scientific paper,
+	      affect the soft and hard time thresholds.
+	      These thresholds, applicable only during the exact pricing stage,
+	      modify the tailing-off condition of the pricer.
+	      If the pricer's running time exceeds one of these thresholds,
+	      column generation is preemptively interrupted in favor of cut generation or branching.
+	      We want to measure the label setting algorithm's performance even when it struggles,
+	      so we set those parameters to high values to disable the tailing-off condition.
 	\item \texttt{RCSPdynamicNGmode = 1}.
 	      This parameter tells \bapcod{} to scale dynamically
 	      the ng-sets size based on the
-	      fractional solution obtained by the column generation
-	      and not based on the solution received from the pricing problem.
+	      fractional solution obtained by the column generation.
+	      Note that ng-set augmentation \textbf{is not} based on the solution received from the pricing problem.
 	      See \textcite{pessoa2020generic} for more details.
 	\item \texttt{RCSPinitNGneighbourhoodSize = 8}, \texttt{RCSPmaxNGneighbourhoodSize = 63}.
-	      These parameters, referred respectively as $\eta^\mt{init}, \eta^\mt{max}$ in the scientific paper,
-	      sets the bounds in which the ng-set size can be dynamically extended.
-	      Raising $\eta^\mt{init}$ can improve the dual bound generated from the pricer, but usually leads to explosion of computation times, especially if it is raised a lot.
-	      Therefore keeping $\eta^\mt{init}$ small and raising $\eta^\mt{max}$ is instead the preferred approach if one seeks to improve the dual bound at each branch-and-bound node.
-	      The ng-sets size starts at the lower value $\eta^\mt{init}$ and it is later increased (if param \texttt{RCSPdynamicNGmode} is enabled)
+	      These parameters, known as $\eta^\mt{init}$ and $\eta^\mt{max}$ in the scientific paper,
+	      limit the the ng-set size during augmentation.
+	      Raising $\eta^\mt{init}$ can improve the dual bound generated by the pricer,
+	      but it usually results in an explosion of computation times.
+	      As a result, if one wants to improve the dual bound at each branch-and-bound node,
+	      keeping $\eta^\mt{init}$ small and increasing $\eta^\mt{max}$ is the preferred approach.
+	      The ng-sets size starts at the lower value $\eta^\mt{init}$ and it is later increased (if \texttt{RCSPdynamicNGmode} is enabled)
 	      after the column generation convergence and only if the MP contains a fractional solution (see \cite{pessoa2020generic}).
-	      Since our pricer produces the best dual bound improvement possible (elementary routes),
-	      we want to stress the labeling algorithm to try as hard as possible to achieve
-	      reasonable dual bounds.
+	      Since our pricer produces the best dual-bound improvement possible (elementary routes),
+	      we want to stress the labeling algorithm to try as hard as possible to achieve similar results.
 	      Therefore, by setting $\eta^\mt{init} = 8$ and $\eta^\mt{max} = 63$
 	      we force the labeling algorithm to produce better dual bounds towards the end of the column generation convergence.
 	      Note that, due to \bapcod{}'s implementation details $\eta^\mt{max} \le 63$ and thus
@@ -212,19 +232,19 @@ where it became one of the state-of-the-art approaches for tackling routing-like
 	      as it was suggested from Ruslan Sadykov,
 	      a researcher who worked on \bapcod{} and \vrpsolver{} extension implementations.
 	\item \texttt{CutTailingOffThreshold = 0.0000001}, \texttt{CutTailingOffCounterThreshold = 999999}.
-	      These parameters, referred respectively as $\delta^\mt{gap}, \delta^\mt{num}$ in the scientific paper,
-	      control the tailing off condition of cut-separation, i.e. the threshold
-	      at which the BPC deems cuts ineffective and switches to lower priority
-	      (and usually more computationally expensive) cuts.
-	      Despite their name and their application to cut separation, these two important
-	      parameters also affect the column generation procedure, specifically the augmentation of the ng-sets.
-	      As pointed out in the original paper,
-	      increasing the ng-sets size can be seen as a form of "cut generation"
-	      since it improves the dual bound.
-	      Ng-sets augmentation have the highest priority, followed by cut-generation and branching in this order.
-	      Since we always prefer to augment the ng-sets as much as possible we want
-	      to disable the cut-tailing off condition.
-	      We can disable the cut-tailing off condition by setting these parameters to the above values.
+	      These parameters, known as $\delta^\mt{gap}$ and $\delta^\mt{num}$ in the scientific paper,
+	      control the tailing off condition of cut-separation;
+	      namely, the threshold at which the BPC deems cuts ineffective
+	      and switches to lower priority (and usually more computationally expensive) cuts.
+	      Despite their name and application to cut separation,
+	      these two critical parameters also affect the column generation procedure:
+	      the augmentation of the ng-sets.
+	      As stated in the original paper, increasing the ng-sets size is a form of "cut generation"
+	      because it improves the dual bound. Ng-sets augmentation has the highest priority,
+	      followed by cut-generation and branching in this order.
+	      We want to disable the cut-tailing off condition
+	      because we always prefer to augment the ng-sets as much as possible.
+	      Setting these parameters to the above values allows us to disable the cut-tailing off condition.
 \end{itemize}
 
 \begin{comment}
