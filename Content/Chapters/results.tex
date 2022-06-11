@@ -232,39 +232,37 @@ characterized by the vehicle capacity $Q^\prime \in R_+$
 and by the number of vehicles $k^\prime \in Z_+$.
 We've inflated the total number of available CVRP instances
 by using the following relationship:
-
 $$
 	Q^\prime = Q \times s, \quad K^\prime = \ceil*{\frac{K}{s}}
 $$
-
 The inflation is done for each unmodified CVRP instance and using
 multiple values for the scale factor $s \in R_+$.
 
-\section{\bapcod}
+\section{\bapcod{}}
 \label{sec:results-bapcod}
 
-\textit{\bapcod}\ \parencite{sadykov2021} is a software package
+\bapcod{} \parencite{sadykov2021} is a software package
 developed in France at the Bordeaux University and Bordeaux Research Center,
 which implements a sophisticated column generation approach
 embedded inside a generic and modern branch-price-and-cut (BPC) algorithm.
-\bapcod\ takes as input a compact mixed integer programming model,
+\bapcod{} takes as input a compact mixed integer programming model,
 and solves it by applying a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
 The reformulation is automatically applied by the solver
 and a default generic pricer relying on
 the usage of a MIP solver is employed in the column generation procedure.
 An automatic dual price smoothing stabilization, discussed in \textcite{pessoa2018automation},
-is applied by \bapcod\ to improve the convergence speed of the column generation.
-\bapcod, being generic in nature,
+is applied by \bapcod{} to improve the convergence speed of the column generation.
+\bapcod{}, being generic in nature,
 supports user developed extensions.
-\bapcod\ supports direct branching on the arc-flow flow variables of the master formulation
+\bapcod{} supports direct branching on the arc-flow flow variables of the master formulation
 and Vanderbeck branching \parencite{vanderbeck2011}, a non-robust branching
 scheme which imposes bounds modifications to the sub-problem variables.
 These extensions can supply the BPC framework with either
 custom defined cutting planes (robust or non), custom branching decisions (robust or non)
 or even ad-hoc pricer implementations.
 
-The \textit{VRPSolver} extension \parencite{pessoa2020generic}, is
-a \bapcod\ extension distributed by the same authors.
+The \vrpsolver{} extension \parencite{pessoa2020generic}, is
+a \bapcod{} extension distributed by the same authors.
 This extension includes an
 advanced implementation of a bidirectional dynamic programming labeling algorithm
 \parencite{sadykov2021bucket} for solving the pricing problem.
@@ -278,31 +276,31 @@ The ng-sets are dynamically augmented \parencite{roberti2014}
 when the solution obtained after the column generation convergence
 is fractional,
 see \textcite{pessoa2020generic} for more details.
-The VRPSolver extension, also,
+The \vrpsolver{} extension, also,
 contains the implementation of some
 specific cutting planes and branching decisions
 tailored at efficiently solving routing-like problems
 (or problems that exhibit similar structures)
 such as the CVRP, VRPTW and also others (see \cite{pessoa2020generic}).
-The VRPSolver implements the robust RCC cuts of \textcite{laporte1983},
+The \vrpsolver{} implements the robust RCC cuts of \textcite{laporte1983},
 and the non-robust limited-memory rank-1 cuts of \textcite{pecin2017improved}.
-The VRPSolver also implements the non-robust branching called Ryan\&Foster branching \parencite{ryan1981integer}.
-The VRPSolver extension was also successfully applied
+The \vrpsolver{} also implements the non-robust branching called Ryan\&Foster branching \parencite{ryan1981integer}.
+The \vrpsolver{} extension was also successfully applied
 to solve Bin Packing Problems in \textcite{pessoa2020}.
 
 \medskip
 
-\bapcod\ along with its VRPSolver extension are currently the leading state-of-the-art
+\bapcod{} along with its \vrpsolver{} extension are currently the leading state-of-the-art
 technologies for solving vehicle routing problems \parencite{pessoa2020generic}.
-The \bapcod\ source code can be downloaded for free, for academic purposes only,
+The \bapcod{} source code can be downloaded for free, for academic purposes only,
 by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
-The VRPSolver extension, instead, is available for academic use only in compiled form,
+The \vrpsolver{} extension, instead, is available for academic use only in compiled form,
 and must be explicitly requested by email by contacting one of the
 original authors: \url{mailto:ruslan.sadykov@inria.fr}.
-Instructions to build, setup and employ \bapcod\ and its VRPSolver extension
+Instructions to build, setup and employ \bapcod{} and its \vrpsolver{} extension
 can be found in the official technical report presented in \textcite{sadykov2021}.
 For completeness, we also report that
-a Julia language interface to the VRPSolver extension
+a Julia language interface to the \vrpsolver{} extension
 can be found at this
 \urlref{https://github.com/inria-UFF/BaPCodVRPSolver.jl}{Github repo}.
 
@@ -335,7 +333,7 @@ What is the best approach to compare the performance of the two frameworks?
 When faced with the option of developing our branch-and-cut pricer,
 we had to opt between two main choices:
 (i) developing our pricer in tight integration with the BPC framework,
-by coding it as a \bapcod\ plugin,
+by coding it as a \bapcod{} plugin,
 or (ii) developing the pricer in a standalone executable,
 separate from the BPC framework.
 
@@ -363,7 +361,7 @@ the running time took for solving each pricing problem.
 It has to be acknowledged, however, that measuring the running time of each pricing iteration
 is nor good nor bad.
 There are benefits and downsides to this approach.
-First \bapcod\ needs to be configured to operate in the same domain as our pricer
+First \bapcod{} needs to be configured to operate in the same domain as our pricer
 thus disabling many features that could possibly lead to strong efficiency
 when instead the whole running time is taken into consideration.
 Secondly, our branch-and-cut pricer produces elementary bounds, thus naturally solves a harder problem.
@@ -382,7 +380,7 @@ of a branch-and-cut scheme for tackling the pricing problem.
 
 \medskip
 
-We conclude this section by introducing the \bapcod\ parametrization
+We conclude this section by introducing the \bapcod{} parametrization
 that we've employed to bend the labeling algorithm to operate in
 an environment that is compatible with our branch-and-cut algorithm.
 
@@ -402,21 +400,21 @@ that  we've used refer to \Cref{sec:bapcod-appendix}.
 \section{Evaluation Process}
 \label{sec:results-evaluation-process}
 
-We've employed \bapcod\ version 0.66 (released in November 2021) and the \texttt{libRCSP v0.5.12}.
-The latter library contains the implementation of the VRPSolver extension.
-The objective is to exploit \bapcod\ to solve many CVRP instances while simultaneously
+We've employed \bapcod{} version 0.66 (released in November 2021) and the \texttt{libRCSP v0.5.12}.
+The latter library contains the implementation of the \vrpsolver{} extension.
+The objective is to exploit \bapcod{} to solve many CVRP instances while simultaneously
 measuring the running time of the labeling algorithm for each pricing invocation.
 
 \medskip
 
-By following the \bapcod\ technical document \parencite{sadykov2021},
+By following the \bapcod{} technical document \parencite{sadykov2021},
 we've re-adapted one of the VRPTW example (included in the distribution),
 to model a Capacitated Vehicle Routing Problem.
 The master formulation that we've implemented follows the two-index arc flow model
 presented in \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
 excluding the Rounded Capacity Constraints (RCC) of \cref{eq:two-index-flow-ccc}.
 
-In order to use the VRPSolver labeling algorithm, it is necessary
+In order to use the \vrpsolver{} labeling algorithm, it is necessary
 to define the associated Resource Constrained Shortest Path (RCSP) sub-problem.
 The RCSP sub-problem is formulated on a complete directed network by
 linking the new RCSP modeling variables to the master problem formulation.
@@ -425,9 +423,9 @@ the source/sink vertices and the so-called packing and elementarity sets
 (see \cite{pessoa2020generic} for more details).
 The elementarity and packing sets must be specified correctly for each customer.
 The correct definition of these generalized sets is mandatory to allow for specific
-components of the VRPSolver extension to work correctly (ng-sets, RCC separation, etc).
+components of the \vrpsolver{} extension to work correctly (ng-sets, RCC separation, etc).
 A separate packing set and a separate elementarity set is created, one for each customer.
-The VRPSolver extension requires also for the explicit definition of an additional
+The \vrpsolver{} extension requires also for the explicit definition of an additional
 distance matrix encoding the distance between pairs of elementarity sets.
 The ng-sets are computed automatically by employing the elementarity sets
 and the distance matrix specified from the user.
@@ -445,19 +443,19 @@ To extract the information needed for the performance evaluation we have impleme
 The pricing functor is in essence a glorified callback that can be used
 for solving the pricing problem through custom user-defined code.
 Our pricing functor is a simple stubbed implementation which ultimately invokes
-the normal VRPSolver extension's pricing functor.
+the normal \vrpsolver{} extension's pricing functor.
 However, before calling the labeling algorithm we first do the following.
 First, we measure the running time of the labeling algorithm in order to assess its performance later.
 Second, at each pricing invocation we record the dual variables $\pi \in \R^N$ of the RMP
 to later be dumped into a dedicated file.
 
-Due to \bapcod's implementation details, the reduced cost of an
+Due to \bapcod{}'s implementation details, the reduced cost of an
 edge does not follow the simple relationship $\bar{c}_{ij} = c_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V,\ i \ne j$.
 The dual variable $\pi_0 \in R$ can be retrieved from the user by accessing a field
 of the master problem formulation.
 The remaining dual variables $\pi_i \quad \forall i \in V_0$ must instead be computed
 from the reduced cost of each edge $\bar{c}_{ij}$.
-\bapcod, internally, uses the following relationship to encode the reduced cost of an edge:
+\bapcod{}, internally, uses the following relationship to encode the reduced cost of an edge:
 
 \begin{equation}
 	\bar{c}_{ij} = \begin{cases}
@@ -497,7 +495,7 @@ The Y-axis instead shows the probability of being within an X ratio from the bas
 
 We've extensively employed performance profiles to compare the competitiveness of
 our proposed branch-and-cut based pricer
-against the RCSP dynamic programming algorithm used by \bapcod\ \parencite{pessoa2020generic}.
+against the RCSP dynamic programming algorithm used by \bapcod{} \parencite{pessoa2020generic}.
 
 \begin{comment}
 In this thesis, we will use performance profiles extensively to measure each solver by exploiting two performance metrics: \textbf{Time metric}, \textbf{Cost metric}.

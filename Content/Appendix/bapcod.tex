@@ -1,52 +1,59 @@
-\chapter{\bapcod\ Parametrization}
+\chapter{\bapcod{} Parametrization}
 \label{sec:bapcod-appendix}
 
-This section lists exhaustively all the \bapcod\ and VRPSolver extension
-configurations parameters that were employed  to obtain the results of \Cref{sec:results}.
-We won't provide an exhaustive list of each \bapcod\ parameter,
-instead, we will mainly concentrate on the main ones that were necessary to achieve
-the desired intent.
-The \bapcod\ technical report \textcite{sadykov2021} provides a more
-comprehensive list and describes the parameters in more depth.
-The technical report alone is not enough to fully comprehend the purpose of each parameter,
-therefore it is highly suggested to first read the scientific document of \textcite{pessoa2020generic}.
+This section exhaustively lists all of the configuration parameters
+for respectively the \bapcod{} and \vrpsolver{} extension.
+These parameters were employed to obtain the results in \cref{sec:results}.
+We will not provide an exhaustive list of each parameter;
+instead, we will focus on the significant ones employed to achieve the desired intent.
+The \bapcod{} technical report \parencite{sadykov2021}
+provides a more comprehensive list and description of the available parameters.
+The technical report alone is not enough to comprehend the purpose of each parameter,
+therefore it is highly suggested to follow the scientific document of \textcite{pessoa2020generic}.
 
 \medskip
 
-In the next section we will introduce the parameters that we've used, along
-with: associated values, meaning and justification for their usage.
-We want to provide a brief summary of why and how these parameters were set.
-Non-robust branching and non-robust cut-generation
-must be necessarily disabled as our pricer do not support these.
-While it is technically possible to enable robust branching and cut-generation,
-we instead opted to disable these two features entirely.
-To stress the labeling algorithm it is simply enough to evaluate
-the column generation iterations issued at the root node of branch-and-bound tree
-free of additional cutting planes.
-The ng-sets augmentation is enabled and the ng-set maximum
-set size is raised as high as possible.
-On top of that, the tailing off condition for the VRPSolver pricer was disabled.
-This is done to stress as much as possible the pricer to produce
-dual bounds as close as possible to the elementary bound, and to
-improve the obtained dual bound at the end of the root node of the search tree.
-The labeling algorithm of the VRPSolver extension is able to produce multiple
-routes per pricing iteration as to feed the BPC with more diversified paths.
-Since our pricer always outputs a single column (the optimal column),
-we've disabled such feature to yield a fair comparison.
+The parameters we've used will be summarized in the following sections of this appendix,
+along with their associated values, meaning, and justification for their use.
+First, in the remainder of this section,
+we want to provide a summary of the guiding decisions
+that influenced the choice of the parameters.
+
+Non-robust inequalities (branching and cutting planes)
+are necessarily disabled since our pricer does not support them.
+While robust branching and cut-generation are technically doable,
+we chose to disable these two features entirely to simplify the BAP algorithm
+and reduce the computation time.
+Evaluating the column generation iterations issued at the root node
+of the branch-and-bound tree without additional cutting planes or branching
+is more than sufficient to stress the labeling algorithm.
+
+We want to apply as much pressure on the \vrpsolver{}'s pricer as possible.
+The \textit{ng-sets augmentation} \parencite{pessoa2020generic} is enabled,
+and the ng-sets maximum set size is raised as high as possible.
+Furthermore, the \vrpsolver{} pricer's tailing-off condition was disabled.
+The labeling algorithm will work harder to produce dual bounds closer to the elementary bound
+as the ng-sets extend.
+As a result, the dual bound at the root node will improve significantly.
+
+The \vrpsolver{} extension's labeling algorithm can generate multiple routes
+per pricing iteration, providing the BPC with more diverse paths.
+We disabled such a feature to produce a fair comparison because our BAC framework
+can only output a single column per pricing iteration.
 
 \section{Misc parameters}
-These parameters are used to control various miscellaneous aspects of \bapcod,
+These parameters are used to control various miscellaneous aspects of \bapcod{},
 such as the logging verbosity.
 They have limited importance, but can be quite useful for debugging purposes
 and for understanding what's going within the guts of the BPC algorithm.
 
 \begin{itemize}
 	\item \texttt{DEFAULTPRINTLEVEL = 0}.
-	      Controls the verbosity of the logging system of \bapcod\ by setting it to a relatively quiet level.
+	      Controls the verbosity of the logging system of \bapcod{} by setting it to a relatively quiet level.
 	      This value achieves a good trade off between the amount of information which is emitted
 	      and the amount of characters printed per second.
 	\item \texttt{printMasterPrimalSols = 2}.
-	      By setting this parameter to 2, \bapcod\ will print the fractional solution after each column generation convergence.
+	      By setting this parameter to 2, \bapcod{} will print the fractional solution after each column generation convergence.
 	      Useful for debugging.
 \end{itemize}
 
@@ -61,17 +68,17 @@ components and performing validation checks.
 	      This timelimit is global and it affects the whole BPC algorithm, from the starting
 	      to the resolution process at the root node until an integral optimal solution is found.
 	\item \texttt{colGenSubProbSolMode = 3}.
-	      Tells \bapcod\ to use the custom user-provided pricing functor.
-	      In our case, the pricing functor is a stubbed implementation which wraps the original VRPSolver extension pricing functor
+	      Tells \bapcod{} to use the custom user-provided pricing functor.
+	      In our case, the pricing functor is a stubbed implementation which wraps the original \vrpsolver{} extension pricing functor
 	      and times it (see previous discussions in \Cref{sec:results-evaluation-process}).
 	      By instead, setting this parameter to the value \texttt{2},
-	      it is possible to tell \bapcod\ to use the default generic MIP pricer to solve the sub-problems.
+	      it is possible to tell \bapcod{} to use the default generic MIP pricer to solve the sub-problems.
 	\item \texttt{ApplyPreprocessing = true}.
-	      Tells \bapcod\ to apply pre-processing to adjust bounds and remove redundant constraints.
+	      Tells \bapcod{} to apply pre-processing to adjust bounds and remove redundant constraints.
 	      Since this feature can improve the model without altering the pricing sub-problem,
 	      it is left enabled.
 	\item \texttt{PreprocessVariablesLocalBounds = false}.
-	      Prevents \bapcod\ from changing the variable bounds of sub-problems after pre-processing.
+	      Prevents \bapcod{} from changing the variable bounds of sub-problems after pre-processing.
 	      Since our pricer does not support changing the bounds of the variables,
 	      we disable this feature.
 	\item \texttt{CheckSpOracleFeasibility = false}.
@@ -90,21 +97,21 @@ These parameters control the column generation framework.
 
 \begin{itemize}
 	\item \texttt{GenerateProperColumns = false}.
-	      When this parameter is set to true, \bapcod\ will error-out if the pricer produces any non-proper column,
+	      When this parameter is set to true, \bapcod{} will error-out if the pricer produces any non-proper column,
 	      i.e. a column dishonoring the sub-problem variable bounds.
 	      In our case we set this parameter to false,
-	      because from our experiments it didn't seem to cooperate with the VRPSolver pricing functor.
+	      because from our experiments it didn't seem to cooperate with the \vrpsolver{} pricing functor.
 	\item \texttt{MaxNbOfStagesInColGenProcedure = 3}.
 	      Sets the number of stages the pricer is allowed to use.
 	      When the stage iteration is greater than 1, the pricer is allowed to use
 	      progressively lighter heuristics for determining columns.
 	      When the stage iteration reaches stage 0, the pricing problem should be solved exactly.
-	      \bapcod\ automatically switches to a lower stage when the previous stage converges (i.e. fails to find any reduced cost column).
-	      The technical document suggests to set this parameter to $3$ when the VRPSolver extension is in use.
-	      The VRPSolver extension implements two heuristic stages by using a modification of the bidirectional label setting algorithm,
+	      \bapcod{} automatically switches to a lower stage when the previous stage converges (i.e. fails to find any reduced cost column).
+	      The technical document suggests to set this parameter to $3$ when the \vrpsolver{} extension is in use.
+	      The \vrpsolver{} extension implements two heuristic stages by using a modification of the bidirectional label setting algorithm,
 	      see the \textit{Pricing heuristics} and \textit{Column and cut generation} sections of \textcite{sadykov2021bucket}.
 	\item \texttt{ReducedCostFixingThreshold = 0.0}.
-	      Tells \bapcod\ to not apply reduced cost fixing.
+	      Tells \bapcod{} to not apply reduced cost fixing.
 \end{itemize}
 
 \section{Cut Generation parameters}
@@ -132,19 +139,19 @@ We've opted to completely disabled any form of branching.
 
 \begin{itemize}
 	\item \texttt{StrongBranchingPhaseOne=""}, \texttt{StrongBranchingPhaseTwo=""}, \texttt{StrongBranchingPhaseThree=""}, \texttt{StrongBranchingPhaseFour=""}
-	      These parameters control the strong branching behaviour of \bapcod\, which is composed of multiple phases.
+	      These parameters control the strong branching behaviour of \bapcod{}, which is composed of multiple phases.
 	      By setting each parameter to the empty string, we effectively disable strong branching for each phase.
 	\item \texttt{SimplifiedStrongBranchingParameterisation = false}.
-	      When this parameter is set to true, \bapcod\ populates the parameters \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour}
+	      When this parameter is set to true, \bapcod{} populates the parameters \texttt{StrongBranchingPhaseOne}, \texttt{StrongBranchingPhaseTwo}, \texttt{StrongBranchingPhaseThree}, \texttt{StrongBranchingPhaseFour}
 	      with sane default values, thus effectively enabling branching.
 	      Since populating these parameters would effectively re-enable branching, we set \texttt{SimplifiedStrongBranchingParameterisation} to false.
 \end{itemize}
 
-\section{VRPSolver extension parameters}
+\section{\vrpsolver{} extension parameters}
 
 These parameters affect the labeling algorithm, the ng-sets size,
-the route enumeration procedure and some other minor aspects of the VRPSolver extension.
-We recall that the VRPSolver extension was introduced in \textcite{pessoa2020generic},
+the route enumeration procedure and some other minor aspects of the \vrpsolver{} extension.
+We recall that the \vrpsolver{} extension was introduced in \textcite{pessoa2020generic},
 where it became one of the state-of-the-art approaches for tackling routing-like problems.
 
 \begin{itemize}
@@ -179,7 +186,7 @@ where it became one of the state-of-the-art approaches for tackling routing-like
 	      These thresholds impact the tailing-off condition of the pricer, namely, if the running time of the pricer exceeds one of these thresholds, column generation is preemptively interrupted in favor of cut generation or branching.
 	      We're interested in measuring the performance of the label setting algorithm even when it is struggling, therefore we set those parameters to high values to disable the tailing off condition.
 	\item \texttt{RCSPdynamicNGmode = 1}.
-	      This parameter tells BapCod to scale dynamically
+	      This parameter tells \bapcod{} to scale dynamically
 	      the ng-sets size based on the
 	      fractional solution obtained by the column generation
 	      and not based on the solution received from the pricing problem.
@@ -196,14 +203,14 @@ where it became one of the state-of-the-art approaches for tackling routing-like
 	      reasonable dual bounds.
 	      Therefore, by setting $\eta^\mt{init} = 8$ and $\eta^\mt{max} = 63$
 	      we force the labeling algorithm to produce better dual bounds towards the end of the column generation convergence.
-	      Note that, due to \bapcod's implementation details $\eta^\mt{max} \le 63$ and thus
+	      Note that, due to \bapcod{}'s implementation details $\eta^\mt{max} \le 63$ and thus
 	      elementary routes can be guaranteed in the column generation
 	      only for instances having less than $64$ nodes.
 	\item \texttt{RCSPmaxNGaverNeighbourhoodSize = 63}.
 	      This parameter is very similar to the $\eta^\mt{max}$ parameter, but for the average case.
 	      In our case we set this parameter to the same value of $\eta^\mt{max}$
 	      as it was suggested from Ruslan Sadykov,
-	      a researcher who worked on \bapcod\ and VRPSolver extension implementations.
+	      a researcher who worked on \bapcod{} and \vrpsolver{} extension implementations.
 	\item \texttt{CutTailingOffThreshold = 0.0000001}, \texttt{CutTailingOffCounterThreshold = 999999}.
 	      These parameters, referred respectively as $\delta^\mt{gap}, \delta^\mt{num}$ in the scientific paper,
 	      control the tailing off condition of cut-separation, i.e. the threshold
