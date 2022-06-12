@@ -192,42 +192,40 @@ can be further improved using a \textit{2-OPT refinement procedure}.
 The 2-OPT algorithm is a heuristic local-search hill-climbing procedure
 proposed originally for the TSP in \textcite{flood1956, croes1958} independently.
 
-The 2-OPT algorithm works iteratively requiring $\Omega(N^2)$ number of iterations.
+The 2-OPT algorithm works iteratively in $\Omega(N^2)$ number of iterations.
 Unfortunately,
-as it is pointed out in \textcite{chandra1999},
-the 2-OPT procedure may in the worst case take an exponential number of iterations
-when fed with purposely artificially constructed instances.
-Although this is bad news,
-it is also worth pointing out that this rarely occur in practice,
-as the probabilistic average number of iterations required for 2-OPT is at most polynomial.
+as \textcite{chandra1999} points out,
+the 2-OPT procedure may take an exponential number of iterations
+when fed with purposefully artificially constructed instances.
+Although this is unfortunate, it is also worth noting that in practice.
+The probabilistic average number of iterations required for 2-OPT is at most polynomial.
 
-Each iteration of the 2-OPT procedure searches for an existing edge crossing,
-and if any exists,
-it performs a 2-OPT exchange to undo it.
+Each iteration of the 2-OPT procedure looks for an existing edge crossing and, if found,
+performs a 2-OPT exchange to undo it.
 A 2-OPT exchange is a \textit{primal operation},
-i.e. its application preserves route feasibility.
-A 2-OPT exchange does not add nor remove vertices from the current route $p$,
-therefore the route's gained profit does not change during
-the running time of the 2-OPT procedure.
-Hence, it is trivial to readjust the original TSP's 2-OPT procedure to the CPTP problem.
+which means that its use preserves route feasibility.
+Because 2-OPT exchange does not add nor remove vertices from the current route $p$,
+the route's gained profit does not change during
+the 2-OPT procedure's execution time.
+As a result, adapting the original TSP's 2-OPT procedure to the CPTP problem becomes trivial.
 
-Let $a, b \in p$ be two vertices visited in the current route $p$.
+Let $a, b \in p$ represent two vertices visited along the current route $p$.
 Let $a^\prime, b^\prime \in p$ denote respectively the successor of $a$ and $b$ in the current route $p$.
-A 2-OPT exchange removes edges $(a, a^\prime)$, $(b, b^\prime)$
-in favor of $(a, b)$, $(a^\prime, b^\prime)$
+A 2-OPT exchange replaces edges $(a, a^\prime)$, $(b, b^\prime)$
+with $(a, b)$, $(a^\prime, b^\prime)$
 but only if the delta distance, defined as:
 \begin{equation}
 	\Delta(a, b) = c_{a b} + c_{a^\prime b^\prime} - c_{a a^\prime} - c_{b b^\prime},
 \end{equation}
 satisfies $\Delta(a, b) < 0$.
-If this is the case, performing a 2-OPT exchange over vertices $(a, b)$ lowers the route cost.
-After a 2-OPT exchange,
-it is necessary to reverse the portion of the route
-characterized from the head $a_s$ and tail $b$: $[a_s, \dots, b]$.
+In this case, a 2-OPT exchange over vertices $(a, b)$ reduces the route cost.
+Following a 2-OPT exchange, the portion of the route $[a_s, \dots, b]$
+denoted by head $a_s$ and tail $b$ must be reversed.
 
 In our implementation
-we scan for vertices $a, b$ achieving the cheapest exchange,
-i.e. for which the delta distance $\Delta(a, b)$ is minimized across all possible valid choices of $a, b \in p$.
+we look for vertices $a, b$ achieving the cheapest exchange,
+that is, the delta distance $\Delta(a, b)$ is minimized
+across all possible valid choices of $a, b \in p$.
 The local search algorithms terminates when $\nexists (a, b) \mid a, b \in p,\ \Delta(a, b) < 0$.
 
 \section{Branching}
