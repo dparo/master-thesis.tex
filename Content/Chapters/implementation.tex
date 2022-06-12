@@ -47,12 +47,11 @@ Finally, \cref{sec:impl-separation-techniques} describes the cutting planes stra
 \section{Full static model}
 \label{sec:impl-full-static-model}
 
-Our static IP model is based on a slight variation of the CPTP formulation
+Our static IP model is based on a minor modification of the CPTP formulation
 \labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
 by disregarding the GSECs inequalities \labelcref{eq:cptp-gsec-constraints}.
-To guarantee the correctness of the approach,
-the GSECs will be exactly separated, during the running-time of the algorithm,
-when violation occurs.
+Upon violation,
+the GSECs will be exactly separated lazily to ensure the approach's correctness.
 
 We've implemented the following static Integer Programme (IP) model:
 \begin{align}
@@ -73,29 +72,25 @@ $q_u \le q_v \le q_i \quad \forall i \in V_0, i \ne u, v$.
 \subsection{Upper cutoff value}
 \label{sec:impl-upper-cutoff-value}
 
-In the context of pricing for the CVRP,
-we're only interested in routes achieving a strictly negative cost function.
-The upper cutoff value can help a MIP optimizer
-in reducing the number of evaluated branch-and-bound nodes.
-The upper cutoff value behaves as a constraint specified directly on the objective function:
+In the context of CVRP pricing, we're only interested in routes achieving a strictly negative cost function.
+A MIP optimizer can use the \textit{upper cutoff value} to reduce the number of evaluated branch-and-bound nodes.
+The upper cutoff value acts as a direct constraint on the objective function:
 \begin{equation}
 	z_\mt{CPTP}(x, y) \le 0 - \varepsilon_{\mt{ct}},
 \end{equation}
-where $\varepsilon_{\mt{ct}} \in \R_+$ is the upper cutoff tolerance.
+where $\varepsilon_{\mt{ct}} \in \R_+$ denotes the upper cutoff tolerance.
 Most MIP solvers, including CPLEX, has internal support for specifying cutoff values.
-However, it is important to note that specifying the cutoff value is not identical
-to specifying an explicit constraint in the static model.
-Cutoff values contribute only when the branch-and-bound procedure is invoked.
-Whereas, an explicit constraint contributes even at the linear relaxation level.
-The upper cutoff tolerance $\varepsilon_{\mt{ct}}$ biases the threshold at which the produced
-route can be considered a valid reduced cost column.
+However, fixing the cutoff value is not the same as specifying an explicit constraint in the static model.
+Only when the branch-and-bound procedure is invoked, do cutoff values contribute.
+An explicit constraint, on the other hand, contributes even at the linear relaxation level.
+The upper cutoff tolerance $\varepsilon_{\mt{ct}}$ biases the threshold at which a produced route
+can be considered a valid reduced cost column.
 A non-zero value for $\varepsilon_{\mt{ct}}$ avoids numerical
-stability problems caused by the usage of floating point arithmetic
+stability problems caused by the usage of floating-point arithmetic
 employed in BPC implementations.
-To guarantee correctness, the value of $\varepsilon_{\mt{ct}}$ should match the
-value employed by the BPC algorithm.
-In our case we picked $\varepsilon_{\mt{ct}} = 10^{-6}$,
-since it is the value used by the modern BPC framework presented in \textcite{sadykov2021}.
+
+To ensure correctness, the value of $\varepsilon_{\mt{ct}}$ must match the value used by the BPC algorithm.
+In our case, we chose $\varepsilon_{\mt{ct}} = 10^{-6}$ because it is the value used by the modern BPC framework described in \textcite{sadykov2021}.
 
 \section{Warm Starting}
 \label{sec:impl-warm-starting}
