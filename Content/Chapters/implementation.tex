@@ -1,53 +1,48 @@
 \chapter{Implementation}
 \label{sec:implementation-chapter}
 
-This chapter introduces the implementation of the proposed
-branch-and-cut algorithm which relies on the
-latest \textit{CPLEX 22.1 C callable library} (released in March 2022).
-The proposed branch-and-cut framework optimally solves the CPTP,
-see previous introduction of this problem in \cref{sec:the-capacitated-profitable-tour-problem}.
-Our framework can be used as a pricer
-inside column generation approaches applied to the standard CVRP,
-by appropriately defining the profit function associated to each vertex $p_i \quad \forall i \in V$.
-The algorithm's source code is developed in the \textit{C} language,
-and it is freely available under a permissive \textit{MIT} license
-at the following Github repository: \url{https://github.com/dparo/master-thesis}.
+This chapter introduces the proposed branch-and-cut algorithm (BAC).
+The BAC algorithm was implemented using the recent \textit{CPLEX 22.1 C callable library}.
+\texit{CPLEX version 22.1} was released in March 2022.
+The proposed branch-and-cut uses the CPTP formulation as the foundational static IP model.
+Refer to the previous discussion on the CPTP in \cref{sec:the-capacitated-profitable-tour-problem} for more information.
+By appropriately defining the profit function associated with each vertex $p_i \quad \forall i \in V$,
+our framework can be utilized as a pricer inside a column generation approach for the standard CVRP.
+The BAC's source code was developed in \textit{C}.
+The source code is freely available under a permissive \texttt{MIT license}
+at the following \textit{Github} repository: \url{https://github.com/dparo/master-thesis}.
 
 \medskip
 
 \urlref{https://www.ibm.com/analytics/cplex-optimizer}{IBM ILOG CPLEX Optimizer},
 CPLEX for short,
 is a commercial optimization software package for solving problems expressed as either:
-linear programs, mixed-integer programs, quadratic programs, or quadratic constrained programs.
+linear programs, mixed-integer programs, quadratic programs, or quadratically constrained programs.
 For an introduction to CPLEX refer to \cref{sec:introduction-to-cplex}.
 
-Our branch-and-cut implementation heavily relies on the CPLEX optimizer
-to solve the associated MIP model.
-The cutting planes separation was implemented using the \textit{CPLEX generic callback functions},
-which have the benefit of not disabling the \textit{Dynamic Search} algorithm,
-i.e. the proprietary advanced branch-and-cut algorithm employed internally inside CPLEX,
-see discussion in \cref{sec:introduction-to-cplex}.
+The CPLEX optimizer is heavily used in our branch-and-cut implementation
+to solve the associated CPTP MIP model.
+The cutting planes separation was implemented using \textit{CPLEX generic callback functions},
+which has the advantage of not disabling the \textit{Dynamic Search algorithm}.
+The \textit{Dynamic Search} is the CPLEX's internal advanced proprietary branch-and-cut algorithm,
+as discussed in \cref{sec:introduction-to-cplex}.
 
-Compared to tailored pricer algorithms, such as the labeling algorithm \parencite{desrochers1992, feillet2004},
-it is clear that using a modern MIP solver, such as CPLEX,
-may provide at least two benefits:
+Using a modern MIP solver, such as CPLEX, may provide at least two advantages
+over tailored pricer algorithms, such as the labeling algorithm \parencite{desrochers1992, feillet2004}:
 (i) parallelization and efficient use of the machine's multiple cores basically for free,
-(ii) take advantage of all the engineering effort that went in creating an efficient MIP solver
+(ii) take advantage of all the engineering effort that went into creating an efficient MIP solver
 (preprocessing, diving, fixing, primal heuristics, and more).
-However, such an approach also has associated downsides.
-Complicated relaxations or constraints,
-such as the ng-sets \parencite{baldacci2011},
-may be impractical to implement efficiently within a MIP optimizer.
+However, there are drawbacks to such an approach.
+Complicated relaxations or constraints, such as the ng-sets \parencite{baldacci2011},
+may be impractical to implement efficiently within a BAC algorithm.
 
 \medskip
 
-We quickly summarize the outline of this chapter.
-\Cref{sec:impl-full-static-model} presents the implemented static IP model.
-\Cref{sec:impl-warm-starting} describes the implemented primal heuristics
-that were used to warm start the CPLEX optimizer.
+This chapter's outline is quickly summarized.
+The implemented static IP model is presented in \cref{sec:impl-full-static-model}.
+\Cref{sec:impl-warm-starting} describes the implemented primal heuristics for \textit{warm starting} the MIP optimizer.
 \Cref{sec:impl-branching} discusses the implemented branching scheme.
-Finally, \cref{sec:impl-separation-techniques} describes the implemented cutting planes strategies,
-including a discussion on the employed separation techniques.
+Finally, \cref{sec:impl-separation-techniques} describes the cutting planes strategies used, including a discussion of the separation techniques used.
 
 \section{Full static model}
 \label{sec:impl-full-static-model}
