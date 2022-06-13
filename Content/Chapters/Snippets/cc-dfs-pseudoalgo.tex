@@ -3,10 +3,10 @@
 	\Let $nc \gets 0$\;
 	\For{$i\gets0$ \KwTo $N$}{
 		\If{$cc[i] < 0, y^*_i = 1$}{
-			\Comment{Found a non visited sub-tour}
+			\Comment{Found a non visited subtour}
 			$cc[i] \gets n_c$\;
 			\Let $u \gets -1$\;
-			\Comment{Traverse the sub-tour}
+			\Comment{Traverse the subtour}
 			\Do{$u \ge 0$}{
 				\Let $v \gets -1$\;
 				\For{$j \in V \mid e = \Set*{u, j} \in E,\ cc[j] < 0,\ x^\star_{e} = 1$}{

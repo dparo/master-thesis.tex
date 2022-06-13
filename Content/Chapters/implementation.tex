@@ -364,11 +364,11 @@ Let $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$ denote the
 current integral solution of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
 If $x^\star, y^\star$ violates a GSEC constraint,
-it is simple to show that the solution contains at least a spurious unconnected sub-tour.
-Sub-tours do not satisfy the original CPTP model of
+it is simple to show that the solution contains at least a spurious unconnected subtour.
+Subtours do not satisfy the original CPTP model of
 \cref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
 and should thus be removed.
-Unconnected sub-tours can be detected
+Unconnected subtours can be detected
 by computing the \textit{major connected components}
 via a Depth-First Search (DFS) traversal
 of the network induced from the integral solution's covered edges $\Set*{e \in E \mid x^\star_e = 1}$.
@@ -387,7 +387,7 @@ and use the sentinel value $-1$ to encode all the vertices $i \in V$ belonging t
 As a result, the number $n_c \in \Z$ frankly represents the number
 of major connected components that satisfies $n_c \ge 1$.
 Equivalently,
-$n_c$ represents the number of sub-tours formed in the current integral solution.
+$n_c$ represents the number of subtours formed in the current integral solution.
 Let $cc(i) \in C$ be an array
 that encodes in which connected component each vertex $i \in V$ belongs.
 Because the depot node always belongs to a connected component, we fix $cc(0) = 0$ by definition.
@@ -531,6 +531,7 @@ Because $x^\star$ is bounded in the $[0, 1]$ range,
 we can multiply the fractional solution value $x^\star$ by a big-constant $M \in \R_{+}$ (e.g. $M = 10^6$)
 and truncate its value when defining the capacities of the flow network.
 After that, the value $\maxflow(u, v)$ must be remapped on the original scale by dividing it by $M$.
+
 Our maxflow implementation follows the latter approach: it uses integer arithmetic
 for simplicity and stability.
 
@@ -563,7 +564,7 @@ outputted from the major connected components as discussed in \cref{sec:impl-lab
 By construction $n_c \ge 1,\ 0 \in T_0$.
 Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
 Which implies that,
-any major connected component (i.e. sub-tour) that does not contain the depot node,
+any major connected component (i.e. subtour) that does not contain the depot node,
 can be used as a valid set $S \subseteq V_0$ for separating GSEC inequalities from integral solutions.
 If $n_c = 1$ then no $S \subseteq V_0$ can be separated,
 which implies that the current integral solution models an optimal solution for the whole CPTP formulation
