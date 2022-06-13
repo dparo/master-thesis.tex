@@ -554,39 +554,38 @@ for simplicity and stability.
 The GSEC integral separation procedure is the most important
 separation procedure in our implementation,
 since it is mandatory to ensure the correctness of the branch-and-cut algorithm.
-GSECs inequalities which are violated by integral solutions
-must be separated exactly and reported as is
-(without employing violation thresholds) to the MIP optimizer.
+When an integral solution violates a GSEC inequality,
+the latter must be separated exactly and reported to the MIP optimizer as is
+(without employing violation thresholds).
 
 The GSEC inequalities require for the identification of a subset $S \subseteq V_0,\ |S| \ge 2$.
-Let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
-outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
+Let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$
+represent the labeling outputted from the major connected components
+as discussed in \cref{sec:impl-labeling-integral-solutions}.
 By construction $n_c \ge 1,\ 0 \in T_0$.
 Then a valid subset $S \subseteq V_0$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
-Which implies that,
-any major connected component (i.e. subtour) that does not contain the depot node,
+This means that
+any major connected component (i.e. subtour) that does not include the depot node,
 can be used as a valid set $S \subseteq V_0$ for separating GSEC inequalities from integral solutions.
 If $n_c = 1$ then no $S \subseteq V_0$ can be separated,
-which implies that the current integral solution models an optimal solution for the whole CPTP formulation
+implying that the current integral solution represents an optimal solution for the entire CPTP formulation
 \labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}.
 
 Let $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$ denote the
 current integral solution of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
-Recall the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
-it is easy to verify that
-$\sum_{e \in \delta(S)} x^\star_{e} = 0$, $y_i =  1 \quad \forall i \in S$
-which implies that \cref{eq:cptp-gsec-constraints} cannot be satisfied by any $i \in S$.
+Remembering the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
+it is simple to verify that
+$\sum_{e \in \delta(S)} x^\star_{e} = 0$, $y_i =  1 \quad \forall i \in S$, implying that \cref{eq:cptp-gsec-constraints} cannot be satisfied by any $i \in S$.
 
 \medskip
 
-In a single integral separation iteration we can therefore separate:
-\begin{equation}
-	\sum^{n_c}_{k = 1} \SetSize*{ \Set*{ i \mid cc(i) = k \quad \forall i \in V } }
-\end{equation}
-violated GSECs inequality, which can be promptly reported to the MIP solver to reject the candidate integral solution.
-
-A complete pseudocode of the GSEC integral separation procedure is provided in \cref{algo:gsec-integral-sep}.
+We can thus separate
+$\sum^{n_c}_{k = 1} \SetSize*{ \Set*{ i \mid cc(i) = k \quad \forall i \in V } }$
+violated GSEC inequalities in a single integral separation iteration.
+The violated inequalities
+can be promptly reported to the MIP optimizer to reject the candidate integral solution.
+\Cref{algo:gsec-integral-sep} contains the complete pseudocode for the GSEC integral separation procedure.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC integral inequalities for the CPTP}
@@ -602,13 +601,12 @@ A complete pseudocode of the GSEC integral separation procedure is provided in \
 \subsubsection{GSEC Fractional Separation}
 \label{sec:impl-gsec-fractional-separation}
 
-The separation of GSEC inequalities for fractional solutions,
-while it is non-strictly required for our implementation,
-can dramatically reduce the number of branch nodes.
+While it is not strictly necessary for our implementation,
+separating GSEC inequalities for fractional solutions can significantly reduce the number of branch nodes.
 
-Let $\maxflow(u, v),\ F_1(u, v),\ F_2(u, v)$ denote the maxflow value and bipartitions
-produced from the labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
-A valid $S \subseteq V_0, |S| \ge 2$ for separating GSEC inequalities from fractional solution can be picked such that:
+Let $\maxflow(u, v),\ F_1(u, v),\ F_2(u, v)$ represent the maxflow value and bipartitions
+produced by the labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
+A valid $S \subseteq V_0, |S| \ge 2$ for separating GSEC inequalities from fractional solutions is:
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
@@ -618,37 +616,38 @@ A valid $S \subseteq V_0, |S| \ge 2$ for separating GSEC inequalities from fract
 	\qquad
 	|S| \ge 2.
 \end{equation}
-Such approach can feed up to
-$N^2 - N$ different sets $S \subseteq V_0$,
+This approach can feed up to
+$N^2 - N$ distinct sets $S \subseteq V_0$,
 one for each possible pair $\Tuple*{u, v} \in V^2,\ u \ne v$
 
 Let $x^\star \in \R^{|E|},\ y \in \R^{|V|}$ denote the
 current fractional solution of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}.
-Recall the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
-it is easy to verify that $\sum_{e \in \delta(S)} x^\star_{ij} = \maxflow(u, v)$
+Remembering the GSEC inequality definition in \cref{eq:cptp-gsec-constraints},
+it is simple to verify that $\sum_{e \in \delta(S)} x^\star_{ij} = \maxflow(u, v)$
 holds due to the symmetry property of the flow network.
 
-Therefore, any $i \in S$ that violates $\maxflow(u, v) \ge 2 y_i$
-can be used to separate a violated GSEC inequality.
-With such approach t is possible to separate $O(N^3)$ GSECs per fractional solution.
-We noticed, through a quick empirical evaluation, that
-generating and reporting all the encountered violated GSECs inequalities
-led to a slow-down of the MIP optimizer.
+Any $i \in S$ violating $\maxflow(u, v) \ge 2 y_i$ can thus be used to separate a violated GSEC inequality.
+We can separate $O(N^3)$ GSECs per fractional solution by using this method.
+A quick empirical evaluation revealed that generating
+and reporting all violated GSEC inequalities significantly slowed down the MIP optimizer.
 
 \medskip
-In our implementation we opted for a different approach by relaxing the conditions at which these cuts are reported.
-For each subset $S \subseteq V_0,\ |S| \ge 2$, we report only the single most violated GSEC
-associated to the customer $i \in V_0$ that maximizes the $\maxflow(u, v) - 2 y_i$ violation.
-On top of that, to limit the number of weak GSEC inequalities that are reported to the MIP optimizer,
+
+We took a different approach in our implementation by relaxing the conditions
+under which these cuts are reported.
+We report only the single most violated GSEC
+associated with the customer $i \in V_0$ that maximizes the $\maxflow(u, v) - 2 y_i$ violation
+for each subset $S \subseteq V_0,\ |S| \ge 2$.
+Furthermore, to limit the number of weak GSEC inequalities that are reported to the MIP optimizer,
 we define a violation threshold $\varepsilon_{\mt{GSEC}}$ and report the associated cut only if:
 \begin{equation}
 	\maxflow(u, v) \ge 2 y_i - \varepsilon_{\mt{GSEC}}
 \end{equation}
 is violated.
-In our implementation we picked $\varepsilon_{\mt{GSEC}} = \epsGsecFValue$.
+We chose $\varepsilon_{\mt{GSEC}} = \epsGsecFValue$ in our implementation.
 
-A complete pseudocode of the GSEC fractional separation procedure is provided in \cref{algo:gsec-frac-sep}.
+\Cref{algo:gsec-frac-sep} contains the complete pseudocode for the GSEC fractional separation procedure.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GSEC fractional inequalities for the CPTP}
