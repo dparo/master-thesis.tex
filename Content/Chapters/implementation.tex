@@ -237,129 +237,118 @@ We rely on the branching schemes already provided by the CPLEX MIP optimizer.
 \section{Cutting planes and Inequalities separation}
 \label{sec:impl-separation-techniques}
 
-Despite CPLEX already implements internally
-the separation of some families of general cutting planes
+Although CPLEX already implements
+the separation of some families of general cutting planes internally
 (see \cref{sec:introduction-to-cplex}),
 generating additional inequalities,
-which cannot be deduced from the static model,
-can drastically improve the running time of the resolution process.
-Cutting planes separation is a problem which consists
-in finding (strong) violated inequalities
-so that they can be embedded inside a branch-and-cut framework.
+which aren't deducible from the static model,
+can significantly improve the running time of the resolution process.
+Cutting plane separation is a problem that involves finding (strong) violated inequalities
+and embedding them inside a branch-and-cut framework.
 Cutting planes improve the linear relaxation
-by "cutting" fractional points from the convex-hull of integer solutions.
-An effective cutting planes separation strategy
+by "cutting" fractional points from the convex hull of integer solutions.
+An efficient cutting planes separation strategy
 is probably the most important and delicate aspect of any branch-and-cut algorithm \parencite{ralphs2003}.
-When evaluating the inclusion of a set of inequalities,
-considering the trade-off between the separation cost
-and the improvements in the linear relaxation
-is a factor of fundamental importance.
-Integral inequalities' separation, instead, can be seen as a procedure
-to dynamically generate mandatory constraints
+When evaluating the inclusion of a set of inequalities, it's critical to consider
+the trade-off between the separation cost and the improvements in the linear relaxation.
+Separation of integral inequalities, on the other hand,
+can be viewed as a procedure for dynamically generating mandatory constraints
 that would otherwise be impossible to insert statically into a MIP model.
 
-Additional valid inequalities which are non-strictly necessary to guarantee the algorithm's correctness,
+Additional valid inequalities that are not strictly required to ensure the algorithm's correctness
 but are computationally expensive to separate exactly,
-may be included through a heuristic separation procedure.
+may get included using a heuristic separation procedure.
 
-Another important factor to take into consideration when implementing
-efficient cutting planes procedures lies in the parametrization settings
-of the violated inequalities.
-The generation and number of cutting planes alone (without considering the separation running time),
-can highly influence both the computation time and memory consumption of the BAC algorithm.
-In order to reduce memory consumption, sparse/compact inequalities are usually preferred whenever possible.
+The parametrization settings of the violated inequalities are another critical aspect
+when implementing efficient cutting planes procedures.
+The generation and number of cutting planes alone (without considering separation running time),
+may significantly impact the BAC algorithm's computation time and memory consumption.
+Sparse/compact inequalities are usually preferred whenever possible to reduce memory consumption.
 When reporting violated inequalities to the MIP optimizer,
-it is usually good practice to define a violation tolerance threshold,
-to limit the number of violated inequalities taken into consideration.
-Namely, inequalities which are not "sufficiently violated" aren't generated nor reported
-to the MIP optimizer.
-A low violation threshold results in better dual bounds and fewer branch nodes,
-but may slower the convergence in each node.
-In the opposite way, a high violation threshold results in more branch nodes,
+it is common practice to set a violation tolerance threshold
+to limit the number of violated inequalities considered.
+Inequalities that are not "sufficiently violated" aren't generated nor reported to the MIP optimizer.
+A low violation threshold results in better dual bounds
+and fewer branch nodes but slows down the convergence in each node.
+On the other hand, a high violation threshold results in more branch nodes
 but faster convergence speed in each node \parencite{jepsen2008branchandcut}.
 
-Modern MIP optimizers, such as CPLEX, regardless of the violation threshold
-employed by the separation procedure,
-can filter each user-provided cuts by scoring them.
-Premature branching may occur, regardless of the existence of violated inequalities,
-if CPLEX deems these cuts ineffective (tailing off condition).
-Scoring cuts costs even more computation time,
-for this reason,
-it is possible to disable user-cuts filtering.
-However, in such case if an effective tailing condition is required,
-it must be implemented by the user inside the separation procedure.
+Modern MIP optimizers, such as CPLEX,
+can filter each user-provided cut by scoring them,
+regardless of the violation threshold used by the separation procedure.
+If CPLEX deems these cuts ineffective,
+branching may occur prematurely regardless of the presence of violated inequalities (tailing off condition).
+The process of scoring cuts necessitates even more computation time;
+as a result, user-cuts filtering can be disabled if so desired.
+However, if an effective tailing condition is required,
+the user must implement it within the separation procedure of each cut.
 
-In our implementation, all cutting planes reported to CPLEX are subject to filtering
-and the ultimate choice of whether to include the generated cutting planes is left to the MIP optimizer.
+In our implementation, all cutting planes reported to CPLEX are filtered.
+The MIP optimizer itself makes the final decision on their inclusion.
 
 \medskip
 
-In our branch-and-cut algorithm,
-we are concerned in separating only the
+We are only interested in separating only the
 GSECs \labelcref{eq:cptp-gsec-constraints},
 RCC \labelcref{eq:cptp-rcc-inequality}
 and GLM \labelcref{eq:cptp-glm-inequality}
-families of inequalities.
-All these inequalities share something in common:
+families of inequalities in our branch-and-cut algorithm,
+All these inequalities have one thing in common: they all require
 the determination of a subset $S \subseteq V_0$.
-A subset $S \subseteq V_0$ can be determined via an appropriate \textit{labeling algorithm},
-which determines a partitioning of the network by assigning labels (integer) to each vertex.
+A subset $S \subseteq V_0$ can be determined using a suitable \textit{labeling algorithm},
+which partitions the network by assigning labels (integer) to each vertex.
 
-The GSECs are the only constraints in our model which must be obligatorily
-included through an exact separation procedure.
-At a minimum, their inclusion must be devised
-for integral solutions of the IP model of
+The GSECs are the only constraints in our model that must be obligatorily
+included by using an exact separation procedure.
+Their inclusion must be devised at the very least for integral solutions of the IP model of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
-GSEC's can be separated exactly
+GSECs can be precisely separated
 by tracing the \textit{major connected components}
-induced from the integral solution of the model.
+induced by the model's integral solution.
+
 Tracing the connected components can be used to determine subsets
 $T \subseteq V | \sum_{e \in \delta(T)} x_e = 0$,
 which constitutes a valid labeling of the network.
-For fractional solutions, however, their exact separation is more complicated.
+However, the exact separation of fractional solutions is more complicated.
 Let $x^\star \in \R^{|E|}$ denote the value of a fractional solution of
 the linear relaxation in
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3},
-then,
 the GSECs can be separated (exactly) by solving $(u, v)$-min-cuts
 on a flow network where capacities are given from the fractional solutions' value $x^\star$.
-The $(u, v)$-min-cuts outputs a subset $T \subseteq V$ induced from $(u, v)$
-minimizing the term $\sum_{e \in \delta(T)} x^\star_e$,
-which constitutes a valid labeling of the network for each $u, v \in V,\ u \ne v$.
+The $(u, v)$-min-cuts outputs a subset $T \subseteq V$ induced from $(u, v)$ by
+minimizing the term $\sum_{e \in \delta(T)} x^\star_e$.
+The subset $T \subseteq V$ constitutes a valid labeling of the network for each $u, v \in V,\ u \ne v$.
 
-Instead, the exact separation of the RCC and GLM inequalities
-is a different concern, refer to the respective discussion in \cref{sec:cptp-rcc,sec:cptp-glm}.
-For the RCC inequalities,
-no exact separation procedure is currently known \parencite{jepsen2014}.
-For the GLM inequalities,
-a cutting-plane strategy based on solving
-$(u, v=0)$-min-cuts on a flow network with $u$-dependent capacities,
-may be employed \parencite{letchford2006, jepsen2014}.
+Instead, the precise separation of the RCC and GLM inequalities
+is a separate concern; for more info see in \cref{sec:cptp-rcc,sec:cptp-glm}.
+There is currently
+no exact separation procedure for the RCC inequalities  \parencite{jepsen2014}.
+On the other hand, GLM inequalities can be separated by solving
+$(u, v=0)$-min-cuts on a flow network with $u$-dependent capacities \parencite{letchford2006, jepsen2014}.
 
 \medskip
 
-In our implementation, with regard to the RCC and GLM inequalities,
-we opted for a different approach compared to the one proposed in \textcite{jepsen2014}.
-We re-use the same integral and fractional labeling algorithms
-already employed for the optimal separation of the GSECs inequalities.
-These two labeling algorithms will be shared between all the three families of inequalities.
-This allows us to limit the programming efforts required to create custom
-separation procedure
-and also to tremendously reduce the computational impact,
-since the same labeling procedures feed the separation of three different families of inequalities.
-The labeling algorithms, and the separation procedures of each cuttin-plane,
-is implemented in user-provided callbacks using the \textit{CPLEX generic callback API}.
+In our implementation, we chose a different approach for the RCC and GLM inequalities
+than the one proposed in \textcite{jepsen2014}.
+We reuse the same labeling algorithm
+employed for the exact fractional and integral separation of the GSECs inequalities.
+The same two labeling algorithms are shared between the three inequalities' families.
+Because the same labeling procedures feed the separation of three different families of inequalities,
+we can limit the programming effort required to create custom separation procedures
+while substantially reducing the computational impact.
+The labeling algorithms and the cutting-plane separation procedures
+were implemented in user-provided callbacks using the \textit{CPLEX generic callback API}.
 
 \medskip
 
-In the next two sections, \cref{sec:impl-labeling-integral-solutions,sec:impl-labeling-fractional-solutions},
-we will describe the labeling algorithms employed for the integral solutions
-and fractional solutions respectively.
-Note however, that these two labeling algorithms
-are only optimal for the separation of the GSECs inequalities,
-while they behave suboptimally (heuristically) for the separation of the RCC and GLM inequalities.
+We will describe the labeling algorithm used for integral and fractional solutions
+in the following two sections
+\cref{sec:impl-labeling-integral-solutions,sec:impl-labeling-fractional-solutions}.
+However, note that these two labeling algorithms
+are only optimal for separating the GSECs inequalities,
+and they behave suboptimally (heuristically) for separating the RCC and GLM inequalities.
 In the remaining sections, instead,
-we will discuss the separation of each implemented inequality.
+we will be detailing the separation of each implemented inequality.
 
 \subsection{Labeling from Integral Solutions}
 \label{sec:impl-labeling-integral-solutions}
