@@ -663,42 +663,41 @@ We chose $\varepsilon_{\mt{GSEC}} = \epsGsecFValue$ in our implementation.
 \label{sec:impl-rcc-separation}
 
 The RCC inequalities, defined in \cref{eq:cptp-rcc-inequality},
-require for the identification of a subset $S \subseteq V_0, |S| \ge 1$.
-Such inequalities can be rewritten in the following form:
+necessitate for the identification of a subset $S \subseteq V_0, |S| \ge 1$.
+Such inequalities can be rewritten as follows:
 \begin{equation}
 	\ExprCptpFlowExiting{S} - \ExprCptpServedDemandWithWeight{S}{i}{\frac{2 q_i}{\ExprQr(S)}}    \ge   2 \left( \ceil*{ \frac{q(S)}{Q}} - \frac{q(S)}{Q_{\mathrm{R}}(S)} \right) \quad \forall S \subseteq V_0,\ |S| \ge 1.
 \end{equation}
 
-We first describe the separation of the RCC inequalities for integral solutions.
-Such separation procedure follows roughly the same reasoning
-employed for the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
-Namely, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
-outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
+We begin by discussing the separation of RCC inequalities for integral solutions.
+This procedure follows roughly the same reasoning
+as the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
+Specifically, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$
+be the network labeling outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
 Then a valid subset $S \subseteq V_0,\ |S| \ge 1$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
-After picking the appropriate subset $S$ we test for the violation of the inequality.
-Only if the associated RCC inequality is violated it is reported to the MIP optimizer.
-A complete pseudocode is provided in \cref{algo:rcc-integral-sep}.
+We test for inequality violation after selecting the appropriate subset $S$.
+Only when the associated RCC inequality is violated is the MIP optimizer notified.
+\Cref{algo:rcc-integral-sep} contains a complete pseudocode.
 
-Next we describe the separation of the RCC inequalities for fractional solutions.
-Such separation procedure also follows roughly the same reasoning
-for the GSEC fractional separation discussed in \cref{sec:impl-gsec-fractional-separation}.
+Following that, we describe the separation of the RCC inequalities for fractional solutions.
+This separation procedure follows roughly the same reasoning
+as the GSEC fractional separation discussed in \cref{sec:impl-gsec-fractional-separation}.
 Let $\maxflow(u, v),\ F_1(u, v),\ F_2(u, v)$ denote the maxflow value and bipartitions
-produced from the labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
-A valid $S \subseteq V_0, |S| \ge 2$ for separating RCC inequalities
-from fractional solution can be picked such that:
+produced by the network labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
+A suitable $S \subseteq V_0, |S| \ge 2$ for separating RCC inequalities
+from fractional solutions can be chosen as:
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
 		F_1(u, v), & \texttt{if } 0 \notin F_1(u, v) \\
-		F_2(u, v), & \texttt{otherwise}
-	\end{cases}.
+		F_2(u, v), & \texttt{otherwise}.
+	\end{cases}
 \end{equation}
-After picking the appropriate subset $S$ we test for violation of the inequality,
-but as is the case for fractional separation,
-we employ a non-zero violation threshold $\varepsilon_{\mt{RCC}}$.
-In our implementation we set $\varepsilon_{\mt{RCC}} = \epsRccFValue$.
-With such an approach we can separate $O(N^2)$ RCCs per fractional solution.
-A complete pseudocode is provided in \cref{algo:rcc-frac-sep}.
+After selecting the appropriate subset $S$ we test for inequality violation, but,
+as with fractional separation, we employ a non-zero violation threshold $\varepsilon_{\mt{RCC}}$.
+We set $\varepsilon_{\mt{RCC}} = \epsRccFValue$ in our implementation.
+Using this method, we can separate $O(N^2)$ RCCs per fractional solution.
+\Cref{algo:rcc-frac-sep} contains the complete pseudocode.
 
 \begin{algorithm}
 	\caption{An algorithm for separating RCC integral inequalities for the CPTP}
@@ -726,7 +725,7 @@ A complete pseudocode is provided in \cref{algo:rcc-frac-sep}.
 
 The GLM inequalities, defined in \cref{eq:cptp-glm-inequality},
 require for the identification of a subset $S \subseteq V_0, |S| \ge 2$.
-Such inequalities can be rewritten in the following form:
+Such inequalities can be rewritten as follows:
 \begin{equation}
 	\sum\limits_{
 		\EqStackTwo{e = \Set*{i,j} \in \delta(S)}{i \in S,\ j \notin S}
@@ -736,23 +735,23 @@ Such inequalities can be rewritten in the following form:
 	.
 \end{equation}
 
-We first describe the separation of the GLM inequalities for integral solutions.
-Such separation procedure follows roughly the same reasoning
-employed for the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
-Namely, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$ be the labeling
-outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
+We begin by discussing the separation of the GLM inequalities for integral solutions.
+This procedure follows roughly the same reasoning
+as the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
+Specifically, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$
+be the network labeling outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
 Then a valid subset $S \subseteq V_0,\ |S| \ge 2$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
-After picking the appropriate subset $S$ we test for the violation of the inequality.
-Only if the associated GLM inequality is violated it is reported to the MIP optimizer.
-A complete pseudocode is provided in \cref{algo:glm-integral-sep}.
+We test for inequality violation after selecting the appropriate subset $S$.
+Only when the associated GLM inequality is violated is the MIP optimizer notified.
+\Cref{algo:glm-integral-sep} contains a complete pseudocode.
 
-Next we describe the separation of the GLM inequalities for fractional solutions.
-Such separation procedure also follows roughly the same reasoning
-for the GSEC fractional separation discussed in \cref{sec:impl-gsec-fractional-separation}.
+Following that, we describe the separation of the GLM inequalities for fractional solutions.
+This separation procedure follows roughly the same reasoning
+as the GSEC fractional separation discussed in \cref{sec:impl-gsec-fractional-separation}.
 Let $\maxflow(u, v),\ F_1(u, v),\ F_2(u, v)$ denote the maxflow value and bipartitions
-produced from the labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
-A valid $S \subseteq V_0, |S| \ge 2$ for separating GLM inequalities
-from fractional solution can be picked such that:
+produced by the network labeling algorithm described in \cref{sec:impl-labeling-fractional-solutions}.
+A suitable $S \subseteq V_0, |S| \ge 2$ for separating GLM inequalities
+from fractional solution can be chosen as:
 \begin{equation}
 	S \subseteq V_0 =
 	\begin{cases}
@@ -762,12 +761,11 @@ from fractional solution can be picked such that:
 	\qquad
 	|S| \ge 2.
 \end{equation}
-After picking the appropriate subset $S$ we test for violation of the inequality,
-but as is the case for fractional separation,
-we employ a non-zero violation threshold $\varepsilon_{\mt{GLM}}$.
-In our implementation we set $\varepsilon_{\mt{GLM}} = \epsGlmFValue$.
-With such an approach we can separate $O(N^2)$ GLMs per fractional solution.
-A complete pseudocode is provided in \cref{algo:glm-frac-sep}.
+After selecting the appropriate subset $S$ we test for inequality violation, but,
+as with fractional separation, we employ a non-zero violation threshold $\varepsilon_{\mt{GLM}}$.
+We set $\varepsilon_{\mt{GLM}} = \epsGlmFValue$ in our implementation.
+Using this method, we can separate $O(N^2)$ GLMs per fractional solution.
+\Cref{algo:glm-frac-sep} contains the complete pseudocode.
 
 \begin{algorithm}
 	\caption{An algorithm for separating GLM integral inequalities for the CPTP}
