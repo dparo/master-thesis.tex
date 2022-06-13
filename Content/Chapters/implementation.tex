@@ -364,44 +364,46 @@ Let $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$ denote the
 current integral solution of
 \cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}.
 If $x^\star, y^\star$ violates a GSEC constraint,
-it is easy to verify that the solution models at least a spurious unconnected sub-tour that should be removed.
+it is simple to show that the solution contains at least a spurious unconnected sub-tour.
+Sub-tours do not satisfy the original CPTP model of
+\cref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
+and should thus be removed.
 Unconnected sub-tours can be detected
 by computing the \textit{major connected components}
-through a Depth-First Search (DFS) traversal
-on the network induced from the traversed edges:  $\Set*{e \in E \mid x^\star_e = 1}$.
+via a Depth-First Search (DFS) traversal
+of the network induced from the integral solution's covered edges $\Set*{e \in E \mid x^\star_e = 1}$.
 
 \medskip
 
 More formally,
 let $C = \Set*{-1, 0, \dots, n_c - 1}$ denote the set of connected components
-induced from the integral solution $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$.
-A vertex $i \in V$ is said to belong to a singleton connected components,
+resulting from the integral solution $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set*{0, 1}^{|V|}$.
+A vertex $i \in V$ is said to belong to a singleton connected component,
 if the connected component contains only $i$ itself, namely $y^\star_i = 0$.
 We are only interested in modeling \textbf{major} connected components,
-i.e. components containing at least two vertices.
-We ignore singleton connected components,
-and we associate the sentinel value $-1$ to encode all the vertices $i \in V$ belonging to singletons.
-Therefore, the number $n_c \in \Z$ actually represents the number
-of major connected components, which satisfies $n_c \ge 1$.
+whith have at least two vertices.
+We ignore singleton connected components
+and use the sentinel value $-1$ to encode all the vertices $i \in V$ belonging to singletons.
+As a result, the number $n_c \in \Z$ frankly represents the number
+of major connected components that satisfies $n_c \ge 1$.
 Equivalently,
 $n_c$ represents the number of sub-tours formed in the current integral solution.
 Let $cc(i) \in C$ be an array
-which for each vertex $i \in V$ it encodes to which connected component it belongs to.
-Note that the depot node always belongs to a connected component,
-therefore by definition we fix $cc(0) = 0$.
-For singletons instead we fix $cc(i) = -1  \quad \forall i \in V_0 \mid y^\star_i = 0$.
+that encodes in which connected component each vertex $i \in V$ belongs.
+Because the depot node always belongs to a connected component, we fix $cc(0) = 0$ by definition.
+Instead, for singletons we fix $cc(i) = -1  \quad \forall i \in V_0 \mid y^\star_i = 0$.
 The connected components can be computed
-by a simple DFS traversal, which pseudocode is provided in \cref{algo:cc-dfs}.
+by a simple DFS traversal which pseudocode is provided in \cref{algo:cc-dfs}.
 
 Consider the sets $T_k = \Set*{i \in V \mid cc(i) = k}$ with $k = 0, \dots, n_c$
-computed from the just devised labeling algorithm.
+computed from the recently devised labeling algorithm \labelcref{algo:cc-dfs}.
 Due to the construction of such sets,
 by letting $k = 0, \dots, n_c$,
 it holds that:
 $|T_k| \ge 2$,
 $\sum_{e \in \delta(T_k)} x^\star_e = 0$
 and $\exists i \in T_k \mid y^\star_i = 1$,
-thus ensuring the correctness of the whole branch-and-cut procedure.
+thus ensuring the correctness of the entire branch-and-cut procedure.
 
 \begin{algorithm}
 	\caption{An algorithm for computing the major connected components through a Depth-First Search (DFS) traversal}
