@@ -1,39 +1,36 @@
 \chapter{Branch and Price}
 \label{sec:branch-and-price}
 
-In this chapter, we will introduce
-the branch-and-price (BAP) framework and the Column Generation (CG) approach,
-two foundational components employed by contemporary CVRP solvers.
+In this chapter,
+we will discuss the branch-and-price (BAP) framework and the \textit{Column Generation} (CG) approach,
+which are two fundamental components used by modern CVRP solvers.
 The focus of our presentation will be on these two critical components in the context of the CVRP.
-Refer, instead, to \textcite{vanderbeck2005, lubbecke2005, desrosiers2011}
-for a review on CG approaches to solve arbitrary MIP problems.
-For a primer introduction to branch-and-price schemes refer to the work of \textcite{barnhart1998, desrosiers2005}.
-We refer the reader to the work of \textcite{feillet2010}
-which contains a helpful tutorial on CG and BAP algorithms specific to VRPs.
+For a review of CG approaches to solving arbitrary MIP problems, see \textcite{vanderbeck2005, lubbecke2005, desrosiers2011}.
+Moreover, see \textcite{barnhart1998, desrosiers2005}
+for a primer introduction to branch-and-price schemes.
+We refer the reader to \textcite{feillet2010}'s work,
+which includes a helpful tutorial on CG and BAP algorithms specific to VRPs.
 
 Branch-and-price (BAP) frameworks are in essence a branch-and-bound (BAB) scheme \parencite{land2010}
-that originates when solving the SP/SC formulation (see \cref{sec:set-partitionining-formulation})
-for VRPs.
-BAB-based schemes employ a search tree and a pruning strategy
-based on bounding the objective function to seek an optimal solution.
-Compared to more traditional branch-and-cut (BAC) frameworks,
+that originates when solving the SP/SC formulation for VRPs (see \cref{sec:set-partitionining-formulation}).
+To seek the optimal solution,
+BAB-based schemes use a search tree and a pruning strategy by bounding the objective function.
+As opposed to widerspread branch-and-cut (BAC) frameworks,
 their primary focus is the usage of a Column Generation (CG) technique for improving the dual bound,
 see \textcite{righini2008}.
 BAP frameworks were first applied successfully to the Cutting Stock problem in \textcite{gilmore1961}.
 The so-called branch-price-and-cut (BPC) extends the traditional BAP framework.
-In the BPC framework,
-additional cutting planes are added to strengthen the linear relaxations
-associated with each node of the search tree
-with the aim of further improving the dual bounds.
+Additional cutting planes are added in the BPC framework to strengthen the linear relaxations
+associated with each node, further improving the dual bounds.
 
-In the next section \cref{sec:column-generation-and-pricing-problem}
+In the following section \labelcref{sec:column-generation-and-pricing-problem}
 we will illustrate the column generation algorithm
 and the pricing problem, two vital pieces in branch-and-price frameworks.
 
 \section{Column generation and the Pricing Problem}
 \label{sec:column-generation-and-pricing-problem}
 
-Consider the \textbf{Master Problem} (MP) defined
+Consider the \textit{Master Problem} (MP) defined
 as the linear relaxation of the SP formulation
 \labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}
 obtained by relaxing the integrality constraints:
@@ -43,11 +40,11 @@ obtained by relaxing the integrality constraints:
 	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1 & \quad \forall i \in V_0                                              \label{eq:mp-customers-visited-by-exactly-one-route} \\
 	                                        & 0 \le \lambda_p \le 1                & \quad \forall p \in P \label{eq:mp-lambda-mip-var-bounds}.
 \end{align}
-The constraint $\lambda_p \le 1$ in \cref{eq:mp-lambda-mip-var-bounds}
-is implied from \cref{eq:mp-customers-visited-by-exactly-one-route} and can thus be removed.
+The constraint $\lambda_p \le 1$ in \labelcref{eq:mp-lambda-mip-var-bounds}
+is implied from \labelcref{eq:mp-customers-visited-by-exactly-one-route} and can thus be removed.
 An optimal solution to the MP provides a valid dual bound at the root node of the search tree.
-The master problem can be modified by adding cuts or branching constraints
-to improve the obtained dual bounds.
+The MP can be extended by adding additional cuts or branching constraints
+with the aim of improving the dual bounds.
 
 The dual problem associated with
 \labelcref{eq:mp-obj-func,eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes,eq:mp-lambda-mip-var-bounds}
@@ -66,34 +63,33 @@ is used to define the MP,
 \cref{eq:dmp-constraint3} in
 \labelcref{eq:dmp-obj-func,eq:dmp-constraint1,eq:dmp-constraint2,eq:dmp-constraint3}
 can be replaced in favor of $\pi_i \ge 0 \quad \forall i \in V_0$,
-thus reducing the dual solution space.
+thus slimming the dual space.
 
 When solving the MP,
 at each iteration of the \textit{simplex algorithm} \parencite{dantzig1955}
-we seek a non-basic variable, also called column,
-to price out and enter the basis.
-This is achieved by evaluating the dual variables $\pi \in \R^N$.
-The dual variables $\pi \in \R^{N}$ are computationally intractable to evaluate
-due to the enormous size of the set of routes $P$.
+we seek a non-basic variable known as \textit{column},
+to price out and enter the basis through evaluation of the dual variables $\pi \in \R^N$.
+Due to the enormous size of the set of routes $P$,
+evaluating the dual variables $\pi \in \R^{N}$ is computationally intractable.
 
 \medskip
 
-Therefore, in BAP frameworks we consider only a small subset of columns $\mcP \subseteq P$,
-obtaining the following linear program:
+As a result, in BAP frameworks we consider only a small subset of columns $\mcP \subseteq P$,
+yielding the following linear program:
 \begin{align}
 	\min_{\lambda} \quad z_\mt{RMP}(\lambda) & = \sum_{p \in \mcP}  c_p \lambda_p      & \label{eq:rmp-obj-func}                                                                                                    \\
 	                                         & \sum_{p \in \mcP} \lambda_{p} = K       & \label{eq:rmp-K-routes}                                                                                                    \\
 	                                         & \sum_{p \in \mcP}  a_{ip} \lambda_p = 1 & \quad \forall i \in V_0                                              \label{eq:rmp-customers-visited-by-exactly-one-route} \\
 	                                         & \lambda_p \ge 0                         & \quad \forall p \in \mcP \label{eq:rmp-lambda-mip-var-bounds},
 \end{align}
-which takes the name of \textbf{Restricted Master Problem} (RMP).
+which takes the name of \textit{Restricted Master Problem} (RMP).
 
-In BAP frameworks, we seek for a column to enter the basis.
-This in turn requires solving the following sub-problem:
+We look for a column to enter the basis,
+which in turn necessitates the resolution of the following sub-problem:
 \begin{equation}\label{eq:pp-problem}
 	{c^\star_p} = \min_{p \in P} \Set*{ \bar{c}_p = \sum_{e = \Set*{i, j} \in E} \Expr*{c_{e} - \frac{\pi_i + \pi_j}{2}} a_{ep}  },
 \end{equation}
-which takes the famous name of \textbf{Pricing Problem} (PP).
+which takes the famous name of \textit{Pricing Problem} (PP).
 In \labelcref{eq:pp-problem}, $\bar{c}_p$ denotes the reduced cost of a route $p \in P$
 and $c^\star_p$ is the reduced cost of the optimal route $p^\star \in P$
 that leads to the best dual bound improvement.
@@ -102,7 +98,7 @@ For convenience,
 we define $\bar{c}_{e} = c_{e} - \frac{\pi_i + \pi_j}{2}$
 as the reduced cost of an edge $e\in E$.
 The purpose of the RMP is to provide dual variables
-to be transferred to the pricing sub-problem \textcite{lubbecke2005}.
+to be transferred to the pricing sub-problem \parencite{lubbecke2005}.
 
 Any $p \in P$ which satisfies $\bar{c}_p < 0$ is a valid column which can enter the basis of the RMP.
 The BAP solver must intelligently manage the set $\mcP \subseteq P$ that it stores within a pool.
@@ -115,9 +111,9 @@ the size of the pool $\mcP \subseteq P$ manageable.
 \medskip
 
 In the literature, the resolution method, or algorithm,
-used to solve the PP is known as \textbf{oracle} or \textbf{pricer}.
+used to solve the PP is known as \textit{oracle} or \textit{pricer}.
 The oracle needs to solve the pricing sub-problem which, due to the definition of the set $P$,
-coincides with solving an Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+coincides with solving an \textit{Elementary Shortest Path Problem with Resource Constraints} (ESPPRC)
 over a \textbf{new directed symmetric} network with weights
 $\bar{c}_{ij} = c_{ij} - \frac{1}{2} \pi_i - \frac{1}{2} \pi_j$.
 Resources are monotonically increasing quantities,
@@ -129,10 +125,11 @@ that satisfies the resource consumption bounds.
 Because of the elementarity condition, the route can only visit each vertex at most once.
 In the ESPPRC, the depot node is split into two vertices (one source, one sink)
 and the newly obtained network is characterized by $N + 1$ vertices.
+\Cref{sec:the-pricing-problem} will go over the PP and the ESPPRC in more details.
 
 \medskip
 
-The column generation (CG) is an iterative algorithm,
+The \textit{Column Generation} (CG) is an iterative algorithm,
 successfully applied to a wide variety of problems \parencite{desrosiers2005},
 which alternates between two phases \parencite{desaulniers2018}:
 \begin{enumerate}
@@ -150,7 +147,8 @@ The column generation may also be interpreted
 as a cutting-plane strategy for the dual problem.
 The column generation procedure stops mainly under two scenarios:
 (i) when no more negative reduced cost routes exist,
-i.e. the PP outputs a $p^\star in P$ achieving $c^\star_p \ge 0$,
+i.e. the PP outputs a $p^\star \in P$ achieving $c^\star_p \ge 0$
+or
 (ii) the CG procedure tails off,
 i.e. the gained dual bound improvements
 compared to the running time to generate a column
@@ -186,56 +184,53 @@ where finding reduced cost columns is effortless.
 \section{Branching, Route Enumeration and Cut Generation}
 \label{sec:branching-and-cut-generation-within-bap-frameworks}
 
-Solving the RMP at the root node rarely suffices to satisfy the integrality constraints for the SP formulation
-\labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}
+Solving the RMP at the root node rarely suffices to satisfy
+the integrality constraints for the SP formulation
+\labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}.
 The CG algorithm may conclude with a non-zero duality gap.
-Therefore,
-a search tree and a branching scheme is utilized
-to seek for the optimal integral solution $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in P$.
-Modern BAP frameworks use additional cutting planes to enhance the dual bounds and the convergence speed.
-The so-called branch-price-and-cut (BPC) frameworks
-incorporate the common elements of both BAP and BAC frameworks.
+As a result,
+a search tree and a branching scheme are used to find
+the best integral solution $\lambda^\star_p \in \Set*{0, 1} \quad \forall p \in P$.
+Modern BAP frameworks employ additional cutting planes
+to improve the dual bounds and the overall convergence speed.
+The so-called branch-price-and-cut (BPC)
+combines common elements from BAP and BAC frameworks.
 \textcite{fukasawa2006, ropke2012} are two notable works that integrate
 cutting planes and propose a BCP approach for the VRP.
-For a discussion of the state-of-the-art components
-that are part of modern branch-and-price frameworks, see  \textcite{sadykov2019modern}.
+See \textcite{sadykov2019modern} for a discussion of the cutting-edge components
+that comprise modern BAP/BPC frameworks.
 
 \medskip
 
 However, it's important to note that branching isn't a rigidly required operation.
 \textit{Route enumeration} (RE), first proposed for the CVRP in \textcite{baldacci2008},
-is another technique that can be used in place of branching for obtaining integral solutions.
-All elementary routes that may belong to the VRP optimal solution are enumerated
-and inserted into a complete SP formulation.
-The SP formulation is then solved through a conventional MIP optimizer.
-Enumeration is realized via a dynamic programming labeling algorithm similar
-to the one employed for the PP (see later discussion in \cref{sec:solving-the-pricing-problem}).
+is a technique complementary to branching.
+In RE, all elementary routes that may be part of the VRP optimal solution are identified
+and later incorporated into an exhaustive SP formulation.
+The SP formulation is then solved using a standard MIP optimizer.
+Enumeration is accomplished through a dynamic programming labeling algorithm similar
+to the one employed for the PP (see the subsequent discussion in \cref{sec:solving-the-pricing-problem}).
 The issue with RE is the potentially large number of routes that needs enumeration.
 This number is directly proportional
 to the tightness of the duality gap
 and the average length of a tour $N / K$ \parencite{toth2014}.
 Route enumeration is an operation that requires exponential space complexity,
 but it can drastically improve the performance of the BPC in some circumstances.
-\textcite{baldacci2008,baldacci2011} are two considerable contributions
-that employ exclusively RE and no branching.
+\textcite{baldacci2008,baldacci2011} are two considerable BAP contributions
+replacing branching entirely in favor of RE.
 
 Modern BPC frameworks instead take a hybrid approach by combining branching and route enumeration (RE)
 (see \cite{pessoa2008, pessoa2009,contardo2014,pecin2017improved,pecin2017new,pessoa2020}).
 Route enumeration is attempted after the column generation has converged.
-Enumeration is preemptively aborted
-if the number of enumerated routes exceeds a maximum limit,
-and conventional branching is instead applied.
-The RE strategy will ultimately enumerate
-all routes under the maximum limit
-once the primal-dual bound gap $\bar{z} - \ubar{z}$ reaches decent levels.
-The associated RMP formulation can now be efficiently
-solved through a conventional MIP optimizer.
+If the number of enumerated routes exceeds a predefined limit, the RE is preemptively aborted,
+and traditional branching is applied instead.
+Once the primal-dual bound gap  $\bar{z} - \ubar{z}$ eventually reaches reasonable levels,
+the RE strategy will enumerate all routes under the maximum limit.
+The associated RMP formulation can now be solved efficiently using a standard MIP optimizer.
 
-In this thesis,
-we will not focus extensively on route enumeration
+We will not go into detail about route enumeration in this thesis
 because its presence has no impact on the pricing problem.
-Nonetheless, it's pivotal to acknowledge its existence
-and role within a branch-and-price framework.
+Nonetheless, acknowledging its existence and role within a branch-and-price framework is essential.
 
 \medskip
 
@@ -284,7 +279,7 @@ it might seem reasonable to branch directly on the $\lambda_p$ variables of the 
 Unfortunately, such branching has two significant drawbacks \parencite{vanderbeck2010reformulation}.
 For starters,
 it is not robust and leads to a harder PP: an ESPPRC with forbidden paths \parencite{villeneuve2005}.
-Second, it results in an utterly unbalanced tree.
+Second, it results in an utterly unbalanced search tree.
 
 A vast bulk of CVRP branching approaches investigated in the literature are
 merely extensions of TSP branching schemes.
@@ -299,7 +294,7 @@ The edge flow decision variables can be calculated from the MP by noting that:
 where $a_{ep}$ represents the number of times route $p \in P$ crosses an edge $e \in E$.
 
 Given a candidate fractional solution $0 \le \lambda^\star_p \le 1 \quad \forall p \in \mcP$
-and a valid edge $e \in E$ to branch on, $e \mid x_e \notin \Set*{0, 1, 2}$,
+and a valid edge $e \in E \mid x_e \notin \Set*{0, 1, 2}$ to branch on,
 it is possible to generate two descendant nodes in the search tree
 to continue scanning for integral solutions:
 \begin{equation}\label{eq:sp-branching-on-edges}
@@ -354,32 +349,33 @@ Reduction rules can remove edges verified to not belong to an optimal solution.
 \textit{Variable fixing} can be used as a reduction rule
 by utilizing a dual bound $\bar{z}$ and primal bound $\ubar{z}$
 to eliminate some edges $e \in E \mid \hat{c}_e \ge \bar{z} - \ubar{z}$ \parencite{hadjar2006, irnich2010}.
-Reduction rules can be regarded as a subset of branching with a single descendant node.
+Reduction rules are a peculiar form of branching where only single descendant nodes are generated.
 Reduction rules may crop a good portion of the search space.
 
 \subsection{Cutting Planes}
 \label{sec:bap-cutting-planes}
 
-In this section we will introduce plentiful families of inequalities
-which can be used for cut generation for respectively
-the 2F formulation
+In this section, we will introduce numerous families of inequalities
+which can be used for cut generation
+for the 2F
 \labelcref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds}
-and the SP formulation
-\labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}.
+and the SP
+\labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}
+formulations.
 See \textcite{desaulniers2011} for a general framework
 on cutting planes for CG algorithms for arbitrary integer programs.
 
 While the 2F formulation is not the primary focus of this thesis,
 presenting and studying valid inequalities for such a formulation
-will be important for the sub-problem induced during the column generation phase.
+will be useful for the PP induced during the CG phase.
 Many 2F valid inequalities can be applied to the ESPPRC if properly rewritten.
 The early attempts to propose valid inequalities to improve the linear relaxation
 for the 2F problem were obtained by generalizing the constraints
 for the traditional TSP problem, see \textcite{naddef1993}.
 \citeauthor{naddef1993} demonstrated that by putting any valid inequality obtained for the TSP
 into a proper tight triangular form, it is possible to re-adapt it to the CVRP.
-The comb inequalities, for example,
-were re-adapted from the TSP to the CVRP \parencite{chvatal1973,grotschel1979,augerat1995approche}.
+As an example, the comb inequalities readjusted from the original TSP
+\parencite{chvatal1973,grotschel1979,augerat1995approche}.
 
 Valid inequalities for the 2F CVRP formulation can be classified into several groups \parencite{toth2014}.
 We concentrate on the following groups: capacity constraints and multistar inequalities.
@@ -421,7 +417,7 @@ in modern BAP-based VRP solvers.
 
 Cutting planes that only involve edge-flow variables are by nature robust.
 Because the RCC inequalities only involve the edges
-$e \in E$ crossing a set $s \subseteq V_0,\ |S| \ge 2$,
+$e \in E$ crossing a set $S \subseteq V_0,\ |S| \ge 2$,
 they trivially can be extended to a robust inequality for the SP formulation:
 \begin{equation}
 	\sum_{p \in P} \sum_{e \in \delta(S)}  a_{ep} \lambda_p \ge r(S),
@@ -487,7 +483,7 @@ Major contributions in the non-robust cutting planes domain for the VRP are:
 	\item \textbf{k-Cycle Elimination Cuts (k-CECs)}, proposed in \textcite{contardo2014},
 	      are a weakened form of the SDCs, which forbids
 	      routes that have cycles of length smaller or equal to $k$ over a customer $i \in V_0$.
-	      SDCs may be viewed as a special case of k-CECs where $k = \infty$.
+	      SDCs may be viewed as a special case of k-CECs with $k = \infty$.
 	      The k-CECs have less impact in the pricing problem compared to SDCs.
 	\item \textbf{Clique inequalities} readjusted for the VRPTW problem domain in \textcite{spoorendonk2010clique}.
 \end{enumerate}
@@ -535,7 +531,7 @@ Notice that the $q$-routes violates the SP constraints
 thus, they won't be part of a CVRP optimal solution.
 Many efficient algorithms for the VRP
 rely on the solution of SPPRC subproblems which
-make use of $q$-routes  \parencite{desrochers1992, feillet2004, fukasawa2006,contardo2011}.
+make use of $q$-routes  \parencite{desrochers1992, fukasawa2006, contardo2011}.
 While this expansion of the set of feasible paths $P$ is still valid,
 it has the unfortunate side effect of yielding significantly
 worse dual bounds for the linear relaxations \parencite{feillet2004}.
@@ -545,7 +541,7 @@ is critical in balancing efficiency at the pricing stage
 with the overall quality of the dual bounds.
 
 The label-correcting algorithm was first proposed in \textcite{desrochers1992}
-for solving an SPPRC pricing sub-problem induced from the Set Covering (SC) formulation of VRPTW.
+for solving an SPPRC pricing sub-problem induced from the Set Covering (SC) formulation of the VRPTW.
 The label-correcting algorithm,
 which could only generate $q$-routes at the time,
 is a dynamic programming algorithm that works through
@@ -563,16 +559,15 @@ and it is used to compute resource-unconstrained shortest paths
 on a negative-cycles-free network.
 The running time complexity of the label-correcting algorithm
 for pricing $q$-routes is $O(N^2 Q)$ operations.
-As the big-O notation indicates,
-this approach has flaws when the constructed routes visit numerous nodes,
-i.e. when vehicle capacity is not particularly stringent,
-consequently tremendously increasing the number of processed labels \parencite{jepsen2008branchandcut}.
+The number of processed labels scales with the vehicle capacity.
+By nature of the approach,
+the applicability of the labeling algorithm is limited to VRPs having stringent vehicle capacity
+and characterized by routes visiting a mediocre amount of customers each \parencite{jepsen2008branchandcut}.
 
 \textcite{feillet2004} extends the label-correcting algorithm
 to handle elementary paths by introducing additional fictitious resources for each node.
 As the authors point out, this new algorithm has two advantages.
-First, the duality gap obtained at the linear relaxation is significantly better
-than when treating $q$-routes.
+First, the linear relaxation produces a significantly smaller duality gap than treating $q$-routes.
 Second, it may allow for the resolution of certain problem classes
 where relying on column generation schemes based on $q$-routes is hardly an option.
 The extended algorithm of \citeauthor{feillet2004} for pricing elementary routes
@@ -582,9 +577,9 @@ limiting its applicability to larger problems.
 
 Nonetheless, some improvements have been made to the overall running time
 of the label-correcting algorithm for pricing elementary routes.
-Some major contributions in this domain can be attributed to:
-(i) \textit{bidirectional search} proposed in \textcite{righini2006},
-(ii) \textit{decremental state space relaxation} (DSSR) proposed independently in
+Some significant contributions in this domain can be attributed to:
+(i) \textit{bidirectional search} proposed in \textcite{righini2006}
+and (ii) \textit{decremental state space relaxation} (DSSR) proposed independently in
 \textcite{boland2006, righini2008} under different names.
 The \textit{decremental state-space relaxation} (DSSR)
 is an approach where elementarity impositions are included lazily
@@ -611,7 +606,7 @@ many authors inspired by these works have investigated using
 some form of controlled \textbf{partial elementarity} condition.
 The idea behind partial elementarity is to obtain dual bounds
 as close to the elementary route bound as possible
-while still keeping the pricing problem manageable\parencite{contardo2015}.
+while still keeping the pricing problem manageable \parencite{contardo2015}.
 
 \textcite{irnich2006, fukasawa2006} have investigated the usage of
 $q$-routes with $k$-cycle elimination with $k \ge 3$ within the labeling algorithm.
@@ -679,7 +674,7 @@ if there is proof that no reduced-cost elementary routes exist,
 regardless of whether the ng-SPPRC admits reduced-cost ng-routes.
 This method allows for rejecting some non-elementary routes even when they are not dominated.
 
-The dual variables $\pi \in R^N$ tend to oscillate from one iteration to the next
+The dual variables $\pi \in R^N$ tend to oscillate from one CG iteration to the next
 as the average number of customers per route $N / K$ increases,
 slowing the convergence speed of the column generation algorithm \parencite{toth2014}.
 As a result, some dual variable stabilization techniques were proposed to address this issue
@@ -689,6 +684,6 @@ For a general introductory discussion on column generation stabilization techniq
 When the SC formulation is used instead of the SP formulation,
 the dual variables are typically more stable \parencite{rousseau2007, feillet2010}.
 
-We conclude the section by mentioning two more surveys that
-discuss the labeling algorithm for solving the
-Shortest Path Problem with Resource Constraints (SPPRC):  \textcite{irnich2005, pugliese2010, pugliese2013}.
+We conclude the section by mentioning additional surveys
+discussing labeling algorithm for tackling the non-elementary SPPRC:
+\textcite{irnich2005, pugliese2010, pugliese2013}.
