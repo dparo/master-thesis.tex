@@ -1,7 +1,7 @@
 \chapter{The Pricing Problem}
 \label{sec:the-pricing-problem}
 
-The Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+The \textit{Elementary Shortest Path Problem with Resource Constraints} (ESPPRC)
 appears as the pricing sub-problem in column generation schemes
 for vehicle routing problems, as previously discussed in \cref{sec:branch-and-price}.
 As a result, comprehending it is crucial for developing efficient branch-and-price frameworks.
@@ -33,7 +33,7 @@ However,
 it is crucial to acknowledge that the more general ESPPRC is required to model more complex scenarios,
 such as the pricing sub-problem induced by the Vehicle Routing Problem with Time Windows (VRPTW).
 
-The Capacitated Profitable Tour Problem (CPTP)
+The \textit{Capacitated Profitable Tour Problem} (CPTP)
 is a combinatorial optimization problem that, like the ESPPCC,
 can effectively model the CVRP pricing sub-problem.
 The CPTP asks for a minimum cost circuit subject to capacity constraints
@@ -50,7 +50,7 @@ We will study the basic version of these two problems,
 which means that we will not consider non-robust inequalities
 that can change the structure of these problems.
 However, before delving into the discussion of these two problems,
-we will first devote the following section (\labelcref{sec:bac-approaches-for-the-pricing-problem})
+we will first devote the following section \labelcref{sec:bac-approaches-for-the-pricing-problem}
 to a review of the few previous contributions regarding
 the use of branch-and-cut approaches for pricing.
 
@@ -64,15 +64,15 @@ For a more complete discussion, see \cref{sec:solving-the-pricing-problem}.
 
 To our knowledge, branch-and-cut approaches for tackling the (E)SPPRC have received little attention.
 The few branch-and-cut contributions that we are aware of are:
-\textcite{jepsen2008branchandcut} for the ESPPCC,
-\textcite{jepsen2011,jepsen2014} to the CPTP,
-\textcite{taccari2016, drexl2014} for the related non-resource constrained ESPP,
-\textcite{horvath2016} for the (non-elementary) RCSP.
+(i) \textcite{jepsen2008branchandcut} for the ESPPCC,
+(ii) \textcite{jepsen2011,jepsen2014} to the CPTP,
+(iii) \textcite{taccari2016, drexl2014} for the related non-resource constrained ESPP
+and (iv) \textcite{horvath2016} for the non-elementary RCSP.
 
-To our knowledge,
+To the best of our knowledge,
 no branch-and-cut contributions exist for the general ESPPRC version in the literature.
-This situation is likely due to the inherent difficulties
-associated with modeling resource constraints with non-global bounds,
+This situation is most likely due to the inherent challenges
+of modeling resource constraints with non-global bounds,
 such as time window constraints \parencite{jepsen2008branchandcut}.
 First, non-global resource bounds necessitate the usage
 of directed network-based IP models,
@@ -123,7 +123,7 @@ The \cref{itm:cptp-branch-and-cut-better-p1} is obtained for standalone CPTP ins
 and may thus be irrelevant in the pricing context.
 With regard to pricing, \cref{itm:cptp-branch-and-cut-better-p2} is of little interest
 because highly negative weights networks are usually solved through heuristics regardless.
-The \labelcref{itm:cptp-branch-and-cut-better-p3} is probably due to the fact
+The \cref{itm:cptp-branch-and-cut-better-p3} is probably due to the fact
 that labeling algorithms are usually optimized to cut off extensive portions of the solution space
 when the optimal value resides very close to the zero threshold.
 
@@ -199,8 +199,7 @@ provided for the undirected CVRP in \cref{sec:cvrp-mathematical-notation}.
 
 The ESPPCC network is made up of $N^\prime = N_0 + 2$ nodes,
 where $N_0$ represents the total number of customers in the original CVRP problem.
-Two additional vertices $s = 0, t = N^\prime - 1$ represent the source and sink vertices,
-which together form a dissection of the depot node.
+Two vertices of the network, $s = 0, t = N^\prime - 1$, represent the source and sink vertices.
 All the customers are edge-connected in both directions with each other.
 Similarly, the source and sink vertex do not share direct connections.
 
@@ -270,7 +269,7 @@ possible feasible choices for $p$.
 Note that, regardless we have decided to model
 the dual variables contributions $\pi \in \R^N$
 at the arc level instead at the vertex level,
-the path reduced cost still sums to:
+the path reduced cost still sums to
 $\bar{c}(p) = \sum_{i=0}^{u} c_{p_i,p_{i+1}} - \sum_{i=0}^{u} \pi_{p_i} = c(p) - \sum_{i=0}^{u} \pi_{p_i}$.
 Therefore, $\pi_i \in R,\ i \in V_0$ can be interpreted as the
 gained profit obtained in serving customer $i \in V_0$.
@@ -297,8 +296,8 @@ where \labelcref{eq:espprc-obj-function} is the objective function to be minimiz
 Constraint \labelcref{eq:espprc-resource-upper-bound-constraint} is the resource consumption upper bound.
 Constraint \labelcref{eq:espprc-flow-conservation-constraint-customers} imposes a flow conservation for all vertices except for the source and the sink.
 Observe that \cref{eq:espprc-flow-conservation-constraint-customers} does not impose
-restriction on whether customer $i \in V_0$ needs to be necessarily covered by the path.
-Constraints \labelcref{eq:espprc-source-emitting-flow}, \labelcref{eq-espprc-sink-consuming-flow}
+restriction on whether customer $i \in V_0$ needs to be necessarily covered by the path $p$.
+Constraints \labelcref{eq:espprc-source-emitting-flow,eq-espprc-sink-consuming-flow}
 respectively impose an out-flow and in-flow of $1$ for the source and sink vertices.
 Constraints \labelcref{eq:espprc-sec-constraints} are the Subtour Elimination Constraints (SEC) and
 have a two-fold effect.
@@ -310,7 +309,7 @@ Constraint \labelcref{eq:espprc-x-mip-var-bounds} imposes integrality
 and forces each arc $\Tuple*{i, j} \in A^\prime$ to be traversed at most once.
 
 Notice that, due to the flow conservation constraint and to the bounds on the binary variables of
-\cref{eq:espprc-flow-conservation-constraint-customers,eq:espprc-x-mip-var-bounds},
+\labelcref{eq:espprc-flow-conservation-constraint-customers,eq:espprc-x-mip-var-bounds},
 we have that the following equality holds:
 \begin{equation}
 	\ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} = \begin{cases}
@@ -409,7 +408,7 @@ it can achieve so by substituting \cref{eq:espprc-sec-constraints} in favor
 of a big-M constraint of the form:
 \begin{equation}
 	\label{eq:espprc-relaxed-elementarity}
-	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{s}
+	\ExprESPPEdgesWithin[S] \le M \ExprESPPEdgesCrossing[S] \quad \forall S \subseteq V_0 \cup \Set*{s},
 \end{equation}
 where $M \in \R_+$ denotes an arbitrary large positive constant.
 \Cref{eq:espprc-relaxed-elementarity} avoids the situation depicted
@@ -427,14 +426,14 @@ As a result, we will not spend any more time discussing the ESPPCC.
 \section{The Capacitated Profitable Tour Problem}
 \label{sec:the-capacitated-profitable-tour-problem}
 
-The Capacitated Profitable Tour Problem, abbreviated as CPTP,
+The \textit{Capacitated Profitable Tour Problem}, abbreviated as CPTP,
 belongs to the group of the so-called
-Travelling Salesman Problems with Profits (TSPP) (see \cite{feillet2005}) and thus share many similarities with other
-studied optimization problems such as:
-(i) the Orienteering Problem (OP) \parencite{golden1987, laporte1990}
-(ii) the Profitable Tour Problem (PTP) \parencite{dellamico1995},
-(iii) the Prize Collecting Traveling Salesman Problem (PCTSP) \parencite{balas1989prize, balas1995prize},
-(iv) the Capacitated m-Ring-Star Problem (CmRSP) \parencite{baldacci2007capacitated}.
+\textit{Travelling Salesman Problems with Profits} (TSPP) (see \cite{feillet2005})
+and thus share many similarities with other studied optimization problems such as:
+(i) the \textit{Orienteering Problem} (OP) \parencite{golden1987, laporte1990}
+(ii) the \textit{Profitable Tour Problem} (PTP) \parencite{dellamico1995},
+(iii) the \textit{Prize Collecting Traveling Salesman Problem} (PCTSP) \parencite{balas1989prize, balas1995prize},
+(iv) the \textit{Capacitated m-Ring-Star Problem} (CmRSP) \parencite{baldacci2007capacitated}.
 Refer to \textcite{letchford2013} for the Steiner extension of these problems.
 
 The OP, an NP-hard problem \parencite{laporte1990}, asks for a route serving
@@ -450,13 +449,11 @@ see \textcite{fischetti1998, gendreau1998}.
 Many of these inequalities (but not all) extend to the CPTP as shown in \textcite{jepsen2014}.
 
 The CPTP is a special case of ESPPCC where the source and sink vertices coincide.
-The CPTP, like the ESPPCC, can model the pricing sub-problem
+The CPTP, like the ESPPCC, can model the pricing sub-problem for the CVRP.
 In contrast to the more general ESPPRC formulation, the CPTP is much easier to describe.
 However, because of its narrower scope, it is a problem that receives far less attention in the literature.
 To our knowledge, the few contributions to studying the CPTP in the context of pricing
 for the CVRP are \textcite{bixby1999, jepsen2011,jepsen2014}.
-in the column generation employed in solving the CVRP.
-In this section, we consider the basic version of the CPTP,
 not considering non-robust inequalities at the RMP level.
 
 \medskip
@@ -565,8 +562,8 @@ However, devising efficient separation algorithms is critical to make such inequ
 The inequalities presented here closely follow the presentation provided in \textcite{jepsen2014}.
 For a complete list of CPTP valid inequalities compared to what we could give, see \textcite{jepsen2014}.
 We will focus primarily on two valid inequalities in this thesis:
-the Rounded Capacity Constraints (RCC) discussed in \cref{sec:cptp-rcc}
-and the Generalized Large Multistars (GLM) discussed in \cref{sec:cptp-glm}.
+the \textit{Rounded Capacity Constraints} (RCC) discussed in \cref{sec:cptp-rcc}
+and the \textit{Generalized Large Multistars} (GLM) discussed in \cref{sec:cptp-glm}.
 We have focused solely on these two sets of inequalities for two reasons.
 First, \textcite{jepsen2014} found that these two inequalities
 are the most frequently separated,
@@ -578,7 +575,7 @@ See implementation details later in \cref{sec:impl-separation-techniques}.
 \subsection{Rounded Capacity Constraints (RCC)}
 \label{sec:cptp-rcc}
 
-The Rounded Capacity Constraints, or RCC for short,
+The \textit{Rounded Capacity Constraints}, or RCC for short,
 were introduced for the CVRP in \textcite{laporte1983}
 and were previously introduced in \cref{sec:cvrp-two-index-flow-formulation}.
 
@@ -627,18 +624,18 @@ Fortunately, this is true for the vast majority of the routing problems consider
 As \textcite{jepsen2014} points out,
 no exact separation procedure is currently known for the RCC inequalities,
 for this reason,
-they suggest using the sets identified by the separation of the multistar inequalities,
+they suggest using the characterizing sets identified by the separation of the multistar inequalities,
 such as the GLM separation procedure.
 See the next \cref{sec:cptp-glm}.
 
 \subsection{Generalized Large Multistar (GLM)}
 \label{sec:cptp-glm}
 
-The Generalized Large Multistar inequalities,
+The \textit{Generalized Large Multistar} inequalities,
 or GLMs for short,
 were first proposed in \textcite{gouveia1995} for the CVRP.
 The GLMs were further generalized
-to the so-called Knapsack Large Multistar (KLM) inequalities in \textcite{letchford2002}.
+to the so-called \textit{Knapsack Large Multistar} (KLM) inequalities in \textcite{letchford2002}.
 \textcite{letchford2006} investigates the effectiveness of the multistar family of cuts
 when applied to vehicle routing problems.
 The multistar cuts are a collection of inequalities
