@@ -55,7 +55,7 @@ where: (i) the vertices of the network represent the customers and the depot,
 (ii) the edges represent road interconnections.
 Let $G = \Tuple*{V, E}$ denote a \textbf{complete undirected network} where:
 $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
-$E = \Set*{e = \Set*{i, j} = \Set*{j, i} \mid \allowbreak i,j \in V, \allowbreak i \ne j}$  the set of undirected edges,
+$E = \Set*{e = \Set*{i, j} = \Set*{j, i} \mid \allowbreak i,j \in V, \allowbreak i \ne j}$ the set of undirected edges,
 and $N$ the total number of nodes in the network.
 The value $0 \in V$ is used to denote the depot node.
 The edge set $E$ has size $|E|$, which can be computed through combinatorial enumeration: $|E| = \frac{N (N+1)}{2}$.
@@ -65,7 +65,8 @@ Let $\delta(S)$ with $S \subseteq V$ denote
 the edges crossing the set $S$ and its complement $\overline{S} = V \setminus S$.
 More formally we can express $\delta(S)$ as
 $\delta(S) = \Set*{ e = \Set*{i, j} = \Set*{j, i} \in E \mid i \in \Expr*{S \cap V}, j \in \Expr*{ \overline{S} \cap V } }$.
-For brevity, we also define $\delta(i) = \delta(\Set*{i})$ to denote the set of edges incident to node $i \in V$.
+For brevity, we also define $\delta(i) = \delta(\Set*{i})$
+to denote the set of edges incident to node $i \in V$.
 We also define $E(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in E \mid i, j \in S}$
 to denote the set of edges having both end points in set $S \subseteq V$.
 
@@ -82,9 +83,10 @@ and an upper bound $Q \in \R_+$ representing the capacity of each truck.
 For convenience of notation, we also define $\mcK = \Set*{1, \dots, K}$ to denote the set of trucks.
 Given a set $S \subseteq V_0$,
 we denote by $r(S)$ as the minimum number of vehicles required to serve all customers $i \in S$.
-The value of $r(S)$ can be obtained by solving an NP-hard Bin Packing Problem associated with the CVRP and set $S$.
+The value of $r(S)$ can be obtained by solving
+an NP-hard \textit{Bin Packing Problem} (BPP) associated with the CVRP and set $S$.
 As we will see later,
-it is often simpler to link $r(S)$ to the trivial lower bound of the Bin Packing Problem \parencite{martello1990, martello1990knapsack}:
+it is often simpler to link $r(S)$ to the trivial lower bound of the BPP \parencite{martello1990, martello1990knapsack}:
 \begin{equation}
 	r(S) \ge \ceil*{\frac{q(S)}{Q}}.
 \end{equation}
@@ -100,14 +102,15 @@ where:
 (i) each customer is only visited once (elementarity condition)
 and (ii) the demand covered by each route $p_k$ does not exceed the vehicle capacity $q(p_k) \le Q \quad \forall k \in \mcK$.
 An optimal solution to the CVRP minimizes the sum of the overall edge weights across all tours.
-According to the traditional definition of CVRP, all the vehicles must be fully utilized.
-I.e., each route $p_k$ must cover at least one customer.
+The traditional definition of CVRP requires that all vehicles be fully utilized.
+In other words, each $p_k$ route must serve at least one customer.
 However, we note that using fewer vehicles may sometimes yield more optimal solutions.
 
 \medskip
 
 The TSP can be considered a special case of CVRP where $Q \ge q(V)$ and $K = 1$.
-Therefore, all the relaxations and many results obtained for the TSP are valid, or at least extendable, to the CVRP.
+Therefore, all the relaxations and many results obtained for the TSP
+are valid, or at least extendable, to the CVRP.
 
 \medskip
 
@@ -115,8 +118,8 @@ Some variants of the basic version of the CVRP,
 not considered in this thesis,
 allow using only a subset of the total available vehicles,
 or consider a heterogeneous fleet characterized by different capacities $Q_1, \dots, Q_k$.
-In the remainder of this section,
-we introduce the two most common IP mathematical formulations for the classical version of the CVRP.
+The remainder of this section
+introduces the two most common IP mathematical formulations for the CVRP's classical version.
 
 \section{The two-index arc flow (2F) formulation}
 \label{sec:cvrp-two-index-flow-formulation}
@@ -125,11 +128,10 @@ The two-index arc flow formulation (2F)
 was  first presented in \textcite{laporte1983, laporte1985} for the symmetric case,
 and later generalized to the undirected case in \textcite{laporte1986}.
 
-The two-index arc flow formulation is traditionally tackled with branch-and-cut frameworks.
 We define a set of integer decision variables $x_e \in \Set*{0, 1, 2}$ to indicate the number of times
 a vehicle traverses each edge $e \in E$ in the optimal solution.
-There are $O(N^2)$ number of integer variables in the model.
-The two-index arc flow formulation can be described as an Integer Programme (IP):
+The model contains $O(N^2)$ integer variables.
+The two-index arc flow (2F) formulation can be described as an Integer Programme (IP):
 \begin{align}
 	\min_{x} \quad z_\mt{2F}(x) & = \sum_{e \in E} c_e x_e                 & \label{eq:two-index-flow-obj-func}                                                   \\
 	                            & \sum_{e \in \delta(i)} x_e = 2           & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer}    \\
@@ -149,28 +151,28 @@ Constraint \labelcref{eq:two-index-flow-ccc}, are the so-called Capacity Cut Con
 by imposing connectivity of the solution by avoiding the formation of spurious unconnected subtours
 and (ii) as a capacity constraint,
 by imposing that any customer set $S$ is crossed by a number of edges not smaller than $r(S)$.
-Recall that $r(S)$ represents the minimum number of vehicles needed to serve all customers in set $S$,
-also, $r(S)$ always satisfies $r(S) \ge 1$ for non-trivial CVRP instances: $q(S) > 0$.
+Remember that $r(S)$ represents the minimum number of vehicles required to serve all customers in a given $S$;
+additionally, $r(S)$ always satisfies $r(S) \ge 1$ for non-trivial CVRP instances where $q(S) > 0$.
 
 It was shown in \textcite{martello1990knapsack, cornuejols1993}, that it is possible to replace $r(S)$ in constraint
-\labelcref{eq:two-index-flow-ccc}, with the much simpler Bin Packing Problem lower bound $\ceil*{q(S) / Q}$
+\labelcref{eq:two-index-flow-ccc}, with the much simpler BPP lower bound $\ceil*{q(S) / Q}$
 thus obtaining the following inequality:
 \begin{equation}
 	\label{eq:two-index-flow-ccc-bpp-lb}
 	\sum_{e \in \delta(S)} x_e \ge 2 \ceil*{\frac{q(S)}{Q}}   \quad \forall S \subseteq V_0, |S| \ge 1.
 \end{equation}
-The looser inequality of \cref{eq:two-index-flow-ccc-bpp-lb} is sufficient to optimally solve
-the two-index arc flow formulation.
-Although, a better lower bound for the Bin Packing Problem can improve the linear
-relaxation, thus reducing the number of branching occurrences.
+The looser inequality of \cref{eq:two-index-flow-ccc-bpp-lb} is sufficient
+to solve the 2F formulation optimally.
+However, a better lower bound for the BPP
+can improve the linear relaxation, reducing the number of branching occurrences.
 
 The CCC constraints in \cref{eq:two-index-flow-ccc},
 may be transformed in the so called Generalized Subtour Elimination Constraints (GSEC) \parencite{laporte1985},
-by means of the degree constraints of \cref{eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
+by means of the degree constraints \labelcref{eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node}:
 \begin{equation}\label{eq:cvrp-2flow-gsec}
 	\sum_{e \in E(S)} x_{ij} \le |S| - r(S) \quad \forall S \subseteq V_0,\ |S| \ge 1,
 \end{equation}
-where, again, $r(S)$ may be replaced by the trivial Bin Packing Problem lower bound $\ceil*{q(S) / Q}$.
+where, again, $r(S)$ may be replaced by the trivial BPP's lower bound $\ceil*{q(S) / Q}$.
 
 The GSECs avoid the formation of spurious unconnected subtours and impose that at least $r(S)$ edges leave set $S$.
 The number of GSEC (or CCC) inequalities appear in exponential number in the two-index formulation model,
@@ -180,26 +182,24 @@ Instead, an appropriate cutting-plane algorithm and separation procedure may be 
 only the necessary (violated) GSEC constraints
 during the running time of the branch-and-cut algorithm.
 
-The so-called compact models see \cite{miller1960, christofides1979vehicle, desrochers1991})
-avoid the usage of the exponential number of SECs entirely.
-These models make use of a polynomial number of constraints.
-Unfortunately, these compact formulations produce significantly weaker linear relaxations.
-It was proven mathematically
-that the SECs are strong for the TSP: they are facet-defining for the TSP polytope;
-i.e. they uniquely characterize its convex-hull \parencite{grotschel1975}.
-However, akin arguments aren't extendable to the CVRP due to its more complicated structure.
+The so-called compact models \parencite{miller1960, christofides1979vehicle, desrochers1991}
+make use of a polynomial number of constraints.
+Unfortunately, the linear relaxations produced by these compact formulations are significantly weaker.
+The SECs are mathematically proven to be "strong" for the TSP:
+they are facet-defining for the TSP polytope by uniquely characterizing its convex-hull \parencite{grotschel1975}.
+Similar arguments, however, cannot be applied to the CVRP due to its more complicated structure.
 Studying the polyhedral properties of even the standard variation of the VRP
 has yielded few satisfactory results, see \textcite{campos1991, cornuejols1993}.
 
-Unfortunately, as it was proven in \textcite{augerat1995}
+Unfortunately, as \textcite{augerat1995} demonstrated,
 the separation problem for the CCCs is NP-complete,
-thus limiting the applicability of the 2F formulation for solving the CVRP.
-For this reason, some authors \parencite{augerat1995, augerat1998, ralphs2003} designed
-several fractional separation heuristics for the CCC.
+limiting the applicability of the 2F formulation for solving the CVRP.
+As a result, several authors \parencite{augerat1995, augerat1998, ralphs2003}
+developed fractional separation heuristics for the CCC.
 However,
 an exact CCC separation is still required
 for rejecting non-feasible integral solutions
-and to ensure the correctness of the approach.
+and ensuring the correctness of the approach.
 \textcite{lysgaard2003cvrpsep} implements efficient
 heuristics for separating the CCC of \cref{eq:two-index-flow-ccc}.
 
@@ -223,7 +223,7 @@ is used to encode the number of times a truck $k$ traverses an edge $e \in E$.
 A new set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$
 is used to model whether truck $k$ covers a node $i \in V$.
 
-The three-index arc flow formulation can be described as an Integer Programme (IP):
+The three-index arc flow (3F) formulation can be described as an Integer Programme (IP):
 \begin{align}
 	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} c_{e} x_{ek} & \label{eq:three-index-flow-obj-func}                                                                                    \\
 	                                  & \sum_{k \in \mcK} y_{ik} = 1                    & \quad \forall i \in V_0 \label{eq:three-index-flow-all-customers-visited}                                               \\
