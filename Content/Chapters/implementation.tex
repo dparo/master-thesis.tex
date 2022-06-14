@@ -20,29 +20,31 @@ is a commercial optimization software package for solving problems expressed as 
 linear programs, mixed-integer programs, quadratic programs, or quadratically constrained programs.
 For an introduction to CPLEX refer to \cref{sec:introduction-to-cplex}.
 
-The CPLEX optimizer is heavily used in our branch-and-cut implementation
-to solve the associated CPTP MIP model.
-The cutting planes separation was implemented using \textit{CPLEX generic callback functions},
+Our branch-and-cut implementation heavily relies on the CPLEX optimizer to solve
+the associated CPTP MIP model.
+The cutting planes separation was implemented using the \textit{CPLEX generic callback functions},
 which has the advantage of not disabling the \textit{Dynamic Search algorithm}.
 The \textit{Dynamic Search} is the CPLEX's internal advanced proprietary branch-and-cut algorithm,
 as discussed in \cref{sec:introduction-to-cplex}.
 
 Using a modern MIP solver, such as CPLEX, may provide at least two advantages
 over tailored pricer algorithms, such as the labeling algorithm \parencite{desrochers1992, feillet2004}:
-(i) parallelization and efficient use of the machine's multiple cores basically for free,
-(ii) take advantage of all the engineering effort that went into creating an efficient MIP solver
+(i) parallelization and efficient use of the machine's multiple cores basically for free
+and (ii) take advantage of all the engineering effort that went into creating an efficient MIP solver
 (preprocessing, diving, fixing, primal heuristics, and more).
-However, there are drawbacks to such an approach.
+However, there are also drawbacks to such an approach.
 Complicated relaxations or constraints, such as the ng-sets \parencite{baldacci2011},
 may be impractical to implement efficiently within a BAC algorithm.
 
 \medskip
 
-This chapter's outline is quickly summarized.
+The chapter's outline is quickly summarized.
 The implemented static IP model is presented in \cref{sec:impl-full-static-model}.
-\Cref{sec:impl-warm-starting} describes the implemented primal heuristics for \textit{warm starting} the MIP optimizer.
+\Cref{sec:impl-warm-starting} describes the implemented primal heuristics
+for \textit{warm starting} the MIP optimizer.
 \Cref{sec:impl-branching} discusses the implemented branching scheme.
-Finally, \cref{sec:impl-separation-techniques} describes the cutting planes strategies used, including a discussion of the separation techniques used.
+Finally, \cref{sec:impl-separation-techniques} describes the cutting plane strategies employed,
+as well as a discussion of the separation techniques used.
 
 \section{Full static model}
 \label{sec:impl-full-static-model}
@@ -51,9 +53,9 @@ Our static IP model is based on a minor modification of the CPTP formulation
 \labelcref{eq:cptp-obj-function,eq:cptp-depot-part-of-tour-constraint,eq:cptp-resource-upper-bound-constraint,eq:cptp-flow-conservation-constraint,eq:cptp-gsec-constraints,eq:cptp-x-mip-var-bounds,eq:cptp-y-mip-var-bounds}
 by disregarding the GSECs inequalities \labelcref{eq:cptp-gsec-constraints}.
 Upon violation,
-the GSECs will be exactly separated lazily to ensure the approach's correctness.
+the GSECs will be separated lazily through an exact procedure to ensure the approach's correctness.
 
-We've implemented the following static Integer Programme (IP) model:
+In more detail, we've implemented the following static Integer Programme (IP) model:
 \begin{align}
 	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                     & \label{eq:cptp-static-model-0}                         \\
 	                                   & y_0 = 1                                  & \label{eq:cptp-static-model-1}                         \\
@@ -64,7 +66,7 @@ We've implemented the following static Integer Programme (IP) model:
 \end{align}
 where
 $B \in R_+$ is an additional lower bound on the resource consumption
-that may help in gaining a slight improvement on the linear relaxation.
+that may slightly improve the linear relaxation.
 The value of $B$ is computed as $B = q_u + q_v$, where $u, v \in V_0,\ u \ne v$
 represent the least two demanding customers in the network:
 $q_u \le q_v \le q_i \quad \forall i \in V_0, i \ne u, v$.
@@ -99,10 +101,10 @@ In our case, we chose $\varepsilon_{\mt{ct}} = 10^{-6}$ because it is the value 
 a MIP optimizer with (good) feasible solutions
 before beginning the resolution process.
 Having a set of (good) initial feasible solutions
-can significantly reduce the primal-dual bound gap,
+can significantly reduce the primal-dual bound gap and,
 as a result, the amount of time required to achieve optimality.
 Warm starting can be applied to a wide range of IP problem domains,
-and it is usually supported by the market's leading MIP solvers,
+and it is usually supported by the market's leading MIP optimizers,
 such as CPLEX.
 
 Primal heuristics offer a quick and practical approach to warm starting.
@@ -131,7 +133,7 @@ to make it work with the CPTP.
 \medskip
 
 Start by selecting two distinct nodes $u, v \in V,\ q_u + q_v \le Q$
-to form an initial tour back-to-back $p = \Tuple*{u, v}$.
+to form an initial route back-to-back $p = \Tuple*{u, v}$.
 
 The insertion heuristic algorithm is an iterative approach
 in which an almost-feasible CPTP tour is available at each iteration.
@@ -155,7 +157,7 @@ Let us define the extra mileage more formally as follows:
 		\infty,                         & \texttt{otherwise},
 	\end{cases}
 \end{equation}
-which represents the delta route cost in inserting $h$ as the successor of node $a$.
+which represents the route's delta cost in inserting $h$ as the successor of node $a$.
 A vertex $h \in V$ is a good candidate for insertion
 if at least one of the following conditions is met:
 \begin{enumerate}
@@ -163,7 +165,7 @@ if at least one of the following conditions is met:
 	\item $h = 0$, i.e. $h$ is the depot node.
 	      When the insertion candidate coincides with the depot,
 	      regardless of whether its insertion is convenient, it must occur sooner or later.
-	      Because we have defined $q_0 = 0$ by convention,
+	      Because we have fixed $q_0 = 0$ by definition,
 	      $q(p) + q_0 \le Q$ is always satisfied for the depot node.
 	\item The number of visited nodes in the current tour is $2$ and $q(p) + q_h \le Q$.
 \end{enumerate}
@@ -173,22 +175,22 @@ whereas after the insertion operation completes: $p = \Tuple*{\dots, a, h, b, \d
 In our implementation we employed the \textit{cheapest insertion scheme},
 which means that the pair $(h, a)$ is chosen to minimize the extra mileage $\Delta_m(h, a)$
 across all possible choices for $a \in p,\ h \notin p$.
-When there are no further $h$ candidate vertices can be found, the algorithm stops.
+When no more $h$ candidate vertices can be found, the algorithm terminates.
 At the end of the insertion heuristic, $p$ is a valid route that visits the depot node.
-The depot node may not necessarily be the first element of the tour: $p_0 \ne 0$.
+The depot node may not necessarily be the first element of the tour $p_0 \ne 0$.
 A simple circular rotation is all that is required to restore the condition $p_0 = 0$.
 If no valid $h$ candidate can be found while the tour length is $2$,
 we can conclude that the CPTP formulation does not admit any feasible solution
 before even solving the IP formulation.
 
-In our implementation we chose $u = 0$ and $v \in V_0$ so that $q_u + q_v \le Q$.
-This approach allows us to generate $O(N)$ acceptable feasible primal solutions in $O(N^3)$ time.
+In our implementation we chose $u = 0$ and $v \in V_0$ satisfying $q_u + q_v \le Q$.
+This approach allows us to generate $O(N)$ acceptable primal (feasible) solutions in $O(N^3)$ time.
 
 \subsection{2-OPT refinement}
 \label{sec:impl-2opt-refinement}
 
 Each solution produced from the insertion heuristic
-can be further improved using a \textit{2-OPT refinement procedure}.
+can be further optimized using a \textit{2-OPT refinement procedure}.
 The 2-OPT algorithm is a heuristic local-search hill-climbing procedure
 proposed originally for the TSP in \textcite{flood1956, croes1958} independently.
 
@@ -197,8 +199,8 @@ Unfortunately,
 as \textcite{chandra1999} points out,
 the 2-OPT procedure may take an exponential number of iterations
 when fed with purposefully artificially constructed instances.
-Although this is unfortunate, it is also worth noting that in practice.
-The probabilistic average number of iterations required for 2-OPT is at most polynomial.
+Although this is unfortunate, it is also worth noting that in practice,
+the probabilistic average number of iterations required for 2-OPT is at most polynomial.
 
 Each iteration of the 2-OPT procedure looks for an existing edge crossing and, if found,
 performs a 2-OPT exchange to undo it.
@@ -232,7 +234,7 @@ The local search algorithms terminates when $\nexists (a, b) \mid a, b \in p,\ \
 \label{sec:impl-branching}
 
 We don't implement any specific branching schemes.
-We rely on the branching schemes already provided by the CPLEX MIP optimizer.
+We rely on the branching schemes already provided by the CPLEX optimizer.
 
 \section{Cutting planes and Inequalities separation}
 \label{sec:impl-separation-techniques}
@@ -263,7 +265,7 @@ The parametrization settings of the violated inequalities are another critical a
 when implementing efficient cutting planes procedures.
 The generation and number of cutting planes alone (without considering separation running time),
 may significantly impact the BAC algorithm's computation time and memory consumption.
-Sparse/compact inequalities are usually preferred whenever possible to reduce memory consumption.
+Sparse/compact inequalities are usually preferred whenever possible to reduce memory usage.
 When reporting violated inequalities to the MIP optimizer,
 it is common practice to set a violation tolerance threshold
 to limit the number of violated inequalities considered.
@@ -288,11 +290,11 @@ The MIP optimizer itself makes the final decision on their inclusion.
 
 \medskip
 
-We are only interested in separating only the
+We are majorly interested in separating only the
 GSECs \labelcref{eq:cptp-gsec-constraints},
 RCC \labelcref{eq:cptp-rcc-inequality}
 and GLM \labelcref{eq:cptp-glm-inequality}
-families of inequalities in our branch-and-cut algorithm,
+families of inequalities in our branch-and-cut algorithm.
 All these inequalities have one thing in common: they all require
 the determination of a subset $S \subseteq V_0$.
 A subset $S \subseteq V_0$ can be determined using a suitable \textit{labeling algorithm},
@@ -332,7 +334,6 @@ In our implementation, we chose a different approach for the RCC and GLM inequal
 than the one proposed in \textcite{jepsen2014}.
 We reuse the same labeling algorithm
 employed for the exact fractional and integral separation of the GSECs inequalities.
-The same two labeling algorithms are shared between the three inequalities' families.
 Because the same labeling procedures feed the separation of three different families of inequalities,
 we can limit the programming effort required to create custom separation procedures
 while substantially reducing the computational impact.
@@ -381,16 +382,17 @@ resulting from the integral solution $x^\star \in \Set*{0, 1}^{|E|},\ y \in \Set
 A vertex $i \in V$ is said to belong to a singleton connected component,
 if the connected component contains only $i$ itself, namely $y^\star_i = 0$.
 We are only interested in modeling \textbf{major} connected components,
-whith have at least two vertices.
+which have at least two vertices.
 We ignore singleton connected components
 and use the sentinel value $-1$ to encode all the vertices $i \in V$ belonging to singletons.
 As a result, the number $n_c \in \Z$ frankly represents the number
-of major connected components that satisfies $n_c \ge 1$.
+of major connected components and satisfies $n_c \ge 1$.
 Equivalently,
 $n_c$ represents the number of subtours formed in the current integral solution.
 Let $cc(i) \in C$ be an array
 that encodes in which connected component each vertex $i \in V$ belongs.
-Because the depot node always belongs to a connected component, we fix $cc(0) = 0$ by definition.
+Because the depot node always belongs to a connected component,
+we fix $cc(0) = 0$ by definition.
 Instead, for singletons we fix $cc(i) = -1  \quad \forall i \in V_0 \mid y^\star_i = 0$.
 The connected components can be computed
 by a simple DFS traversal which pseudocode is provided in \cref{algo:cc-dfs}.
@@ -399,11 +401,9 @@ Consider the sets $T_k = \Set*{i \in V \mid cc(i) = k}$ with $k = 0, \dots, n_c$
 computed from the recently devised labeling algorithm \labelcref{algo:cc-dfs}.
 Due to the construction of such sets,
 by letting $k = 0, \dots, n_c$,
-it holds that:
-$|T_k| \ge 2$,
-$\sum_{e \in \delta(T_k)} x^\star_e = 0$
-and $\exists i \in T_k \mid y^\star_i = 1$,
-thus ensuring the correctness of the entire branch-and-cut procedure.
+it holds that
+$|T_k| \ge 2$, $\sum_{e \in \delta(T_k)} x^\star_e = 0$ and $\exists i \in T_k \mid y^\star_i = 1$.
+Thus ensuring the correctness of the entire branch-and-cut procedure.
 
 \begin{figure}[ht]
 	\centering
@@ -516,7 +516,7 @@ please see the \urlref{https://github.com/dparo/master-thesis}{Github repository
 
 \medskip
 
-We conclude the section with suggestion for implementing reliable maxflow algorithms.
+We conclude the section with a suggestion for implementing reliable maxflow algorithms.
 Because of the accumulation of accuracy errors,
 implementing fast and correct maxflow algorithms
 that operate directly with floating-point arithmetic can be very problematic.
@@ -529,7 +529,8 @@ can aid in identifying problematic implementations.
 A cleaner approach is to implement a maxflow algorithm that uses integer arithmetic.
 Because $x^\star$ is bounded in the $[0, 1]$ range,
 we can multiply the fractional solution value $x^\star$ by a big-constant $M \in \R_{+}$ (e.g. $M = 10^6$)
-and truncate its value when defining the capacities of the flow network.
+and truncate its value when defining the flow network's capacities.
+Truncation may however hurt the BAC algorithm's precision if done recklessly.
 After that, the value $\maxflow(u, v)$ must be remapped on the original scale by dividing it by $M$.
 
 Our maxflow implementation follows the latter approach: it uses integer arithmetic
