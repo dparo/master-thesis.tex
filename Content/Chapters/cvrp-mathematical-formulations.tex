@@ -124,7 +124,7 @@ introduces the two most common IP mathematical formulations for the CVRP's class
 \section{The two-index arc flow (2F) formulation}
 \label{sec:cvrp-two-index-flow-formulation}
 
-The two-index arc flow formulation (2F)
+The two-index arc flow (2F) formulation
 was  first presented in \textcite{laporte1983, laporte1985} for the symmetric case,
 and later generalized to the undirected case in \textcite{laporte1986}.
 
@@ -212,9 +212,9 @@ For example,
 the simple CVRP variant where the fleet of trucks is heterogeneous
 and characterized by capacities $Q_1, \dots, Q_K$,
 cannot be described with the 2F formulation,
-since there's no clear one-to-one mapping on which truck crosses an edge $e \in E$.
+since there's no definite one-to-one mapping on which truck crosses an edge $e \in E$.
 
-The three-index arc flow formulation (3F),
+The three-index arc flow (3F) formulation,
 first presented in \textcite{golden1977},
 fixes this issue.
 The 3F formulation makes use $O(N^2 K + N K)$ integer decision variables.
@@ -253,7 +253,7 @@ with traditional (non generalized) TSP subtour elimination constraints (see \cit
 \begin{equation}\label{eq:three-index-flow-secv2}
 	\sum_{e \in E(S)} x_{ek} \le |S| - 1 \quad \forall S \subseteq V_0, |S| \ge 2,\ \forall k \in \mcK.
 \end{equation}
-Since \cref{eq:three-index-flow-secv1}, or equivalently \cref{eq:three-index-flow-secv2},
+Since \labelcref{eq:three-index-flow-secv1}, or equivalently \labelcref{eq:three-index-flow-secv2},
 are exponential in the number of nodes $N$,
 they are usually not inserted statically in the model
 but are instead generated lazily within the running time of the resolution process.
@@ -274,7 +274,7 @@ by simply permuting the identity $k \in \mcK$ of each truck.
 \label{sec:set-partitionining-formulation}
 
 The Set Partitioning (SP) formulation,
-sometimes also called Path Flow formulation,
+also known as Path Flow formulation,
 is an extended formulation originally presented in \textcite{balinski1964}.
 It operates differently from the two/three-index arc flow formulation or many further commonly encountered IP models.
 The SP formulation uses a tiny number of constraints
@@ -288,7 +288,7 @@ decomposition principle in which one addresses numerous smaller structured sub-p
 rather than being confronted with the original problem.
 This approach is helpful, especially when the
 original problem's resolution complexity
-is beyond can be solved in a reasonable amount of time \parencite{vanderbeck2005}.
+exceeds what can be solved in a reasonable amount of time \parencite{vanderbeck2005}.
 
 Let $P = \Set*{p \mid p\ \text{is a single-truck elementary feasible route}}$ be the set of all feasible routes.
 Let $\lambda_p \in \Set*{0, 1}$ be a binary variable indicating whether route $p$ is selected.
@@ -296,7 +296,7 @@ Let $a_{ip}, a_{ep} \in \Z$ be "static encodings" (integer coefficients)
 for a route $p \in P$ that respectively count
 the number of times vertex $i \in V$ or an edge $e \in E$ is covered.
 Any $p \in P$ is feasible if it satisfies the following two conditions:
-$a_{ip} \in \Set*{0, 1}$ and $q(p) \le Q$.
+$a_{ip} \in \Set*{0, 1} \quad \forall i \in V$ and $q(p) \le Q$.
 
 We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$,
 which can be trivially computed in $O(N)$.
@@ -316,8 +316,8 @@ Finally, constraint \labelcref{eq:set-partitioning-lambda-mip-var-bounds} is the
 
 The set of feasible routes $P$ may also be extended to include non-elementary routes
 without affecting the correctness of the approach.
-Thanks to \cref{eq:set-partitioning-customers-visited-by-exactly-one-route}
-any route $p \in P$ which does not satisfy $a_{ip} \in \Set*{0, 1}$
+Thanks to \labelcref{eq:set-partitioning-customers-visited-by-exactly-one-route}
+any route $p \in P$ which does not satisfy $a_{ip} \in \Set*{0, 1} \quad \forall i \in V$
 will not belong to any optimal solution
 regardless of whether the extension is applied or not.
 
@@ -334,7 +334,7 @@ column generation and BAP frameworks applied to the CVRP.
 
 As \textcite{toth2002} point out if the distance matrix satisfies the triangle inequality,
 then it is possible to rewrite the SP formulation into an equivalent Set Covering (SC) formulation
-by substituting \cref{eq:set-partitioning-customers-visited-by-exactly-one-route}
+by substituting \labelcref{eq:set-partitioning-customers-visited-by-exactly-one-route}
 in favor of the simpler inequality:
 \begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
 	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0,
@@ -355,9 +355,9 @@ Transforming the SP to the SC formulation vastly shrinks (halves) the size of th
 
 \medskip
 
-The SP/SC formulation has two main advantages compared to the formulations presented in previous sections.
-First, its linear relaxation provides excellent lower bounds \parencite{bramel1997},
+The SP and SC formulation have two main advantages compared to the formulations presented in previous sections.
+First, their linear relaxation provides excellent lower bounds \parencite{bramel1997},
 compared to the two or three arc flow formulation.
-Second, it can handle many VRP variants (and more)
+Second, they can handle many VRP variants (and more)
 even described through very complex constraints,
-since their definitions are captured within the definition of the set $P$ itself.
+since their characterizations are captured within the definition of the set $P$ itself.
