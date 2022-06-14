@@ -456,7 +456,7 @@ It is well understood that solving a maxflow problem assures the following two p
 	\item Arcs $\{ (i, j) \mid i \in F_1(u, v),\ j \in F_2(u, v) \}$ are saturated
 	\item Arcs $\{ (j, i) \mid i \in F_1(u, v),\ j \in F_2(u, v) \}$ are drained.
 \end{enumerate}
-As a result, the following statements holds:
+As a result, the following statements hold:
 \begin{align}
 	\sum_{(i, j) \in \deltaplus(F_1(u, v))} f_{ij}  & = \sum_{(i, j) \in \deltaplus(F_1(u, v))} x^\star_{\Set*{i, j}} & = \maxflow(u, v) \\
 	\sum_{(i, j) \in \deltaminus(F_1(u, v))} f_{ij} & = \sum_{(i, j) \in \deltaplus(F_2(u, v))} f_{ij}                & = 0,
