@@ -9,7 +9,7 @@ instead, we will focus on the significant ones employed to achieve the desired i
 The \bapcod{} technical report \parencite{sadykov2021}
 provides a more comprehensive list and description of the available parameters.
 The technical report alone is not enough to comprehend the purpose of each parameter,
-therefore it is highly suggested to follow the scientific document of \textcite{pessoa2020generic}.
+therefore it is highly suggested to supplement the read with the scientific document of \textcite{pessoa2020generic}.
 
 \medskip
 
@@ -74,7 +74,7 @@ and performing validation checks.
 	      In our case, the pricing functor is a stubbed implementation that wraps
 	      the original \vrpsolver{} extension pricing functor
 	      and times it
-	      (see previous discussions in \Cref{sec:results-evaluation-process}).
+	      (see \cref{sec:results-evaluation-process} for more details).
 	      Instead, by setting this parameter to the value \texttt{2},
 	      we can instruct \bapcod{} to use the default generic MIP pricer for solving the pricing sub-problems.
 	\item \texttt{ApplyPreprocessing = true}.
@@ -111,13 +111,13 @@ These parameters control the column generation framework.
 	      the pricer is permitted to use progressively lighter heuristics for column determination.
 	      The pricing problem should be solved exactly when the stage iteration reaches stage zero.
 	      When the previous stage converges,
-	      namely when it ails to find any reduced cost column,
+	      namely when it fails to find any reduced cost column,
 	      \bapcod{} automatically lowers the current stage number.
 	      When using the \vrpsolver{} extension,
 	      the technical documentation recommends setting this parameter to \texttt{3}.
 	      The \vrpsolver{} extension implements two heuristic stages using
 	      a modified bidirectional labeling algorithm.
-	      See the \textit{Pricing heuristics} and \textit{Column and cut generation} sections of \textcite{sadykov2021bucket}.
+	      See the \textit{"Pricing heuristics"} and \textit{"Column and cut generation"} sections of \textcite{sadykov2021bucket}.
 	\item \texttt{ReducedCostFixingThreshold = 0.0}.
 	      Setting it to zero disables reduced cost fixing.
 \end{itemize}
@@ -189,7 +189,7 @@ Refer to the scientific paper of \textcite{pessoa2020generic} for additional det
 	      This parameter has no effect because we're forcing the labeling algorithm
 	      to output a single route regardless.
 	\item \texttt{RCSPmaxNumOfEnumSolutionsForMIP = 1}.
-	      This parameter, known as $omegamtMIP$ in the scientific paper,
+	      This parameter, known as $\omega^\mt{MIP}$ in the scientific paper,
 	      controls the \textit{route enumeration} \parencite{baldacci2008} threshold,
 	      at which the number of enumerated paths
 	      can directly trigger a solution of the SP formulation via a MIP optimizer.
