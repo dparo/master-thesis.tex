@@ -3,18 +3,18 @@
 
 Integer Programming (IP) is a mathematical optimization tool
 that can describe combinatorial optimization problems
-through the usage of constraints, usually defined through linear inequalities.
-The constraints limit the solution space of the optimization problem.
-IP-based formulations also list a set of decision variables and a linear objective function to be optimized.
+using constraints, typically defined through linear inequalities.
+The constraints limit the optimization problem's solution space.
+IP-based formulations also include a list of decision variables
+and a linear objective function to be optimized.
 
 \medskip
 
 While we have already described the CVRP verbally in \cref{sec:introduction-chapter},
 the CVRP is traditionally defined more rigorously through
 (Mixed) Integer Programming (MIP, IP) formulations,
-sometimes also referred to simply as models.
-We present three commonly employed mathematical models for the CVRP:
-
+sometimes also known simply as models.
+We present three commonly used CVRP mathematical models:
 \begin{enumerate}
 	\setlength{\itemsep}{0pt}
 	\setlength{\parskip}{0pt}
@@ -30,21 +30,22 @@ We present three commonly employed mathematical models for the CVRP:
 The first two formulations, traditionally designed
 for branch-and-cut (BAC) algorithms, employ a polynomial number of variables
 but use an exponential number of constraints.
-The latter formulation, instead, makes use of a polynomial number of constraints,
-but uses an exponential number of variables.
-Despite the SP formulation being older, in later years thanks to algorithmic advances
-and the development of efficient branch-and-price (BAP) frameworks, it has become the de facto
-state-of-the-art core ingredient for solving CVRP problems (see \cite{pessoa2020}).
-Another, less common formulation, based on a two-commodity flow description
-can be found in \textcite{baldacci2004}.
+Instead of a polynomial number of constraints,
+the latter formulation employs an exponential number of decision variables.
+Despite its age, the SP formulation has become the de facto state-of-the-art core ingredient
+for solving CVRP problems in recent years,
+thanks to algorithmic advances and the development of efficient branch-and-price (BAP) frameworks
+(see \cite{pessoa2020}).
+\Textcite{baldacci2004} contains another less ordinary formulation
+based on a two-commodity flow description.
 
-While the first two formulations won't be the primary focus of this thesis,
-they are still essential to understand some necessary details.
-In this thesis, we will predominantly concentrate our efforts
+While the first two formulations will not be the primary focus of this thesis,
+they are necessary for understanding some important details.
+In this thesis, we will predominantly focus our efforts
 on the SP formulation, see later discussion in \cref{sec:branch-and-price}.
-Before presenting each formulation, we first define some basic notation
-and mathematical quantities in \cref{sec:cvrp-mathematical-notation}.
-We will use these quantities and these notations throughout the rest of the thesis.
+We begin by defining some basic notation and mathematical quantities in
+\cref{sec:cvrp-mathematical-notation} before presenting each formulation.
+These numbers and notations will be used throughout the rest of the thesis.
 
 \section{Mathematical notation}
 \label{sec:cvrp-mathematical-notation}
