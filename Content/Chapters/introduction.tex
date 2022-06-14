@@ -63,13 +63,16 @@ While effective (meta-)heuristic algorithms have been proposed and applied
 successfully to many VRP variants to obtain good-enough solutions
 in reduced computation time,
 the focus of this thesis is on exact algorithms for solving the CVRP.
+
 We can find major contributions employing heuristics for the VRP, among others, in
 \textcite{clarke1964, desrochers1989matching, paessens1988savings, foster1976integer}.
 Meta-heuristics approaches for the VRP can be found in
 \textcite{gendreau1994tabu, cordeau2012parallel, toth2003granular, li2005very, pisinger2007, kytojoki2007efficient, nagata2009,vidal2012, subramanian2013},
 just to name a few.
+
 For a more comprehensive survey on (meta-)heuristics for the VRP, refer to
 \textcite{golden1998impact,gendreau2002metaheuristics,gendreau2008,laporte2014chapter,elshaer2020taxonomic}.
+
 Exact algorithms are typically slower than (meta-)heuristics, but given
 enough computation time, they can produce a proven optimal solution.
 They accomplish this by closing the objective function's primal-dual bound gap.
@@ -104,7 +107,7 @@ the authors don't provide description on how they were generated,
 (ii) set M is proposed in \textcite{christofides1979vehicle} and
 it's obtained by aggregating together instances from the E set,
 (iii) set F is proposed in \textcite{fisher1994} and it's obtained from an actual distribution problem of groceries in the city of Ontario,
-finally (iv) sets A, B, P are proposed in \textcite{augerat1995} and are generated artificially: A is random, B is clustered, P generated from A,B,E by changing capacities.
+finally (iv) sets A, B, P are proposed in \textcite{augerat1995} and are generated artificially: A is random, B is clustered, P generated from A, B, E by changing capacities.
 Another less common test set is the one proposed in \textcite{golden1998impact},
 which contains large scale instances ranging from 200 to 480 customers,
 generated programmatically following concentric geometric figures.
@@ -141,7 +144,7 @@ better performance for some larger instances; proving that
 a BAC framework could complement the dynamic programming algorithm for solving the PP.
 This thesis stems from the original work \citeauthor{jepsen2014}.
 The objective of this thesis is to revisit the work of \citeauthor{jepsen2014},
-and verify whether recent development improvements in MIP solvers
+and verify whether recent development improvements in MIP optimizers
 have made them competitive at solving the pricing problem,
 or vice versa,
 if the current situation and modern dynamic programming algorithms have
@@ -150,35 +153,35 @@ made BAC approaches completely obsolete.
 \section{Outline}
 \label{sec:intro-outline}
 
-In this section, we outline the contents of this work.
-The thesis' contents can be subdivided into three major parts that we here list.
+This section provides an overview of the work's contents.
+The thesis' contents can be divided into three major portions, which we will list here.
 
-The first part provides introductory technical material
+The first portion provides introductory technical material
 regarding the CVRP and contemporary resolution methods for this problem.
-\Cref{sec:cvrp-mathematical-formulations} presents the CVRP formally
+\Cref{sec:cvrp-mathematical-formulations} formalizes the CVRP
 through multiple mathematically rigorous integer programming models.
 \Cref{sec:intro-literature-review} summarizes the notable contributions
 of the operations research practitioners regarding CVRP's exact approaches.
-\Cref{sec:branch-and-price} presents the branch-and-price (BPC) algorithm
-along with column generation and the pricing sub-problem.
-Current state-of-the-art exact algorithms for solving routing problems
-are all BPC-based.
-The research in the last years has empirically proved that
-BPC algorithms work remarkably well in this domain.
+The branch-and-price (BPC) algorithm, column generation,
+and the pricing sub-problem are presented in \cref{sec:branch-and-price}.
+The most recent exact algorithms for solving routing problems are all BPC-based.
+Recent research has empirically demonstrated that BPC algorithms
+perform admirably in the routing problem domain.
 
 In the second part of the thesis,
-we will discuss more thoroughly the pricing sub-problem
-along with our branch-and-cut (BAC) pricer implementation.
+we will go over the pricing sub-problem in greater detail,
+as well as our branch-and-cut (BAC) pricer implementation.
 The pricing sub-problem is a combinatorial optimization problem
-induced when solving a CVRP through a BPC approach.
-\Cref{sec:the-pricing-problem} presents and discusses the pricing sub-problem
+that arises when a CVRP is solved using a BPC approach.
+\Cref{sec:the-pricing-problem} introduces and discusses the pricing sub-problem
 through multiple mathematically rigorous integer programming models.
-\Cref{sec:implementation-chapter} presents the implementation details of our proposed branch-and-cut pricer.
+The implementation details of our proposed branch-and-cut pricer
+are presented in \cref{sec:implementation-chapter}.
 
 The third part of the thesis evaluates the competitiveness of the proposed BAC framework
 in solving the pricing sub-problem.
-We assess its performance and compare it against modern state-of-the-art solutions.
+We evaluate its performance and compare it to modern cutting-edge solutions.
 In \cref{sec:results} we present the evaluation setup, we list the instances employed,
-and finally, we present the empirical results along with a discussion.
-Lastly, in \cref{sec:conclusions-and-future-work} we summarize the work, review the results,
-and provide helpful tips while discussing possible implementation improvements.
+and finally, we show the empirical results along with a discussion.
+Finally, in \cref{sec:conclusions-and-future-work} we summarize the work, review the results
+and offer helpful tips while discussing potential implementation improvements.
