@@ -19,25 +19,24 @@ based on tree-search algorithms employing branch-and-bound schemes
 occasionally employing Lagrangian duality relaxation (see \cite{fisher1994, miller1995}),
 or additive bounding procedures (see \cite{fischetti1994a, hadjiconstantinou1995}).
 
-From the 1980s to the first 2000s, some authors applied branch-and-cut
-algorithms to the VRP.
-\textcite{laporte1983, laporte1985}, propose the two-index arc flow formulation
-and a branch-and-cut algorithm to solve it.
-Later \textcite{augerat1995approche}, proposed a branch-and-cut scheme
+Some authors applied branch-and-cut (BAC) algorithms  to the VRP from the 1980s to the early 2000s.
+\textcite{laporte1983, laporte1985} proposed the two-index arc flow formulation
+and a branch-and-cut algorithm for optimally solving the CVRP.
+\Textcite{augerat1995approche}, later proposed a branch-and-cut scheme
 integrating additional valid inequalities.
-Later, \textcite{lysgaard2004},
+A few years later, \textcite{lysgaard2004}
 proposed a branch-and-cut framework and
-a set of improved separation procedures for
-the valid inequalities that were known at the time.
-Other notable branch-and-cut-price based contributions
+a set of improved separation procedures for the valid CVRP inequalities that were known at the time.
+Other notable BAC-based contributions
 can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004}.
-\citeauthor{baldacci2004} was able to solve a
-135 customers-sized problem from the F family of routing instances \textcite{fisher1994}
+\citeauthor{baldacci2004} was able to solve a 135 customers-sized routing problem
+from the F test-set  \textcite{fisher1994}
 for the first time.
 
-Regardless, these new works based on branch-and-cut frameworks, showed that CVRP instances
-with even a few customers (less than 100) proved
-to be very challenging to solve exactly.
+Despite the promising results, nonetheless,
+the branch-and-cut contributions of the time demonstrated
+that CVRP instances with even a few customers (less than 100)
+proved exceedingly challenging to solve exactly.
 
 One of the very few first attempts at applying
 the SP formulation and a column generation scheme can
