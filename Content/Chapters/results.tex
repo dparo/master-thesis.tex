@@ -164,92 +164,91 @@ modern and advanced BPC frameworks, see \textcite{sadykov2019modern}.
 \section{Evaluation Setup}
 \label{sec:results-evaluation-setup}
 
-The objective of this thesis, we recall, lies in verifying
-whether a branch-and-cut framework can be competitive in solving
-the pricing problem, especially if the lengths of the routes
-that need to be produced increase in length.
-We speculated that,
-since the performance of the labeling algorithm deteriorates as the vehicle capacity increases,
-a branch-and-cut framework could assist in solving the harder pricing problems.
+The goal of this thesis, as previously stated,
+is to determine whether a branch-and-cut framework can be competitive in solving the pricing problem,
+particularly as the produced routes grow in length.
+We hypothesized that, since the labeling algorithm's performance degrades
+as the vehicle capacity increases,
+a branch-and-cut framework could aid in solving the more demanding pricing problems.
+Refer back to the discussion in \cref{sec:intro-thesis-contributions,sec:solving-the-pricing-problem}
+for additional details.
 
-It is clear, however, that the two frameworks operate very differently.
-Our branch-and-cut framework does not support non-robust inequalities and variable fixing,
-but produces very strong dual bounds.
-Similarly, the labeling algorithm instead produces weaker dual bounds,
-but it supports multiple column generation per pricing invocation,
+However, the two frameworks operate in very different ways.
+Our branch-and-cut framework does not support non-robust inequalities or variable fixing
+but produces stronger dual bounds.
+Similarly, the labeling algorithm instead generates weaker dual bounds
+but allows for multiple column generation per pricing invocation,
 non-robust cut generations and branching.
-Therefore, comparing the performance of the two schemes is not an easy task.
+As a result, comparing the performance of the two schemes is not an easy task.
 So a natural question arises.
 What is the best approach to compare the performance of the two frameworks?
 
 \medskip
 
-When faced with the option of developing our branch-and-cut pricer,
-we had to opt between two main choices:
-(i) developing our pricer in tight integration with the BPC framework,
-by coding it as a \bapcod{} plugin,
-or (ii) developing the pricer in a standalone executable,
-separate from the BPC framework.
+When it came to developing our branch-and-cut pricer, we had two options:
+(i) developing our pricer in tight integration with the BPC framework, by coding it as a \bapcod{} plugin,
+or (ii) developing the pricer in a standalone executable, separate from the BPC framework.
 
-The first option has two main advantages.
-First, it allows for our branch-and-cut pricer to influence the execution flow of the BPC algorithm.
-Second, it enables to measure the effectiveness in pricing by comparing
-the running time required to either solve the root-node or to solve the entire CVRP instance.
-The downside of the first approach is however the complexity.
+The first option has two primary benefits.
+For starters, it enables our branch-and-cut pricer to influence the BPC algorithm's execution flow.
+Second, it empowers more diversified ways of measuring the pricer's effectiveness.
+We can decide to compare
+the running time required for solving the root node or the running time for solving the entire CVRP instance.
+The disadvantage of the first approach is its implementation complexity
+and constraint in tooling or programming languages employed.
+Programming the BAC pricer as \bapcod{} plugin requires heavy knowledge of this BPC algorithm's intricacies.
 
-The second option, instead, it has one big advantage.
-We can develop the pricer in full isolation, employing whichever programming
-language or external library pleases us.
-The implementation is simpler and more freedom in design choices can be attained.
-However, since the branch-and-cut pricer cannot alter the execution of the BPC algorithm,
-the only possible performance metric is the running time required to solve
-each pricing iteration.
-The branch-and-cut pricer, therefore, undergoes
-the same execution flow that is generated from the BPC algorithm making use of the labeling algorithm.
+The second option, on the other hand, has one significant advantage:
+it allows for greater implementation flexibility, simplifying development efforts.
+We can develop the BAC pricer in complete isolation,
+using whatever programming language or external library we want.
+However, the branch-and-cut pricer cannot change the BPC algorithm's execution flow.
+As a result, the branch-and-cut pricer follows the same execution flow
+as the BPC algorithm  using the labeling algorithm.
+This scenario led to two primary downsides.
+For starters, improved dual-bounds from the BAC algorithm
+will not affect the number of pricing iterations.
+As a result, the BAC algorithm's solution to the more difficult elementary SPPRC
+has no practical way to pay off its high computation times.
+Secondly, the time required to solve each pricing iteration
+is the only viable metric to measure the pricers' competitiveness.
 
 \medskip
 
-In the end we opted for simplicity, and we've decided to implement our pricer in a standalone executable.
-As the performance comparison between the two approaches, we've decided to measure
-the running time took for solving each pricing problem.
-It has to be acknowledged, however, that measuring the running time of each pricing iteration
-is nor good nor bad.
-There are benefits and downsides to this approach.
-First \bapcod{} needs to be configured to operate in the same domain as our pricer
-thus disabling many features that could possibly lead to strong efficiency
-when instead the whole running time is taken into consideration.
-Secondly, our branch-and-cut pricer produces elementary bounds, thus naturally solves a harder problem.
-While producing stronger bounds might be slower at the single pricing level, stronger bounds
-may effectively skip some pricing iterations in the long run.
-As an example, the branch-and-cut pricer may consistently appear two times slower with
-respect to the labeling algorithm, but however, it might still
-lead to a faster resolution of the overall CVRP.
+In the end, we decided on the second option.
+We chose simplicity over complexity and built our pricer as a standalone executable.
+Measuring the running time of each pricing iteration is neither an appropriate nor a poor approach.
+There are both benefits and downsides to this approach.
+First \bapcod{} must be configured to operate in the same domain as our pricer,
+thereby disabling many features that could potentially result in high efficiency in the broader scheme.
+Second, our branch-and-cut pricer generates elementary bounds, naturally solving a harsher problem.
+While solving a single pricing iteration may take longer,
+stronger dual-bounds may skip some pricing iterations in the long run,
+thus resulting in an overall faster CVRP resolution.
 
-Summing up, it is clear that the performance comparison that we've settled in, is just
-a mere indicator of the true efficiency of the two approaches and must
+Summing up, it is clear that the performance comparison that we've settled on is just
+a mere indicator of the genuine efficiency of the two approaches and must
 therefore be taken cautiously.
-We believe, however, there is still value in performing such a comparison as it lays
-out a first proof-of-concept/direction regarding the feasibility of the effectiveness
-of a branch-and-cut scheme for tackling the pricing problem.
+We believe, however, there is still value in performing such a comparison as it provides
+a first proof-of-concept/direction regarding the feasibility of the effectiveness
+of a branch-and-cut scheme for addressing the pricing problem.
 
 \medskip
 
-We conclude this section by introducing the \bapcod{} parametrization
-that we've employed to bend the labeling algorithm to operate in
-an environment that is compatible with our branch-and-cut algorithm.
+We conclude this section by introducing the \bapcod{} parametrization,
+which we used to bend the labeling algorithm to operate in a compatible environment for the BAC algorithm.
 
 The configuration parameters are specified separately
 in an appropriately placed configuration file.
-We've disabled the BPC framework's branching and cut-generation schemes.
-Namely, the resolution process was asked to stop at
-the root node of the branch-and-bound tree.
-The ng-sets augmentation was enabled and the maximum ng-set threshold was configured
-as high as possible. This was done to stress the labeling algorithm to generate dual bounds as close
-as possible to the elementary bound at the end of each CG iteration.
-The tailing off condition of the pricer was turned off.
-We've also requested the labeling algorithm to output a single column per pricing invocation.
-For a complete list of the configuration parameters
-that  we've used refer to \Cref{sec:bapcod-appendix}.
+The BPC framework's branching and cut-generation schemes have been disabled,
+thus asking the algorithm to halt at the root node of the branch-and-bound tree.
+We enabled the ng-sets' augmentation and set the maximum ng-set threshold as high as possible,
+therefore putting pressure on the labeling algorithm to generate dual bounds as close
+to the elementary bound as possible at the end of each CG iteration.
+The pricer's tailing-off condition was disabled.
+We've also asked the labeling algorithm to generate
+a single column per pricing invocation.
+Refer to \cref{sec:bapcod-appendix} for a complete list of the employed configuration.
 
 \section{Evaluation Process}
 \label{sec:results-evaluation-process}
