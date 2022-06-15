@@ -256,84 +256,85 @@ Refer to \cref{sec:bapcod-appendix} for a complete list of the employed configur
 \section{Evaluation Process}
 \label{sec:results-evaluation-process}
 
-We've employed \bapcod{} version 0.66 (released in November 2021) and the \texttt{libRCSP v0.5.12}.
-The latter library contains the implementation of the \vrpsolver{} extension.
-The objective is to exploit \bapcod{} to solve many CVRP instances while simultaneously
-measuring the running time of the labeling algorithm for each pricing invocation.
+We employed \bapcod{} version 0.66 (released in November 2021) and the \texttt{libRCSP v0.5.12}.
+The latter library contains the \vrpsolver{} extension's implementation.
+The goal is to use \bapcod{} to solve many CVRP instances while simultaneously
+measuring the labeling algorithm's running at each pricing invocation.
 
 \medskip
 
-By following the \bapcod{} technical document \parencite{sadykov2021},
-we've re-adapted one of the VRPTW example (included in the distribution),
-to model a Capacitated Vehicle Routing Problem.
+We re-adapted one of the VRPTW examples (included in the distribution)
+to model a Capacitated Vehicle Routing Problem by following
+the \bapcod{} technical document of \textcite{sadykov2021}.
 The master formulation that we've implemented follows the two-index arc flow model
 presented in \cref{eq:two-index-flow-obj-func,eq:two-index-flow-two-edges-incident-per-customer,eq:two-index-flow-two-k-edges-incident-in-the-depot-node,eq:two-index-flow-ccc,eq:two-index-flow-x-mip-var-bounds-depot,eq:two-index-flow-x-mip-var-bounds},
 excluding the Rounded Capacity Constraints (RCC) of \cref{eq:two-index-flow-ccc}.
 
-In order to use the \vrpsolver{} labeling algorithm, it is necessary
-to define the associated Resource Constrained Shortest Path (RCSP) sub-problem.
+To use the \vrpsolver{} extension's labeling algorithm,
+the associated Resource Constrained Shortest Path (RCSP) sub-problem must be defined.
 The RCSP sub-problem is formulated on a complete directed network by
 linking the new RCSP modeling variables to the master problem formulation.
-The RCSP sub-problem requires for the correct definition of the following:
-the source/sink vertices and the so-called packing and elementarity sets
+The RCSP sub-problem necessitates the correct definition of the following:
+the source/sink vertices, as well as the so-called \textit{packing} and \textit{elementarity} sets
 (see \cite{pessoa2020generic} for more details).
-The elementarity and packing sets must be specified correctly for each customer.
-The correct definition of these generalized sets is mandatory to allow for specific
-components of the \vrpsolver{} extension to work correctly (ng-sets, RCC separation, etc).
-A separate packing set and a separate elementarity set is created, one for each customer.
-The \vrpsolver{} extension requires also for the explicit definition of an additional
+The correct definition of these generalized sets is required
+for specific components  of the \vrpsolver{} extension to function properly (ng-sets, RCC separation, etc).
+For each customer, a unique \textit{packing} set and \textit{elementarity} set are created.
+The \vrpsolver{} extension also necessitates the explicit definition of an additional
 distance matrix encoding the distance between pairs of elementarity sets.
-The ng-sets are computed automatically by employing the elementarity sets
-and the distance matrix specified from the user.
+The elementarity sets and the distance matrix specified by the user
+let \bapcod{} compute the ng-sets automatically.
 
-Due to implementation details, the RCSP sub-problem requires
-the definition of the amount of resource consumption for each arc of the network.
-It is not possible to define the resource consumption at the vertex level.
+Due to internal implementation details of \bapcod{},
+the RCSP sub-problem requires the user to specify the consumptions (or demand) for each network's arc.
+Resource consumptions cannot aren't definable at the vertex level.
 Therefore, as suggested in \textcite{pessoa2020generic}, we have defined the resource consumption
 on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
-This definition is correct and it leads to a symmetric resource consumption ($q_{ij} = q_{ji}$).
-The symmetric resource consumption property improves the efficiency in pricing,
-by eliminating the need of performing backward labelling \parencite{pessoa2020generic}.
+This definition is valid and it leads to a symmetric resource consumption ($q_{ij} = q_{ji}$).
+The symmetric resource consumption property improves the efficiency in pricing
+by eliminating the need for backward labeling \parencite{pessoa2020generic}.
 
-To extract the information needed for the performance evaluation we have implemented a custom pricing functor.
-The pricing functor is in essence a glorified callback that can be used
-for solving the pricing problem through custom user-defined code.
-Our pricing functor is a simple stubbed implementation which ultimately invokes
-the normal \vrpsolver{} extension's pricing functor.
-However, before calling the labeling algorithm we first do the following.
-First, we measure the running time of the labeling algorithm in order to assess its performance later.
-Second, at each pricing invocation we record the dual variables $\pi \in \R^N$ of the RMP
-to later be dumped into a dedicated file.
+We implemented a custom pricing functor to extract the information
+required for the performance evaluation.
+The pricing functor is essentially a glorified callback
+that can be used to solve the pricing problem through user-defined custom code.
+Our pricing functor is a simple stubbed implementation
+that ultimately invokes the pricing functor of  the standard \vrpsolver{} extension.
+However, before calling the labeling algorithm, we first do the following.
+First, we assess the labeling algorithm's performance by measuring its running time.
+Second, at each pricing invocation, we record the dual variables $\pi \in \R^N$ of the RMP
+to be later dumped into a dedicated file.
 
-Due to \bapcod{}'s implementation details, the reduced cost of an
-edge does not follow the simple relationship $\bar{c}_{ij} = c_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V,\ i \ne j$.
-The dual variable $\pi_0 \in R$ can be retrieved from the user by accessing a field
-of the master problem formulation.
-The remaining dual variables $\pi_i \quad \forall i \in V_0$ must instead be computed
-from the reduced cost of each edge $\bar{c}_{ij}$.
-\bapcod{}, internally, uses the following relationship to encode the reduced cost of an edge:
-
+Because of the implementation details of \bapcod{},
+the reduced cost of an edge does not follow the simple relationship
+$\bar{c}_{ij} = c_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V,\ i \ne j$.
+By accessing an appropriate field on the MP formulation structure,
+the user can retrieve the dual variables $\pi_0 \in R$.
+The remaining dual variables $\pi_i \quad \forall i \in V_0$
+must be calculated from the reduced cost of each edge $\bar{c}_{ij}$.
+Internally, \bapcod{} encodes the reduced cost of an edge using the following relationship:
 \begin{equation}
 	\bar{c}_{ij} = \begin{cases}
 		c_{ij} - \frac{\pi_{j}}{2}       & \texttt{if } i = 0, j \in V_0       \\
 		c_{ij} - \frac{\pi_i + \pi_j}{2} & \texttt{if } i, j \in V_0,\ i \ne j
 	\end{cases}
+	\label{eq:bapcod-encoded-reduced-cost-vars}
 \end{equation}
-
-By exploiting the above relationship, we've implemented a trivial recursive algorithm
+By exploiting \cref{eq:bapcod-encoded-reduced-cost-vars},
+we've implemented a trivial recursive algorithm
 to extract all the necessary dual variables $\pi \in \R^N$.
 
-In conclusion, at each pricing invocation we dump two files into disk.
-The first file is a JSON file which contains metadata information about
-the labeling algorithm, such as: the instance name, the instance size,
-the total running time for the labeling, the reduced cost of the generated route,
-the column generation iteration, etc.
+In conclusion, we save two files to the hard drive for each pricing invocation of the labeling algorithm.
+The first file is a JSON file that contains metadata information about
+the labeling algorithm, such as the instance name, the instance size,
+the total running time for the labeling, the reduced cost of the generated route
+and the column generation iteration.
 The second file, instead, encodes a CPTP instance including:
-the dual variables (i.e. the profits associated to each customer),
-the original demands, the original node positions and finally the vehicle capacity.
+the dual variables (the vertices' profit),
+the original demands, the original node positions, and the vehicle capacity.
 The CPTP instance is encoded in a slightly modified TSPLIB95 file format.
-We've introduced a dedicated \texttt{PROFIT\_SECTION} in the file format
-to contain the extracted dual variables.
+In the file format, we've added a new dedicated section, called \texttt{PROFIT\_SECTION},
+to hold the extracted dual variables.
 
 \subsection{Performance profiles}
 \label{sec:results-performance-profiles}
