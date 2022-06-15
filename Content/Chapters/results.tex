@@ -193,7 +193,8 @@ The first option has two primary benefits.
 For starters, it enables our branch-and-cut pricer to influence the BPC algorithm's execution flow.
 Second, it empowers more diversified ways of measuring the pricer's effectiveness.
 We can decide to compare
-the running time required for solving the root node or the running time for solving the entire CVRP instance.
+the running time required for solving the root node, the running time for solving the entire CVRP instance
+or the running time of each single pricing iteration.
 The disadvantage of the first approach is its implementation complexity
 and constraint in tooling or programming languages employed.
 Programming the BAC pricer as \bapcod{} plugin requires heavy knowledge of this BPC algorithm's intricacies.
@@ -225,6 +226,8 @@ Second, our branch-and-cut pricer generates elementary bounds, naturally solving
 While solving a single pricing iteration may take longer,
 stronger dual-bounds may skip some pricing iterations in the long run,
 thus resulting in an overall faster CVRP resolution.
+On the other hand, measuring the pricers' efficiency per each single pricing iteration,
+it is straightforward to assess compared to the alternative approaches described.
 
 Summing up, it is clear that the performance comparison that we've settled on is just
 a mere indicator of the genuine efficiency of the two approaches and must
