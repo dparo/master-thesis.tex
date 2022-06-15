@@ -12,7 +12,7 @@ We refer the reader to \textcite{feillet2010}'s work,
 which includes a helpful tutorial on CG and BAP algorithms specific to VRPs.
 
 Branch-and-price (BAP) frameworks are in essence a branch-and-bound (BAB) scheme \parencite{land2010}
-that originates when solving the SP/SC formulation for VRPs (see \cref{sec:set-partitionining-formulation}).
+that originates when solving the SP/SC formulation for VRPs (see \cref{sec:set-partitioning-formulation}).
 To seek the optimal solution,
 BAB-based schemes use a search tree and a pruning strategy by bounding the objective function.
 As opposed to widerspread branch-and-cut (BAC) frameworks,
@@ -410,7 +410,7 @@ by introducing some families of inequalities
 serviceable to improve the linear relaxation for the SP formulation
 \labelcref{eq:set-partitioning-obj-func,eq:set-partitioning-K-routes,eq:set-partitioning-customers-visited-by-exactly-one-route,eq:set-partitioning-lambda-mip-var-bounds}.
 Despite the SP formulation generally delivers better dual bounds
-compared to other CVRP formulations (see discussion in \cref{sec:set-partitionining-formulation}),
+compared to other CVRP formulations (see discussion in \cref{sec:set-partitioning-formulation}),
 these bounds may still be too weak to obtain an efficient algorithm.
 Thus, it is common practice to introduce cutting-plane approaches
 in modern BAP-based VRP solvers.

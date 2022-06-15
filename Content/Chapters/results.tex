@@ -13,217 +13,67 @@ discussed in the works of \textcite{pessoa2020generic, sadykov2021bucket}.
 
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
-To satisfactorily measure the competitiveness of our branch-an-cut pricer,
-the usage of several CVRP benchmark instances is a mandatory necessity.
-The \urlref{http://vrp.atd-lab.inf.puc-rio.br/index.php/en/}{CVRPLIB website}
-is an online database for the vehicle routing problem
-which it contains, among other things,
-many freely downloadable CVRP test instances.
-This very useful resource can be used
-as a main point of reference by all the interested individuals.
-It contains interactive plots of an exhaustive number of routing problems instances,
-along with the best known/optimal solution found by the best scholars over the years.
-Each CVRP test instance is stored in a file which filename follows a specific template of the form:
 
+Several CVRP benchmark instances are mandated to measure the competitiveness
+of our branch-an-cut pricer in an accurate manner.
+The \urlref{http://vrp.galgos.inf.puc-rio.br/index.php/en/}{CVRPLIB website}
+is an online database for the vehicle routing problem that includes
+several downloadable test instances for free, among other things.
+It is a valuable resource for all practitioners interested in the VRP.
+It includes interactive plots of various routing problem instances
+and the optimal (or best known) solution discovered by the best scholars over time.
+Each CVRP test instance is stored in a file with the following filename template:
 \begin{center}
 	\begin{LVerbatim}
 		<F>-n<N>-k<K>.vrp
 	\end{LVerbatim}
 \end{center}
-
 where \texttt{.vrp} is the file extension,
-\texttt{<N>} is the number of vertices in the instance,
-\texttt{<K>} is the number of (maximum or exact) available vehicles
-and finally \texttt{<F>} denotes the set instance family.
-\texttt{<F>} is a single letter which uniquely identifies the instance
-set along with the authors who published such set.
-As an example \texttt{P-n40-k5.vrp} denotes a test instance composed
+\texttt{<N>} is the number of vertices in the instance, and
+\texttt{<K>} is the number of (maximum or exact) available vehicles.
+Finally, \texttt{<F>} represents the set instance family.
+\texttt{<F>} is a single letter that uniquely identifies the instance
+set and the authors who published such a set.
+\texttt{P-n40-k5.vrp} , for example, denotes a test instance made up
 of $40$ nodes ($39$ customers) and $5$ vehicles.
-The \texttt{P} in the name, indicates the instance set family, which in this
-case it was published in \textcite{augerat1995}.
+The \texttt{P} in the name refers to the instance set family,
+which was published in \textcite{augerat1995}.
 
-The contents of each CVRP instance file follows the \texttt{TSPLIB95} file format \parencite{reinelt1995}.
-As it became usual for the TSP in \textcite{reinelt1991},
-distances between pairs of nodes
-is computed through a 2D Euclidean distance function
-rounded to the nearest integer.
-Rounding is done to make the optimal values more stable, so that the comparison between different contributions is achievable.
-However, rounding introduces problems in comparing heuristic contributions, see \textcite{uchoa2017} for more details.
+Each CVRP instance file's contents adhere
+to the \texttt{TSPLIB95} file format \parencite{reinelt1995}.
+Distances between pairs of nodes are computed
+using the 2D Euclidean distance function rounded to the nearest integer,
+as became standard for the TSP in \textcite{reinelt1991}.
+Rounding is performed to stabilize the optimal values,
+allowing for an accurate comparison of different contributions.
+However, rounding introduces issues when comparing heuristic contributions;
+for more information, see \textcite{uchoa2017}.
 
 \medskip
 
-To evaluate the performance of our pricer we used some of the most historic
-and commonly known
-CVRP instances:
+We used some of the most historic and well-known CVRP instances to evaluate the performance of our pricer:
 set A, B, P \parencite{augerat1995},
 set E \parencite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic},
 set F \parencite{fisher1994}
 and finally set M \parencite{christofides1979vehicle}.
-The reader who's interested in knowing how such instances were obtained in the first
-place, can refer to either the CVRPLIB website or to the work of \textcite{uchoa2017}.
+If the reader is wondering how these test sets were generated in the first place,
+they can consult the CVRPLIB website or the work of \textcite{uchoa2017}.
 
-\begin{table*}[ht]
-	\centering
-	% Place caption here to get a caption above the table
-	\begin{tabular}[t]{lccc}
-		\toprule
-		\textbf{Instance} & $K$ & $Q$ & \textbf{Optimal Value} \\
-		\midrule
-		E-n51-k5          & 5   & 160 & 521                    \\
-		E-n76-k7          & 7   & 220 & 682                    \\
-		E-n76-k8          & 8   & 180 & 735                    \\
-		E-n76-k10         & 10  & 140 & 830                    \\
-		E-n76-k14         & 14  & 100 & 1021                   \\
-		E-n101-k8         & 8   & 200 & 815                    \\
-		E-n101-k14        & 14  & 112 & 1067                   \\
-		\bottomrule
-	\end{tabular}
-	\label{tbl:cvrp-instance-family-E}
-	\caption{Instances of the set E employed for the empirical evaluation.
-		These instances were originally proposed in \textcite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic}
-		where the node locations were generated at random from a uniform distribution \parencite{uchoa2017}.
-	}
-\end{table*}
+The employed test instances are summarized in
+\cref{table:cvrp-instance-family-E,table:cvrp-instance-family-F,table:cvrp-instance-family-A,table:cvrp-instance-family-B,table:cvrp-instance-family-P}.
 
-\begin{table*}[ht]
-	\centering
-	% Place caption here to get a caption above the table
-	\begin{tabular}[t]{lccc}
-		\toprule
-		\textbf{Instance} & $K$ & $Q$   & \textbf{Optimal Value} \\
-		\midrule
-		F-n45-k4          & 4   & 2010  & 724                    \\
-		F-n72-k4          & 4   & 30000 & 237                    \\
-		F-n135-k7         & 7   & 2210  & 1162                   \\
-		\bottomrule
-	\end{tabular}
-	\label{tbl:cvrp-instance-family-F}
-	\caption{Instances of the set F employed for the empirical evaluation.
-		These instances were originally proposed in \textcite{fisher1994},
-		and they come from an actual distribution problem involving grocery deliveries in Ontario \parencite{uchoa2017}.
-	}
-\end{table*}
+\input{Content/Chapters/Include/employed-cvrp-instance-tables.tex}
 
-\begin{table*}[ht]
-	\centering
-	% Place caption here to get a caption above the table
-	\begin{tabular}[t]{lccc}
-		\toprule
-		\textbf{Instance} & $K$ & $Q$ & \textbf{Optimal Value} \\
-		\midrule
-		A-n37-k5          & 5   & 100 & 669                    \\
-		A-n37-k6          & 6   & 100 & 949                    \\
-		A-n38-k5          & 5   & 100 & 730                    \\
-		A-n39-k5          & 5   & 100 & 822                    \\
-		A-n39-k6          & 6   & 100 & 831                    \\
-		A-n44-k6          & 6   & 100 & 937                    \\
-		A-n45-k6          & 6   & 100 & 944                    \\
-		A-n45-k7          & 7   & 100 & 1146                   \\
-		A-n46-k7          & 7   & 100 & 914                    \\
-		A-n48-k7          & 7   & 100 & 1073                   \\
-		A-n53-k7          & 7   & 100 & 1010                   \\
-		A-n54-k7          & 7   & 100 & 1167                   \\
-		A-n55-k9          & 9   & 100 & 1073                   \\
-		A-n60-k9          & 9   & 100 & 1354                   \\
-		A-n61-k9          & 9   & 100 & 1034                   \\
-		A-n62-k8          & 8   & 100 & 1288                   \\
-		A-n63-k9          & 9   & 100 & 1616                   \\
-		A-n64-k9          & 9   & 100 & 1401                   \\
-		A-n65-k9          & 9   & 100 & 1174                   \\
-		A-n69-k9          & 9   & 100 & 1159                   \\
-		A-n80-k10         & 10  & 100 & 1763                   \\
-		\bottomrule
-	\end{tabular}
-	\label{tbl:cvrp-instance-family-A}
-	\caption{Instances of the set A employed for the empirical evaluation.
-		These instances were originally proposed in \textcite{augerat1995}
-		where the node locations are generated at random on a square grid \parencite{uchoa2017}.
-	}
-\end{table*}
+\subsection{Inflation of the CVRP Test Instances}
+\label{sec:inflation-of-the-cvrp-test-instances}
 
-\begin{table*}[ht]
-	\centering
-	% Place caption here to get a caption above the table
-	\begin{tabular}[t]{lccc}
-		\toprule
-		\textbf{Instance} & $K$ & $Q$ & \textbf{Optimal Value} \\
-		\midrule
-		B-n38-k6          & 6   & 100 & 805                    \\
-		B-n39-k5          & 5   & 100 & 549                    \\
-		B-n41-k6          & 6   & 100 & 829                    \\
-		B-n43-k6          & 6   & 100 & 742                    \\
-		B-n44-k7          & 7   & 100 & 909                    \\
-		B-n45-k6          & 6   & 100 & 678                    \\
-		B-n50-k7          & 7   & 100 & 741                    \\
-		B-n50-k8          & 8   & 100 & 1312                   \\
-		B-n51-k7          & 7   & 100 & 1032                   \\
-		B-n52-k7          & 7   & 100 & 747                    \\
-		B-n56-k7          & 7   & 100 & 707                    \\
-		B-n57-k7          & 7   & 100 & 1153                   \\
-		B-n57-k9          & 9   & 100 & 1598                   \\
-		B-n63-k10         & 10  & 100 & 1496                   \\
-		B-n64-k9          & 9   & 100 & 861                    \\
-		B-n66-k9          & 9   & 100 & 1316                   \\
-		B-n67-k10         & 10  & 100 & 1032                   \\
-		B-n68-k9          & 9   & 100 & 1272                   \\
-		B-n78-k10         & 10  & 100 & 1221                   \\
-		\bottomrule
-	\end{tabular}
-	\label{tbl:cvrp-instance-family-B}
-	\caption{Instances of the set B employed for the empirical evaluation.
-		These instances were originally proposed in \textcite{augerat1995}
-		where the node locations are generated at random on a square grid \parencite{uchoa2017}.
-	}
-\end{table*}
-
-\begin{table*}[ht]
-	\centering
-	% Place caption here to get a caption above the table
-	\begin{tabular}[t]{lccc}
-		\toprule
-		\textbf{Instance} & $K$ & $Q$  & \textbf{Optimal Value} \\
-		\midrule
-		P-n16-k8          & 8   & 35   & 450                    \\
-		P-n19-k2          & 2   & 160  & 212                    \\
-		P-n20-k2          & 2   & 160  & 216                    \\
-		P-n21-k2          & 2   & 160  & 211                    \\
-		P-n22-k2          & 2   & 160  & 216                    \\
-		P-n22-k8          & 8   & 3000 & 603                    \\
-		P-n23-k8          & 8   & 40   & 529                    \\
-		P-n40-k5          & 5   & 140  & 458                    \\
-		P-n45-k5          & 5   & 150  & 510                    \\
-		P-n50-k7          & 7   & 150  & 554                    \\
-		P-n50-k8          & 8   & 120  & 631                    \\
-		P-n50-k10         & 10  & 100  & 696                    \\
-		P-n51-k10         & 10  & 80   & 741                    \\
-		P-n55-k7          & 7   & 170  & 568                    \\
-		P-n55-k8          & 8   & 160  & 588                    \\
-		P-n55-k10         & 10  & 115  & 694                    \\
-		P-n55-k15         & 15  & 70   & 989                    \\
-		P-n60-k10         & 10  & 120  & 744                    \\
-		P-n60-k15         & 15  & 80   & 968                    \\
-		P-n65-k10         & 10  & 130  & 792                    \\
-		P-n70-k10         & 10  & 135  & 827                    \\
-		P-n76-k4          & 4   & 350  & 593                    \\
-		P-n76-k5          & 5   & 280  & 627                    \\
-		P-n101-k4         & 4   & 400  & 681                    \\
-		\bottomrule
-	\end{tabular}
-	\label{tbl:cvrp-instance-family-P}
-	\caption{Instances of the set P employed for the empirical evaluation.
-		These instances were originally proposed in \textcite{augerat1995}
-		obtained from modifying the capacities of some instances of the A, B and E sets \parencite{uchoa2017}.
-	}
-\end{table*}
-
-\medskip
-
-We've generated new artificial instances from the presented sets.
-The idea is to generate new CVRP instances characterized by longer routes,
-so that we can assess the behavior of the proposed branch-and-cut pricer
-and the labeling algorithm respectively as the routes
-they need to produce increase in length.
-The new artificial instances were created in the following way.
+We created new artificial instances based on the presented sets in
+\cref{table:cvrp-instance-family-E,table:cvrp-instance-family-F,table:cvrp-instance-family-A,table:cvrp-instance-family-B,table:cvrp-instance-family-P}.
+The idea is to generate new CVRP instances characterized by longer routes
+so that we can evaluate the behavior of the proposed branch-and-cut pricer and labeling algorithm
+as the routes they need to produce grow longer (see previous discussions in
+\cref{sec:intro-thesis-contributions,sec:solving-the-pricing-problem}).
+The new artificial instances were created as follows.
 Let $Q \in R_+,\ k \in Z_+$ respectively denote the vehicle
 capacity and the number of trucks of the unmodified CVRP instance.
 Define a scale factor $s \in R_+$.
@@ -235,30 +85,36 @@ by using the following relationship:
 $$
 	Q^\prime = Q \times s, \quad K^\prime = \ceil*{\frac{K}{s}}
 $$
-The inflation is done for each unmodified CVRP instance and using
+Inflation is performed for each unmodified CVRP instance by using
 multiple values for the scale factor $s \in R_+$.
+As $s \in R_+$ grows, the inflated CVRP instances will look more and more like a conventional TSP.
+If $\ceil*{\frac{K}{s}} = 1$ the CVRP decades to a TSP and, as a result,
+the BAP frameworks may become a suboptimal approach for dealing with such a problem.
 
 \section{\bapcod{}}
 \label{sec:results-bapcod}
 
 \bapcod{} \parencite{sadykov2021} is a software package
-developed in France at the Bordeaux University and Bordeaux Research Center,
-which implements a sophisticated column generation approach
-embedded inside a generic and modern branch-price-and-cut (BPC) algorithm.
-\bapcod{} takes as input a compact mixed integer programming model,
-and solves it by applying a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
-The reformulation is automatically applied by the solver
-and a default generic pricer relying on
-the usage of a MIP solver is employed in the column generation procedure.
-An automatic dual price smoothing stabilization, discussed in \textcite{pessoa2018automation},
-is applied by \bapcod{} to improve the convergence speed of the column generation.
-\bapcod{}, being generic in nature,
-supports user developed extensions.
-\bapcod{} supports direct branching on the arc-flow flow variables of the master formulation
-and Vanderbeck branching \parencite{vanderbeck2011}, a non-robust branching
-scheme which imposes bounds modifications to the sub-problem variables.
-These extensions can supply the BPC framework with either
-custom defined cutting planes (robust or non), custom branching decisions (robust or non)
+developed in France at the Bordeaux University and Bordeaux Research Center
+that embeds a sophisticated column generation approach
+embedded in a generic and modern branch-price-and-cut (BPC) algorithm.
+\bapcod{} takes a compact mixed-integer programming model as input
+and solves it using a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
+See the previous discussion on \cref{sec:set-partitioning-formulation, sec:branch-and-price}.
+The modern BPC solver automatically applies the Dantzig-Wolfe reformulation.
+In this case, a default generic pricer based on a MIP optimizer
+is employed during the column generation phase.
+\bapcod{} uses an automatic dual price smoothing stabilization,
+as discussed in \textcite{pessoa2018automation},
+to improve the convergence speed of the column generation.
+\bapcod{} supports direct branching on the master formulation's arc-flow variables
+as well as Vanderbeck branching \parencite{vanderbeck2011}.
+The latter is a non-robust branching scheme imposing bounds modifications on the sub-problem variables.
+Because \bapcod{} is generic, it supports user-developed extensions
+which can alter the BPC algorithm's behaviour.
+These extensions can provide the BPC framework with
+custom-defined cutting planes (robust and non-robust),
+custom branching decisions (robust and non-robust),
 or even ad-hoc pricer implementations.
 
 The \vrpsolver{} extension \parencite{pessoa2020generic}, is
@@ -267,45 +123,43 @@ This extension includes an
 advanced implementation of a bidirectional dynamic programming labeling algorithm
 \parencite{sadykov2021bucket} for solving the pricing problem.
 The included labeling algorithm
-can be both used as an exact pricer or as a heuristic one.
-Precisely, it contains two successively lighter heuristic implementations,
-see \textcite{sadykov2021bucket} for more details.
+can be used as an exact or heuristic pricer.
+The labeling algorithm contains two successively lighter heuristic implementations;
+for more information, see \textcite{sadykov2021bucket}.
 The labeling algorithm makes use of a generalized ng-sets definition \parencite{baldacci2011}
-defined through packing and elementarity sets as presented in \textcite{pessoa2020generic}.
-The ng-sets are dynamically augmented \parencite{roberti2014}
-when the solution obtained after the column generation convergence
-is fractional,
+defined through the \textit{packing} and \textit{elementarity} sets,
+as described in \textcite{pessoa2020generic}.
+When the solution obtained after the CG convergence is fractional,
+the ng-sets are dynamically augmented,
 see \textcite{pessoa2020generic} for more details.
 The \vrpsolver{} extension, also,
-contains the implementation of some
+includes the implementation of some
 specific cutting planes and branching decisions
-tailored at efficiently solving routing-like problems
+aimed at efficiently solving routing-like problems
 (or problems that exhibit similar structures)
-such as the CVRP, VRPTW and also others (see \cite{pessoa2020generic}).
+such as the CVRP, VRPTW, and also others (see \cite{pessoa2020generic}).
 The \vrpsolver{} implements the robust RCC cuts of \textcite{laporte1983},
 and the non-robust limited-memory rank-1 cuts of \textcite{pecin2017improved}.
-The \vrpsolver{} also implements the non-robust branching called Ryan\&Foster branching \parencite{ryan1981integer}.
-The \vrpsolver{} extension was also successfully applied
-to solve Bin Packing Problems in \textcite{pessoa2020}.
+The \vrpsolver{} also implements the non-robust Ryan\&Foster branching \parencite{ryan1981integer}.
+The \vrpsolver{} extension was also used successfully in \textcite{pessoa2020}
+to solve the Bin Packing Problem (BPP).
 
 \medskip
 
-\bapcod{} along with its \vrpsolver{} extension are currently the leading state-of-the-art
-technologies for solving vehicle routing problems \parencite{pessoa2020generic}.
-The \bapcod{} source code can be downloaded for free, for academic purposes only,
-by issuing a form request at this url: \url{https://bapcod.math.u-bordeaux.fr/}.
-The \vrpsolver{} extension, instead, is available for academic use only in compiled form,
-and must be explicitly requested by email by contacting one of the
+Currently, \bapcod{} and its \vrpsolver{} extension are the leading cutting-edge technologies
+for solving vehicle routing problems \parencite{pessoa2020generic}.
+The \bapcod{} source code is available for free, for academic purposes only,
+by issuing a form request to this URL: \url{https://bapcod.math.u-bordeaux.fr/}.
+The \vrpsolver{} extension, on the other hand, is only available in compiled form,
+and must be explicitly requested via email by contacting one of the
 original authors: \url{mailto:ruslan.sadykov@inria.fr}.
-Instructions to build, setup and employ \bapcod{} and its \vrpsolver{} extension
-can be found in the official technical report presented in \textcite{sadykov2021}.
-For completeness, we also report that
-a Julia language interface to the \vrpsolver{} extension
-can be found at this
-\urlref{https://github.com/inria-UFF/BaPCodVRPSolver.jl}{Github repo}.
+The official technical report presented in \textcite{sadykov2021} contains instructions
+for building, configuring, and using \bapcod{} and its \vrpsolver{} extension.
+To round things out, a Julia language interface to the \vrpsolver{} extension
+can be found at this \urlref{https://github.com/inria-UFF/BaPCodVRPSolver.jl}{Github repo}.
 
-Refer to \textcite{sadykov2019modern},
-for a complete technical discussion on the common ingredients of modern and advanced BPC frameworks.
+For a comprehensive technical discussion of the components of
+modern and advanced BPC frameworks, see \textcite{sadykov2019modern}.
 
 \section{Evaluation Setup}
 \label{sec:results-evaluation-setup}

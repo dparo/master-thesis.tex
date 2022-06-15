@@ -422,7 +422,7 @@ Thus ensuring the correctness of the entire branch-and-cut procedure.
 	}
 	\KwResult{$n_c$: number of subtours formed}
 	\KwResult{$cc[i] \in C$: connected component of $\forall i \in V$}
-	\input{Content/Chapters/Snippets/cc-dfs-pseudoalgo.tex}
+	\input{Content/Chapters/Include/cc-dfs-pseudoalgo.tex}
 	\label{algo:cc-dfs}
 \end{algorithm}
 
@@ -596,7 +596,7 @@ can be promptly reported to the MIP optimizer to reject the candidate integral s
 	\KwData{$x^\star \in \Set*{0, 1}^{|E|},\ y^\star \in \Set*{0, 1}^{|V|}$: current integral solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
 	}
-	\input{Content/Chapters/Snippets/gsec-integral-sep-pseudoalgo.tex}
+	\input{Content/Chapters/Include/gsec-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
 \subsubsection{GSEC Fractional Separation}
@@ -657,7 +657,7 @@ We chose $\varepsilon_{\mt{GSEC}} = \epsGsecFValue$ in our implementation.
 	\KwData{$x^\star \in \R^{|E|},\ y^\star \in \R^{|V|}$: current fractional solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}
 	}
-	\input{Content/Chapters/Snippets/gsec-frac-sep-pseudoalgo.tex}
+	\input{Content/Chapters/Include/gsec-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
 \subsection{RCC separation}
@@ -708,7 +708,7 @@ Using this method, we can separate $O(N^2)$ RCCs per fractional solution.
 	\KwData{$x^\star \in \Set*{0, 1}^{|E|},\ y^\star \in \Set*{0, 1}^{|V|}$: current integral solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
 	}
-	\input{Content/Chapters/Snippets/rcc-integral-sep-pseudoalgo.tex}
+	\input{Content/Chapters/Include/rcc-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
 \begin{algorithm}
@@ -718,7 +718,7 @@ Using this method, we can separate $O(N^2)$ RCCs per fractional solution.
 	\KwData{$x^\star \in \R^{|E|},\ y^\star \in \R^{|V|}$: current fractional solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}
 	}
-	\input{Content/Chapters/Snippets/rcc-frac-sep-pseudoalgo.tex}
+	\input{Content/Chapters/Include/rcc-frac-sep-pseudoalgo.tex}
 \end{algorithm}
 
 \subsection{GLM separation}
@@ -776,7 +776,7 @@ Using this method, we can separate $O(N^2)$ GLMs per fractional solution.
 	\KwData{$x^\star \in \Set*{0, 1}^{|E|},\ y^\star \in \Set*{0, 1}^{|V|}$: current integral solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3,eq:cptp-static-model-4,eq:cptp-static-model-5}
 	}
-	\input{Content/Chapters/Snippets/glm-integral-sep-pseudoalgo.tex}
+	\input{Content/Chapters/Include/glm-integral-sep-pseudoalgo.tex}
 \end{algorithm}
 
 \begin{algorithm}
@@ -786,5 +786,5 @@ Using this method, we can separate $O(N^2)$ GLMs per fractional solution.
 	\KwData{$x^\star \in \R^{|E|},\ y^\star \in \R^{|V|}$: current fractional solution of
 		\cref{eq:cptp-static-model-0,eq:cptp-static-model-1,eq:cptp-static-model-2,eq:cptp-static-model-3}
 	}
-	\input{Content/Chapters/Snippets/glm-frac-sep-pseudoalgo.tex}
+	\input{Content/Chapters/Include/glm-frac-sep-pseudoalgo.tex}
 \end{algorithm}
