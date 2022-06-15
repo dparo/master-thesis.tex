@@ -339,20 +339,20 @@ to hold the extracted dual variables.
 \subsection{Performance profiles}
 \label{sec:results-performance-profiles}
 
-\textit{Performance profiles} are a plot representation used to benchmark optimization software,
-first presented in \textcite{dolan2002}.
-Performance profiles are simple to interpret and less subject to personal interpretation.
-In short, performance profiles plot the cumulative distribution function with respect to a performance metric.
-We test $H$ algorithms by running them on $M$ problem instances.
-In the X-axis, we plot the performance metric ratio with respect to a baseline.
-The baseline is computed as the best performance achieved by all the algorithms under analysis.
-The Y-axis instead shows the probability of being within an X ratio from the baseline.
+\textit{Performance profiles}, first introduced in \textcite{dolan2002},
+are a plot representation used to benchmark optimization software.
+These novel plot representations are easy to interpret and less susceptible to personal interpretation.
+In a nutshell, performance profiles represent the cumulative distribution function of a performance metric.
+We put $H$ algorithms to the test by running them through $M$ problem instances.
+The performance metric ratio relative to a baseline is plotted on the X-axis.
+The baseline is calculated as the best performance obtained from all the algorithms under consideration.
+Instead, the Y-axis depicts the likelihood of being within an X ratio of the baseline.
 
 \medskip
 
-We've extensively employed performance profiles to compare the competitiveness of
-our proposed branch-and-cut based pricer
-against the RCSP dynamic programming algorithm used by \bapcod{} \parencite{pessoa2020generic}.
+We used performance profiles extensively
+to compare the competitiveness of our proposed BAC-based pricer
+to the RCSP dynamic programming algorithm used by \bapcod{} \parencite{pessoa2020generic}.
 
 \begin{comment}
 In this thesis, we will use performance profiles extensively to measure each solver by exploiting two performance metrics: \textbf{Time metric}, \textbf{Cost metric}.
