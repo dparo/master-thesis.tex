@@ -53,7 +53,7 @@ As a result, until the early 2000s,
 branch-and-cut approaches were deemed the best approach for solving the CVRP.
 
 In \citeyear{desrochers1992}, \citeauthor{desrochers1992}
-proposed a dynamic programming-based label correcting algorithm for the SPPRC,
+proposed a dynamic programming-based label-correcting algorithm for the SPPRC,
 and devised it within a \textit{branch-and-price} (BAP) scheme to tackle the VRPTW.
 This labeling algorithm is still a key component of modern BPC schemes
 for efficiently solving the \texit{pricing problem}.
@@ -64,49 +64,53 @@ which were later generalized in \textcite{desaulniers2008}.
 \Textcite{kohl1999} was one of the first works to attempt
 to integrate cutting planes within a BAP framework for solving the CVRP.
 
+\Textcite{fukasawa2006} achieved one of the outstanding breakthroughs in column generation and VRP research.
+\Citeauthor{fukasawa2006} were the first authors to propose a BPC algorithm
+that incorporated a powerful robust-cuts-based cutting-plane approach normally found in BAC algorithms.
+\citeauthor{fukasawa2006} integrated the cutting-planes proposed in \cite{lysgaard2004},
+and the column generation considered only $q$-routes with $k$-cycles elimination.
+See \cref{sec:branch0-and-price, sec:solving-the-pricing-problem} for a thorough introduction.
+\textcite{fukasawa2006} was able to solve many CVRP instances for up to $100$ customers approximately.
+From the work of \citeauthor{fukasawa2006} until now,
+the column generation and the label-correcting algorithm
+have stood as the de facto procedures of modern and efficient VRP solvers.
+
+\Textcite{baldacci2008} later proposed a slightly different approach compared to \textcite{fukasawa2006}.
+They employ a column generation scheme considering elementary routes
+with additional cutting planes.
+Furthermore, they used a bounding procedure to improve the dual bound
+and reduce the number of routes to consider.
+They turned off branching and used \textit{route enumeration}
+at the root node to generate a comprehensive MIP model to be solved directly.
+Refer to \cref{sec:branching-and-cut-generation-within-bap-frameworks} for additional details
+regarding \textit{route enumeration}.
+\textcite{pessoa2008} improves over the work of \textcite{fukasawa2006}
+by integrating the works of \textcite{fukasawa2006, baldacci2008}
+through hybridization between traditional branching and enumeration.
+Instead, \textcite{contardo2011} takes a different approach.
+It considers $q$-routes with 2-cycle eliminations and employs non-robust k-CECs cuts
+to enforce elementarity.
+
+The ng-routes,
+first proposed in \textcite{baldacci2011},
+are a very effective partial (soft) elementarity relaxation commonly found
+in contemporary efficient BPCs for the VRP.
+The ng-routes relaxation significantly reduces the pricing problem's complexity
+while producing reasonable dual-bounds.
+\textcite{ropke2012} revisits the work \citeauthor{fukasawa2006}
+and applies the ng-routes relaxation and strong branching schemes.
+For a thorough introduction on the ng-routes relaxation, refer to \cref{sec:solving-the-pricing-problem}.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Continue reviewing from here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-One of the major breakthrough in column generation and VRP research
-was obtained in \textcite{fukasawa2006}, which were the
-first authors to propose a branch-price-and-cut (BPC) algorithm,
-embedding a powerful robust-cuts based cutting-plane approach
-typically found in BAC algorithms.
-\citeauthor{fukasawa2006} integrated the cutting-planes proposed in \cite{lysgaard2004},
-and the column generation considered only q-routes with $k$-cycles elimination.
-\textcite{fukasawa2006} was able to solve all CVRP instances up to approximately 100 customers.
-Since the work of \citeauthor{fukasawa2006} until now, column generation
-and the label-setting algorithm have been the de-facto procedures
-of modern and efficient VRP solvers.
-
-Later, \textcite{baldacci2008}, proposed a slightly different approach w.r.t. \textcite{fukasawa2006}.
-They employ a column generation considering elementary routes and additional inequalities.
-\citeauthor{baldacci2008} employed a bounding procedure to quickly
-improve the dual bound while also reducing the number
-of pricing iterations and the number of columns to take into consideration.
-Instead of branching, they employed full enumeration of the candidate
-routes and use a MIP package to solve the associated problem at the root node.
-\textcite{pessoa2008} improves over the work of \textcite{fukasawa2006}
-by integrating the work of \textcite{baldacci2008}
-through an hybridization between traditional branching and enumeration.
-\textcite{contardo2011} instead it takes a different approach.
-It considers $q$-routes with 2-cycle eliminations, and non-robust
-k-CECs cuts are used to enforce elementarity.
-
-\textcite{baldacci2011} propose the ng-routes, a very effective
-partial (soft) elementarity constraint employed in modern VRP solvers,
-that trade-offs the elementarity condition (i.e. good dual bound in pricing)
-for a simpler pricer problem.
-\textcite{ropke2012} revisits the work \citeauthor{fukasawa2006} and applies
-the ng-routes relaxation and strong branching schemes.
 
 \textcite{contardo2014} improve over \textcite{contardo2011}
 by proposing an effective enumeration scheme and employed
 $q$-routes with 2-cycle elimination, ng-routes with ng-set size 8,
 non-robust k-CECs cuts to avoid larger cycles
 and the decremental state-space relaxation technique.
-With this approach they were able to solve CVRP instances made of 151 customers.
+With this approach they were able to solve CVRP instances made of $151$ customers.
 
 \textcite{martinelli2014} extends the decremental state-space relaxation
 to handle ng-sets.
@@ -129,6 +133,10 @@ Thanks to the major advancements on the past decades
 on exact BPC algorithms
 have led to exact solutions of CVRP problems composed of
 more than 300 customers \parencite{costa2019}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Finish reviewing up to here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Once we introduce the pricing sub-problem induced by BAP/BPC frameworks
 in \cref{sec:branch-and-price},
