@@ -34,7 +34,7 @@ where \texttt{.vrp} is the file extension,
 Finally, \texttt{<F>} represents the set instance family.
 \texttt{<F>} is a single letter that uniquely identifies the instance
 set and the authors who published such a set.
-\texttt{P-n40-k5.vrp} , for example, denotes a test instance made up
+\texttt{P-n40-k5.vrp}, for example, denotes a test instance made up
 of $40$ nodes ($39$ customers) and $5$ vehicles.
 The \texttt{P} in the name refers to the instance set family,
 which was published in \textcite{augerat1995}.
@@ -362,8 +362,13 @@ allows us to select the best algorithm
 based on its convergence speed over a limited time frame (time-limit).
 When plotting the optimal value in the \textit{cost profiles}, on the other hand,
 we can validate the pricer that would feed the BPC framework with tighter dual bounds.
-
-% TODO(dparo): write the sentinel values used when plotting the opptimal value
+Because the optimal value $z$ always satisfies $z \le 0$,
+we used two sentinel values to accentuate some specific circumstances.
+When a pricer successfully determines that no reduced cost route exists
+($z \ge \varepsilon_{\mt{ct}}$,
+we output $z = 1$ in the associated performance profile.
+Instead, if the pricer fails to solve the PP optimally within the timelimit,
+we output $z = 10$.
 
 \medskip
 
@@ -371,6 +376,17 @@ In this thesis, we evaluated the efficiency of our proposed BAC-based pricer
 using both the \textit{cost and time profiles}.
 Our pricer's efficiency is compared to the RCSP dynamic programming algorithm
 included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{./Imgs/perfprof-tsp-example/time-ratio20.0.cropped.pdf}
+	\caption{
+		This example of a \textit{time profile} depicts two exact algorithms for the TSP under analysis.
+		A vertical straight line on the entire left side of the plot would represent the best scenario.
+		In the situation depicted in the figure, the algorithm named \texttt{FLOW-1|EXT\_CONST=1} outperforms the other algorithm in the vast majority of cases.
+	}
+	\label{fig:example-of-time-profile-tsp}
+\end{figure}
 
 \section{Empirical Results}
 \label{sec:results-empirical-results}
