@@ -344,15 +344,31 @@ are a plot representation used to benchmark optimization software.
 These novel plot representations are easy to interpret and less susceptible to personal interpretation.
 In a nutshell, performance profiles represent the cumulative distribution function of a performance metric.
 We put $H$ algorithms to the test by running them through $M$ problem instances.
-The performance metric ratio relative to a baseline is plotted on the X-axis.
+The metric under consideration in \textit{performance profiles}
+is typically the overall running time of an algorithm.
+When the metric under measurement is the running time, we obtain the so-called \textit{time profiles}.
+
+In \textit{time profiles}, the time ratio relative to a baseline is plotted on the X-axis.
 The baseline is calculated as the best performance obtained from all the algorithms under consideration.
 Instead, the Y-axis depicts the likelihood of being within an X ratio of the baseline.
+In \textit{time profiles}, the ideal solver appears as a straight vertical line on the entire left of the plot.
+An example of a \textit{time profile} is provided in \cref{fig:example-of-time-profile-tsp}.
+
+In our case, we also employ the so-called \textit{cost profiles} to plot either the optimal value
+or the best dual-bound found from each algorithm.
+Instead of computing its ratio w.r.t. a baseline, the raw value of the metric is plotted directly.
+Recording the dual bounds inside a \textit{cost profile}
+allows us to select the best algorithm
+based on its convergence speed over a limited time frame (time-limit).
+When plotting the optimal value in the \textit{cost profiles}, on the other hand,
+we can validate the pricer that would feed the BPC framework with tighter dual bounds.
 
 \medskip
 
-We used performance profiles extensively
-to compare the competitiveness of our proposed BAC-based pricer
-to the RCSP dynamic programming algorithm used by \bapcod{} \parencite{pessoa2020generic}.
+In this thesis, we evaluated the efficiency of our proposed BAC-based pricer
+using both the \textit{cost and time profiles}.
+Our pricer's efficiency is compared to the RCSP dynamic programming algorithm
+included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{}.
 
 \begin{comment}
 In this thesis, we will use performance profiles extensively to measure each solver by exploiting two performance metrics: \textbf{Time metric}, \textbf{Cost metric}.
