@@ -1,7 +1,8 @@
 \chapter{Literature Review on CVRP exact methods}
 \label{sec:intro-literature-review}
 
-This chapter lists some significant contributions regarding exact approaches in the CVRP and VRPTW domains.
+This chapter lists some significant contributions regarding exact approaches
+in the CVRP and VRPTW domains.
 
 \textcite{dantzig1959} were
 the pioneers of the contemporary vehicle routing problem two
@@ -91,52 +92,44 @@ Instead, \textcite{contardo2011} takes a different approach.
 It considers $q$-routes with 2-cycle eliminations and employs non-robust k-CECs cuts
 to enforce elementarity.
 
-The ng-routes,
-first proposed in \textcite{baldacci2011},
-are a very effective partial (soft) elementarity relaxation commonly found
-in contemporary efficient BPCs for the VRP.
+The ng-routes, first proposed in \textcite{baldacci2011},
+are a very effective partial (soft) elementarity relaxation
+commonly found in contemporary efficient BPCs for the VRP.
 The ng-routes relaxation significantly reduces the pricing problem's complexity
 while producing reasonable dual-bounds.
 \textcite{ropke2012} revisits the work \citeauthor{fukasawa2006}
 and applies the ng-routes relaxation and strong branching schemes.
-For a thorough introduction on the ng-routes relaxation, refer to \cref{sec:solving-the-pricing-problem}.
+Refer to \cref{sec:solving-the-pricing-problem} for a thorough introduction to the ng-routes relaxation.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Continue reviewing from here
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\Textcite{contardo2014} outperforms \textcite{contardo2011}
+by proposing: an effective enumeration scheme with
+$q$-routes with 2-cycle elimination, ng-routes relaxation with ng-sets of size $8$,
+non-robust $k$-CECs cuts to avoid larger cycles
+and the \textit{decremental state-space relaxation} technique.
+They were able to solve CVRP instances made up of $151$ customers using this approach.
+The \textit{decremental state-space relaxation} is extended to handle ng-sets in \textcite{martinelli2014},
+where the size of the ng-sets size is dynamically enlarged to seek better dual bounds.
+For more information on the \textit{decremental state-space relaxation},
+see \cref{sec:solving-the-pricing-problem}.
 
-\textcite{contardo2014} improve over \textcite{contardo2011}
-by proposing an effective enumeration scheme and employed
-$q$-routes with 2-cycle elimination, ng-routes with ng-set size 8,
-non-robust k-CECs cuts to avoid larger cycles
-and the decremental state-space relaxation technique.
-With this approach they were able to solve CVRP instances made of $151$ customers.
+\Textcite{pecin2017improved} proposed another modern BCP algorithm for solving the CVRP.
+They solved $200$-customers-CVRP instances and with some successes in solving some $360$-customers instances.
+Their work featured the following modern components:
+(i) bidirectional label-setting algorithm for solving the pricing problem,
+(ii) ng-routes relaxation,
+(iii) non-robust lm-SRCs cuts,
+(iv) modern dual smoothing
+and (v) route enumeration.
+\Textcite{pecin2017new} extends the work of \textcite{pecin2017improved} to the VRPTW.
+On the day of writing, \textcite{pessoa2018enhanced, pessoa2020generic}
+are the current state-of-the-art BCP framework for solving the CVRP
+based on column generation with ng-routes relaxation.
+\Textcite{pessoa2020generic} was able to optimally solve six opened CVRP instances
+from the X test-set \parencite{uchoa2017} of up to $548$ customers.
 
-\textcite{martinelli2014} extends the decremental state-space relaxation
-to handle ng-sets.
-In their approach the size of the ng-sets size
-is enlarged dynamically in order to seek for more effective dual bounds.
-
-Another modern BCP algorithm was proposed in \textcite{pecin2017improved}.
-By using a bidirectional label setting algorithm,
-lm-SRCs cuts, modern dual smoothing and enumeration approaches
-and the ng-routes relaxation, they were able to solve CVRP instances made of 200 customers
-and also some instances up to 360 customers.
-\textcite{pecin2017new} extends the work of \textcite{pecin2017improved} to the VRPTW variant.
-At the day of writing, \textcite{pessoa2018enhanced, pessoa2020generic} are the current state-of-the-art
-BCP frameworks based on column generation with ng-routes relaxation
-for solving the CVRP problem.
-\textcite{pessoa2020generic} was able to solve to optimality six opened
-CVRP instances of up to 548 customers from the instances of family set X \parencite{uchoa2017}.
-
-Thanks to the major advancements on the past decades
-on exact BPC algorithms
-have led to exact solutions of CVRP problems composed of
-more than $300$ customers \parencite{costa2019}.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Finish reviewing up to here
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Due to significant advances in exact BPC algorithms over the last decades,
+today,
+we are able to optimally solve CVRPs with more than $300$ customers \parencite{costa2019}.
 
 Once we introduce the pricing sub-problem induced by BAP/BPC frameworks
 in \cref{sec:branch-and-price},
@@ -144,22 +137,3 @@ we will discuss additional contributions regarding this problem domain,
 see \cref{sec:solving-the-pricing-problem}.
 For a literature review on branch-and-cut approaches for pricing, see later discussion
 in \cref{sec:bac-approaches-for-the-pricing-problem}.
-
-\begin{comment}
-\cite{jepsen2011}
-
-Before 1980 very few exact algorithms for cvrp and vrptw had been
-proposed, but in the early 1980s two new exact methods where proposed.
-From this point the history of exact methods for cvrp and vrptw can
-be divided into three phases. The first phase was the introduction of the
-Set Partition and the development of Branch-and-Cut-and-Price (bp) algo-
-rithms using a relaxed pricing problem. The second was the development of
-Branch-and-Cut (bac) algorithms. In the current phase the pricing problem
-is no longer relaxed and cuts in the master problem of the Branch-and-Cut-
-and-Price algorithms is used. The first two phases where started at the same
-point in time and there is still development on the algorithms in the context
-of cvrp and vrptw. The algorithms from these two phases are also used
-on several other variants of the Vehicle Routing Problem. The third phase
-was started in the middle of the 2000s and the algorithms from this phase
-are currently the best overall performing algorithms.
-\end{comment}
