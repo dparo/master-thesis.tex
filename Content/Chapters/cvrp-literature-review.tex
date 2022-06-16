@@ -4,16 +4,16 @@
 This chapter lists some significant contributions regarding exact approaches
 in the CVRP and VRPTW domains.
 
-\textcite{dantzig1959} were
-the pioneers of the contemporary vehicle routing problem two
+\Textcite{dantzig1959} were
+the pioneers of the contemporary vehicle routing problem who
 introduced the CVRP problem to the masses.
 A few years later, \textcite{clarke1964} proposes
 an effective greedy heuristic algorithm for tackling the CVRP.
 The presentation of this new problem led to a whole new branch
 of scientific research within the operations research community.
 In the last 60 years, a huge number of contributors in
-the operations research community has studied and proposed many
-mathematical models and algorithms, both exact and (meta-)heuristic,
+the operations research field have studied and proposed many
+mathematical models and algorithms, both exact and meta-heuristic,
 for solving the VRP.
 
 Until roughly the late 1980s, exact approaches to the CVRP were
@@ -32,8 +32,8 @@ proposed a branch-and-cut framework and
 a set of improved separation procedures for the valid CVRP inequalities that were known at the time.
 Other notable BAC-based contributions
 can be found in \textcite{araqueg1994, augerat1995, achuthan1996, blasum2000, ralphs2003, achuthan2003, baldacci2004}.
-\citeauthor{baldacci2004} was able to solve a 135 customers-sized routing problem
-from the F test-set  \textcite{fisher1994}
+\citeauthor{baldacci2004} was able to solve a $135$ customers-sized routing problem
+from the F test-set \parencite{fisher1994}
 for the first time.
 
 Despite the promising results, nonetheless,
@@ -45,7 +45,7 @@ proved exceedingly challenging to solve exactly.
 are a few very early attempts at applying the \textit{Set Partitioning} (SP) formulation
 and a \textit{column generation} scheme to routing problems.
 The \textit{Set Partitioning} formulation and the \textit{column generation}
-will be  presented in more details in \cref{sec:set-partitioning-formulation, sec:column-generation-and-pricing-problem}
+will be  presented in more details in \cref{sec:set-partitioning-formulation,sec:column-generation-and-pricing-problem}
 respectively.
 These authors demonstrated that the column generation scheme proved very satisfactory
 for solving the VRPTW under tight constraints
@@ -53,7 +53,7 @@ but did not achieve remarkable results for the CVRP at the time.
 As a result, until the early 2000s,
 branch-and-cut approaches were deemed the best approach for solving the CVRP.
 
-In \citeyear{desrochers1992}, \citeauthor{desrochers1992}
+\Textcite{desrochers1992}
 proposed a dynamic programming-based label-correcting algorithm for the SPPRC,
 and devised it within a \textit{branch-and-price} (BAP) scheme to tackle the VRPTW.
 This labeling algorithm is still a key component of modern BPC schemes
@@ -70,7 +70,7 @@ to integrate cutting planes within a BAP framework for solving the CVRP.
 that incorporated a powerful robust-cuts-based cutting-plane approach normally found in BAC algorithms.
 \citeauthor{fukasawa2006} integrated the cutting-planes proposed in \cite{lysgaard2004},
 and the column generation considered only $q$-routes with $k$-cycles elimination.
-See \cref{sec:branch0-and-price, sec:solving-the-pricing-problem} for a thorough introduction.
+See \cref{sec:branch-and-price,sec:solving-the-pricing-problem} for a thorough introduction.
 \textcite{fukasawa2006} was able to solve many CVRP instances for up to $100$ customers approximately.
 From the work of \citeauthor{fukasawa2006} until now,
 the column generation and the label-correcting algorithm
@@ -97,7 +97,7 @@ are a very effective partial (soft) elementarity relaxation
 commonly found in contemporary efficient BPCs for the VRP.
 The ng-routes relaxation significantly reduces the pricing problem's complexity
 while producing reasonable dual-bounds.
-\textcite{ropke2012} revisits the work \citeauthor{fukasawa2006}
+\textcite{ropke2012} revisits the work \textcite{fukasawa2006}
 and applies the ng-routes relaxation and strong branching schemes.
 Refer to \cref{sec:solving-the-pricing-problem} for a thorough introduction to the ng-routes relaxation.
 
@@ -113,7 +113,7 @@ For more information on the \textit{decremental state-space relaxation},
 see \cref{sec:solving-the-pricing-problem}.
 
 \Textcite{pecin2017improved} proposed another modern BCP algorithm for solving the CVRP.
-They solved $200$-customers-CVRP instances and with some successes in solving some $360$-customers instances.
+They solved $200$-customers-CVRP instances and with successes in solving some $360$-customers instances.
 Their work featured the following modern components:
 (i) bidirectional label-setting algorithm for solving the pricing problem,
 (ii) ng-routes relaxation,
@@ -130,6 +130,8 @@ from the X test-set \parencite{uchoa2017} of up to $548$ customers.
 Due to significant advances in exact BPC algorithms over the last decades,
 today,
 we are able to optimally solve CVRPs with more than $300$ customers \parencite{costa2019}.
+
+\medskip
 
 Once we introduce the pricing sub-problem induced by BAP/BPC frameworks
 in \cref{sec:branch-and-price},
