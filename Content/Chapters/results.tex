@@ -363,20 +363,14 @@ based on its convergence speed over a limited time frame (time-limit).
 When plotting the optimal value in the \textit{cost profiles}, on the other hand,
 we can validate the pricer that would feed the BPC framework with tighter dual bounds.
 
+% TODO(dparo): write the sentinel values used when plotting the opptimal value
+
 \medskip
 
 In this thesis, we evaluated the efficiency of our proposed BAC-based pricer
 using both the \textit{cost and time profiles}.
 Our pricer's efficiency is compared to the RCSP dynamic programming algorithm
 included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{}.
-
-\begin{comment}
-In this thesis, we will use performance profiles extensively to measure each solver by exploiting two performance metrics: \textbf{Time metric}, \textbf{Cost metric}.
-
-A \textbf{Time performance profile} will tell us which resolution method is the fastest in terms of runtime.
-A \textbf{Cost performance profile}, instead, will show us the cost ratio of the best upper bound obtained from each resolution method.
-The ground truth optimal, as extracted from the dataset, is used instead as the cost baseline.
-\end{comment}
 
 \section{Empirical Results}
 \label{sec:results-empirical-results}
