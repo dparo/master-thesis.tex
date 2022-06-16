@@ -366,9 +366,9 @@ Because the optimal value $z$ always satisfies $z \le 0$,
 we used two sentinel values to accentuate some specific circumstances.
 When a pricer successfully determines that no reduced cost route exists
 ($z \ge \varepsilon_{\mt{ct}}$,
-we output $z = 1$ in the associated performance profile.
+we output $z = 1.0$ in the associated performance profile.
 Instead, if the pricer fails to solve the PP optimally within the timelimit,
-we output $z = 10$.
+we output $z = 2.0$.
 
 \medskip
 
@@ -388,42 +388,6 @@ included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{
 	\label{fig:example-of-time-profile-tsp}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\begin{subfigure}[b]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{./Imgs/perfprof-tsp-example/time-ratio20.0.cropped.pdf}
-		\caption{$y=x$}
-		\label{fig:test-a}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{./Imgs/perfprof-tsp-example/time-ratio20.0.cropped.pdf}
-		\caption{$y=3sinx$}
-		\label{fig:test-b}
-	\end{subfigure}
-
-	\
-
-	\begin{subfigure}[b]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{./Imgs/perfprof-tsp-example/time-ratio20.0.cropped.pdf}
-		\caption{$y=x$}
-		\label{fig:test-c}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{./Imgs/perfprof-tsp-example/time-ratio20.0.cropped.pdf}
-		\caption{$y=3sinx$}
-		\label{fig:test-d}
-	\end{subfigure}
-
-	\caption{Three simple graphs. Look at how cool \cref{fig:test-a} is}
-	\label{fig:three graphs}
-\end{figure}
-
 \section{Empirical Results}
 \label{sec:results-empirical-results}
 
@@ -440,6 +404,9 @@ included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{
 % TODO(dparo): First batch: 1 Thread, 60 seconds of timelimit, we compare the dual bounds
 
 % TODO(dparo): second batch: 16 threads, 20 minutes of timelimit
+
+\input{Content/Chapters/Include/perfprofs-batch1.tex}
+\input{Content/Chapters/Include/perfprofs-batch2.tex}
 
 \begin{comment}
 Each performance profile follows the syntax:
