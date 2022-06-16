@@ -391,9 +391,23 @@ included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{
 \section{Empirical Results}
 \label{sec:results-empirical-results}
 
-\mytodo{Describe that only the last 10 pricing instances were used for comparison}
+The empirical results are presented in this section.
+The results were obtained on a desktop computer equipped with
+an AMD Ryzen 7 1700X 3.4GHz with 8 cores (16 virtual cores),
+2x8 GBs of memory @ 3200 MHz (part number: CMK16GX4M2B3200C16),
+running a GNU/Linux operating system with kernel v5.18.3 and Glibc v2.35.
+For our BAC pricer's implementation, we used CPLEX version 22.1 (released in March 2022).
 
-\mytodo{Describe operating system, processor speed, etc}
+We extracted some pricing problems according to \cref{sec:results-evaluation-process}.
+However, of all the PPs that were generated for each inflated CVRP instance,
+we keep only the last ten pricing iterations produced by the CG algorithm of \bapcod{}.
+
+As a result, we totaled $70$ PPs from the E test-set,
+$30$ from the F test set,
+$210$ from the A test set,
+$190$ from the B test set
+and $240$ from the P test set
+for each inflation scaling factor $s$.
 
 \mytodo{Introduce common issues in performance evaluation of chaotic systems. Solution through randomized runs with different starting seeds}
 
