@@ -78,7 +78,7 @@ It could also be interesting to try out
 compact formulations (polynomial number of constraints) in the context of pricing:
 such as sequential formulation (MTZ) \parencite{miller1960},
 single commodity flow formulations (FLOW-1) \parencite{gavish1978travelling}
-or multi commodity flow formulations (MCF) \parencite{{wong1980integer,claus1984new}.
+or multi commodity flow formulations (MCF) \parencite{wong1980integer,claus1984new}.
 However, in \textcite{taccari2016}, compact formulations have shown
 to be empirically unsatisfactory for the non-resource constrained ESPP.
 However, it may still be interesting to study a hybrid formulation approach,
@@ -91,7 +91,7 @@ and we relied on the branching schemes provided from CPLEX.
 It could be beneficial to test other branching schemes such as branching over cut-sets
 such as the Rounded Capacity Constraints (RCC).
 
-Study and develop novel cutting planes, branching approaches and efficient separation algorithms
+Study and develop or extend novel cutting planes, branching approaches and efficient separation algorithms
 that are effective in the context of pricing.
 Tune the violation threshold parameters through guided empirical measurements.
 Use the sparser GSEC formulation of \labelcref{eq:cptp-gsec-constraints-v2}
@@ -177,13 +177,6 @@ near zero are solved to optimality. However, our experiments indicate that the B
 when the number of nodes increases (to more than the current maximum of 151 nodes for the CVRP). To sum up, the BAC
 algorithm solved 58 out of a total 76 instances which is 18 more than the dynamic programming algorithms, and the BAC
 algorithm appears to have its strength when the number of nodes is large.
-\end{comment}
-
-\begin{comment}
-\cite{jepsen2014}
-We believe that there is a large unexploited potential in BAC algorithms for CPTP, and hence the paper is intended to
-serve as a platform for further development, also acting as a survey/tutorial. Future research can experiment with subsets
-of the presented cuts, extensions of the cuts, and the interplay between these.
 \end{comment}
 
 \begin{comment}
