@@ -34,6 +34,7 @@ The empirical results were discussed in \cref{sec:results-empirical-results,sec:
 While we did not achieve outstanding results in all cases,
 we demonstrated that the BAC framework outperforms
 the labeling algorithm as the vehicle capacity bound increases.
+However, it has to be noted that our BAC pricer solves a much harder problem.
 Our results imply that further research on BAC-based pricer approaches
 may provide additional benefits to modern VRP solvers.
 BAC-based pricers may be integrated within branch-and-price (BAP) frameworks
@@ -42,82 +43,51 @@ supplementing the traditional dynamic programming labeling algorithm.
 \section{Improvements and Future Work}
 \label{sec:conclusions-improvements-and-future-work}
 
-In the section \cref{sec:conclusions-improvements-and-future-work},
-we discuss improvements and future work regarding our BAC-based pricer.
+In the section \cref{sec:conclusions-improvements-and-future-work}, we discuss improvements and future work regarding our BAC-based pricer.
 
 We start by discussing some possible improvements.
 
-The labeling algorithm for pricing $q$-routes of \textcite{desrochers1992} could be integrated
-to provide a good initial dual bounds to the CPLEX MIP optimizer.
-Additionally, preprocessing algorithms may be studied and implemented to reduce
-the search-space size of the CPTP.
+The labeling algorithm for pricing $q$-routes of \textcite{desrochers1992} could be integrated to provide sensible dual bounds to the CPLEX MIP optimizer in the early stages.
+Preprocessing algorithms may also be studied and implemented to reduce the search-space size of the CPTP.
 
-Mathheuristics \parencite{fischetti2018},
-such as local branching \parencite{fischetti2003} or hard fixing,
-could be employed to transform an exact BAC algorithm to a heuristic one.
-Mathheuristics reduce the size a problem
-by starting from a feasible solution and imposing additional invalid constraints.
-These constraints typically limit the search-space to
-solutions resting "closely" to the current incumbent.
-Mathheuristics could also be employed to drive a faster convergence
-toward sensible dual bounds in reduced computation time.
-Having good dual bounds reasonably quickly reduces the number of branch-and-bounds produced,
-which improves memory consumption.
-In the best-case scenario, it may also reduce the overall running time.
-The utility of mathheuristics at pricing should be investigated further.
+Mathheuristics \parencite{fischetti2018}, such as \textit{local branching} \parencite{fischetti2003} or \textit{hard-fixing}, could be used to transform an exact BAC algorithm into a heuristic one.
+Mathheuristics shrinks by imposing additional invalid constraints.
+These constraints typically limit the search space to solutions resting "closely" to a candidate point.
+The utility of mathheuristic approaches should be investigated further in the context of pricing.
 
-Another possible method to improve convergence speed and simplify
-the model, could be to emulerate the \textit{decremental state space relaxation} (DSSR)
-of \textcite{boland2006, righini2008, martinelli2014}.
-We can initially relax the model to allow for non-elementary $q$-routes.
-Than within the BAC procedure we generate cutting-planes starting from integral solutions
-to enforce elementarity slowly overtime by strengthening the bounds associated
-to CPTP $y_i$ variables subject to elementarity violation.
+Readjusting the \textit{decremental state-space relaxation} (DSSR) of \textcite{boland2006, righini2008, martinelli2014} to a BAC approach, may also be a viable option for accelerating convergence towards optimal solutions.
+Initially, the BAC-pricer could be asked to generate non-elementary $q$-routes.
+The elementarity condition could then be gradually enforced over time using an integral cutting-planes approach by strengthening the bounds associated with the$y_i \forall i \in V$ decision variables that violated the elementarity condition.
 
-It could also be interesting to try out
-compact formulations (polynomial number of constraints) in the context of pricing:
-such as sequential formulation (MTZ) \parencite{miller1960},
-single commodity flow formulations (FLOW-1) \parencite{gavish1978travelling}
-or multi commodity flow formulations (MCF) \parencite{wong1980integer,claus1984new}.
-However, in \textcite{taccari2016}, compact formulations have shown
-to be empirically unsatisfactory for the non-resource constrained ESPP.
-However, it may still be interesting to study a hybrid formulation approach,
-by combining decision variables, cutting planes and branching strategies
-attributed to compact formulations.
+Porting the ng-routes relaxation to a BAC framework could be an intriguing research topic, though it may be impractical in practice.
+
+
+%%%%
+%%%% Continue review from here
+%%%%
+
+It could also be interesting to try out compact formulations (polynomial number of constraints) in the context of pricing: such as sequential formulation (MTZ) \parencite{miller1960}, single commodity flow formulations (FLOW-1) \parencite{gavish1978travelling} or multi commodity flow formulations (MCF) \parencite{wong1980integer,claus1984new}.
+However, in \textcite{taccari2016}, compact formulations have shown to be empirically unsatisfactory for the non-resource constrained ESPP.
+However, it may still be interesting to study a hybrid formulation approach, by combining decision variables, cutting planes and branching strategies attributed to compact formulations.
 
 Improve the cutting planes and branching strategies.
-For example, we didn't develop any custom branching constraints
-and we relied on the branching schemes provided from CPLEX.
-It could be beneficial to test other branching schemes such as branching over cut-sets
-such as the Rounded Capacity Constraints (RCC).
+For example, we didn't develop any custom branching constraints and we relied on the branching schemes provided from CPLEX.
+It could be beneficial to test other branching schemes such as branching over cut-sets such as the Rounded Capacity Constraints (RCC).
 
-Study and develop or extend novel cutting planes, branching approaches and efficient separation algorithms
-that are effective in the context of pricing.
+Study and develop or extend novel cutting planes, branching approaches and efficient separation algorithms that are effective in the context of pricing.
 Tune the violation threshold parameters through guided empirical measurements.
-Use the sparser GSEC formulation of \labelcref{eq:cptp-gsec-constraints-v2}
-whenever possible to reduce memory consumption.
+Use the sparser GSEC formulation of \labelcref{eq:cptp-gsec-constraints-v2} whenever possible to reduce memory consumption.
 
 \medskip
 
-In the future, it would be interesting to investigate the competitiveness of our approach
-by instead measuring the time required to solve the entire CVRP instance
-with the BPC algorithm using the BAC algorithm as a pricer.
-Doing so would require additional implementation efforts to port the BAC-pricer to \bapcod{},
-requiring the development of a C++ translation layer
-to route the \bapcod{} pricing requests to our BAC pricer.
+In the future, it would be interesting to investigate the competitiveness of our approach by instead measuring the time required to solve the entire CVRP instance with the BPC algorithm using the BAC algorithm as a pricer.
+Doing so would require additional implementation efforts to port the BAC-pricer to \bapcod{}, requiring the development of a C++ translation layer to route the \bapcod{} pricing requests to our BAC pricer.
 
-Port the ng-routes to the BAC algorithm.
-
-As a final side-note, it would be interesting to see if
-the same results obtained for the CVRP also apply to the VRPTW.
-However, this scenario would necessitate radical modifications
-to the pricer implementation, MIP model and cutting planes.
-In the VRPTW, the MIP model needs to be modified into an ESPPRC
-to account for time window slots.
-Time window slots must be modeled as big-M constraints,
-which are known to be computationally unstable \parencite{jepsen2008branchandcut}.
-Despite the VRPTW is beyond the scope of this thesis,
-it could be an interesting subject for studying BAC-based pricers in the future.
+As a final side-note, it would be interesting to see if the same results obtained for the CVRP also apply to the VRPTW.
+However, this scenario would necessitate radical modifications to the pricer implementation, MIP model and cutting planes.
+In the VRPTW, the MIP model needs to be modified into an ESPPRC to account for time window slots.
+Time window slots must be modeled as big-M constraints, which are known to be computationally unstable \parencite{jepsen2008branchandcut}.
+Despite the VRPTW is beyond the scope of this thesis, it could be an interesting subject for studying BAC-based pricers in the future.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,32 +101,18 @@ it could be an interesting subject for studying BAC-based pricers in the future.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Use min-cut heuristic procedures to improve
-the running time of the fractional separation
-such as is done \textcite{kernighan1970}.
-Such heuristic procedure may overestimate the maxflow
-value thus the fractional separation procedure may
-become blind to certain violated inequalities that were
-there, but couldn't be computed due to the heuristic procedure.
-Since the heuristic is faster than the exact push-relabel
-algorithm ($O(N^{2.2})$), it may be run on each fractional
-separation.
+Use min-cut heuristic procedures to improve the running time of the fractional separation such as is done \textcite{kernighan1970}.
+Such heuristic procedure may overestimate the maxflow value thus the fractional separation procedure may become blind to certain violated inequalities that were there, but couldn't be computed due to the heuristic procedure.
+Since the heuristic is faster than the exact push-relabel algorithm ($O(N^{2.2})$), it may be run on each fractional separation.
 
-Improve the running time of the GSEC separation by employing an heuristic
-Dijkstra algorithm in the support graph induced from the non-zero fractional solutions $x^\star_e > 0 \quad \forall e \in E$.
-The min-cut and Gomory-Hu tree algorithms may be employed only if the first approach
-doesn't find any violated inequality.
+Improve the running time of the GSEC separation by employing an heuristic Dijkstra algorithm in the support graph induced from the non-zero fractional solutions $x^\star_e > 0 \quad \forall e \in E$.
+The min-cut and Gomory-Hu tree algorithms may be employed only if the first approach doesn't find any violated inequality.
 
 Heuristic algorithm to solve maxflow???
 
-Possibly improve converge speed by using heuristic patching at each
-node of the branch-and-bound tree.
+Possibly improve converge speed by using heuristic patching at each node of the branch-and-bound tree.
 
-Furthers study, develop new (strong) cutting planes approaches,
-that achieve a good trade off between their separation and gain
-in the dual-bound improvement.
+Furthers study, develop new (strong) cutting planes approaches, that achieve a good trade off between their separation and gain in the dual-bound improvement.
 
-Note that the separation of additional valid inequalities do not
-necessarily need an exact separation procedure.
-For these reasons, heuristic separation procedures for the GLM and RCC
-cuts may provide a faster convergence of the solution approach.
+Note that the separation of additional valid inequalities do not necessarily need an exact separation procedure.
+For these reasons, heuristic separation procedures for the GLM and RCC cuts may provide a faster convergence of the solution approach.
