@@ -1,5 +1,5 @@
-\chapter{Conclusions and Future work}
-\label{sec:conclusions-and-future-work}
+\chapter{Conclusions}
+\label{sec:conclusions}
 
 We proposed a branch-and-cut framework for solving the pricing problem
 induced by Capacitated Vehicle Routing Problems (CVRPs)
@@ -39,7 +39,17 @@ may provide additional benefits to modern VRP solvers.
 BAC-based pricers may be integrated within branch-and-price (BAP) frameworks
 supplementing the traditional dynamic programming labeling algorithm.
 
-\medskip
+\section{Improvements and Future Work}
+\label{sec:conclusions-improvements-and-future-work}
+
+In the section \cref{sec:conclusions-improvements-and-future-work},
+we discuss improvements and future work regarding our BAC-based pricer.
+
+Possible improvements:
+\begin{itemize}
+	\item Algorithmic enhancements.
+	\item Improvements on implementation running time and memory efficiency.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -170,6 +180,9 @@ Note that the separation of additional valid inequalities do not
 necessarily need an exact separation procedure.
 For these reasons, heuristic separation procedures for the GLM and RCC
 cuts may provide a faster convergence of the solution approach.
+
+Branch-and-cut algorithms issue, for some instances (especially on the F-n135-k7 instance)
+memory exhaustion of the host machine is a big concern in using such approach.
 
 \begin{comment}
 \cite{jepsen2014}
