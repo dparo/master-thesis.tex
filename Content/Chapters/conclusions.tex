@@ -45,6 +45,19 @@ supplementing the traditional dynamic programming labeling algorithm.
 In the section \cref{sec:conclusions-improvements-and-future-work},
 we discuss improvements and future work regarding our BAC-based pricer.
 
+It would be interesting to see if the same results apply to the VRPTW.
+However, this scenario would necessitate radical modifications
+to the pricer implementation, the MIP model, and the cutting planes.
+In the VRPTW, the MIP model needs to be modified to account for
+time window constraints.
+Time window constraints must be modeled as big-M constraints,
+which are known to be computationally unstable \parencite{jepsen2008branchandcut}.
+Despite the VRPTW is beyond the scope of this thesis,
+it could be an interesting subject for studying BAC-based pricers in the future.
+
+As a general idea, it would be interesting to verify
+whether the same results apply for the VRPTW.
+
 Possible improvements:
 \begin{itemize}
 	\item Algorithmic enhancements.
