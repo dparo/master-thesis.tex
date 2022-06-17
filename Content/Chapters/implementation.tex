@@ -35,6 +35,10 @@ and (ii) take advantage of all the engineering effort that went into creating an
 However, there are also drawbacks to such an approach.
 Complicated relaxations or constraints, such as the ng-sets \parencite{baldacci2011},
 may be impractical to implement efficiently within a BAC algorithm.
+On top of that,
+BAC-based approaches tend to require high amounts of memory for harder problems,
+leading to tremendous performance losses
+when the MIP optimizer or the host operating system decide to swap memory to disk.
 
 \medskip
 

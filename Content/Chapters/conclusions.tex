@@ -19,7 +19,6 @@ and discussed additional contributions in the pricing problem domain.
 We identified the labeling algorithm's limitations in solving pricing problems
 with non-stringent vehicle capacities
 and its inability to scale to multiple machine cores.
-
 As a solution, we proposed a BAC algorithm to address the pricing problem,
 the implementation of which was provided in \cref{sec:implementation-chapter}.
 The BAC algorithm was built on top of the CPLEX MIP optimizer,
@@ -40,6 +39,8 @@ may provide additional benefits to modern VRP solvers.
 BAC-based pricers may be integrated within branch-and-price (BAP) frameworks
 supplementing the traditional dynamic programming labeling algorithm.
 
+\medskip
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,9 +53,6 @@ supplementing the traditional dynamic programming labeling algorithm.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The advantage of branch-and-cut software packages is that
-they allow for heavy use of parallelization basically for free,
-while current label-setting algorithms are single-threaded.
 The branch-and-cut frameworks can also be easily extended
 to become a heuristic pricer
 (see mathheuristics: adding an invalid constraint to speed up the convergence of the MIP solver)
@@ -167,9 +165,6 @@ preferred for branch-and-cut algorithms),
 computational stability issues in handling big-M
 for handling resource constraints at the edge or node level (such as time windows constraints),
 see \textcite{jepsen2008branchandcut}.
-
-Branch-and-cut algorithms issue, for some instances,
-memory exhaustion of the host machine is a big concern in using such approach.
 
 Note that the separation of additional valid inequalities do not
 necessarily need an exact separation procedure.
