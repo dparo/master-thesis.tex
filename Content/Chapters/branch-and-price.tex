@@ -23,6 +23,15 @@ The so-called branch-price-and-cut (BPC) extends the traditional BAP framework.
 Additional cutting planes are added in the BPC framework to strengthen the linear relaxations
 associated with each node, further improving the dual bounds.
 
+According to \textcite{sadykov2019modern},
+BAC approaches struggle to solve problems for which the linear relaxations
+are not sufficiently tight, even when adding cutting planes.
+This is especially true for problems with complex combinatorial structures, such as routing.
+Substantially increasing the number of decision variables is understood to improve the linear relaxations.
+Unfortunately, the large number of decision variables necessitates a method for dynamically generating them.
+Branch-and-price extends traditional BAC frameworks by dynamically generating
+the required decision variables via \textit{Column Generation}.
+
 In the following section \labelcref{sec:column-generation-and-pricing-problem}
 we will illustrate the column generation algorithm
 and the pricing problem, two vital pieces in branch-and-price frameworks.
