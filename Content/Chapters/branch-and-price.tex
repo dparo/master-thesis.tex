@@ -563,6 +563,9 @@ The number of processed labels scales with the vehicle capacity.
 By nature of the approach,
 the applicability of the labeling algorithm is limited to VRPs having stringent vehicle capacity
 and characterized by routes visiting a mediocre amount of customers each \parencite{jepsen2008branchandcut}.
+On top of that, due to its inherent nature,
+the labeling algorithm is limited by single-threaded performance
+and cannot scale to multiple machine cores.
 
 \textcite{feillet2004} extends the label-correcting algorithm
 to handle elementary paths by introducing additional fictitious resources for each node.

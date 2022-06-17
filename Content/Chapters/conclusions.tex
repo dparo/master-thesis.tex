@@ -1,6 +1,57 @@
 \chapter{Conclusions and Future work}
 \label{sec:conclusions-and-future-work}
 
+We proposed a branch-and-cut framework for solving the pricing problem
+induced by Capacitated Vehicle Routing Problems (CVRPs)
+using a Column Generation (CG) approach.
+
+The first portion of the thesis provided a theoretical foundation for the CVRP
+while examining notable contributions to CVRP's exact algorithms.
+The dynamic-programming-based label-correcting algorithm,
+proposed in \textcite{desrochers1992, feillet2004},
+is yet to this day a fundamental component for solving the pricing problem
+in contemporary VRP solvers.
+We examined the label-correcting algorithm
+and discussed additional contributions in the pricing problem domain.
+
+\medskip
+
+We identified the labeling algorithm's limitations in solving pricing problems
+with non-stringent vehicle capacities
+and its inability to scale to multiple machine cores.
+
+As a solution, we proposed a BAC algorithm to address the pricing problem,
+the implementation of which was provided in \cref{sec:implementation-chapter}.
+The BAC algorithm was built on top of the CPLEX MIP optimizer,
+with the added benefit of scaling to multiple machine cores effortlessly.
+
+Despite the inherent operational differences between the two approaches, we conducted an empirical study in \cref{sec:results}
+to assess their performance as the associated CVRP vehicle capacity increases.
+Our analysis revises and greatly supplements the previous study published in \textcite{jepsen2014}.
+
+\medskip
+
+The empirical results were discussed in \cref{sec:results-empirical-results,sec:results-discussion}.
+While we did not achieve outstanding results in all cases,
+we demonstrated that the BAC framework outperforms
+the labeling algorithm as the vehicle capacity bound increases.
+Our results imply that further research on BAC-based pricer approaches
+may provide additional benefits to modern VRP solvers.
+BAC-based pricers may be integrated within branch-and-price (BAP) frameworks
+supplementing the traditional dynamic programming labeling algorithm.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Old crap
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 The advantage of branch-and-cut software packages is that
 they allow for heavy use of parallelization basically for free,
 while current label-setting algorithms are single-threaded.
@@ -37,7 +88,7 @@ value thus the fractional separation procedure may
 become blind to certain violated inequalities that were
 there, but couldn't be computed due to the heuristic procedure.
 Since the heuristic is faster than the exact push-relabel
-algorithm ($O(n^2.2)$), it may be run on each fractional
+algorithm ($O(N^{2.2})$), it may be run on each fractional
 separation.
 
 Improve performance running time by employing
@@ -125,30 +176,30 @@ necessarily need an exact separation procedure.
 For these reasons, heuristic separation procedures for the GLM and RCC
 cuts may provide a faster convergence of the solution approach.
 
-\begin{quote}
-	\cite{jepsen2014}
-	Furthermore, a comparison with state-of-the-art dynamic programming algorithms has
-	shown that the BAC algorithm is competitive, and acts as a good complement to the dynamic programming algorithms.
-	That is, in some case the dynamic programming algorithms are much faster and able to solve instances that cannot be
-	solved by the BAC algorithm. On the other hand the BAC algorithm appear to be superior on very large instances, e.g., the
-	BAC algorithm solved instances with up to 800 nodes compared to a maximum of 200 nodes for the dynamic programming
-	algorithms. There is a tendency towards, that the BAC algorithm is faster than the dynamic programming algorithms on
-	instances with highly negative weights and is slower on instances with solution values close to 0. This is not too surprising
-	since the bounding functions used in the dynamic programming algorithms is expected to cut off large parts of the state-
-	space in the latter case. This may render the BAC algorithms less efficient in a column generation scheme for current state-
-	of-the-art algorithms, since instances with much negativity are usually solved heuristically and only the instances with cost
-	near zero are solved to optimality. However, our experiments indicate that the BAC algorithm may prove to be worthwhile
-	when the number of nodes increases (to more than the current maximum of 151 nodes for the CVRP). To sum up, the BAC
-	algorithm solved 58 out of a total 76 instances which is 18 more than the dynamic programming algorithms, and the BAC
-	algorithm appears to have its strength when the number of nodes is large.
-\end{quote}
+\begin{comment}
+\cite{jepsen2014}
+Furthermore, a comparison with state-of-the-art dynamic programming algorithms has
+shown that the BAC algorithm is competitive, and acts as a good complement to the dynamic programming algorithms.
+That is, in some case the dynamic programming algorithms are much faster and able to solve instances that cannot be
+solved by the BAC algorithm. On the other hand the BAC algorithm appear to be superior on very large instances, e.g., the
+BAC algorithm solved instances with up to 800 nodes compared to a maximum of 200 nodes for the dynamic programming
+algorithms. There is a tendency towards, that the BAC algorithm is faster than the dynamic programming algorithms on
+instances with highly negative weights and is slower on instances with solution values close to 0. This is not too surprising
+since the bounding functions used in the dynamic programming algorithms is expected to cut off large parts of the state-
+space in the latter case. This may render the BAC algorithms less efficient in a column generation scheme for current state-
+of-the-art algorithms, since instances with much negativity are usually solved heuristically and only the instances with cost
+near zero are solved to optimality. However, our experiments indicate that the BAC algorithm may prove to be worthwhile
+when the number of nodes increases (to more than the current maximum of 151 nodes for the CVRP). To sum up, the BAC
+algorithm solved 58 out of a total 76 instances which is 18 more than the dynamic programming algorithms, and the BAC
+algorithm appears to have its strength when the number of nodes is large.
+\end{comment}
 
-\begin{quote}
-	\cite{jepsen2014}
-	We believe that there is a large unexploited potential in BAC algorithms for CPTP, and hence the paper is intended to
-	serve as a platform for further development, also acting as a survey/tutorial. Future research can experiment with subsets
-	of the presented cuts, extensions of the cuts, and the interplay between these.
-\end{quote}
+\begin{comment}
+\cite{jepsen2014}
+We believe that there is a large unexploited potential in BAC algorithms for CPTP, and hence the paper is intended to
+serve as a platform for further development, also acting as a survey/tutorial. Future research can experiment with subsets
+of the presented cuts, extensions of the cuts, and the interplay between these.
+\end{comment}
 
 \begin{comment}
 \textcite{sadykov2019modern}
@@ -166,9 +217,6 @@ generated dynamically. An extension of branch-and-cut to this case is called bra
 cut-and-price, in which the linear relaxation of the problem is solved by the column
 generation approach.
 \end{comment}
-
-\subsection{Future work}
-\mytodo{Extend the CPTP model to consider VRPTW, and re-evaluate the empirical results}
 
 \begin{comment}
 \cite{jepsen2011}
