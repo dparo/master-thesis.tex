@@ -2,8 +2,8 @@
 \label{sec:conclusions}
 
 We proposed a branch-and-cut framework for solving the pricing problem
-induced by Capacitated Vehicle Routing Problems (CVRPs)
-using a Column Generation (CG) approach.
+induced by Column Generation (CG) approaches when applied to
+Capacitated Vehicle Routing Problems (CVRPs).
 
 The first portion of the thesis provided a theoretical foundation for the CVRP
 while examining notable contributions to CVRP's exact algorithms.
@@ -26,7 +26,7 @@ with the added benefit of scaling to multiple machine cores effortlessly.
 
 Despite the inherent operational differences between the two approaches, we conducted an empirical study in \cref{sec:results}
 to assess their performance as the associated CVRP vehicle capacity increases.
-Our analysis revises and greatly supplements the previous study published in \textcite{jepsen2014}.
+Our analysis revises and vastly supplements the previous study published in \textcite{jepsen2014}.
 
 \medskip
 
@@ -34,7 +34,6 @@ The empirical results were discussed in \cref{sec:results-empirical-results,sec:
 While we did not achieve outstanding results in all cases,
 we demonstrated that the BAC framework outperforms
 the labeling algorithm as the vehicle capacity bound increases.
-However, it has to be noted that our BAC pricer solves a much harder problem.
 Our results imply that further research on BAC-based pricer approaches
 may provide additional benefits to modern VRP solvers.
 BAC-based pricers may be integrated within branch-and-price (BAP) frameworks
@@ -44,8 +43,6 @@ supplementing the traditional dynamic programming labeling algorithm.
 \label{sec:conclusions-improvements-and-future-work}
 
 In the section \cref{sec:conclusions-improvements-and-future-work}, we discuss improvements and future work regarding our BAC-based pricer.
-
-We start by discussing some possible improvements.
 
 The labeling algorithm for pricing $q$-routes of \textcite{desrochers1992} could be integrated to provide sensible dual bounds to the CPLEX MIP optimizer in the early stages.
 Preprocessing algorithms may also be studied and implemented to reduce the search-space size of the CPTP.
