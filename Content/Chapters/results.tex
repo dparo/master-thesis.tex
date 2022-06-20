@@ -52,10 +52,9 @@ for more information, see \textcite{uchoa2017}.
 \medskip
 
 We used some of the most historic and well-known CVRP instances to evaluate the performance of our pricer:
-set A, B, P \parencite{augerat1995},
-set E \parencite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic},
-set F \parencite{fisher1994}
-and finally set M \parencite{christofides1979vehicle}.
+set \texttt{A}, \texttt{B}, \texttt{P} \parencite{augerat1995},
+set \texttt{E} \parencite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic},
+and finally set \texttt{F} \parencite{fisher1994}.
 If the reader is wondering how these test sets were generated in the first place,
 they can consult the CVRPLIB website or the work of \textcite{uchoa2017}.
 
@@ -402,11 +401,11 @@ We extracted some pricing problems according to \cref{sec:results-evaluation-pro
 However, of all the PPs that were generated for each inflated CVRP instance,
 we keep only the last ten pricing iterations produced by the CG algorithm of \bapcod{}.
 
-As a result, we totaled $70$ PPs from the E test-set,
-$30$ from the F test set,
-$210$ from the A test set,
-$190$ from the B test set
-and $240$ from the P test set
+As a result, we totaled $70$ PPs from the \texttt{E} test-set,
+$30$ from the \texttt{F} test set,
+$210$ from the \texttt{A} test set,
+$190$ from the \texttt{B} test set
+and $240$ from the \texttt{P} test set
 for each inflation scaling factor $s$.
 
 \mytodo{Introduce common issues in performance evaluation of chaotic systems. Solution through randomized runs with different starting seeds}

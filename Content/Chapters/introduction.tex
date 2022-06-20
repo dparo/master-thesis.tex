@@ -90,8 +90,6 @@ We also gathered additional information from other VRP surveys in the works of
 \section{Thesis Contributions}
 \label{sec:intro-thesis-contributions}
 
-\mytodo{This section must be rewritten entirely at the face of the latest radical changes to the thesis.}
-
 Modern CVRP solvers are typically developed and tested on test sets comprised of historical benchmark instances.
 The principal historical test instances used to evaluate the performance of the scientific contributions have been divided into families.
 Each family is represented by a single upper case letter.
@@ -107,44 +105,26 @@ The major CVRP test sets proposed by the operations research community over the 
 	\item The sets \texttt{A}, \texttt{B} and \texttt{P} were all proposed in \textcite{augerat1995}.
 	      The sets \texttt{A}, \texttt{B} were generated at random, while the set \texttt{P} was generated from sets \texttt{A}, \texttt{B} and \texttt{E} by changing the capacities.
 \end{itemize}
+These historical benchmark instances bear little resemblance to real-world distribution problems.
+They are either too homogeneous or too artificial while not covering the key characteristics found in contemporary real-world distribution problems.
+The historical instances presented in the literature are typically characterized by stringent vehicle capacities, which give rise to optimal solutions characterized by short routes each visiting few customers.
+Instead, real-world contemporary distribution problems are characterized by much longer routes since the vehicle capacity is rarely the bottleneck in practice.
+Despite \textcite{uchoa2017} proposed \texttt{X} test-set, a broader and trendier common denominator of diverse instances for the CVRP, the historical test instances were (and continue to be) the primary central test-bed for comparing and assessing the performance of CVRP contributions.
 
-These benchmark instances have become quite easy for modern algorithms.
-They suffer from being either too homogeneous or too artificial,
-while not covering the main characteristics found in current real-world distribution problems.
-Despite some efforts in proposing a complete, diverse and more contemporary common denominator
-of set instances for the CVRP (set X, proposed in \textcite{uchoa2017}),
-the common and historical instances played (and still remains) the main central test-bed for comparing
-and assessing the performance of CVRP contributions.
+The labeling algorithm is a dynamic programming-based algorithm used to solve the pricing sub-problem induced from Column Generation (CG) schemes applied to the VRP.
+We will delve into these topics in greater detail in \cref{sec:branch-and-price}.
+The labeling algorithm is a crucial component of the contemporary state-of-the-art CVRP solvers \parencite{gutierrez-jarpa2010, archetti2011, bettinelli2011, contardo2014, contardo2015, pecin2017new, pecin2017improved, pessoa2020generic}.
+As we shall discuss later, the performance of the labeling algorithm degrades as the vehicle capacity increases, see discussion in \cref{sec:solving-the-pricing-problem}.
 
-These historical instances are usually characterized with stringent vehicle capacities
-which consequently give rise to optimal solutions characterized by small routes, each visiting few customers.
-In practice, the vehicle capacity is rarely the bottleneck and
-real-world modern distribution problems are instead characterized by much longer routes.
-The dynamic programming labeling algorithm
-\parencite{desrochers1992,feillet2004}
-is the commonly employed method to tackle the Pricing Problem (PP) \parencite{gutierrez-jarpa2010, archetti2011, bettinelli2011, contardo2014, contardo2015, pecin2017new, pecin2017improved, pessoa2020generic}.
-It has been shown that the computational performance of such algorithm
-tends to deteriorate as the length of the generated routes increases.
+In this thesis, we investigate the feasibility and competitiveness of a branch-and-cut algorithm implemented through a commercial MIP software package for solving the pricing problem.
+The goal is to empirically compare the performance of the proposed branch-and-cut framework against the state-of-the-art labeling algorithm while empirically measuring how the two frameworks behave as the lengths of the route they need to generate increases.
 
-The goal of the thesis lies in studying the feasibility and competitiveness of a
-branch-and-cut algorithm, implemented through a commercial MIP software package,
-for solving the pricing problem.
-The objective is to empirically evaluate the performance of the proposed
-branch-and-cut framework against the state-of-the-art labeling
-algorithm, while empirically measuring how the two frameworks behave
-as the lengths of the route they need to generate increases.
-\cite{jepsen2014} proposed a branch-and-cut framework for solving the pricing problem.
-In their work, \citeauthor{jepsen2014} showed that, despite the dynamic programming algorithm
-turned out to be much faster in many instances, the BAC framework exhibited
-better performance for some larger instances; proving that
-a BAC framework could complement the dynamic programming algorithm for solving the PP.
-This thesis stems from the original work \citeauthor{jepsen2014}.
-The objective of this thesis is to revisit the work of \citeauthor{jepsen2014},
-and verify whether recent development improvements in MIP optimizers
-have made them competitive at solving the pricing problem,
-or vice versa,
-if the current situation and modern dynamic programming algorithms have
-made BAC approaches completely obsolete.
+\Textcite{jepsen2014} proposed a branch-and-cut framework for the CPTP and tested it in the context of pricing for the CVRP.
+\Textcite{jepsen2014} demonstrated that, while the labeling algorithm was much faster in many instances, the BAC framework exhibited better performance for some bulkier cases.
+See later discussion in \cref{sec:bac-approaches-for-the-pricing-problem}.
+They demonstrated that further research on BAC-pricers could yield approaches that could supplement the traditional pricing labeling algorithm.
+We revisit the work of \citeauthor{jepsen2014} in this thesis.
+We test whether recent advancements in MIP optimizers have made them competitive at solving the pricing problem or whether modern dynamic programming algorithms have rendered BAC approaches completely obsolete.
 
 \section{Outline}
 \label{sec:intro-outline}
