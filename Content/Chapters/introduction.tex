@@ -92,25 +92,21 @@ We also gathered additional information from other VRP surveys in the works of
 
 \mytodo{This section must be rewritten entirely at the face of the latest radical changes to the thesis.}
 
-One of the major problems of contemporary CVRP solvers
-is that they are usually developed and tuned through the usage
-of historical benchmark instances which
-have little or no similarities with real-world distribution problems.
-The major historical test instances,
-employed to assess the performance of the scientific contributions,
-have been classified in different sets, or families.
-Each family is identified through a single upper case letter.
-We here summarize the core sets proposed by the operations research community for the CVRP problem:
-(i) set E is proposed in \textcite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic}
-where some instances are randomly generated whereas for some others
-the authors don't provide description on how they were generated,
-(ii) set M is proposed in \textcite{christofides1979vehicle} and
-it's obtained by aggregating together instances from the E set,
-(iii) set F is proposed in \textcite{fisher1994} and it's obtained from an actual distribution problem of groceries in the city of Ontario,
-finally (iv) sets A, B, P are proposed in \textcite{augerat1995} and are generated artificially: A is random, B is clustered, P generated from A, B, E by changing capacities.
-Another less common test set is the one proposed in \textcite{golden1998impact},
-which contains large scale instances ranging from 200 to 480 customers,
-generated programmatically following concentric geometric figures.
+Modern CVRP solvers are typically developed and tested on test sets comprised of historical benchmark instances.
+The principal historical test instances used to evaluate the performance of the scientific contributions have been divided into families.
+Each family is represented by a single upper case letter.
+The major CVRP test sets proposed by the operations research community over the years are summarized here:
+\begin{itemize}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
+
+	\item The set \texttt{E} is proposed in\textcite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic}.
+	      The majority of the \texttt{E} test instances were generated at random, while the remainder lack description on their origin.
+	\item The set \texttt{M} was proposed in \textcite{christofides1979vehicle} and was obtained by aggregating instances from \texttt{E} set.
+	\item The set \texttt{F} was presented in \textcite{fisher1994} and was obtained from an actual distribution problem of groceries in the city of Ontario.
+	\item The sets \texttt{A}, \texttt{B} and \texttt{P} were all proposed in \textcite{augerat1995}.
+	      The sets \texttt{A}, \texttt{B} were generated at random, while the set \texttt{P} was generated from sets \texttt{A}, \texttt{B} and \texttt{E} by changing the capacities.
+\end{itemize}
 
 These benchmark instances have become quite easy for modern algorithms.
 They suffer from being either too homogeneous or too artificial,
