@@ -1,32 +1,27 @@
 \mytodo{This section needs review after the thesis is completed}
 
-\noindent The Capacitated Vehicle Routing Problem, CVRP for short,
+\noindent The \textit{Capacitated Vehicle Routing Problem}, CVRP for short,
 is a combinatorial optimization routing problem in which,
-a geographically distributed set of customers with associated known demands,
-must be served with a fleet of vehicles stationed at a central facility.
-In the last two decades,
-column generation techniques embedded inside branch-price-and-cut frameworks
+a geographically dispersed set of customers with known demands
+must be served by a fleet of vehicles stationed at a central facility.
+\textit{Column generation} techniques embedded within \textit{branch-price-and-cut} frameworks
 have been the de facto state-of-the-art dominant approach
-for building exact algorithms for the CVRP.
-The pricer, an important component in column generation, needs to solve
-the so-called Pricing Problem (PP) which asks for an
-Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
-in a reduced cost network.
-Little scientific efforts have been dedicated in studying
+for building exact algorithms for the CVRP over the last two decades.
+The pricer, a critical component in column generation, must solve
+the \textit{Pricing Problem} (PP), which asks for an
+\textit{Elementary Shortest Path Problem with Resource Constraints} (ESPPRC)
+in a reduced-cost network.
+Little scientific efforts have been dedicated to studying
 branch-and-cut based approaches for tackling the PP.
-The ESPPRC has been traditionally relaxed and solved through dynamic programming
-algorithms.
-This approach, however, has two main downsides.
-First, it leads to a worsening of the obtained dual bounds.
-Second, the running time deteriorates as the length of the generated paths increases.
-The operations research community has traditionally employed
-a set of historical and artificial test instances to evaluate
-the performance of their contributions.
-Unfortunately, these instances, which are characterized by small routes,
-they do not capture the main properties of modern real-world distribution problems,
-where the routes are longer by nature.
+
+The ESPPRC has been traditionally relaxed and solved through dynamic programming algorithms.
+This approach, however, has two major drawbacks.
+For starters, it worsens the obtained dual bounds.
+Furthermore, the running time deteriorates as the length of the generated routes increases.
+To evaluate the performance of their contributions, the operations research community has traditionally used a set of historical and artificial test instances. However, these historical benchmark instances do not capture the key characteristics of actual real-world distribution problems.
 
 \noindent In this thesis, we develop
 a scheme based on a branch-and-cut approach for solving the pricing problem.
-We study the behavior and effectiveness of the proposed approach in producing longer paths
-by comparing it with state-of-the-art solutions based on dynamic programming algorithms.
+We study the behavior and effectiveness of our implementation in producing longer routes by comparing it with state-of-the-art solutions based on dynamic programming algorithms.
+Our findings suggest that branch-and-cut approaches can supplement the traditional labeling algorithm,
+requiring future research on this domain.
