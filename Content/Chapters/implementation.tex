@@ -165,6 +165,9 @@ which represents the route's delta cost in inserting $h$ as the successor of nod
 A vertex $h \in V$ is a good candidate for insertion
 if at least one of the following conditions is met:
 \begin{enumerate}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
+
 	\item $\Delta_m(h, a) < 0$, i.e. inserting $h$ improves over the current route.
 	\item $h = 0$, i.e. $h$ is the depot node.
 	      When the insertion candidate coincides with the depot,
@@ -457,6 +460,9 @@ such that $F_1(u, v) \cup F_2(u, v) = V$, $F_1 \cap F_2 = \emptyset$ and $u \in 
 The quantity $\deltaplus(F_1(u, v))$ constitutes the min-cut induced from solving the maxflow problem over $(u, v)$.
 It is well understood that solving a maxflow problem assures the following two properties:
 \begin{enumerate}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
+
 	\item Arcs $\{ (i, j) \mid i \in F_1(u, v),\ j \in F_2(u, v) \}$ are saturated
 	\item Arcs $\{ (j, i) \mid i \in F_1(u, v),\ j \in F_2(u, v) \}$ are drained.
 \end{enumerate}

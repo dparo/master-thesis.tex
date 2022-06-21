@@ -435,7 +435,7 @@ The first group is committed to testing various versions of the implemented BAC 
 In the first version of the algorithm, we perform cutting-plane separation aggressively on each possible occasion.
 We call this version of the algorithm \texttt{BAC EFL}, where \texttt{EFL} stands for Exhaustive Fractional Labeling.
 \texttt{BAC EFL} computes the Gomory-Hu tree on each fractional solution.
-The second version of the algorithm is less aggressive and it is known as \texttt{BAC AFL} (Amortized Fractional Labeling).
+The second version of the algorithm is known as \texttt{BAC AFL} (Amortized Fractional Labeling).
 \texttt{BAC AFL} amortizes the cost of fractional labeling over multiple iterations.
 Namely, fractional separations iterations that are not multiple of $N$ become a no-op, no min-cuts computations are performed, and thus no cutting-planes are separated.
 In the last version of the algorithm, which we call \texttt{BAC NFL}, we perform no fractional labeling (\texttt{NFL} stands for No Fractional Labeling).
@@ -444,15 +444,19 @@ The cost of computing Gomory-Hu trees becomes zero, but cutting planes will neve
 The computational evaluation of the first group is provided in \cref{fig:perfprofs-batch1-part1},
 which contain solely cost profiles depicting the obtained dual bounds.
 The results in \cref{fig:perfprofs-batch1-part1} were obtained using a single core and a time limit of 60 seconds.
-The winner will be the BAC-pricier version that produces tighter bounds.
+The winner will be the BAC-pricer version that produces tighter bounds.
 According to \cref{fig:perfprofs-batch1-part1}, the \texttt{BAC AFL} version produces tighter dual bounds in the majority of cases.
 As a result, we will only compare the pricing efficiency of the \texttt{BAC AFL} version to the labeling algorithm in the second group of empirical results.
 
 \medskip
 
-\mytodo{Report timelimit, num threads of the MIP optimizer}
-
-% TODO(dparo): second batch: 16 threads, 20 minutes of timelimit
+The second group, on the other hand, compares our \texttt{BAC AFL} algorithm to the VRPSolver's labeling algorithm \parencite{pessoa2020generic}.
+The computational evaluation of the second group is provided in
+\cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2,fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2,fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2,fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2,fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}.
+The BAC-pricer was run on 16 threads (corresponding to the virtual cores of the host machine) with a time limit of 20 minutes.
+The empirical results of
+\cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2,fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2,fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2,fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2,fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}
+will be discussed in the next dedicated \cref{sec:results-discussion}.
 
 \input{Content/Chapters/Include/perfprofs-batch1.tex}
 \input{Content/Chapters/Include/perfprofs-batch2.tex}
@@ -460,4 +464,30 @@ As a result, we will only compare the pricing efficiency of the \texttt{BAC AFL}
 \section{Discussion of the Empirical Results}
 \label{sec:results-discussion}
 
-\mytodo{Discuss the performance profiles here}
+In this section we discuss the empirical results depicted in
+\cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2,fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2,fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2,fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2,fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}.
+
+We tested the performance of the two pricers approach for different test sets under progressively higher vehicle capacities.
+We tested for different inflation scale factors $s$, namely $s \in \Set*{1, 2, 4, 5, 8, 10, 20}$.
+See \cref{sec:inflation-of-the-cvrp-test-instances} for a discussion on how the inflated CVRP instances were obtained.
+
+The empirical results of
+\cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2,fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2,fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2,fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2,fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}
+are subdivided as follows:
+\begin{itemize}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{0pt}
+
+	\item The empirical evaluation for the \texttt{E} test set is contained in \cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2}.
+	\item The empirical evaluation for the \texttt{F} test set is contained in \cref{fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2}.
+	\item The empirical evaluation for the \texttt{A} test set is contained in \cref{fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2}.
+	\item The empirical evaluation for the \texttt{B} test set is contained in \cref{fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2}.
+	\item The empirical evaluation for the \texttt{P} test set is contained in \cref{fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}.
+\end{itemize}
+
+\Cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2} depicts the performance
+of the pricers on the \texttt{E} test-set for different values of the inflation scale factor
+$s \in \Set*{1, 2, 4, 5, 8, 10, 20}$.
+At $s = 5$, the BAC-pricer begins to be competitive with the labeling algortihm.
+From $s \in \Set*{8, 10, 20}$, not only is the BAC-pricer faster than the labeling algorithm,
+but feeds substantially better dual bounds to the BPC framework.
