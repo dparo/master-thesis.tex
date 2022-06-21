@@ -466,6 +466,8 @@ will be discussed in the next dedicated \cref{sec:results-discussion}.
 
 In this section we discuss the empirical results depicted in
 \cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2,fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2,fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2,fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2,fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}.
+The VRPSolver's labeling algorithm in the empirical results is denoted as \texttt{libRCSP DP pricer},
+while our implemented BAC-pricer is denoted as \texttt{BAC MIP Pricer (AFL)}.
 
 We tested the performance of the two pricer approaches for different test sets under progressively higher vehicle capacities.
 We tested for different inflation scale factors $s$, namely $s \in \Set*{1, 2, 4, 5, 8, 10, 20}$.
@@ -487,7 +489,13 @@ are subdivided as follows:
 
 The situation depicted by the empirical results is summarized in the remainder of this section.
 
-In the case for the \texttt{E} test set, we can see that at $s = 5$
-the BAC-pricer begins to be competitive with the labeling algorithm.
-From $s \in \Set*{8, 10, 20}$, not only is the BAC-pricer faster than the labeling algorithm,
-but feeds substantially better dual bounds to the BPC framework.
+\medskip
+
+In the case of the \texttt{E} test set, we can see that at $s \le 4$, the BAC-pricer is not sufficiently competitive but was able to feed slightly better dual bounds to the BPC framework.
+The BAC-pricer begins to compete with the labeling algorithm at $s = 5$.
+For $s \in \Set*{8, 10, 20}$, not only is the BAC-pricer faster than the labeling algorithm but feeds substantially better dual bounds to the BPC framework.
+At $s = 20$, the labeling algorithm is 20 times slower than the BAC-pricer in 42\% of the cases.
+
+In the case of the \texttt{F} test set, we can see that at $s \in \Set*{1, 2}$, the BAC-pricer is not competitive and occasionally fails to complete the pricing problem within the time limit of 20 minutes.
+This scenario is most likely caused by the \texttt{F-n135-k7} instance, for which we have empirically observed to require a massive amount of cutting planes, resulting in memory exhaustion for the host machine.
+At $s \in \Set*{4, 5, 8, 10, 20}$, the BAC-pricer performs progressively better and feeds tremendously tighter dual bounds to the BPC framework.
