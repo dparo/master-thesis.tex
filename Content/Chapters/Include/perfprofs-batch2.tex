@@ -9,177 +9,59 @@
 		\includegraphics[width=1.0\linewidth]{./Imgs/perfprofs/#1/Time_plot.cropped.pdf}
 	\end{subfigure}%
 }
-%
-% \forcsvlist{\IncludePerfProf}{
-% 	Imgs/perfprofs/E-scaled-1.0-last-10,
-% 	Imgs/perfprofs/E-scaled-2.0-last-10,
-% 	Imgs/perfprofs/E-scaled-4.0-last-10,
-% 	Imgs/perfprofs/F-scaled-1.0-last-10,
-% 	Imgs/perfprofs/F-scaled-2.0-last-10,
-% 	Imgs/perfprofs/F-scaled-4.0-last-10,
-% }
 
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{E-scaled-1.0}
-	\vspace{5mm}
+\newcommand{\PerfprofFigureCaptionOne}[1]{
+	Empirical study comparing the pricing performance of the proposed BAC-pricer to the labeling algorithm
+	of \textcite{pessoa2020generic} on the \texttt{#1} test set.
+	On the left, the cost profile representing the optimal value found by each method.
+	On the right, the time profile measuring the time ratio of the two approaches.
+	Each row represents a different inflation scale factor $s$.
+	From top to bottom: $s = 1, 2 \text{ and } 4$.
+}
 
-	\IncludePerfProfSubFigures{E-scaled-2.0}
-	\vspace{5mm}
+\newcommand{\PerfprofFigureCaptionTwo}[1]{
+	Continuation of \cref{fig:perpfrofs-batch2-#1-part1} testing even further
+	inflation scale factors: $s = 5, 8, 10 \text{ and } 20$.
+}
 
-	\IncludePerfProfSubFigures{E-scaled-4.0}
-	\vspace{5mm}
+\newcommand{\PerfprofFiguresPartOne}[1]{
+	\begin{figure}[t]
+		\IncludePerfProfSubFigures{#1-scaled-1.0}
+		\vspace{2.5mm}
 
-	\IncludePerfProfSubFigures{E-scaled-5.0}
+		\IncludePerfProfSubFigures{#1-scaled-2.0}
+		\vspace{2.5mm}
 
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-E-part1}
-\end{figure}
+		\IncludePerfProfSubFigures{#1-scaled-4.0}
 
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{E-scaled-8.0}
-	\vspace{5mm}
+		\caption{\PerfprofFigureCaptionOne{#1}}
+		\label{fig:perpfrofs-batch2-#1-part1}
+	\end{figure}
+}
 
-	\IncludePerfProfSubFigures{E-scaled-10.0}
-	\vspace{5mm}
+\newcommand{\PerfprofFiguresPartTwo}[1]{
+	\begin{figure}[t]
+		\IncludePerfProfSubFigures{#1-scaled-5.0}
+		\vspace{2.5mm}
 
-	\IncludePerfProfSubFigures{E-scaled-20.0}
+		\IncludePerfProfSubFigures{#1-scaled-8.0}
+		\vspace{2.5mm}
 
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-E-part2}
-\end{figure}
+		\IncludePerfProfSubFigures{#1-scaled-10.0}
+		\vspace{2.5mm}
 
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{F-scaled-1.0}
-	\vspace{5mm}
+		\IncludePerfProfSubFigures{#1-scaled-20.0}
 
-	\IncludePerfProfSubFigures{F-scaled-2.0}
-	\vspace{5mm}
+		\caption{\PerfprofFigureCaptionTwo{#1}}
+		\label{fig:perpfrofs-batch2-#1-part2}
+	\end{figure}
+}
 
-	\IncludePerfProfSubFigures{F-scaled-4.0}
-	\vspace{5mm}
+\newcommand{\PerfprofFigures}[1]{
+	\PerfprofFiguresPartOne{#1}
 
-	\IncludePerfProfSubFigures{F-scaled-5.0}
+	\PerfprofFiguresPartTwo{#1}
 
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-F-part1}
-\end{figure}
+}
 
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{F-scaled-8.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{F-scaled-10.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{F-scaled-20.0}
-
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-F-part2}
-\end{figure}
-
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{A-scaled-1.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{A-scaled-2.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{A-scaled-4.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{A-scaled-5.0}
-
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-A-part1}
-\end{figure}
-
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{A-scaled-8.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{A-scaled-10.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{A-scaled-20.0}
-
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-A-part2}
-\end{figure}
-
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{B-scaled-1.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{B-scaled-2.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{B-scaled-4.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{B-scaled-5.0}
-
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-B-part1}
-\end{figure}
-
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{B-scaled-8.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{B-scaled-10.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{B-scaled-20.0}
-
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-B-part2}
-\end{figure}
-
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{P-scaled-1.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{P-scaled-2.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{P-scaled-4.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{P-scaled-5.0}
-
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-P-part1}
-\end{figure}
-
-\begin{figure}[t]
-	\IncludePerfProfSubFigures{P-scaled-8.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{P-scaled-10.0}
-	\vspace{5mm}
-
-	\IncludePerfProfSubFigures{P-scaled-20.0}
-
-	\caption{
-		Caption placeholder.
-	}
-	\label{fig:perfprofs-P-part2}
-\end{figure}
+\forcsvlist{\PerfprofFigures}{E,F,A,B,P}

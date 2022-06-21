@@ -442,11 +442,11 @@ In the last version of the algorithm, which we call \texttt{BAC NFL}, we perform
 The cost of computing Gomory-Hu trees becomes zero, but cutting planes will never be separated for fractional solutions.
 
 The computational evaluation of the first group is provided in \cref{fig:perfprofs-batch1-part1},
-which contain solely cost-profiles depicting the obtained dual bounds.
-The results in \cref{fig:perfprofs-batch1-part1} were obtained using a single core and 60 seconds of timelimit.
-The BAC-pricer version that produces tighter bounds will be the winner.
-\Cref{fig:perfprofs-batch1-part1} highlights that \texttt{BAC AFL} produces tigther dual bounds in the majority of cases.
-As a result, in the second group of empirical results we will compare only the \texttt{BAC AFL} version against the labeling algorithm.
+which contain solely cost profiles depicting the obtained dual bounds.
+The results in \cref{fig:perfprofs-batch1-part1} were obtained using a single core and a time limit of 60 seconds.
+The winner will be the BAC-pricier version that produces tighter bounds.
+According to \cref{fig:perfprofs-batch1-part1}, the \texttt{BAC AFL} version produces tighter dual bounds in the majority of cases.
+As a result, we will only compare the pricing efficiency of the \texttt{BAC AFL} version to the labeling algorithm in the second group of empirical results.
 
 \medskip
 
