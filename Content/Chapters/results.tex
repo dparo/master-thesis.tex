@@ -364,10 +364,12 @@ we can validate the pricer that would feed the BPC framework with tighter dual b
 Because the optimal value $z$ always satisfies $z \le 0$,
 we used two sentinel values to accentuate some specific circumstances.
 When a pricer successfully determines that no reduced cost route exists
-($z \ge \varepsilon_{\mt{ct}}$,
-we output $z = 1.0$ in the associated performance profile.
+($z > \varepsilon_{\mt{ct}}$),
+we output $z = 1.0$ in the associated \textit{cost profile}.
 Instead, if the pricer fails to solve the PP optimally within the timelimit,
 we output $z = 2.0$.
+For additional output clarity, in \textit{cost profiles} we tint
+the plot's background color in green and red for $z \le \varepsilon_{\mt{ct}}$ and $z > \varepsilon_{\mt{ct}}$ respectively.
 
 \medskip
 
@@ -386,6 +388,24 @@ included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{
 	}
 	\label{fig:example-of-time-profile-tsp}
 \end{figure}
+
+\subsection{Performance Variability}
+\label{sec:performance-variability}
+
+\textit{Performance variability} \parencite{lodi2013performance} can be defined as an unexpected change in performance that is not the result of a genuine improvement.
+There are numerous cases of variability, but one of the most common is randomness, specifically the initial state of random generators.
+Resolution methods that rely on randomness may perform well by chance, and the effect is magnified for the so-called \textit{chaotic systems}.
+A slight perturbation to the initial conditions has a tremendous impact on the evolution of a chaotic system.
+
+Branch-and-cut algorithms are chaotic systems by nature.
+Unlucky branching decisions, appearing at high levels of the branching tree, have an exponential impact on the size of the tree itself.
+
+Performance profiles should filter out the noise and measure the genuine algorithmic improvements of a resolution method.
+To avoid performance variabilities, we can upsample each test-set instance using a different initial random seed each time.
+With each random seed, each test instance is solved multiple times.
+The greater the number of seeds considered, the more likely the performance profile captures a genuine algorithmic improvement rather than variability.
+
+Although using multiple seeds is generally good practice when testing chaotic systems, we used a single seed per pricing instance to substantially decrease the computation time required for the empirical evaluation.
 
 \section{Empirical Results}
 \label{sec:results-empirical-results}
