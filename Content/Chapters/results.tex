@@ -500,6 +500,14 @@ In the case of the \texttt{F} test set, we can see that at $s \in \Set*{1, 2}$, 
 This scenario is most likely caused by the \texttt{F-n135-k7} instance, for which we have empirically observed to require a massive amount of cutting planes, resulting in memory exhaustion for the host machine.
 At $s \in \Set*{4, 5, 8, 10, 20}$, the BAC-pricer performs progressively better and feeds tremendously tighter dual bounds to the BPC framework.
 
-In the case of the \texttt{A} test set, the BAC-pricer is not competitive at $s \in \Set*{1, 2, 4}$ and sometimes fails to complete the pricing problem within the time limit.
-At $s = 5$ is competitive in terms of running time and it improves as we increase $s$.
-No appreaciable dual bound improvements to the BPC framework can be observed when using the BAC approach.
+In the case of the \texttt{A} test set, the BAC-pricer is not competitive at $s \in \Set*{1, 2, 4}$ and occasionally fails to complete the pricing problem within the time limit.
+At $s = 5$, the BAC-pricer begins to be competitive in terms of running time.
+The BAC approach yields no discernible dual-bound improvements to the BPC framework.
+
+In the case of the \texttt{B} test set, the BAC-approach becomes competitive at $s = 5$.
+At $s \le 4$, it fails to complete the pricing problem within the time limit.
+At $s = 20$, the BAC-pricer outperforms the labeling algorithm.
+When $s = 10$, the BAC-pricer produces slightly tighter dual-bounds, but significantly better ones when $s = 20$.
+
+In the case of the \texttt{P} test set, the BAC-approach becomes competitive at $s = 5$.
+At $s = 8$, the BAC approach outperforms the labeling algorithm while yielding significantly better dual bounds to the BPC framework.
