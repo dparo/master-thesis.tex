@@ -461,13 +461,13 @@ will be discussed in the next dedicated \cref{sec:results-discussion}.
 \input{Content/Chapters/Include/perfprofs-batch1.tex}
 \input{Content/Chapters/Include/perfprofs-batch2.tex}
 
-\section{Discussion of the Empirical Results}
+\subsection{Discussion of the Empirical Results}
 \label{sec:results-discussion}
 
 In this section we discuss the empirical results depicted in
 \cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2,fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2,fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2,fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2,fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}.
 
-We tested the performance of the two pricers approach for different test sets under progressively higher vehicle capacities.
+We tested the performance of the two pricer approaches for different test sets under progressively higher vehicle capacities.
 We tested for different inflation scale factors $s$, namely $s \in \Set*{1, 2, 4, 5, 8, 10, 20}$.
 See \cref{sec:inflation-of-the-cvrp-test-instances} for a discussion on how the inflated CVRP instances were obtained.
 
@@ -485,9 +485,9 @@ are subdivided as follows:
 	\item The empirical evaluation for the \texttt{P} test set is contained in \cref{fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}.
 \end{itemize}
 
-\Cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2} depicts the performance
-of the pricers on the \texttt{E} test-set for different values of the inflation scale factor
-$s \in \Set*{1, 2, 4, 5, 8, 10, 20}$.
-At $s = 5$, the BAC-pricer begins to be competitive with the labeling algortihm.
+The situation depicted by the empirical results is summarized in the remainder of this section.
+
+In the case for the \texttt{E} test set, we can see that at $s = 5$
+the BAC-pricer begins to be competitive with the labeling algorithm.
 From $s \in \Set*{8, 10, 20}$, not only is the BAC-pricer faster than the labeling algorithm,
 but feeds substantially better dual bounds to the BPC framework.
