@@ -425,24 +425,37 @@ an AMD Ryzen 7 1700X 3.4GHz with 8 cores (16 virtual cores),
 running a GNU/Linux operating system with kernel v5.18.3 and Glibc v2.35.
 For our BAC pricer's implementation, we used CPLEX version 22.1 (released in March 2022).
 
-\mytodo{Report timelimit, num threads of the MIP optimizer}
+\medskip
 
-% TODO(dparo): First batch: 1 Thread, 60 seconds of timelimit, we compare the dual bounds
+We divide the empirical results into two groups.
+
+\medskip
+
+The first group is committed to testing various versions of the implemented BAC algorithm based on the aggressiveness used for the fractional labeling discussed in \cref{sec:impl-labeling-fractional-solutions}.
+In the first version of the algorithm, we perform cutting-plane separation aggressively on each possible occasion.
+We call this version of the algorithm \texttt{BAC EFL}, where \texttt{EFL} stands for Exhaustive Fractional Labeling.
+\texttt{BAC EFL} computes the Gomory-Hu tree on each fractional solution.
+The second version of the algorithm is less aggressive and it is known as \texttt{BAC AFL} (Amortized Fractional Labeling).
+\texttt{BAC AFL} amortizes the cost of fractional labeling over multiple iterations.
+Namely, fractional separations iterations that are not multiple of $N$ become a no-op, no min-cuts computations are performed, and thus no cutting-planes are separated.
+In the last version of the algorithm, which we call \texttt{BAC NFL}, we perform no fractional labeling (\texttt{NFL} stands for No Fractional Labeling).
+The cost of computing Gomory-Hu trees becomes zero, but cutting planes will never be separated for fractional solutions.
+
+The computational evaluation of the first group is provided in \cref{fig:perfprofs-batch1-part1},
+which contain solely cost-profiles depicting the obtained dual bounds.
+The results in \cref{fig:perfprofs-batch1-part1} were obtained using a single core and 60 seconds of timelimit.
+The BAC-pricer version that produces tighter bounds will be the winner.
+\Cref{fig:perfprofs-batch1-part1} highlights that \texttt{BAC AFL} produces tigther dual bounds in the majority of cases.
+As a result, in the second group of empirical results we will compare only the \texttt{BAC AFL} version against the labeling algorithm.
+
+\medskip
+
+\mytodo{Report timelimit, num threads of the MIP optimizer}
 
 % TODO(dparo): second batch: 16 threads, 20 minutes of timelimit
 
 \input{Content/Chapters/Include/perfprofs-batch1.tex}
 \input{Content/Chapters/Include/perfprofs-batch2.tex}
-
-\begin{comment}
-[@dparo: Old Gomoru Hu Tree, It was slow and required amortization to speed up the BAC procedure]
-In this implementation we employed the usage of both the push relabel algorithm,
-the Gomory-Hu tree and full enumeration of all possible $(s, t)$ vertices.
-Since running this full enumeration over each fractional separation,
-turned out to be quite costly, we decided to amortize the cost over multiple iterations.
-Namely, fractional separations iterations which are not multiple of $N$ become a no-op,
-no maxflow is performed and therefore no set $S \subseteq V_0$ is separated.
-\end{comment}
 
 \section{Discussion of the Empirical Results}
 \label{sec:results-discussion}
