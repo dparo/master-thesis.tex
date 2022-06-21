@@ -298,7 +298,7 @@ required for the performance evaluation.
 The pricing functor is essentially a glorified callback
 that can be used to solve the pricing problem through user-defined custom code.
 Our pricing functor is a simple stubbed implementation
-that ultimately invokes the pricing functor of  the standard \vrpsolver{} extension.
+that ultimately invokes the pricing functor of the standard \vrpsolver{} extension.
 However, before calling the labeling algorithm, we first do the following.
 First, we assess the labeling algorithm's performance by measuring its running time.
 Second, at each pricing invocation, we record the dual variables $\pi \in \R^N$ of the RMP
@@ -334,6 +334,14 @@ the original demands, the original node positions, and the vehicle capacity.
 The CPTP instance is encoded in a slightly modified TSPLIB95 file format.
 In the file format, we've added a new dedicated section, called \texttt{PROFIT\_SECTION},
 to hold the extracted dual variables.
+
+Only the last $10$ of all the pricing problems dumped to disk are kept for empirical evaluation.
+As a result, for a fixed inflation scale factor $s$,
+we totaled $70$ pricing instances from the \texttt{E} test set,
+$30$ from the \texttt{F} test set,
+$210$ from the \texttt{A} test set,
+$190$ from the \texttt{B} test set
+and $240$ from the \texttt{P} test set.
 
 \subsection{Performance profiles}
 \label{sec:results-performance-profiles}
@@ -417,18 +425,7 @@ an AMD Ryzen 7 1700X 3.4GHz with 8 cores (16 virtual cores),
 running a GNU/Linux operating system with kernel v5.18.3 and Glibc v2.35.
 For our BAC pricer's implementation, we used CPLEX version 22.1 (released in March 2022).
 
-We extracted some pricing problems according to \cref{sec:results-evaluation-process}.
-However, of all the PPs that were generated for each inflated CVRP instance,
-we keep only the last ten pricing iterations produced by the CG algorithm of \bapcod{}.
-
-As a result, we totaled $70$ PPs from the \texttt{E} test-set,
-$30$ from the \texttt{F} test set,
-$210$ from the \texttt{A} test set,
-$190$ from the \texttt{B} test set
-and $240$ from the \texttt{P} test set
-for each inflation scaling factor $s$.
-
-\mytodo{Report timelimit, seed values. num threads of the MIP optimizer}
+\mytodo{Report timelimit, num threads of the MIP optimizer}
 
 % TODO(dparo): First batch: 1 Thread, 60 seconds of timelimit, we compare the dual bounds
 
