@@ -4,7 +4,7 @@ un insieme geograficamente sparso di clienti con richieste note
 deve essere servito da una flotta di veicoli stazionati in una struttura centrale.
 Negli ultimi due decenni,
 tecniche di \textit{Column generation} incorporate all'interno di frameworks \textit{branch-price-and-cut}
-sono state infatti l'approccio dominante stato dell'arte per la costruzione di algoritmi esatti per il CVRP.
+sono state infatti l'approccio stato dell'arte dominante per la costruzione di algoritmi esatti per il CVRP.
 Il \textit{pricer}, un componente critico nella column generation, deve risolvere
 il \textit{Pricing Problem} (PP) che richiede la risoluzione di un
 \textit{Elementary Shortest Path Problem with Resource Constraints} (ESPPRC)
@@ -19,10 +19,9 @@ Inoltre, il tempo di esecuzione diminuisce all'aumentare della lunghezza dei per
 Per valutare la performance dei loro contributi,
 la comunità di ricerca operativa ha tradizionalmente utilizzato una serie di istanze
 di test storiche e artificiali.
-Tuttavia, queste istanze di benchmark storiche non catturano le caratteristiche chiave degli effettivi moderni problemi di distribuzione nel mondo reale.
+Tuttavia, queste istanze di benchmark non catturano le caratteristiche chiave dei moderni problemi di distribuzione del mondo reale, che sono tipicamente caraterrizati da lunghi percorsi.
 
 \noindent In questa tesi sviluppiamo
 uno schema basato su un approaccio branch-and-cut per risolvere il pricing problem.
-Studiamo il comportamento e l'efficacia della nostra implementazione nel produrre percorsi più lunghi
-comparandola con soluzioni all'avanguardia basate su algoritmi di programmazione dinamica.
-I nostri risultati suggeriscono che gli approcci branch-and-cut possono supplementare il tradizionale algoritmo di etichettatura, indicando che la ricerca futura in quest'area potrebbe produrre ulteriori vantaggi per i risolutori CVRP.
+Studiamo il comportamento e l'efficacia della nostra implementazione nel produrre percorsi più lunghi comparandola con soluzioni all'avanguardia basate su programmazione dinamica.
+I nostri risultati suggeriscono che gli approcci branch-and-cut possono supplementare il tradizionale algoritmo di etichettatura, indicando che ulteriore futura ricerca in quest'area possa portare benefici ai risolutori CVRP.
