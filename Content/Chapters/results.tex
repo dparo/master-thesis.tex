@@ -428,11 +428,7 @@ $190$ from the \texttt{B} test set
 and $240$ from the \texttt{P} test set
 for each inflation scaling factor $s$.
 
-\mytodo{Introduce common issues in performance evaluation of chaotic systems. Solution through randomized runs with different starting seeds}
-
 \mytodo{Report timelimit, seed values. num threads of the MIP optimizer}
-
-\mytodo{Spam this section with performance profiles}
 
 % TODO(dparo): First batch: 1 Thread, 60 seconds of timelimit, we compare the dual bounds
 
@@ -455,7 +451,7 @@ At the time of writing, only the following scaling factors were tested: $s = 1.0
 \end{comment}
 
 \begin{comment}
-[@dparo: Old Gomoru HU Tree, It was slow and required amortization to speed up the BAC procedure]
+[@dparo: Old Gomoru Hu Tree, It was slow and required amortization to speed up the BAC procedure]
 In this implementation we employed the usage of both the push relabel algorithm,
 the Gomory-Hu tree and full enumeration of all possible $(s, t)$ vertices.
 Since running this full enumeration over each fractional separation,
@@ -489,8 +485,4 @@ memory exhaustion of the host machine is a big concern in using such approach.
 	\end{table}
 \end{landscape}
 
-\end{comment}
-
-\begin{comment}
-\mytodo{Include the F-n135 grep result to talk about the difficulty of this instance and related ones}
 \end{comment}
