@@ -1,31 +1,28 @@
-\mytodo{This section needs review after the thesis is completed}
-
-\noindent Il Capacitated Vehicle Routing Problem, abbreviato come CVRP,
+\noindent Il \textit{Capacitated Vehicle Routing Problem}, abbreviato come CVRP,
 è un problema di ottimizzazione combinatoria d'instradamento nel quale,
-un insieme geograficamente distribuito di clienti con richieste associate note,
+un insieme geograficamente sparso di clienti con richieste note
 deve essere servito da una flotta di veicoli stazionati in una struttura centrale.
-Nelle ultime due decadi,
-tecniche di column generations incorporate all'interno di frameworks branch-price-and-cut
-hanno dominato lo stato dell'arte come approccio
-per costruire algoritmi esatti per il CVRP.
-Il pricer, un imporante componente nella column generation, deve risolvere
-il cosiddetto Pricing Problem (PP) che richiede la risoluzione di un
-Elementary Shortest Path Problem with Resource Constraints (ESPPRC)
+Negli ultimi due decenni,
+tecniche di \textit{Column generation} incorporate all'interno di frameworks \textit{branch-price-and-cut}
+sono state infatti l'approccio dominante stato dell'arte per la costruzione di algoritmi esatti per il CVRP.
+Il \textit{pricer}, un componente critico nella column generation, deve risolvere
+il \textit{Pricing Problem} (PP) che richiede la risoluzione di un
+\textit{Elementary Shortest Path Problem with Resource Constraints} (ESPPRC)
 in una rete di costo ridotto.
 Pochi sforzi scientifici sono stati dedicati allo studio di approacci
 branch-and-cut per affrontare il PP.
+
 L'ESPPRC è stato tradizionalmente rilassato e risolto attraverso algoritmi di programmazione dinamica.
 Questo approccio, tuttavia, ha due principali svantaggi.
-In primo luogo, porta a un peggioramento dei dual bounds ottenuti.
-In secondo luogo, il tempo di esecuzione deteriora all'aumentare della lunghezza dei percorsi generati.
-La comunità di ricerca operativa ha tradizionalmente impiegato
-un insieme d'istanze di test storiche e artificiali per valutare
-l'efficacia dei propri contributi.
-Purtroppo queste istanze, che sono caratterizzate da piccoli percorsi,
-non catturano le proprietà principali dei problemi reali di distribuzione moderna,
-in cui i percorsi sono per natura più lunghi.
+Per cominciare, peggiora i dual bounds ottenuti.
+Inoltre, il tempo di esecuzione diminuisce all'aumentare della lunghezza dei percorsi generati.
+Per valutare la performance dei loro contributi,
+la comunità di ricerca operativa ha tradizionalmente utilizzato una serie di istanze
+di test storiche e artificiali.
+Tuttavia, queste istanze di benchmark storiche non catturano le caratteristiche chiave degli effettivi moderni problemi di distribuzione nel mondo reale.
 
 \noindent In questa tesi sviluppiamo
 uno schema basato su un approaccio branch-and-cut per risolvere il pricing problem.
-Studiamo il comportamento e l'efficacia dell'approccio in produrre percorsi più lunghi
-comparandolo con le soluzioni all'avanguardia fondate su algoritmi di programmazione dinamica.
+Studiamo il comportamento e l'efficacia della nostra implementazione nel produrre percorsi più lunghi
+comparandola con soluzioni all'avanguardia basate su algoritmi di programmazione dinamica.
+I nostri risultati suggeriscono che gli approcci branch-and-cut possono supplementare il tradizionale algoritmo di etichettatura, indicando che la ricerca futura in quest'area potrebbe produrre ulteriori vantaggi per i risolutori CVRP.
