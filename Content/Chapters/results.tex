@@ -499,3 +499,7 @@ At $s = 20$, the labeling algorithm is 20 times slower than the BAC-pricer in 42
 In the case of the \texttt{F} test set, we can see that at $s \in \Set*{1, 2}$, the BAC-pricer is not competitive and occasionally fails to complete the pricing problem within the time limit of 20 minutes.
 This scenario is most likely caused by the \texttt{F-n135-k7} instance, for which we have empirically observed to require a massive amount of cutting planes, resulting in memory exhaustion for the host machine.
 At $s \in \Set*{4, 5, 8, 10, 20}$, the BAC-pricer performs progressively better and feeds tremendously tighter dual bounds to the BPC framework.
+
+In the case of the \texttt{A} test set, the BAC-pricer is not competitive at $s \in \Set*{1, 2, 4}$ and sometimes fails to complete the pricing problem within the time limit.
+At $s = 5$ is competitive in terms of running time and it improves as we increase $s$.
+No appreaciable dual bound improvements to the BPC framework can be observed when using the BAC approach.
