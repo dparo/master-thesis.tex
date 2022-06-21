@@ -435,19 +435,6 @@ For our BAC pricer's implementation, we used CPLEX version 22.1 (released in Mar
 \input{Content/Chapters/Include/perfprofs-batch2.tex}
 
 \begin{comment}
-Each performance profile follows the syntax:
-\begin{center}
-	\begin{LVerbatim}
-		<FAMILY-NAME>-scaled-<s>-last-10
-	\end{LVerbatim}
-\end{center}
-where \texttt{<FAMILY>} denotes the CVRP instances family (i.e. E, F, etc) and \texttt{<s>} is the scale factor for the vehicle capacity.
-The term \texttt{last-10} is used to denote that the performance profile uses only the last 10 pricing iterations for performing the comparison.
-
-At the time of writing, only the following scaling factors were tested: $s = 1.0,\ s = 2.0,\ s = 4.0$.
-\end{comment}
-
-\begin{comment}
 [@dparo: Old Gomoru Hu Tree, It was slow and required amortization to speed up the BAC procedure]
 In this implementation we employed the usage of both the push relabel algorithm,
 the Gomory-Hu tree and full enumeration of all possible $(s, t)$ vertices.
@@ -461,25 +448,3 @@ no maxflow is performed and therefore no set $S \subseteq V_0$ is separated.
 \label{sec:results-discussion}
 
 \mytodo{Discuss the performance profiles here}
-
-Branch-and-cut algorithms issue, for some instances (especially on the F-n135-k7 instance)
-memory exhaustion of the host machine is a big concern in using such approach.
-
-\begin{comment}
-\begin{landscape}
-	\begin{table}[ht]
-		\centering
-		\begin{tabular}{l|lll|lll|lll|lll|}
-			\multirow{3}{*}{Original CVRP Instance} & \multicolumn{6}{c|}{scaled 1.0} & \multicolumn{6}{c|}{scaled 2.0}                                                                                                                \\
-			\cmidrule{2-7}
-			                                        & \multicolumn{3}{c|}{libRCSP}    & \multicolumn{3}{c|}{BAC MIP}    & \multicolumn{3}{c|}{libRCSP} & \multicolumn{3}{c|}{BAC MIP}                                                  \\
-			                                        & UB                              & LB                              & T [s]                        & UB                           & LB & T [s] & UB & LB & T [s] & UB & LB & T [s] \\
-			\toprule
-			A-n37                                   & x0                              & y0                              & t0                           & x1                           & y1 & t1    & x0 & y0 & t0    & x1 & y1 & t1    \\
-			A-n38                                   & x2                              & y2                              & t2                           & x3                           & y3 & t3    & x2 & y2 & t2    & x3 & y3 & t3    \\
-			\bottomrule
-		\end{tabular}
-	\end{table}
-\end{landscape}
-
-\end{comment}
