@@ -183,13 +183,13 @@ or (ii) developing the pricer in a standalone executable, separate from the BPC 
 
 The first option has two primary benefits.
 For starters, it enables our branch-and-cut pricer to influence the BPC algorithm's execution flow.
-Second, it empowers more diversified ways of measuring the pricer's effectiveness.
+Second, it empowers more diversified ways of measuring the pricers' effectiveness.
 We can decide to compare
 the running time required for solving the root node, the running time for solving the entire CVRP instance
 or the running time of each single pricing iteration.
 The disadvantage of the first approach is its implementation complexity
 and constraint in tooling or programming languages employed.
-Programming the BAC pricer as \bapcod{} plugin requires heavy knowledge of this BPC algorithm's intricacies.
+Programming the BAC pricer as plugin requires heavy knowledge of the \bapcod{} framework's intricacies.
 
 The second option, on the other hand, has one significant advantage:
 it allows for greater implementation flexibility, simplifying development efforts.
@@ -231,7 +231,7 @@ of a branch-and-cut scheme for addressing the pricing problem.
 \medskip
 
 We conclude this section by introducing the \bapcod{} parametrization,
-which we used to bend the labeling algorithm to operate in a compatible environment for the BAC algorithm.
+which we used to bend the labeling algorithm to operate in a compatible environment with the BAC algorithm.
 
 The configuration parameters are specified separately
 in an appropriately placed configuration file.
@@ -251,7 +251,7 @@ Refer to \cref{sec:bapcod-appendix} for a complete list of the employed configur
 We employed \bapcod{} version 0.66 (released in November 2021) and the \texttt{libRCSP v0.5.12}.
 The latter library contains the \vrpsolver{} extension's implementation.
 The goal is to use \bapcod{} to solve many CVRP instances while simultaneously
-measuring the labeling algorithm's running at each pricing invocation.
+measuring the labeling algorithm's running time at each pricing invocation.
 
 \medskip
 
@@ -279,7 +279,7 @@ let \bapcod{} compute the ng-sets automatically.
 
 Due to internal implementation details of \bapcod{},
 the RCSP sub-problem requires the user to specify the consumptions (or demand) for each network's arc.
-Resource consumptions cannot aren't definable at the vertex level.
+Resource consumptions aren't definable at the vertex level.
 Therefore, as suggested in \textcite{pessoa2020generic}, we have defined the resource consumption
 on the arcs as $q_{ij} = \frac{q_{i} + q_{j}}{2} \quad \forall i, j \in V$.
 This definition is valid and it leads to a symmetric resource consumption ($q_{ij} = q_{ji}$).
@@ -301,14 +301,14 @@ Because of the implementation details of \bapcod{},
 the reduced cost of an edge does not follow the simple relationship
 $\bar{c}_{ij} = c_{ij} - \frac{\pi_i + \pi_j}{2} \quad \forall i, j \in V,\ i \ne j$.
 By accessing an appropriate field on the MP formulation structure,
-the user can retrieve the dual variables $\pi_0 \in R$.
+the user can retrieve the dual variable $\pi_0 \in R$.
 The remaining dual variables $\pi_i \quad \forall i \in V_0$
 must be calculated from the reduced cost of each edge $\bar{c}_{ij}$.
 Internally, \bapcod{} encodes the reduced cost of an edge using the following relationship:
 \begin{equation}
 	\bar{c}_{ij} = \begin{cases}
-		c_{ij} - \frac{\pi_{j}}{2}       & \texttt{if } i = 0, j \in V_0       \\
-		c_{ij} - \frac{\pi_i + \pi_j}{2} & \texttt{if } i, j \in V_0,\ i \ne j
+		c_{ij} - \frac{\pi_{j}}{2}       & \texttt{if } i = 0, j \in V_0        \\
+		c_{ij} - \frac{\pi_i + \pi_j}{2} & \texttt{if } i, j \in V_0,\ i \ne j.
 	\end{cases}
 	\label{eq:bapcod-encoded-reduced-cost-vars}
 \end{equation}
@@ -324,7 +324,7 @@ and the column generation iteration.
 The second file, instead, encodes a CPTP instance including:
 the dual variables (the vertices' profit),
 the original demands, the original node positions, and the vehicle capacity.
-The CPTP instance is encoded in a slightly modified TSPLIB95 file format.
+The CPTP instance is encoded in a slightly modified \texttt{TSPLIB95} file format.
 In the file format, we've added a new dedicated section, called \texttt{PROFIT\_SECTION},
 to hold the extracted dual variables.
 
@@ -365,17 +365,17 @@ we can validate the pricer that would feed the BPC framework with tighter dual b
 Because the optimal value $z$ always satisfies $z \le 0$,
 we used two sentinel values to accentuate some specific circumstances.
 When a pricer successfully determines that no reduced cost route exists
-($z > \varepsilon_{\mt{ct}}$),
+($z \ge \varepsilon_{\mt{ct}}$),
 we output $z = 1.0$ in the associated \textit{cost profile}.
 Instead, if the pricer fails to solve the PP optimally within the timelimit,
 we output $z = 2.0$.
 For additional output clarity, in \textit{cost profiles} we tint
-the plot's background color in green and red for $z \le \varepsilon_{\mt{ct}}$ and $z > \varepsilon_{\mt{ct}}$ respectively.
+the plot's background color in green and red for $z < \varepsilon_{\mt{ct}}$ and $z \ge \varepsilon_{\mt{ct}}$ respectively.
 
 \medskip
 
 In this thesis, we evaluated the efficiency of our proposed BAC-based pricer
-using both the \textit{cost and time profiles}.
+using both the \textit{cost} and \textit{time profiles}.
 Our pricer's efficiency is compared to the RCSP dynamic programming algorithm
 included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{}.
 
@@ -383,9 +383,9 @@ included in the \vrpsolver{} extension \parencite{pessoa2020generic} of \bapcod{
 	\centering
 	\includegraphics[width=\textwidth]{./Imgs/perfprof-tsp-example/time-ratio20.0.cropped.pdf}
 	\caption{
-		This example of a \textit{time profile} depicts two exact algorithms for the TSP under analysis.
+		This example of a \textit{time profile} depicts the running time analysis of two exact algorithms for the TSP.
 		A vertical straight line on the entire left side of the plot would represent the best scenario.
-		In the situation depicted in the figure, the algorithm named \texttt{FLOW-1|EXT\_CONST=1} outperforms the other algorithm in the vast majority of cases.
+		In the situation depicted in the figure, the algorithm named \texttt{FLOW-1|EXT\_CONST=1}, the orange line, outperforms the other algorithm in the vast majority of cases.
 	}
 	\label{fig:example-of-time-profile-tsp}
 \end{figure}
@@ -403,7 +403,6 @@ Unlucky branching decisions, appearing at high levels of the branching tree, hav
 
 Performance profiles should filter out the noise and measure the genuine algorithmic improvements of a resolution method.
 To avoid performance variabilities, we can upsample each test-set instance using a different initial random seed each time.
-With each random seed, each test instance is solved multiple times.
 The greater the number of seeds considered, the more likely the performance profile captures a genuine algorithmic improvement rather than variability.
 
 Although using multiple seeds is generally good practice when testing chaotic systems, we used a single seed per pricing instance to substantially decrease the computation time required for the empirical evaluation.
@@ -437,13 +436,13 @@ The cost of computing Gomory-Hu trees becomes zero, but cutting planes will neve
 The computational evaluation of the first group is provided in \cref{fig:perfprofs-batch1-part1},
 which contain solely cost profiles depicting the obtained dual bounds.
 The results in \cref{fig:perfprofs-batch1-part1} were obtained using a single core and a time limit of 60 seconds.
-The winner will be the BAC-pricer version that produces tighter bounds.
+The winner will be the BAC-pricer version that produces tighter dual bounds within the time limit.
 According to \cref{fig:perfprofs-batch1-part1}, the \texttt{BAC AFL} version produces tighter dual bounds in the majority of cases.
 As a result, we will only compare the pricing efficiency of the \texttt{BAC AFL} version to the labeling algorithm in the second group of empirical results.
 
 \medskip
 
-The second group, on the other hand, compares our \texttt{BAC AFL} algorithm to the VRPSolver's labeling algorithm \parencite{pessoa2020generic}.
+The second group, on the other hand, compares our \texttt{BAC AFL} algorithm to the \vrpsolver{}'s labeling algorithm \parencite{pessoa2020generic}.
 The computational evaluation of the second group is provided in
 \cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2,fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2,fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2,fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2,fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}.
 The BAC-pricer was run on 16 threads (corresponding to the virtual cores of the host machine) with a time limit of 20 minutes.
@@ -459,7 +458,7 @@ will be discussed in the next dedicated \cref{sec:results-discussion}.
 
 In this section we discuss the empirical results depicted in
 \cref{fig:perpfrofs-batch2-E-part1,fig:perpfrofs-batch2-E-part2,fig:perpfrofs-batch2-F-part1,fig:perpfrofs-batch2-F-part2,fig:perpfrofs-batch2-A-part1,fig:perpfrofs-batch2-A-part2,fig:perpfrofs-batch2-B-part1,fig:perpfrofs-batch2-B-part2,fig:perpfrofs-batch2-P-part1,fig:perpfrofs-batch2-P-part2}.
-The VRPSolver's labeling algorithm in the empirical results is denoted as \texttt{libRCSP DP pricer},
+The \vrpsolver{}'s labeling algorithm in the empirical results is denoted as \texttt{libRCSP DP pricer},
 while our implemented BAC-pricer is denoted as \texttt{BAC MIP Pricer (AFL)}.
 
 We tested the performance of the two pricer approaches for different test sets under progressively higher vehicle capacities.

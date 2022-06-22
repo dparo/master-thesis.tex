@@ -82,7 +82,7 @@ In the context of CVRP pricing, we're only interested in routes achieving a stri
 A MIP optimizer can use the \textit{upper cutoff value} to reduce the number of evaluated branch-and-bound nodes.
 The upper cutoff value acts as a direct constraint on the objective function:
 \begin{equation}
-	z_\mt{CPTP}(x, y) \le 0 - \varepsilon_{\mt{ct}},
+	z_\mt{CPTP}(x, y) < 0 - \varepsilon_{\mt{ct}},
 \end{equation}
 where $\varepsilon_{\mt{ct}} \in \R_+$ denotes the upper cutoff tolerance.
 Most MIP solvers, including CPLEX, has internal support for specifying cutoff values.
