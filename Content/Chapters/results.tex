@@ -1,13 +1,8 @@
 \chapter{Results}
 \label{sec:results}
 
-This chapter will present the empirical results
-of the branch-and-cut algorithm,
-whose implementation was discussed in \cref{sec:implementation-chapter}.
-We will evaluate its performance as a pricer for the CVRP,
-by comparing it with
-the state-of-the-art labeling algorithm based on dynamic programming
-discussed in the works of \textcite{pessoa2020generic, sadykov2021bucket}.
+This chapter will present the empirical results of the branch-and-cut algorithm, which implementation was discussed in \cref{sec:implementation-chapter}.
+We will evaluate its performance as a pricer for the CVRP by comparing it with the state-of-the-art labeling algorithm based on dynamic programming discussed in the works of \textcite{pessoa2020generic, sadykov2021bucket}.
 
 \medskip
 
@@ -73,22 +68,20 @@ so that we can evaluate the behavior of the proposed branch-and-cut pricer and l
 as the routes they need to produce grow longer (see previous discussions in
 \cref{sec:intro-thesis-contributions,sec:solving-the-pricing-problem}).
 The new artificial instances were created as follows.
-Let $Q \in R_+,\ k \in Z_+$ respectively denote the vehicle
+Let $Q \in R_+,\ K \in Z_+$ respectively denote the vehicle
 capacity and the number of trucks of the unmodified CVRP instance.
 Define a scale factor $s \in R_+$.
 For each unmodified CVRP instance, we generate a new artificial instance
 characterized by the vehicle capacity $Q^\prime \in R_+$
-and by the number of vehicles $k^\prime \in Z_+$.
+and by the number of vehicles $K^\prime \in Z_+$.
 We've inflated the total number of available CVRP instances
 by using the following relationship:
 $$
 	Q^\prime = Q \times s, \quad K^\prime = \ceil*{\frac{K}{s}}
 $$
-Inflation is performed for each unmodified CVRP instance by using
-multiple values for the scale factor $s \in R_+$.
+Each unmodified CVRP instance is inflated through multiple values for the scale factor $s \in R_+$.
 As $s \in R_+$ grows, the inflated CVRP instances will look more and more like a conventional TSP.
-If $\ceil*{\frac{K}{s}} = 1$ the CVRP decades to a TSP and, as a result,
-the BAP frameworks may become a suboptimal approach for dealing with such a problem.
+If $K^\prime = 1$, the CVRP decades to a TSP. As a result, the BAP frameworks may become a suboptimal approach for dealing with such a problem.
 
 \section{\bapcod{}}
 \label{sec:results-bapcod}
@@ -100,7 +93,7 @@ embedded in a generic and modern branch-price-and-cut (BPC) algorithm.
 \bapcod{} takes a compact mixed-integer programming model as input
 and solves it using a Dantzig-Wolfe reformulation \parencite{dantzig1960}.
 See the previous discussion on \cref{sec:set-partitioning-formulation,sec:branch-and-price}.
-The modern BPC solver automatically applies the Dantzig-Wolfe reformulation.
+This modern BPC solver automatically applies the Dantzig-Wolfe reformulation.
 In this case, a default generic pricer based on a MIP optimizer
 is employed during the column generation phase.
 \bapcod{} uses an automatic dual price smoothing stabilization,
