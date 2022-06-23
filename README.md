@@ -1,3 +1,7 @@
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/dparo/master-thesis.tex?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/dparo/master-thesis.tex?style=for-the-badge) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dparo/master-thesis.tex/CI?style=for-the-badge)
+
+
 # A Branch-and-Cut based Pricer algorithm for tackling the Capacitated Vehicle Routing Problem
 
 This repository contains the LaTeX source code for the master degree thesis
@@ -30,3 +34,7 @@ git clone --recursive https://github.com/dparo/master-thesis.tex
 ```sh
 make all
 ```
+
+## Fudnding
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J47WJB2)
