@@ -6,6 +6,10 @@ in Year 2022.
 
 The associated C source code implementation can be found at this [Github repo](https://github.com/dparo/master-thesis).
 
+# Reading the compiled PDF
+
+You can read the prebuilt PDF [here](https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf)
+
 # Cloning the repository
 
 ```sh
