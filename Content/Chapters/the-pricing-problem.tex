@@ -280,10 +280,10 @@ biasing the reduced cost of a feasible route $p$.
 
 \medskip
 
-We are now ready to provide a ESPPCC formal description through an Integer Programme (IP).
+We are now ready to provide a ESPPCC formal description through an Integer Program (IP).
 Let $x_{ij} \in \Set*{0, 1} \quad \Tuple*{i, j} \in A^\prime$ be a new set of binary decision variables:
 $x_{ij} = 1$ if arc $\Tuple*{i, j} \in A^\prime$ is picked by the optimal path.
-We provide a formal mathematical formulation of the ESPPCC as an Integer Programme (IP):
+We provide a formal mathematical formulation of the ESPPCC as an Integer Program (IP):
 \begin{align}
 	\min_{x} \quad z_\mt{ESPPCC}(x) & =  \sum_{(i, j) \in A^\prime} \bar{c}_{ij} x_{ij}                                                     \label{eq:espprc-obj-function}                                                                \\
 	                                & \sum_{i \in V_0} \frac{q_i}{2} \Expr*{ \ExprESPPIngoingEdges{i} + \ExprESPPOutgoingEdges{i} }  \le Q  \label{eq:espprc-resource-upper-bound-constraint}                                             \\
@@ -493,7 +493,7 @@ Namely, $p_i = \pi_i \quad \forall i \in V$.
 
 Let $x_{e}$, $y_{i} \in \Set*{0, 1}$ be two sets of binary decision variables which respectively
 model whether an undirected edge $e \in E$ or vertex $i \in V$ is covered by the optimal CPTP route.
-We can provide a formal mathematical description of the CPTP through an Integer Programme (IP) formulation:
+We can provide a formal mathematical description of the CPTP through an Integer Program (IP) formulation:
 \begin{align}
 	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                     & \label{eq:cptp-obj-function}                                                                          \\
 	                                   & y_0 = 1                                  & \label{eq:cptp-depot-part-of-tour-constraint}                                                         \\
