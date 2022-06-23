@@ -35,6 +35,6 @@ git clone --recursive https://github.com/dparo/master-thesis.tex
 make all
 ```
 
-## Fudnding
+## Funding
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J47WJB2)
