@@ -15,21 +15,21 @@ The associated C source code implementation can be found at this [Github repo](h
 You can read the latest version of the prebuilt PDF [here](https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf).
 
 
-## :construction_worker: Manually compile the document 
+## :construction: Manually compile the document 
 
-### Requirements
+### :anchor: Requirements
 - A GNU/Linux system
 - A full distribution of LaTex (with latexmk)
 - GNU make
 - (Optional) Inkscape to automatically batch convert SVGs to PDFS
 - (Optional) Ghostscript to optimize the PDF for release mode
 
-### Cloning the repository
+### :inbox_tray: Cloning the repository
 ```sh
 git clone --recursive https://github.com/dparo/master-thesis.tex
 ```
 
-### :construction: Building
+### :hammer: Building
 
 ```sh
 make all
