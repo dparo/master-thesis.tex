@@ -15,8 +15,8 @@ that asks for the determination of a Hamiltonian circuit of minimum cost
 The CVRP can be defined verbally as finding an optimal route for a transportation/distribution/delivery problem
 starting from a common point called the depot,
 where a homogeneous fleet composed of a fixed number of trucks, subject to capacity constraints,
-need to serve customer demands of a single good (i.e. delivery of gasoline to gas stations).
-Given as input: a weighted graph representing the road network,
+need to serve customer demands of a single good (e.g. delivery of gasoline to gas stations).
+Given as input a weighted graph representing the road network,
 the customer demands and the vehicle capacity,
 the problem consists in determining a set of non-oriented routes, one for each vehicle,
 of minimal overall travel distance starting and ending at the depot.
@@ -98,7 +98,7 @@ The major CVRP test sets proposed by the operations research community over the 
 	\setlength{\itemsep}{0pt}
 	\setlength{\parskip}{0pt}
 
-	\item The set \texttt{E} is proposed in\textcite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic}.
+	\item The set \texttt{E} is proposed in \textcite{dantzig1959, christofides1969, gaskell1967bases, gillett1974heuristic}.
 	      The majority of the \texttt{E} test instances were generated at random, while the remainder lack description on their origin.
 	\item The set \texttt{M} was proposed in \textcite{christofides1979vehicle} and was obtained by aggregating instances from \texttt{E} set.
 	\item The set \texttt{F} was presented in \textcite{fisher1994} and was obtained from an actual distribution problem of groceries in the city of Ontario.
@@ -109,7 +109,7 @@ These historical benchmark instances bear little resemblance to real-world distr
 They are either too homogeneous or too artificial while not covering the key characteristics found in contemporary real-world distribution problems.
 The historical instances presented in the literature are typically characterized by stringent vehicle capacities, which give rise to optimal solutions characterized by short routes each visiting few customers.
 Instead, real-world contemporary distribution problems are characterized by much longer routes since the vehicle capacity is rarely the bottleneck in practice.
-Despite \textcite{uchoa2017} proposed \texttt{X} test-set, a broader and trendier common denominator of diverse instances for the CVRP, the historical test instances were (and continue to be) the primary central test-bed for comparing and assessing the performance of CVRP contributions.
+Despite \textcite{uchoa2017} proposing the \texttt{X} test-set, a broader and trendier common denominator of diverse instances for the CVRP, the historical test instances were (and continue to be) the primary central test-bed for comparing and assessing the performance of CVRP contributions.
 
 The \textit{labeling algorithm} is a dynamic programming-based algorithm used to solve the pricing sub-problem induced from \textit{Column Generation} (CG) schemes applied to the VRP.
 We will delve into these topics in greater detail in \cref{sec:branch-and-price}.
