@@ -10,12 +10,12 @@ in Year 2022.
 
 The associated C source code implementation can be found at this [Github repo](https://github.com/dparo/master-thesis).
 
-## Reading the compiled PDF
+## :closed_book: Reading the compiled PDF
 
 You can read the latest version of the prebuilt PDF [here](https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf).
 
 
-## Generate the Document Manually
+## :construction_worker: Manually compile the document 
 
 ### Requirements
 - A GNU/Linux system
@@ -29,12 +29,12 @@ You can read the latest version of the prebuilt PDF [here](https://github.com/dp
 git clone --recursive https://github.com/dparo/master-thesis.tex
 ```
 
-### Building
+### :construction: Building
 
 ```sh
 make all
 ```
 
-## Funding
+## :sparkling_heart: Funding
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J47WJB2)
