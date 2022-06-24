@@ -10,9 +10,15 @@ in Year 2022.
 
 The associated C source code implementation can be found at this [Github repo](https://github.com/dparo/master-thesis).
 
-## :closed_book: Reading the compiled PDF
+## :closed_book: Reading the prebuilt PDF Document
 
-You can read the latest version of the prebuilt PDF [here](https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf).
+<a href="https://docs.google.com/viewer?url=https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf">
+<img src="https://img.shields.io/badge/-View%20PDF%20Document-blue?style=for-the-badge&logo=download" alt="View PDF Document">
+</a>
+<br>
+<a href="https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf">
+<img src="https://img.shields.io/badge/-Download%20PDF%20Document-purple?style=for-the-badge&logo=download" alt="Download PDF Document">
+</a>
 
 
 ## :construction: Manually compile the document 
