@@ -22,7 +22,7 @@ jobs:
           root_file: main.tex
 
       - name: Generate automatic release with assets
-        uses: softprops/action-gh-release@latest
+        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           draft: False
