@@ -21,6 +21,9 @@ jobs:
         with:
           root_file: main.tex
 
+      - name: Copy PDF Document
+        run: cp 'build/main.pdf' 'Paro_Davide.pdf'
+
       - name: Generate automatic release with assets
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -29,4 +32,4 @@ jobs:
           prerelease: False
           files: |
             LICENSE
-            build/Paro_Davide.pdf
+            Paro_Davide.pdf
