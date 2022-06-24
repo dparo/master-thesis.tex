@@ -12,13 +12,16 @@ The associated C source code implementation can be found at this [Github repo](h
 
 ## :closed_book: Reading the prebuilt PDF Document
 
+<div>
 <a href="https://docs.google.com/viewer?url=https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf">
-<img src="https://img.shields.io/badge/-View%20PDF%20Document-blue?style=for-the-badge&logo=download" alt="View PDF Document">
+<img src="https://img.shields.io/badge/-View%20PDF%20Document-blue?style=for-the-badge&logo=download" alt="View PDF Document" />
 </a>
-<br>
+</div>
+<div>
 <a href="https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf">
-<img src="https://img.shields.io/badge/-Download%20PDF%20Document-purple?style=for-the-badge&logo=download" alt="Download PDF Document">
+<img src="https://img.shields.io/badge/-Download%20PDF%20Document-purple?style=for-the-badge&logo=download" alt="Download PDF Document" />
 </a>
+</div>
 
 
 ## :construction: Manually compile the document 
