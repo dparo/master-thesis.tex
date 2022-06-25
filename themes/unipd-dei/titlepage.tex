@@ -1,57 +1,61 @@
 \begin{titlingpage}
 	\thispagestyle{empty}
 
-	%% NOTE(dparo):
-	%%
-	%% \calccentering\unitlength   \begin{adhustwidth} ... \end{adjustwidth}
-	%% allows to temporarily override the margin.
-	%% This allows us to center nicely the title page even though in a twosided
-	%% document class, the outer and inner margin are different.
+	{
+		\setlength\parindent{0pt}
 
-	\calccentering\unitlength % ok to mess with unitlength inside a group
+		%% NOTE(dparo):
+		%%
+		%% \calccentering\unitlength   \begin{adhustwidth} ... \end{adjustwidth}
+		%% allows to temporarily override the margin.
+		%% This allows us to center nicely the title page even though in a twosided
+		%% document class, the outer and inner margin are different.
 
-	\begin{adjustwidth}{\unitlength}{-\unitlength}
-		\begin{center}
-			\vbox to0pt{\vbox to\textheight{\vfill \includegraphics[width=12.5cm]{themes/unipd-dei/static/unipd-light.png} \vspace{1.4cm}
-						\vfill}\vss}
-			\begin{figure}
-				\centering
-				\includegraphics[height=2.45cm]{themes/unipd-dei/static/unipd-dei.png}%\hspace{1cm}
-				%\includegraphics[height=2.3cm]{themes/unipd-dei/static/DEIlogoFULL.png}
-			\end{figure}
+		\calccentering\unitlength % ok to mess with unitlength inside a group
 
-			{\scshape \Large{\bfseries{\UnivName}}} \\
-			{\scshape \large{Department of \DeptName}} \\
-			\vspace{3pt}
-			{\scshape \large{\textit{\DegreeName}}} \\
-			\line(1, 0){400} \\
+		\begin{adjustwidth}{\unitlength}{-\unitlength}
+			\begin{center}
+				\vbox to0pt{\vbox to\textheight{\vfill \includegraphics[width=12.5cm]{themes/unipd-dei/static/unipd-light.png} \vspace{1.4cm}
+							\vfill}\vss}
+				\begin{figure}
+					\centering
+					\includegraphics[height=2.45cm]{themes/unipd-dei/static/unipd-dei.png}%\hspace{1cm}
+					%\includegraphics[height=2.3cm]{themes/unipd-dei/static/DEIlogoFULL.png}
+				\end{figure}
 
-			\vspace{1cm}
-			{\huge{\bfseries{\textcolor{SchoolColor}{\Title}}} \par}\vspace{0.7cm} % Thesis title
-			%\HRule
-			\vspace{1cm}
+				{\scshape \Large{\bfseries{\UnivName}}} \\
+				{\scshape \large{Department of \DeptName}} \\
+				\vspace{3pt}
+				{\scshape \large{\textit{\DegreeName}}} \\
+				\par\noindent\rule{\textwidth}{0.4pt}
 
-			\begin{minipage}[t]{0.3\textwidth}
-				\begin{flushleft} \large
-					\emph{Graduate:}\\
-					\textcolor{SchoolColor}{\AuthorName \ \textsc{\AuthorSurname}} % Author name
-					\\
-					\emph{ID:} \textsc{\StudentId}
-				\end{flushleft}
-			\end{minipage}
-			\begin{minipage}[t]{0.68\textwidth}
-				\begin{flushright} \large
-					\emph{Supervisor:} \\
-					\textcolor{SchoolColor}{Prof. \SupName \ \textsc{\SupSurname}} % Supervisor name
-					\vspace{10pt}\\
-					\emph{Co-Supervisor:} \\
-					\textcolor{SchoolColor}{Prof. \CosupName \ \textsc{\CosupSurname}} % Cosupervisor name - %comment these lines if there are no supervisors
-				\end{flushright}
-			\end{minipage}
+				\vspace{1cm}
+				{\huge{\bfseries{\textcolor{SchoolColor}{\Title}}} \par}\vspace{0.7cm} % Thesis title
+				%\HRule
+				\vspace{1cm}
 
-			\vfill
-			\large{\textsc{Academic year:} \quad \AcademicYear}\\
-			\large{\textsc{Graduation date:} \quad \GraduationDate}
-		\end{center}
-	\end{adjustwidth}
+				\begin{minipage}[t]{0.3\textwidth}
+					\begin{flushleft} \large
+						\emph{Graduate:}\\
+						\textcolor{SchoolColor}{\AuthorName \ \textsc{\AuthorSurname}} % Author name
+						\\
+						\emph{ID:} \textsc{\StudentId}
+					\end{flushleft}
+				\end{minipage}
+				\begin{minipage}[t]{0.68\textwidth}
+					\begin{flushright} \large
+						\emph{Supervisor:} \\
+						\textcolor{SchoolColor}{Prof. \SupName \ \textsc{\SupSurname}} % Supervisor name
+						\vspace{10pt}\\
+						\emph{Co-Supervisor:} \\
+						\textcolor{SchoolColor}{Prof. \CosupName \ \textsc{\CosupSurname}} % Cosupervisor name - %comment these lines if there are no supervisors
+					\end{flushright}
+				\end{minipage}
+
+				\vfill
+				\large{\textsc{Academic year:} \quad \AcademicYear}\\
+				\large{\textsc{Graduation date:} \quad \GraduationDate}
+			\end{center}
+		\end{adjustwidth}
+	}
 \end{titlingpage}
