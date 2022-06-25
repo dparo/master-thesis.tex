@@ -3,6 +3,9 @@
 %%
 \newcommand\ThemeTitlePage{themes/\ThemeName/titlepage.tex}
 
+\newcommand*{\pretoctitle}[1]{{\clearpage\centering
+			\vspace*{5cm}#1\par}}
+
 \IfFileExists{\ThemeTitlePage}{
 	\input{\ThemeTitlePage}
 	\cleardoublepage
@@ -46,6 +49,15 @@
 	\cleardoublepage
 }{}
 
+\IfFileExists{Content/Preamble/acknowledgements.tex}{
+	\phantomsection
+	\pdfbookmark{Acknowledgements}{Acknowledgements}
+
+	\pretoctitle{ACKNOWLEDGEMENTS}
+	\input{Content/Preamble/acknowledgements.tex}
+	\cleardoublepage
+}{}
+
 % Dedication/inscription
 \IfFileExists{Content/Preamble/dedication.tex}{
 	\phantomsection
@@ -55,13 +67,6 @@
 	{\mbox{}\vfill \centering \input{Content/Preamble/dedication.tex} \par\vfill}
 	\cleardoublepage
 }
-
-\IfFileExists{Content/Preamble/acknowledgements.tex}{
-	\phantomsection
-	\pdfbookmark{Acknowledgements}{Acknowledgements}
-	\input{Content/Preamble/acknowledgements.tex}
-	\cleardoublepage
-}{}
 
 %%
 %% Produce table of contents
