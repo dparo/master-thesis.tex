@@ -1,3 +1,6 @@
+# Config file loaded from the latexindent.pl formatter
+## See: https://latexindentpl.readthedocs.io/en/stable/sec-indent-config-and-settings.html
+
 modifyLineBreaks:
-    preserveBlankLines: 1
-    condenseMultipleBlankLinesInto: 1
+  preserveBlankLines: 1
+  condenseMultipleBlankLinesInto: 1

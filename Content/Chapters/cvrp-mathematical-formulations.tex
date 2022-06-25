@@ -27,17 +27,10 @@ We present three commonly used CVRP mathematical models:
 	      is presented in \cref{sec:set-partitioning-formulation}.
 \end{enumerate}
 
-The first two formulations, traditionally designed
-for branch-and-cut (BAC) algorithms, employ a polynomial number of variables
-but use an exponential number of constraints.
-Instead of a polynomial number of constraints,
-the latter formulation employs an exponential number of decision variables.
-Despite its age, the SP formulation has become the de facto state-of-the-art core ingredient
-for solving CVRP problems in recent years,
-thanks to algorithmic advances and the development of efficient branch-and-price (BAP) frameworks
-(see \cite{pessoa2020}).
-\Textcite{baldacci2004} contains another less ordinary formulation
-based on a two-commodity flow description.
+The first two formulations, traditionally designed for branch-and-cut (BAC) algorithms, employ a polynomial number of variables but use an exponential number of constraints.
+Instead, the latter formulation employs an exponential number of decision variables.
+Despite its age, the SP formulation has become the de facto state-of-the-art core ingredient for solving CVRP problems in recent years, thanks to algorithmic advances and the development of efficient branch-and-price (BAP) frameworks (see \cite{pessoa2020}).
+\Textcite{baldacci2004} contains another less ordinary formulation based on a two-commodity flow description.
 
 While the first two formulations will not be the primary focus of this thesis,
 they are necessary for understanding some crucial details.
@@ -50,10 +43,7 @@ We begin by defining some basic notation and mathematical quantities in
 \section{Mathematical notation}
 \label{sec:cvrp-mathematical-notation}
 
-The CVRP is traditionally described as a node routing problem
-modeled through a symmetric and complete graph theoretical problem,
-where: (i) the vertices of the network represent the customers and the depot,
-(ii) the edges represent road interconnections.
+The CVRP is traditionally described as a node routing problem modeled through a symmetric and complete graph, where: (i) the vertices of the network represent the customers and the depot, (ii) the edges represent road interconnections.
 Let $G = \Tuple*{V, E}$ denote a \textbf{complete undirected network} where:
 $V = \Set*{0, 1, \dots, N - 1}$ denotes the set of nodes,
 $E = \Set*{e = \Set*{i, j} = \Set*{j, i} \mid \allowbreak i,j \in V, \allowbreak i \ne j}$ the set of undirected edges,
@@ -71,9 +61,8 @@ to denote the set of edges incident to node $i \in V$.
 We also define $E(S) = \Set*{e = \Set*{i, j} = \Set*{j, i}\in E \mid i, j \in S}$
 to denote the set of edges having both end points in set $S \subseteq V$.
 
-Let $q_{i} \in \R,\ q_{i} \ge 0 \quad \forall i \in V$ denote the demand function,
-which represent the required demand that need to be served for vertex $i \in V$.
-For convenience, we fix a fictitious demand for the depot: $q_0 = 0$.
+Let $q_{i} \in \R,\ q_{i} \ge 0 \quad \forall i \in V$ denote the demand function, which represent the required demand that need to be served for vertex $i \in V$.
+For convenience, we use a fictitious demand for the depot: $q_0 = 0$.
 Given a set $S \subseteq V$, we define $q(S) = \sum_{i \in S} q_i$ as the total demand of the set $S \subseteq V$.
 Let $c_{ij} \in \R, c_{ij} > 0$ denote the distance function between a pair of nodes  $i, j \in V$.
 The loop arcs $\Set*{i, i} \notin E$ in CVRP are traditionally not allowed, thus we fix $c_{ii} = \infty$.
@@ -100,12 +89,12 @@ with resource consumption $q_p = q(p) = \sum_{i=0}^{u} q_{i}$.
 A feasible solution to a CVRP problem consists of \textbf{exactly} $K$ routes (or circuits) $p_k$
 associated with each vehicle $k \in \mcK$ starting and ending at the depot node,
 where:
-(i) each customer is only visited once (elementarity condition)
+(i) each customer is visited once (elementarity condition)
 and (ii) the demand covered by each route $p_k$ does not exceed the vehicle capacity $q(p_k) \le Q \quad \forall k \in \mcK$.
 An optimal solution to the CVRP minimizes the sum of the overall edge weights across all tours.
 The traditional definition of CVRP requires that all vehicles be fully utilized.
 In other words, each $p_k$ route must serve at least one customer.
-However, we note that using fewer vehicles may sometimes yield more optimal solutions.
+However, we note that using fewer vehicles may sometimes yield better solutions.
 
 \medskip
 
@@ -132,7 +121,7 @@ and later generalized to the undirected case in \textcite{laporte1986}.
 We define a set of integer decision variables $x_e \in \Set*{0, 1, 2}$ to indicate the number of times
 a vehicle traverses each edge $e \in E$ in the optimal solution.
 The model contains $O(N^2)$ integer variables.
-The two-index arc flow (2F) formulation can be described as an Integer Programme (IP):
+The two-index arc flow (2F) formulation can be described as an Integer Program (IP):
 \begin{align}
 	\min_{x} \quad z_\mt{2F}(x) & = \sum_{e \in E} c_e x_e                 & \label{eq:two-index-flow-obj-func}                                                   \\
 	                            & \sum_{e \in \delta(i)} x_e = 2           & \quad \forall i \in V_0 \label{eq:two-index-flow-two-edges-incident-per-customer}    \\
@@ -207,24 +196,15 @@ heuristics for separating the CCC of \cref{eq:two-index-flow-ccc}.
 \section{The three-index arc flow (3F) formulation}
 \label{sec:cvrp-three-index-flow-formulation}
 
-When it comes to modeling more "colorful" CVRP variants,
-the two-index arc flow (2F) model lacks sufficient descriptive power.
-For example,
-the simple CVRP variant where the fleet of trucks is heterogeneous
-and characterized by capacities $Q_1, \dots, Q_K$,
-cannot be described with the 2F formulation,
-since there's no definite one-to-one mapping on which truck crosses an edge $e \in E$.
+When it comes to modeling more "colorful" CVRP variants, the two-index arc flow (2F) model lacks sufficient descriptive power.
+For example, the simple CVRP variant where the fleet of trucks is heterogeneous and characterized by capacities $Q_1, \dots, Q_K$ cannot be described with the 2F formulation, since there's no definite one-to-one mapping on which truck crosses an edge $e \in E$.
 
-The three-index arc flow (3F) formulation,
-first presented in \textcite{golden1977},
-fixes this issue.
+The three-index arc flow (3F) formulation, first presented in \textcite{golden1977}, fixes this issue.
 The 3F formulation makes use $O(N^2 K + N K)$ integer decision variables.
-A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e \in E,\ k \in \mcK$
-is used to encode the number of times a truck $k$ traverses an edge $e \in E$.
-A new set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$
-is used to model whether truck $k$ covers a node $i \in V$.
+A set of integer variables $x_{ek} \in \Set*{0, 1, 2},\ e \in E,\ k \in \mcK$ is used to encode the number of times a truck $k$ traverses an edge $e \in E$.
+A new set of binary variables $y_{ik} \in \Set*{0, 1},\ i \in V,\ k \in \mcK$ is used to model whether truck $k$ covers a node $i \in V$.
 
-The three-index arc flow (3F) formulation can be described as an Integer Programme (IP):
+The three-index arc flow (3F) formulation can be described as an Integer Program (IP):
 \begin{align}
 	\min_{x, y} \quad z_\mt{3F}(x, y) & = \sum_{k \in \mcK} \sum_{e \in E} c_{e} x_{ek} & \label{eq:three-index-flow-obj-func}                                                                                    \\
 	                                  & \sum_{k \in \mcK} y_{ik} = 1                    & \quad \forall i \in V_0 \label{eq:three-index-flow-all-customers-visited}                                               \\
@@ -303,7 +283,7 @@ We recall that $c_p = c(p)$ represents the cost of a feasible route $p \in P$,
 which can be trivially computed in $O(N)$.
 The SP model forces $K$ routes $\Tuple*{p_1, \dots, p_K} \in P^K$ to be included in the optimal solution.
 
-The SP formulation is described through an Integer Programme (IP):
+The SP formulation is described through an Integer Program (IP):
 \begin{align}
 	\min_{\lambda} \quad z_\mt{SP}(\lambda) & = \sum_{p \in P}  c_p \lambda_p              & \label{eq:set-partitioning-obj-func}                                                       \\
 	                                        & \sum_{p \in P} \lambda_{p} = K               & \label{eq:set-partitioning-K-routes}                                                       \\
@@ -340,18 +320,14 @@ in favor of the simpler inequality:
 \begin{equation}\label{eq:set-covering-customers-visited-by-exactly-one-route}
 	\sum_{p \in P}  a_{ip} \lambda_p \ge 1  \quad \forall i \in V_0,
 \end{equation}
-therefore the SC formulation may be expressed as an Integer Programme (IP):
+therefore the SC formulation may be expressed as an Integer Program (IP):
 \begin{align}
 	\min_{\lambda} \quad z_\mt{SC}(\lambda) & = \sum_{p \in P}  c_p \lambda_p              & \label{eq:set-covering-obj-func}                                                       \\
 	                                        & \sum_{p \in P} \lambda_{p} = K               & \label{eq:set-covering-K-routes}                                                       \\
 	                                        & \sum_{p \in P}  a_{ip} \lambda_p \ge 1       & \quad \forall i \in V_0 \label{eq:set-covering-customers-visited-by-exactly-one-route} \\
 	                                        & \lambda_p                    \in \Set*{0, 1} & \quad \forall p \in P \label{eq:set-covering-lambda-mip-var-bounds}.
 \end{align}
-Under the triangle inequality assumption,
-any feasible solution for the SP formulation
-\labelcref{eq:mp-obj-func,eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes,eq:mp-lambda-mip-var-bounds}
-is also feasible for the SC formulation
-\labelcref{eq:set-covering-obj-func,eq:set-covering-K-routes,eq:set-covering-customers-visited-by-exactly-one-route,eq:set-covering-lambda-mip-var-bounds}.
+Under the triangle inequality assumption, any feasible solution for the SC formulation \labelcref{eq:set-covering-obj-func,eq:set-covering-K-routes,eq:set-covering-customers-visited-by-exactly-one-route,eq:set-covering-lambda-mip-var-bounds} is also feasible for the SP formulation \labelcref{eq:mp-obj-func,eq:mp-customers-visited-by-exactly-one-route,eq:mp-K-routes,eq:mp-lambda-mip-var-bounds}.
 Transforming the SP to the SC formulation vastly shrinks (halves) the size of the dual solution space.
 
 \medskip

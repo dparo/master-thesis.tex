@@ -3,7 +3,6 @@
 
 This chapter introduces the proposed branch-and-cut algorithm (BAC).
 The BAC algorithm was implemented using the recent \textit{CPLEX 22.1 C callable library}.
-\textit{CPLEX version 22.1} was released in March 2022.
 The proposed branch-and-cut uses the CPTP formulation as the foundational static IP model.
 Refer to the previous discussion on the CPTP in \cref{sec:the-capacitated-profitable-tour-problem} for more information.
 By appropriately defining the profit function associated with each vertex $p_i \quad \forall i \in V$,
@@ -59,7 +58,7 @@ by disregarding the GSECs inequalities \labelcref{eq:cptp-gsec-constraints}.
 Upon violation,
 the GSECs will be separated lazily through an exact procedure to ensure the approach's correctness.
 
-In more detail, we've implemented the following static Integer Programme (IP) model:
+In more detail, we've implemented the following static Integer Program (IP) model:
 \begin{align}
 	\min_{x,y} \quad z_\mt{CPTP}(x, y) & = \ExprCptpObjValDef                     & \label{eq:cptp-static-model-0}                         \\
 	                                   & y_0 = 1                                  & \label{eq:cptp-static-model-1}                         \\
@@ -121,8 +120,8 @@ see \cite{rosenkrantz1977, johnson1997, laporte1992, johnson2007, hoffman2013}.
 
 The warm starting procedure that we've implemented is explained in the remainder of this section.
 The procedure is divided into two stages:
-a constructive insertion heuristic stage (see \cref{sec:impl-insertion-heuristic})
-followed by a 2-OPT refinement stage (see \cref{sec:impl-2opt-refinement}),
+a constructive \textit{insertion heuristic} stage (see \cref{sec:impl-insertion-heuristic})
+followed by a \textit{2-OPT refinement} stage (see \cref{sec:impl-2opt-refinement}),
 
 \subsection{Insertion heuristic}
 \label{sec:impl-insertion-heuristic}
@@ -139,7 +138,7 @@ to make it work with the CPTP.
 Start by selecting two distinct nodes $u, v \in V,\ q_u + q_v \le Q$
 to form an initial route back-to-back $p = \Tuple*{u, v}$.
 
-The insertion heuristic algorithm is an iterative approach
+The \textit{insertion heuristic} algorithm is an iterative approach
 in which an almost-feasible CPTP tour is available at each iteration.
 If the CPTP admits feasible solutions,
 the final available tour will undoubtedly be feasible
@@ -328,12 +327,9 @@ The $(u, v)$-min-cuts outputs a subset $T \subseteq V$ induced from $(u, v)$ by
 minimizing the term $\sum_{e \in \delta(T)} x^\star_e$.
 The subset $T \subseteq V$ constitutes a valid labeling of the network for each $u, v \in V,\ u \ne v$.
 
-Instead, the precise separation of the RCC and GLM inequalities
-is a separate concern; for more info see in \cref{sec:cptp-rcc,sec:cptp-glm}.
-There is currently
-no exact separation procedure for the RCC inequalities  \parencite{jepsen2014}.
-On the other hand, GLM inequalities can be separated by solving
-$(u, v=0)$-min-cuts on a flow network with $u$-dependent capacities \parencite{letchford2006, jepsen2014}.
+Instead, the exact separation of the RCC and GLM inequalities is a separate concern; for more info see in \cref{sec:cptp-rcc,sec:cptp-glm}.
+There is currently no exact separation procedure for the RCC inequalities  \parencite{jepsen2014}.
+On the other hand, GLM inequalities can be separated by solving $(u, v=0)$-min-cuts on a flow network with $u$-dependent capacities \parencite{letchford2006, jepsen2014}.
 
 \medskip
 
@@ -684,7 +680,7 @@ We begin by discussing the separation of RCC inequalities for integral solutions
 This procedure follows roughly the same reasoning
 as the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
 Specifically, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$
-be the network labeling outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
+be the network labeling output by the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
 Then a valid subset $S \subseteq V_0,\ |S| \ge 1$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
 We test for inequality violation after selecting the appropriate subset $S$.
 Only when the associated RCC inequality is violated is the MIP optimizer notified.
@@ -750,7 +746,7 @@ We begin by discussing the separation of the GLM inequalities for integral solut
 This procedure follows roughly the same reasoning
 as the GSEC integral separation discussed in \cref{sec:impl-gsec-integral-separation}.
 Specifically, let $T_k  = \Set*{i \in V \mid cc(i) = k},\ |T_k| \ge 2 \quad \forall k \in \Set*{1, \dots, n_c}$
-be the network labeling outputted from the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
+be the network labeling output by the major connected components as discussed in \cref{sec:impl-labeling-integral-solutions}.
 Then a valid subset $S \subseteq V_0,\ |S| \ge 2$ can be picked as $S = T_k \quad \forall k \in \Set*{1, \dots, n_c}$.
 We test for inequality violation after selecting the appropriate subset $S$.
 Only when the associated GLM inequality is violated is the MIP optimizer notified.
