@@ -1,4 +1,11 @@
 %%
+%% User specifiable custom cover (OPTIONAL)
+%%
+\IfFileExists{Resources/cover.pdf}{
+	\includepdf{Resources/cover.pdf}
+}
+
+%%
 %% Titlepage "frontespizio"
 %%
 \IfFileExists{themes/\ThemeName/titlepage.tex}{
