@@ -2,10 +2,13 @@
 %% Titlepage "frontespizio"
 %%
 \IfFileExists{themes/\ThemeName/titlepage.tex}{
+	\phantomsection
+	\thispagestyle{empty}
+	\pdfbookmark{Title page}{Title page}
+
 	\input{themes/\ThemeName/titlepage.tex}
 	\cleardoublepage
 }{}
-
 
 %%
 %% Colophon / Copyright notice
@@ -13,10 +16,11 @@
 \IfFileExists{Content/Preamble/colophon.tex}{
 	\phantomsection
 	\thispagestyle{empty}
+	\pdfbookmark{Colophon}{Colophon}
+
 	\input{Content/Preamble/colophon.tex}
 	\clearpage
 }{}
-
 
 %%
 %% Inscription/Quote
@@ -25,10 +29,10 @@
 	\phantomsection
 	\thispagestyle{empty}
 	\pdfbookmark{Inscription}{Inscription}
+
 	\input{Content/Preamble/inscription.tex}
 	\clearpage
 }{}
-
 
 %%
 %% Abstract (ENG)
@@ -36,27 +40,26 @@
 \IfFileExists{Content/Preamble/abstract.tex}{
 	\phantomsection
 	\pdfbookmark{Abstract}{Abstract}
+
 	\begin{abstract}
 		\input{Content/Preamble/abstract.tex}
 	\end{abstract}
 	\cleardoublepage
 }{}
 
-
 %%
 %% Sommario (ITA)
 %%
 \IfFileExists{Content/Preamble/abstract_ita.tex}{
 	\pdfbookmark{Sommario}{Sommario}
+
 	\begin{otherlanguage}{italian}
 		\begin{abstract}
 			\input{Content/Preamble/abstract_ita.tex}
 		\end{abstract}
 	\end{otherlanguage}
-
 	\cleardoublepage
 }{}
-
 
 %%
 %% Acknoledgements
@@ -72,11 +75,10 @@
 
 			\vspace{1.0cm}
 
-			ACKNOWLEDGEMENTS\par
+			\textsc{RINGRAZIAMENTI}\par
 		}
 		\input{Content/Preamble/acknowledgements.tex}
 	\end{vplace}
-
 	\cleardoublepage
 }{}
 
@@ -86,7 +88,7 @@
 \IfFileExists{Content/Preamble/dedication.tex}{
 	\phantomsection
 	\thispagestyle{empty}
-	\pdfbookmark{Inscription}{Inscription}
+	\pdfbookmark{Dedication}{Dedication}
 
 	{\mbox{}\vfill \centering \input{Content/Preamble/dedication.tex} \par\vfill}
 	\cleardoublepage
@@ -96,6 +98,9 @@
 %% Produce table of contents
 %%
 \ifbool{GenerateTableOfContents}{
+	% You can change the name of the `Table of Contents` printed title here.
+	%     `Contents` is the default for memoir classes.
+	\renewcommand*{\contentsname}{Contents}
 	\tableofcontents
 	\cleardoublepage
 }{}
