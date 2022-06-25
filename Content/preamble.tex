@@ -3,9 +3,6 @@
 %%
 \newcommand\ThemeTitlePage{themes/\ThemeName/titlepage.tex}
 
-\newcommand*{\pretoctitle}[1]{{\clearpage\centering
-			\vspace*{5cm}#1\par}}
-
 \IfFileExists{\ThemeTitlePage}{
 	\input{\ThemeTitlePage}
 	\cleardoublepage
@@ -53,8 +50,18 @@
 	\phantomsection
 	\pdfbookmark{Acknowledgements}{Acknowledgements}
 
-	\pretoctitle{ACKNOWLEDGEMENTS}
-	\input{Content/Preamble/acknowledgements.tex}
+	\begin{vplace}[0.7]
+		{
+			\centering
+			\pgfornament[scale=1.0,color=gray]{113}
+
+			\vspace{1.0cm}
+
+			ACKNOWLEDGEMENTS\par
+		}
+		\input{Content/Preamble/acknowledgements.tex}
+	\end{vplace}
+
 	\cleardoublepage
 }{}
 
