@@ -1,6 +1,13 @@
 \begin{titlingpage}
 	\thispagestyle{empty}
 
+	%% NOTE(dparo):
+	%%
+	%% \calccentering\unitlength   \begin{adhustwidth} ... \end{adjustwidth}
+	%% allows to temporarily override the margin.
+	%% This allows us to center nicely the title page even though in a twosided
+	%% document class, the outer and inner margin are different.
+
 	\calccentering\unitlength % ok to mess with unitlength inside a group
 
 	\begin{adjustwidth}{\unitlength}{-\unitlength}
