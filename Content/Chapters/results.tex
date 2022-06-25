@@ -9,7 +9,7 @@ We will evaluate its performance as a pricer for the CVRP by comparing it with t
 \section{CVRP Benchmark Instances}
 \label{sec:results-benchmark-instances}
 
-Several CVRP benchmark instances are mandated to measure the competitiveness
+Several CVRP benchmark instances are used to measure the competitiveness
 of our branch-an-cut pricer in an accurate manner.
 The \urlref{http://vrp.galgos.inf.puc-rio.br/index.php/en/}{CVRPLIB website}
 is an online database for the vehicle routing problem that includes
@@ -156,14 +156,9 @@ modern and advanced BPC frameworks, see \textcite{sadykov2019modern}.
 \section{Evaluation Setup}
 \label{sec:results-evaluation-setup}
 
-The goal of this thesis, as previously stated,
-is to determine whether a branch-and-cut framework can be competitive in solving the pricing problem,
-particularly as the produced routes grow in length.
-We hypothesized that, since the labeling algorithm's performance degrades
-as the vehicle capacity increases,
-a branch-and-cut framework could aid in solving the more demanding pricing problems.
-Refer back to the discussion in \cref{sec:intro-thesis-contributions,sec:solving-the-pricing-problem}
-for additional details.
+The goal of this thesis, as previously stated, is to determine whether a branch-and-cut framework can be competitive in solving the pricing problem, particularly as the routes grow in length.
+We hypothesized that, since the labeling algorithm's performance degrades as the vehicle capacity increases, a branch-and-cut framework could aid in solving the more demanding pricing problems.
+Refer back to the discussion in \cref{sec:intro-thesis-contributions,sec:solving-the-pricing-problem} for additional details.
 
 However, the two frameworks operate in very different ways.
 Our branch-and-cut framework does not support non-robust inequalities or variable fixing
@@ -214,7 +209,7 @@ Measuring the running time of each pricing iteration is neither an appropriate n
 There are both benefits and downsides to this approach.
 First \bapcod{} must be configured to operate in the same domain as our pricer,
 thereby disabling many features that could potentially result in high efficiency in the broader scheme.
-Second, our branch-and-cut pricer generates elementary bounds, naturally solving a harsher problem.
+Second, our branch-and-cut pricer generates elementary bounds, naturally solving a harder problem.
 While solving a single pricing iteration may take longer,
 stronger dual-bounds may skip some pricing iterations in the long run,
 thus resulting in an overall faster CVRP resolution.
@@ -365,7 +360,7 @@ we can validate the pricer that would feed the BPC framework with tighter dual b
 Because the optimal value $z$ always satisfies $z \le 0$,
 we used two sentinel values to accentuate some specific circumstances.
 When a pricer successfully determines that no reduced cost route exists
-($z \ge \varepsilon_{\mt{ct}}$),
+($z \ge 0 - \varepsilon_{\mt{ct}}$),
 we output $z = 1.0$ in the associated \textit{cost profile}.
 Instead, if the pricer fails to solve the PP optimally within the timelimit,
 we output $z = 2.0$.
@@ -413,9 +408,9 @@ Although using multiple seeds is generally good practice when testing chaotic sy
 The empirical results are presented in this section.
 The results were obtained on a desktop computer equipped with
 an AMD Ryzen 7 1700X 3.4GHz with 8 cores (16 virtual cores),
-2x8 GBs of memory @ 3200 MHz (part number: CMK16GX4M2B3200C16),
+2x8 GBs of memory @ 3200 MHz,
 running a GNU/Linux operating system with kernel v5.18.3 and Glibc v2.35.
-For our BAC pricer's implementation, we used CPLEX version 22.1 (released in March 2022).
+For our BAC pricer's implementation, we used CPLEX version 22.1.
 
 \medskip
 
