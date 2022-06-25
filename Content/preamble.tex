@@ -1,13 +1,15 @@
 %%
-%% Handle titlepage: Eg the first page which is usually fancy with lots of university logos
+%% Titlepage "frontespizio"
 %%
-\newcommand\ThemeTitlePage{themes/\ThemeName/titlepage.tex}
-
-\IfFileExists{\ThemeTitlePage}{
-	\input{\ThemeTitlePage}
+\IfFileExists{themes/\ThemeName/titlepage.tex}{
+	\input{themes/\ThemeName/titlepage.tex}
 	\cleardoublepage
 }{}
 
+
+%%
+%% Colophon / Copyright notice
+%%
 \IfFileExists{Content/Preamble/colophon.tex}{
 	\phantomsection
 	\thispagestyle{empty}
@@ -15,6 +17,10 @@
 	\clearpage
 }{}
 
+
+%%
+%% Inscription/Quote
+%%
 \IfFileExists{Content/Preamble/inscription.tex}{
 	\phantomsection
 	\thispagestyle{empty}
@@ -23,9 +29,10 @@
 	\clearpage
 }{}
 
-% %%
-% %% Include the abstract if any
-% %%
+
+%%
+%% Abstract (ENG)
+%%
 \IfFileExists{Content/Preamble/abstract.tex}{
 	\phantomsection
 	\pdfbookmark{Abstract}{Abstract}
@@ -35,6 +42,10 @@
 	\cleardoublepage
 }{}
 
+
+%%
+%% Sommario (ITA)
+%%
 \IfFileExists{Content/Preamble/abstract_ita.tex}{
 	\pdfbookmark{Sommario}{Sommario}
 	\begin{otherlanguage}{italian}
@@ -46,6 +57,10 @@
 	\cleardoublepage
 }{}
 
+
+%%
+%% Acknoledgements
+%%
 \IfFileExists{Content/Preamble/acknowledgements.tex}{
 	\phantomsection
 	\pdfbookmark{Acknowledgements}{Acknowledgements}
@@ -65,7 +80,9 @@
 	\cleardoublepage
 }{}
 
-% Dedication/inscription
+%%
+%% Dedication
+%%
 \IfFileExists{Content/Preamble/dedication.tex}{
 	\phantomsection
 	\thispagestyle{empty}
@@ -83,6 +100,9 @@
 	\cleardoublepage
 }{}
 
+%%
+%% Glossary
+%%
 \ifbool{GenerateGlossary}{
 	\printglossary[type=\acronymtype]
 	\printglossary
