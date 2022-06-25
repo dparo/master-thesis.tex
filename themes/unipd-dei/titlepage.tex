@@ -15,8 +15,7 @@
 
 		\begin{adjustwidth}{\unitlength}{-\unitlength}
 			\begin{center}
-				\vbox to0pt{\vbox to\textheight{\vfill \includegraphics[width=12.5cm]{themes/unipd-dei/static/unipd-light.png} \vspace{1.4cm}
-							\vfill}\vss}
+
 				\begin{figure}
 					\centering
 					\includegraphics[height=2.45cm]{themes/unipd-dei/static/unipd-dei.png}%\hspace{1cm}
@@ -29,10 +28,21 @@
 				{\scshape \large{\textit{\DegreeName}}} \\
 				\par\noindent\rule{\textwidth}{0.4pt}
 
-				\vspace{1cm}
-				{\huge{\bfseries{\textcolor{SchoolColor}{\Title}}} \par}\vspace{0.7cm} % Thesis title
-				%\HRule
-				\vspace{1cm}
+				%%
+				%% Unipd LOGO background image
+				%%
+				\makebox[0pt][c]{%
+					\raisebox{-\totalheight}[0pt][0pt]{%
+						\includegraphics[height=12cm]{themes/unipd-dei/static/unipd-light.png}}}%
+
+				\vspace*{\fill}
+
+				%%
+				%% Title of the thesis
+				%%
+				{\huge{\bfseries{\textcolor{SchoolColor}{\Title}}} \par}
+
+				\vspace*{\fill}
 
 				\begin{minipage}[t]{0.3\textwidth}
 					\begin{flushleft} \large
@@ -52,7 +62,7 @@
 					\end{flushright}
 				\end{minipage}
 
-				\vfill
+				\vspace{2cm}
 				\large{\textsc{Academic year:} \quad \AcademicYear}\\
 				\large{\textsc{Graduation date:} \quad \GraduationDate}
 			\end{center}
