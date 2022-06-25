@@ -8,30 +8,26 @@
 	\cleardoublepage
 }{}
 
-
 \IfFileExists{Content/Preamble/colophon.tex}{
+	\phantomsection
+	\thispagestyle{empty}
 	\input{Content/Preamble/colophon.tex}
 	\clearpage
 }{}
 
-
 \IfFileExists{Content/Preamble/inscription.tex}{
+	\phantomsection
+	\thispagestyle{empty}
+	\pdfbookmark{Inscription}{Inscription}
 	\input{Content/Preamble/inscription.tex}
 	\clearpage
 }{}
-
-
-\IfFileExists{Content/Preamble/acknowledgements.tex}{
-	\input{Content/Preamble/acknowledgements.tex}
-	\clearpage
-}{}
-
-
 
 % %%
 % %% Include the abstract if any
 % %%
 \IfFileExists{Content/Preamble/abstract.tex}{
+	\phantomsection
 	\pdfbookmark{Abstract}{Abstract}
 	\begin{abstract}
 		\input{Content/Preamble/abstract.tex}
@@ -50,6 +46,22 @@
 	\cleardoublepage
 }{}
 
+% Dedication/inscription
+\IfFileExists{Content/Preamble/dedication.tex}{
+	\phantomsection
+	\thispagestyle{empty}
+	\pdfbookmark{Inscription}{Inscription}
+
+	{\mbox{}\vfill \centering \input{Content/Preamble/dedication.tex} \par\vfill}
+	\cleardoublepage
+}
+
+\IfFileExists{Content/Preamble/acknowledgements.tex}{
+	\phantomsection
+	\pdfbookmark{Acknowledgements}{Acknowledgements}
+	\input{Content/Preamble/acknowledgements.tex}
+	\cleardoublepage
+}{}
 
 %%
 %% Produce table of contents
@@ -59,13 +71,11 @@
 	\cleardoublepage
 }{}
 
-
 \ifbool{GenerateGlossary}{
 	\printglossary[type=\acronymtype]
 	\printglossary
 	\cleardoublepage
 }{}
-
 
 %%
 %% Produce list of figures
