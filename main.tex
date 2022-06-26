@@ -47,16 +47,36 @@
 
 \input{Config/flags_decls.tex}
 \input{Config/config.tex}
+
+\title{\Title{}}
+\author{\AuthorName{} \AuthorSurname{}}
+\date{\GraduationDate{}}
+
+\input{Config/pdf_metadata.tex}
+
+
+%%
+%% Metadata that will be used by the pdfx package to encode the metadate in the final PDF-A2B format.
+%%  NOTE: Must precede \begin{document}....\end{document} environment
+%%
+\begin{filecontents*}[overwrite]{\jobname.xmpdata}
+\Title{\PdfMetadataTitle}
+\Author{\PdfMetadataAuthor}
+\Subject{\PdfMetadataSubject}
+\Language{\PdfMetadataLanguage}
+\Keywords{\PdfMetadataKeywords}
+\Publisher{\PdfMetadataPublisher}
+\CoverDisplayDate{\PdfMetadataCoverDisplayDate}
+\CoverDate{\PdfMetadataCoverDate}
+\end{filecontents*}
+
+
+
 \input{Config/packages.tex}
 \input{Config/after_package_load.tex}
 \input{Config/fix_latex_quirks.tex}
 \input{Config/custom_commands.tex}
 \input{Utils/math_definitions.tex}
-
-
-\title{\Title{}}
-\author{\AuthorName{} \AuthorSurname{}}
-\date{\GraduationDate{}}
 
 
 \addbibresource{biblio.bib}
@@ -66,6 +86,10 @@
 }{}
 
 
+
+%%
+%% Start the document
+%%
 \begin{document}
 
 %% To allow breaking long ```\begin{align} \end{align}``` equations over multiple pages.
