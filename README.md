@@ -12,18 +12,23 @@ The associated C source code implementation can be found at this [Github repo](h
 
 ## :closed_book: Reading the prebuilt PDF Document
 
-**NOTE: Google docs returns 204 status sometimes. If the `View PDF Document` button doesn't work at first, try click it multiple times.**
+<!---
+Prebuilt PDF download URL:
+    https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf
+-->
+
 
 <div>
-<a href="https://docs.google.com/viewer?url=https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf">
-<img src="https://img.shields.io/badge/-View%20PDF%20Document-blue?style=for-the-badge&logo=download" alt="View PDF Document" />
+<a href="https://dparo.github.io/documents/MSc_Paro_Davide.pdf" target="_blank" rel="noopener noreferrer">
+<img src="https://img.shields.io/badge/-Get%20PDF%20Document-0a4026?style=for-the-badge&logo=firefox" alt="Get PDF Document" />
 </a>
 </div> 
 <div>
-<a href="https://github.com/dparo/master-thesis.tex/releases/latest/download/Paro_Davide.pdf">
-<img src="https://img.shields.io/badge/-Download%20PDF%20Document-purple?style=for-the-badge&logo=download" alt="Download PDF Document" />
+<a href="https://github.com/dparo/master-thesis.tex/releases/latest" target="_blank" rel="noopener noreferrer">
+<img src="https://img.shields.io/badge/-View%20latest%20Release-063179?style=for-the-badge&logo=github" alt="View latest Release" />
 </a>
 </div>
+
 
 
 ## :construction: Manually compile the document 
