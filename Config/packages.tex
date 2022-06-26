@@ -3,7 +3,7 @@
 %%
 \usepackage{afterpackage}        % To run commands conditionally after a package is loaded (if it is loaded)
 \usepackage[htt]{hyphenat}       % To enable hyphenation and provides hyphenatable monospaced fonts, i.e. \texttt{} reflows on new lines correctly
-\usepackage{hyperref}            % To allow for interactive links (click with the mouse)
+\usepackage[pdfa,pdfusetitle]{hyperref}      % To allow for interactive links (click with the mouse). PDFA option to annotate links in conformance with PDF-A spec
 \usepackage{graphicx}            % Allows you to insert figures
 \usepackage{amsmath}             % Allows you to do equations
 \usepackage{amssymb}
@@ -20,6 +20,15 @@
 \usepackage{soul}
 
 \usepackage{pdflscape}
+
+% PDF/A configuration
+% Validate at:
+%      - https://demo.verapdf.org/
+%      - https://www.pdf-online.com/osa/validate.aspx
+% To check for PDF metadata:
+%     - https://www.metadata2go.com/result/3ef837c3-cbab-4905-9cd5-beb87fc14968
+\usepackage[a-2b,mathxmp]{pdfx}
+\usepackage{colorprofiles}
 
 % biblatex is better than default bibtex
 \usepackage[
@@ -92,6 +101,14 @@
 	\usepackage[acronym]{glossaries} % For list of acronyms
 }{}
 
+\captionsetup{
+	tableposition=top,
+	figureposition=bottom,
+	font=small,
+	format=hang,
+	labelfont=bf
+}
+
 \hypersetup{
 	%hyperfootnotes=false,
 	%pdfpagelabels,
@@ -121,18 +138,11 @@
 	citecolor=webblue,
 	%pagecolor=RoyalBlue,
 	%urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,
+	pdfencoding=unicode,
 	pdftitle={\Title},
-	pdfauthor={\textcopyright{} \AuthorName{} \AuthorSurname{}, \UnivName{}, \DeptName{}},
+	pdfauthor={\AuthorShortened},
 	pdfsubject={},
-	pdfkeywords={},
+	pdfkeywords={\Keywords},
 	pdfcreator={pdfLaTeX},
 	pdfproducer={LaTeX}
-}
-
-\captionsetup{
-	tableposition=top,
-	figureposition=bottom,
-	font=small,
-	format=hang,
-	labelfont=bf
 }
