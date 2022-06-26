@@ -13,7 +13,7 @@ The associated C source code implementation can be found at this [Github repo](h
 ## :closed_book: Reading the prebuilt PDF Document
 
 <div>
-<a href="https://docs.google.com/viewer?url=https://dparo.github.io/documents/MSc_Paro_Davide.pdf">
+<a href="https://docs.google.com/viewer?url=https://dparo.github.io/documents/MSc_Paro_Davide.pdf" target="_blank" rel="noopener noreferrer">
 <img src="https://img.shields.io/badge/-View%20PDF%20Document-063179?style=for-the-badge&logo=google" alt="View PDF Document" />
 </a>
 </div> 
