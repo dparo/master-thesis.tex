@@ -19,12 +19,12 @@ Prebuilt PDF download URL:
 
 
 <div>
-<a href="https://dparo.github.io/documents/MSc_Paro_Davide.pdf">
+<a href="https://dparo.github.io/documents/MSc_Paro_Davide.pdf" target="_blank" rel="noopener noreferrer">
 <img src="https://img.shields.io/badge/-Get%20PDF%20Document-0a4026?style=for-the-badge&logo=firefox" alt="Get PDF Document" />
 </a>
 </div> 
 <div>
-<a href="https://github.com/dparo/master-thesis.tex/releases/latestf">
+<a href="https://github.com/dparo/master-thesis.tex/releases/latest" target="_blank" rel="noopener noreferrer">
 <img src="https://img.shields.io/badge/-View%20latest%20Release-063179?style=for-the-badge&logo=github" alt="View latest Release" />
 </a>
 </div>
