@@ -55,6 +55,7 @@ make all
 - [VeraPDF free online validator for conformance to PDF-A standard (WEB)](https://demo.verapdf.org): Prefer to use the native VeraPDF executable if possible.
 - [VeraPDF free online validator for conformance to PDF-A standard  (Native)](https://verapdf.org/software/): Crossplatform, recommented over web version.
 - [PDF to PDF-A online free converter](https://pdf.online/pdf-to-pdfa): Use this as a last resource if you fail to generate a proper PDF-A from Latex.
+- [PDF online metadata viewer](https://www.metadata2go.com/): alternatively you can export the PDF metadata directly from VeraPDF native executable.
 
 ### 📑 Documentation
 - [Memoir documentclass documentation (PDF)](http://mirrors.ctan.org/macros/latex/contrib/memoir/memman.pdf).
