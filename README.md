@@ -1,6 +1,6 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dparo/master-thesis.tex?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/dparo/master-thesis.tex?style=for-the-badge) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dparo/master-thesis.tex/CI?style=for-the-badge)
 
-# A Branch-and-Cut based Pricer algorithm for tackling the Capacitated Vehicle Routing Problem
+# A Branch-and-Cut based Pricer for the Capacitated Vehicle Routing Problem
 
 This repository contains the LaTeX source code for the master degree thesis
 in Computer Engineering of Davide Paro, presented at the University of Padua
