@@ -1,19 +1,10 @@
 {
 \setlength\parindent{0pt}
 
-The \textit{Capacitated Vehicle Routing Problem}, CVRP for short,
-is a combinatorial optimization routing problem in which,
-a geographically dispersed set of customers with known demands
-must be served by a fleet of vehicles stationed at a central facility.
-\textit{Column generation} techniques embedded within \textit{branch-price-and-cut} frameworks
-have been the de facto state-of-the-art dominant approach
-for building exact algorithms for the CVRP over the last two decades.
-The \textit{pricer}, a critical component in column generation, must solve
-the \textit{Pricing Problem} (PP), which asks for an
-\textit{Elementary Shortest Path Problem with Resource Constraints} (ESPPRC)
-in a reduced-cost network.
-Little scientific efforts have been dedicated to studying
-branch-and-cut based approaches for tackling the PP.
+The \textit{Capacitated Vehicle Routing Problem}, CVRP for short, is a combinatorial optimization routing problem in which, a geographically dispersed set of customers with known demands must be served by a fleet of vehicles stationed at a central facility.
+\textit{Column generation} techniques embedded within \textit{branch-price-and-cut} frameworks have been the de facto state-of-the-art dominant approach for building exact algorithms for the CVRP over the last two decades.
+The \textit{pricer}, a critical component in column generation, must solve the \textit{Pricing Problem} (PP), which asks for an \textit{Elementary Shortest Path Problem with Resource Constraints} (ESPPRC) in a reduced-cost network.
+Little scientific efforts have been dedicated to studying branch-and-cut based approaches for tackling the PP.
 
 The ESPPRC has been traditionally relaxed and solved through dynamic programming algorithms.
 This approach, however, has two major drawbacks.
@@ -22,8 +13,7 @@ Furthermore, the running time degrades as the length of the generated routes inc
 To evaluate the performance of their contributions, the operations research community has traditionally used a set of historical and artificial test instances.
 However, these benchmark instances do not capture the key characteristics of modern real-world distribution problems, which are usually characterized by longer routes.
 
-In this thesis, we develop
-a scheme based on a branch-and-cut approach for solving the pricing problem.
+In this thesis, we develop a scheme based on a branch-and-cut approach for solving the pricing problem.
 We study the behavior and effectiveness of our implementation in producing longer routes by comparing it with state-of-the-art solutions based on dynamic programming.
 Our results suggest that branch-and-cut approaches may supplement the traditional labeling algorithm, indicating that further research in this area may bring benefits to CVRP solvers.
 }
