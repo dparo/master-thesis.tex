@@ -49,6 +49,11 @@ croppdfs: $(PDFS_CROPPED)
 	pdfcrop "$<" "$@"
 
 
+validate: $(TARGET_PDF)
+	$(info ###)
+	$(info ### Validating PDF conformance to PDF-A standard)
+	$(info ###)
+	verapdf -f 2b --format text -v ./build/Paro_Davide.pdf
 
 prebuild: $(BUILD_DIR) svg2pdf croppdfs
 
