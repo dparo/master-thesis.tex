@@ -60,7 +60,7 @@ prebuild: $(BUILD_DIR) svg2pdf croppdfs
 $(TARGET_PDF): prebuild
 	latexmk -pdf
 	cp $(BUILD_DIR)/main.pdf $(TARGET_PDF)
-	du --all -hc -d 1 $(TARGET_PDF)
+	du -h $(TARGET_PDF)
 
 spellcheck:
 	find ./ -name "*.tex" -exec aspell --mode=tex --encoding=utf-8 --lang=en --add-extra-dicts=./dictionary.en.pws check "{}" \;
