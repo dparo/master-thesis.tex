@@ -73,4 +73,4 @@ $(OPTIMIZED_PDF): $(TARGET_PDF)
 		-sDEVICE=pdfwrite -sOutputFile=$(OPTIMIZED_PDF) $(TARGET_PDF)
 
 	# Show pdf files of the original uncompressed file and the new compressed one
-	du --all -hc -d 1 $(TARGET_PDF) $(OPTIMIZED_PDF)
+	du -h $(TARGET_PDF) $(OPTIMIZED_PDF)
