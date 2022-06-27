@@ -51,6 +51,18 @@ git clone --recursive https://github.com/dparo/master-thesis.tex
 make all
 ```
 
+## ℹ️ Additional resources
+- [VeraPDF free online validator for conformance to PDF-A standard (WEB)](https://demo.verapdf.org): Prefer to use the native VeraPDF executable if possible.
+- [VeraPDF free online validator for conformance to PDF-A standard  (Native)](https://verapdf.org/software/): Crossplatform, recommented over web version.
+- [PDF to PDF-A online free converter](https://pdf.online/pdf-to-pdfa): Use this as a last resource if you fail to generate a proper PDF-A from Latex.
+
+### 📑 Documentation
+- [Memoir documentclass documentation (PDF)](http://mirrors.ctan.org/macros/latex/contrib/memoir/memman.pdf).
+- [PDFX Latex package documentation (PDF)](http://mirrors.ctan.org/macros/latex/contrib/pdfx/pdfx.pdf): The pdfx latex package is used to produce native PDF-A conformant documents directly from Latex.
+- [Biblatex Latex package documentation (PDF)](http://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf).
+
+
 ## :sparkling_heart: Funding
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J47WJB2)
+
