@@ -238,7 +238,7 @@ to the elementary bound as possible at the end of each CG iteration.
 The pricer's tailing-off condition was disabled.
 We've also asked the labeling algorithm to generate
 a single column per pricing invocation.
-Refer to \cref{sec:bapcod-appendix} for a complete list of the employed configuration.
+Refer to \cref{sec:bapcod-appendix} for a complete list of the employed configuration parameters.
 
 \section{Evaluation Process}
 \label{sec:results-evaluation-process}
@@ -365,7 +365,7 @@ we output $z = 1.0$ in the associated \textit{cost profile}.
 Instead, if the pricer fails to solve the PP optimally within the timelimit,
 we output $z = 2.0$.
 For additional output clarity, in \textit{cost profiles} we tint
-the plot's background color in green and red for $z < \varepsilon_{\mt{ct}}$ and $z \ge \varepsilon_{\mt{ct}}$ respectively.
+the plot's background color in green and red for $z < 0 - \varepsilon_{\mt{ct}}$ and $z \ge 0 - \varepsilon_{\mt{ct}}$ respectively.
 
 \medskip
 
