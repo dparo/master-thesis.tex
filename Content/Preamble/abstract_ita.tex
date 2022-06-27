@@ -4,16 +4,16 @@
 Il \textit{Capacitated Vehicle Routing Problem}, abbreviato come CVRP, è un problema di ottimizzazione combinatoria d'instradamento nel quale, un insieme geograficamente sparso di clienti con richieste note deve essere servito da una flotta di veicoli stazionati in una struttura centrale.
 Negli ultimi due decenni, tecniche di \textit{Column generation} incorporate all'interno di frameworks \textit{branch-price-and-cut} sono state infatti l'approccio stato dell'arte dominante per la costruzione di algoritmi esatti per il CVRP.
 Il \textit{pricer}, un componente critico nella column generation, deve risolvere il \textit{Pricing Problem} (PP) che richiede la risoluzione di un \textit{Elementary Shortest Path Problem with Resource Constraints} (ESPPRC) in una rete di costo ridotto.
-Pochi sforzi scientifici sono stati dedicati allo studio di approacci branch-and-cut per affrontare il PP.
+Pochi sforzi scientifici sono stati dedicati allo studio di approcci branch-and-cut per affrontare il PP.
 
 L'ESPPRC è stato tradizionalmente rilassato e risolto attraverso algoritmi di programmazione dinamica.
 Questo approccio, tuttavia, ha due principali svantaggi.
 Per cominciare, peggiora i dual bounds ottenuti.
 Inoltre, il tempo di esecuzione diminuisce all'aumentare della lunghezza dei percorsi generati.
-Per valutare la performance dei loro contributi, la comunità di ricerca operativa ha tradizionalmente utilizzato una serie di istanze di test storiche e artificiali.
-Tuttavia, queste istanze di benchmark non catturano le caratteristiche chiave dei moderni problemi di distribuzione del mondo reale, che sono tipicamente caraterrizati da lunghi percorsi.
+Per valutare la performance dei loro contributi, la comunità di ricerca operativa ha tradizionalmente utilizzato una serie d'istanze di test storiche e artificiali.
+Tuttavia, queste istanze di benchmark non catturano le caratteristiche chiave dei moderni problemi di distribuzione del mondo reale, che sono tipicamente caratterizzati da lunghi percorsi.
 
-In questa tesi sviluppiamo uno schema basato su un approaccio branch-and-cut per risolvere il pricing problem.
+In questa tesi sviluppiamo uno schema basato su un approccio branch-and-cut per risolvere il pricing problem.
 Studiamo il comportamento e l'efficacia della nostra implementazione nel produrre percorsi più lunghi comparandola con soluzioni all'avanguardia basate su programmazione dinamica.
 I nostri risultati suggeriscono che gli approcci branch-and-cut possono supplementare il tradizionale algoritmo di etichettatura, indicando che ulteriore ricerca in quest'area possa portare benefici ai risolutori CVRP.
 }
