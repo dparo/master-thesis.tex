@@ -82,7 +82,7 @@ In the future, it would be interesting to investigate the competitiveness of our
 Doing so would require additional implementation efforts to port the BAC-pricer to \bapcod{}, requiring the development of a C++ translation layer to route the \bapcod{} pricing requests to our BAC pricer.
 
 As a final side-note, it would be interesting to see if the same results obtained for the CVRP also apply to the VRPTW.
-However, this scenario would necessitate radical modifications to the pricer implementation, MIP model and cutting planes.
+However, this scenario would necessitate radical modifications to the pricer implementation, the MIP model, and the cutting planes.
 In the VRPTW, the MIP model needs to be modified into an ESPPRC to account for time window slots.
 Time window slots must be modeled as big-M constraints, which are known to be computationally unstable \parencite{jepsen2008branchandcut}.
 Despite the VRPTW is beyond the scope of this thesis, it could be an interesting subject for studying BAC-based pricers in the future.
