@@ -51,15 +51,27 @@ git clone --recursive https://github.com/dparo/master-thesis.tex
 make all
 ```
 
+### :mag: Verify PDF/A-2b conformance
+- Requires VeraPDF binary to be installed and be available in `$PATH`.
+
+```
+make validate
+```
+
+If validation fails, VeraPDF will output the failed rules.
+You can take a look at all the available rules and their associated meaning [here](https://github.com/veraPDF/veraPDF-validation-profiles/wiki/PDFA-Part-1-rules).
+
+
 ## ℹ️ Additional resources
-- [VeraPDF free online validator for conformance to PDF-A standard (WEB)](https://demo.verapdf.org): Prefer to use the native VeraPDF executable if possible.
-- [VeraPDF free online validator for conformance to PDF-A standard  (Native)](https://verapdf.org/software/): Crossplatform, recommented over web version.
-- [PDF to PDF-A online free converter](https://pdf.online/pdf-to-pdfa): Use this as a last resource if you fail to generate a proper PDF-A from Latex.
+- [VeraPDF free online validator for conformance to PDF/A-1 standard (WEB)](https://demo.verapdf.org): Prefer to use the native VeraPDF executable if possible.
+- [VeraPDF free online validator for conformance to PDF/A-1 standard  (Native)](https://verapdf.org/software/): Crossplatform, recommented over web version.
+- [VeraPDF list of validation rules with their meaning](https://github.com/veraPDF/veraPDF-validation-profiles/wiki/PDFA-Part-1-rules)
+- [PDF to PDF/A online free converter](https://pdf.online/pdf-to-pdfa): Use this as a last resource if you fail to generate a proper PDF/A from Latex.
 - [PDF online metadata viewer](https://www.metadata2go.com/): alternatively you can export the PDF metadata directly from VeraPDF native executable.
 
 ### 📑 Documentation
 - [Memoir documentclass documentation (PDF)](http://mirrors.ctan.org/macros/latex/contrib/memoir/memman.pdf).
-- [PDFX Latex package documentation (PDF)](http://mirrors.ctan.org/macros/latex/contrib/pdfx/pdfx.pdf): The pdfx latex package is used to produce native PDF-A conformant documents directly from Latex.
+- [PDFX Latex package documentation (PDF)](http://mirrors.ctan.org/macros/latex/contrib/pdfx/pdfx.pdf): The pdfx latex package is used to produce native PDF/A-1 conformant documents directly from Latex.
 - [Biblatex Latex package documentation (PDF)](http://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf).
 
 
