@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="97.065651mm"
+   width="59.322914mm"
    height="60.322998mm"
-   viewBox="0 0 97.065651 60.322998"
+   viewBox="0 0 59.322914 60.322998"
    version="1.1"
    id="svg5"
    inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
-   sodipodi:docname="P-n40-k5-solution.svg"
+   sodipodi:docname="P-n40-k5-solution-without-routes.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="2.2080348"
-     inkscape:cx="380.88168"
-     inkscape:cy="162.58802"
+     inkscape:zoom="1.1040174"
+     inkscape:cx="334.23386"
+     inkscape:cy="129.52694"
      inkscape:window-width="1916"
      inkscape:window-height="1039"
      inkscape:window-x="0"
@@ -318,24 +318,10 @@
        rx="0.66145831"
        ry="0.66149998" />
     <ellipse
-       style="fill:#ff6600;stroke-width:0.264591"
-       id="path308-3-6-7-5-3-3"
-       cx="80.036461"
-       cy="36.909374"
-       rx="0.66145831"
-       ry="0.66149998" />
-    <ellipse
        style="fill:#ff0066;stroke-width:0.264591"
        id="path308-3-6-7-5-3-5"
        cx="21.661459"
        cy="32.661499"
-       rx="0.66145831"
-       ry="0.66149998" />
-    <ellipse
-       style="fill:#ff0066;stroke-width:0.264591"
-       id="path308-3-6-7-5-3-5-9"
-       cx="79.904167"
-       cy="30.1625"
        rx="0.66145831"
        ry="0.66149998" />
     <ellipse
@@ -392,13 +378,6 @@
        id="path308-3-6-7-5-3-5-6-2-9-1-2-7-0-9"
        cx="12.661458"
        cy="37.661499"
-       rx="0.66145831"
-       ry="0.66149998" />
-    <ellipse
-       style="fill:#008000;stroke-width:0.264591"
-       id="path308-3-6-7-5-3-5-6-2-9-1-2-7-0-9-6"
-       cx="80.036461"
-       cy="43.52396"
        rx="0.66145831"
        ry="0.66149998" />
     <ellipse
@@ -553,13 +532,6 @@
        id="path308-3-6-7-5-3-5-6-2-9-1-2-7-0-9-3-6-0-6-2-6-1-8-7-9-2-0-2-3-7-5-9-2-2-8-9-3"
        cx="63.661457"
        cy="10.6615"
-       rx="0.66145831"
-       ry="0.66149998" />
-    <ellipse
-       style="fill:#aa0088;stroke-width:0.264591"
-       id="path308-3-6-7-5-3-5-6-2-9-1-2-7-0-9-3-6-0-6-2-6-1-8-7-9-2-0-2-3-7-5-9-2-2-8-9-3-0"
-       cx="80.036461"
-       cy="50.138542"
        rx="0.66145831"
        ry="0.66149998" />
     <ellipse
@@ -854,87 +826,5 @@
        cy="39.661499"
        rx="1.4071623"
        ry="1.407251" />
-    <path
-       style="fill:none;stroke:#0066ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 75.40625,23.8125 c 9.260417,0 9.260417,0 9.260417,0"
-       id="path948" />
-    <text
-       xml:space="preserve"
-       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
-       x="86.901871"
-       y="25.093082"
-       id="text8718"><tspan
-         sodipodi:role="line"
-         id="tspan8716"
-         style="stroke-width:0.264583"
-         x="86.901871"
-         y="25.093082">Route 1</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
-       x="86.901871"
-       y="31.707666"
-       id="text8718-5"><tspan
-         sodipodi:role="line"
-         id="tspan8716-3"
-         style="stroke-width:0.264583"
-         x="86.901871"
-         y="31.707666">Route 2</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
-       x="86.901871"
-       y="38.32225"
-       id="text8718-5-5"><tspan
-         sodipodi:role="line"
-         id="tspan8716-3-6"
-         style="stroke-width:0.264583"
-         x="86.901871"
-         y="38.32225">Route 3</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
-       x="86.901871"
-       y="44.936832"
-       id="text8718-5-5-2"><tspan
-         sodipodi:role="line"
-         id="tspan8716-3-6-9"
-         style="stroke-width:0.264583"
-         x="86.901871"
-         y="44.936832">Route 4</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
-       x="86.901871"
-       y="51.551418"
-       id="text8718-5-5-2-1"><tspan
-         sodipodi:role="line"
-         id="tspan8716-3-6-9-2"
-         style="stroke-width:0.264583"
-         x="86.901871"
-         y="51.551418">Route 5</tspan></text>
-    <path
-       style="fill:none;stroke:#ff6600;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 75.40625,36.909375 h 9.260417"
-       id="path13690" />
-    <path
-       style="fill:none;stroke:#008000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 75.40625,43.523959 h 9.260417"
-       id="path13692" />
-    <path
-       style="fill:none;stroke:#aa0088;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 75.40625,50.138542 h 9.260417"
-       id="path13694" />
-    <path
-       style="fill:none;stroke:#ff0066;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 75.273958,30.294792 h 9.260417"
-       id="path13969" />
-    <ellipse
-       style="fill:#0066ff;stroke-width:0.264591"
-       id="path308-3-6-7-5-3-5-6-2-9-1-2-7-0-9-3-6-0-6-2-6-1-8-7-9-2-0-2-3-7-0"
-       cx="80.036461"
-       cy="23.8125"
-       rx="0.66145831"
-       ry="0.66149998" />
   </g>
 </svg>
