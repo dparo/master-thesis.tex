@@ -8,6 +8,11 @@ $out_dir = './build';
 $aux_dir = './build';
 
 
+$ENV{max_print_line} = 1000;
+$ENV{log_wrap} = 1000;
+$ENV{error_line} = 256;
+$ENV{error_line} = 238;
+
 
 # Support for glossary
 ################################################
