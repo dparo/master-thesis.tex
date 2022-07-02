@@ -290,7 +290,7 @@ The SP formulation is described through an Integer Program (IP):
 	                                        & \sum_{p \in P}  a_{ip} \lambda_p = 1         & \quad \forall i \in V_0 \label{eq:set-partitioning-customers-visited-by-exactly-one-route} \\
 	                                        & \lambda_p                    \in \Set*{0, 1} & \quad \forall p \in P \label{eq:set-partitioning-lambda-mip-var-bounds}
 \end{align}
-where, $z_\mt{SP}(\lambda)$, as defined in \labelcref{eq:set-partitioning-obj-func} is the objective function to be minimized (i.e. the overall travel distance).
+where, $z_\mt{SP}(\lambda)$, as defined in \labelcref{eq:set-partitioning-obj-func}, is the objective function to be minimized (i.e. the overall travel distance).
 Constraint \labelcref{eq:set-partitioning-customers-visited-by-exactly-one-route} forces each customer to be covered by exactly one route.
 Constraint \labelcref{eq:set-partitioning-K-routes} enforces that exactly $K$ routes are selected.
 Finally, constraint \labelcref{eq:set-partitioning-lambda-mip-var-bounds} is the bounding and integrality constraints for binary variables $\lambda_p \ \forall p \in P$.
