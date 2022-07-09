@@ -29,11 +29,14 @@
 				\par\noindent\rule{\textwidth}{0.4pt}
 
 				%%
-				%% Unipd LOGO background image
+				%% Unipd LOGO background image. Add it only if we are not press printing
 				%%
-				\makebox[0pt][c]{%
-					\raisebox{-\totalheight}[0pt][0pt]{%
-						\includegraphics[height=12cm]{themes/unipd-dei/static/unipd-light.png}}}%
+				\ifbool{PressPrint}{}{
+					\makebox[0pt][c]{%
+						\raisebox{-\totalheight}[0pt][0pt]{%
+							\includegraphics[height=12cm]{themes/unipd-dei/static/unipd-light.png}}}%
+
+				}
 
 				\vspace*{\fill}
 
