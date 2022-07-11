@@ -70,6 +70,8 @@
 % To access various style for arrow heads
 \usetikzlibrary{snakes,arrows,shapes}
 
+\newcommand{\crefrangeconjunction}{--}
+
 % Instruct cref on how to refer to algorithms references
 \crefname{algocf}{algorithm}{algorithms}
 \Crefname{algocf}{Algorithm}{Algorithms}
@@ -77,18 +79,21 @@
 \definecolor{webgreen}{rgb}{0,.5,0}
 \definecolor{webbrown}{rgb}{.6,0,0}
 \definecolor{webblue}{rgb}{0,0,0.8}
-\definecolor{Pantone}{RGB}{155,0,20}
-\definecolor{GrigioLight}{RGB}{152, 152, 152}
 
-\definecolor{codegreen}{RGB}{0,153,0}
-\definecolor{codegray}{RGB}{96,96,96}
-\definecolor{codered}{RGB}{204,0,0}
-\definecolor{codeblue}{RGB}{0,0,153}
-\definecolor{codelightblue}{RGB}{0,204,204}
-\definecolor{codepurple}{RGB}{0.58,0,0.82}
-\definecolor{backcolour}{RGB}{235,235,235}
+\ifbool{PressPrint}{
+	\colorlet{defaultcolor}{.}
 
-\newcommand{\crefrangeconjunction}{--}
+	% Optimize for pressprints by using black color
+	% for the clickable links as to reduce the number
+	% of pages containing color.
+	\colorlet{urlcolor}{defaultcolor}
+	\colorlet{linkcolor}{defaultcolor}
+	\colorlet{citecolor}{defaultcolor}
+}{
+	\colorlet{urlcolor}{webbrown}
+	\colorlet{linkcolor}{webbrown}
+	\colorlet{citecolor}{webblue}
+}
 
 \ifbool{GenerateGlossary}{
 	\usepackage[acronym]{glossaries} % For list of acronyms
@@ -126,9 +131,9 @@
 	pdfhighlight=/O,
 	%nesting=true,
 	%frenchlinks,
-	urlcolor=webbrown,
-	linkcolor=webbrown,
-	citecolor=webblue,
+	urlcolor=urlcolor,
+	linkcolor=linkcolor,
+	citecolor=citecolor,
 	%pagecolor=RoyalBlue,
 	%urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,
 	pdfencoding=unicode,
