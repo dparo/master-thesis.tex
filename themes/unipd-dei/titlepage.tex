@@ -18,8 +18,11 @@
 
 				\begin{figure}
 					\centering
-					\includegraphics[height=2.45cm]{themes/unipd-dei/static/unipd-dei.png}%\hspace{1cm}
-					%\includegraphics[height=2.3cm]{themes/unipd-dei/static/DEIlogoFULL.png}
+					\ifbool{PressPrint}{
+						\includegraphics[height=2.45cm]{themes/unipd-dei/static/unipd-dei-black.png}
+					}{
+						\includegraphics[height=2.45cm]{themes/unipd-dei/static/unipd-dei.png}
+					}
 				\end{figure}
 
 				{\scshape \Large{\bfseries{\UnivName}}} \\
@@ -43,14 +46,14 @@
 				%%
 				%% Title of the thesis
 				%%
-				{\huge{\bfseries{\textcolor{SchoolColor}{\Title}}} \par}
+				{\huge{\bfseries{\textcolor{TitlePageHighlightColor}{\Title}}} \par}
 
 				\vspace*{\fill}
 
 				\begin{minipage}[t]{0.3\textwidth}
 					\begin{flushleft} \large
 						\emph{Graduate:}\\
-						\textcolor{SchoolColor}{\AuthorName \ \textsc{\AuthorSurname}} % Author name
+						\textcolor{TitlePageHighlightColor}{\AuthorName \ \textsc{\AuthorSurname}}
 						\\
 						\emph{ID:} \textsc{\StudentId}
 					\end{flushleft}
@@ -58,10 +61,10 @@
 				\begin{minipage}[t]{0.68\textwidth}
 					\begin{flushright} \large
 						\emph{Supervisor:} \\
-						\textcolor{SchoolColor}{Prof. \SupName \ \textsc{\SupSurname}} % Supervisor name
+						\textcolor{TitlePageHighlightColor}{Prof. \SupName \ \textsc{\SupSurname}}
 						\vspace{10pt}\\
 						\emph{Co-Supervisor:} \\
-						\textcolor{SchoolColor}{Prof. \CosupName \ \textsc{\CosupSurname}} % Cosupervisor name - %comment these lines if there are no supervisors
+						\textcolor{TitlePageHighlightColor}{Prof. \CosupName \ \textsc{\CosupSurname}}
 					\end{flushright}
 				\end{minipage}
 

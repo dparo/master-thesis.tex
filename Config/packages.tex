@@ -76,12 +76,13 @@
 \crefname{algocf}{algorithm}{algorithms}
 \Crefname{algocf}{Algorithm}{Algorithms}
 
+\colorlet{defaultcolor}{.}
+
 \definecolor{webgreen}{rgb}{0,.5,0}
 \definecolor{webbrown}{rgb}{.6,0,0}
 \definecolor{webblue}{rgb}{0,0,0.8}
 
 \ifbool{PressPrint}{
-	\colorlet{defaultcolor}{.}
 
 	% Optimize for pressprints by using black color
 	% for the clickable hyperrefs as to reduce the number
@@ -93,6 +94,12 @@
 	\colorlet{urlcolor}{webbrown}
 	\colorlet{linkcolor}{webbrown}
 	\colorlet{citecolor}{webblue}
+}
+
+\ifbool{PressPrint}{
+	\colorlet{TitlePageHighlightColor}{defaultcolor}
+}{
+	\colorlet{TitlePageHighlightColor}{SchoolColor}
 }
 
 \ifbool{GenerateGlossary}{
