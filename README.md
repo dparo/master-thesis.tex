@@ -1,4 +1,6 @@
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/dparo/master-thesis.tex?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/dparo/master-thesis.tex?style=for-the-badge) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dparo/master-thesis.tex/CI?style=for-the-badge)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/dparo/master-thesis.tex?style=for-the-badge) 
+![GitHub](https://img.shields.io/github/license/dparo/master-thesis.tex?style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dparo/master-thesis.tex/ci.yml?branch=master&style=for-the-badge)
 
 # A Branch-and-Cut based Pricer for the Capacitated Vehicle Routing Problem
 
