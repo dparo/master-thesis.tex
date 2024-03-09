@@ -18,7 +18,7 @@ Prebuilt PDF download URL:
 -->
 
 <div>
-<a href="https://dparo.github.io/documents/MSc_Paro_Davide.pdf" target="_blank" rel="noopener noreferrer">
+<a href="https://dparo.github.io/documents/msc.pdf" target="_blank" rel="noopener noreferrer">
 <img src="https://img.shields.io/badge/-Get%20PDF%20Document-0a4026?style=for-the-badge&logo=firefox" alt="Get PDF Document" />
 </a>
 </div>
